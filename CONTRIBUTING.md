@@ -6,7 +6,7 @@ and the full contribution guide arrive in this repository with the first release
 Until then:
 
 - **Ideas, questions and feedback:** write to us through the
-  [contact form on the website](https://silvio-l.github.io/gitoodo/#download). Your message reaches
+  [contact form on the website](https://gitoodo.com/#download). Your message reaches
   us by email and is not published.
 - **Security problems:** report them privately, see [SECURITY.md](SECURITY.md).
 

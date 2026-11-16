@@ -13,8 +13,8 @@ two weeks. Credit in the release notes is given unless you prefer to stay anonym
 
 ## Scope before the first release
 
-- The website at <https://silvio-l.github.io/gitoodo/>, including its contact form
-- The published question format at <https://silvio-l.github.io/gitoodo/spec/questions/v2/>
+- The website at <https://gitoodo.com/>, including its contact form
+- The published question format at <https://gitoodo.com/spec/questions/v2/>
 
 From the first release on, the Gitoodo app, the `gitoodo` command line and its services, token
 handling, the forge adapters and the install scripts are in scope as well; security fixes then go

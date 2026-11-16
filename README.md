@@ -13,10 +13,10 @@ When a decision is missing, the question reaches you as a card.
 
 **Coming soon** · macOS and Windows · Forgejo, Gitea, GitHub and GitLab · Open source (MIT) from the first release
 
-[Website](https://silvio-l.github.io/gitoodo/) ·
-[Documentation](https://silvio-l.github.io/gitoodo/docs/) ·
-[Get notified](https://silvio-l.github.io/gitoodo/#download) ·
-[FAQ](https://silvio-l.github.io/gitoodo/docs/faq/)
+[Website](https://gitoodo.com/) ·
+[Documentation](https://gitoodo.com/docs/) ·
+[Get notified](https://gitoodo.com/#download) ·
+[FAQ](https://gitoodo.com/docs/faq/)
 
 </div>
 
@@ -30,7 +30,7 @@ When a decision is missing, the question reaches you as a card.
 > [!NOTE]
 > Gitoodo has not been released yet. The source code and the installers for macOS and Windows
 > arrive here with the first release. Until then this repository holds only this page.
-> [Get notified](https://silvio-l.github.io/gitoodo/#download) when it is out.
+> [Get notified](https://gitoodo.com/#download) when it is out.
 
 ## What Gitoodo does
 
@@ -66,7 +66,7 @@ labels), with a tray counter and notifications.
 2. **Workers.** For every ready issue an agent starts in its own worktree. A lease keeps two
    agents from taking the same issue, and a worker that hangs is restarted.
 3. **Questions.** When the agent needs a decision, it asks in the issue in an
-   [open, versioned question format](https://silvio-l.github.io/gitoodo/spec/questions/v2/).
+   [open, versioned question format](https://gitoodo.com/spec/questions/v2/).
    You answer from the card; the answer goes back to the issue as a short comment.
 4. **Merge.** The pull request is kept up to date and merged in your repository's style. Only a
    real merge conflict lands with you.
@@ -110,10 +110,10 @@ never in files.
 
 ## Stay in touch
 
-- **Get notified:** use the [contact form on the website](https://silvio-l.github.io/gitoodo/#download)
+- **Get notified:** use the [contact form on the website](https://gitoodo.com/#download)
   and we let you know when the first release is out.
 - **Questions or ideas:** the same contact form reaches us by email.
-- **Documentation:** [silvio-l.github.io/gitoodo/docs](https://silvio-l.github.io/gitoodo/docs/), in
+- **Documentation:** [silvio-l.github.io/gitoodo/docs](https://gitoodo.com/docs/), in
   six languages.
 - **Security:** please report vulnerabilities privately, see [SECURITY.md](SECURITY.md).
 - **Support:** if you would like to support the development, the **Sponsor** button of this
