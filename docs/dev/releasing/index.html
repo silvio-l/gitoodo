@@ -1,0 +1,614 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self'; style-src 'self'; script-src 'self' 'sha256-zclDvgIbJxhMP3hLx0Pe9wEzIPlPNUNObuWsVD7xB/M='; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="color-scheme" content="light dark">
+<script>try{var t=localStorage.getItem("gitoodo-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<title>Release – Gitoodo</title>
+<meta name="description" content="How a Gitoodo release is built, checked and published (#152, #153, #562, #564). Users download an installer; building from source stays the fallback for people who want it. Assets …">
+<meta name="docs-version" content="dev">
+<link rel="canonical" href="https://gitoodo.com/docs/dev/releasing/">
+
+<meta property="og:title" content="Release – Gitoodo">
+<meta property="og:description" content="How a Gitoodo release is built, checked and published (#152, #153, #562, #564). Users download an installer; building from source stays the fallback for people who want it. Assets …">
+<meta property="og:url" content="https://gitoodo.com/docs/dev/releasing/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Gitoodo">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://gitoodo.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../../assets/docs.css">
+<script defer src="../../../assets/docs.js"></script>
+</head>
+<body class="docs" data-lang="en" data-docs-root="../../" data-search-index="../../search/en.json" data-copied="Copied">
+<a class="skip" href="#main" data-testid="docs-skip">Skip to content</a>
+<header class="docs-header" data-testid="docs-header"><div class="docs-header__inner">
+<a class="lockup" href="../../../" aria-label="Gitoodo" data-testid="docs-logo"><svg class="lockup__art" data-brand="wordmark" viewBox="9.3 9.4 767.3 182.9" focusable="false" aria-hidden="true"><path class="logo__tray" fill-rule="evenodd" d="M66.7 89.5C54.7 90.9 52.5 108.4 63.6 112.9C69.4 115.3 80 113.9 86.5 113.9L136.5 114C143.6 114 155.7 115.4 157 105.5C157.8 99.1 154.7 91.2 147.7 89.6C141.7 88.1 126.5 89.3 119.5 89.3L84.5 89.3C78.7 89.3 72.5 88.8 66.7 89.5ZM210.5 93.7C206.3 95.4 202.9 98.6 198.6 100.3C196.7 101 193.8 101.2 192.6 103.1C191.3 105.1 191.8 108.3 191.8 110.5C191.8 115.6 192.1 120.9 191.5 125.9C184.9 128.1 171 126.6 163.5 126.6C159.8 126.6 155.9 126.2 152.5 128C144.2 132.6 147.8 144.9 143.6 152.1C138.9 160 121.4 157.2 113.5 157.2C110.3 157.2 106.8 157.7 103.6 156.7C92.4 153.3 98.2 135 89.9 128.6C86.5 125.9 81.6 126.6 77.5 126.6C69.3 126.6 58.2 128 50.5 126.1C48.8 117.6 51.8 108.1 49.7 99.7C47.3 90.3 31.5 89.8 27 97.5C25.1 100.8 24 104.7 22.6 108.2C19.8 115.2 15.3 122.8 16.1 130.5C16.6 134.9 19.5 139.2 21.5 143L31.8 163.7C35.7 171.7 38.9 183.6 48.9 185.5C52.3 186.2 56 185.8 59.5 185.8L83.5 185.8L157.5 185.8L183.5 185.8C188.2 185.8 193.2 186.3 197.4 183.8C203.4 180.3 207.1 168.8 210.3 162.7L221.6 140.2C223.6 136.2 226.1 132.2 226 127.5C225.9 121.1 221.5 114.3 219.2 108.4C217.1 103 215.9 96.5 210.5 93.7Z"/><path class="logo__bars" fill-rule="evenodd" d="M156.8 26.5C155.2 15.4 142.9 17.7 134.5 17.6C114.8 17.4 95.2 17.5 75.5 17.7C65.3 17.7 55.7 18.3 56.4 31.5C57.2 45.7 76.1 42.3 85.5 42.3L126.5 42.3C130.4 42.3 141.2 43.2 144.4 41.9C146.3 41.1 147.2 38.3 148.2 36.7C150.7 33 154.3 30.1 156.8 26.5ZM139.5 55.3C134 52 124.8 53.6 118.5 53.6L83.5 53.7C77.8 53.7 71.1 52.8 65.5 54C59.3 55.3 55.6 61.8 56.5 67.9C58.2 79.3 69.7 78.2 78.5 78.2L123.5 78.2C128.6 78.2 137 79.9 140.6 75.2C142.4 72.9 141 70.6 140.5 68C139.7 63.8 141 59.3 139.5 55.3Z"/><path class="logo__check" fill-rule="evenodd" d="M177.7 26.4C142.8 32.5 139 82.7 173 93.5C177.7 95 182.6 95.5 187.5 94.9C224.6 90.3 228 37.8 192.5 27.2C187.7 25.8 182.6 25.6 177.7 26.4ZM177.5 65.1C172.9 61.8 171.9 57.4 165.5 58.3C160.3 63.5 167.1 67.9 170.8 71.7C172.5 73.5 174.3 76 176.8 76.5C180.5 77.3 183.2 73.1 185.3 70.8L200.1 55.6C203 52.6 204.8 49.9 201.5 46.5C200 46.2 199.2 45.8 197.6 46.2C195.1 46.9 192.6 50.5 190.9 52.4C187.1 56.5 182.5 62.6 177.5 65.1Z"/><path class="word__git" fill-rule="evenodd" d="M379.6 38.4C360.7 39.7 362.8 67.8 381.5 66.9C400 66.1 398.7 37.2 379.6 38.4ZM362.5 92.7C357.9 91.8 353.1 92.2 348.5 92.2L325.5 92.2C321.8 92.2 314.8 90.8 311.8 93.3C308.9 95.8 309.6 111.2 311 114.5C317.2 118.1 327.7 114.3 334.7 116.5C329.4 130.4 309.1 132.6 297.7 125.8C288.9 120.6 283.8 110.5 283.8 100.5C283.6 81.9 299.6 66.6 318.5 71.2C328.3 73.6 329.5 78.5 336.5 83C340.9 81.5 353.8 72.2 356.6 68.5C355.1 63.6 350.2 59.4 346.3 56.2C332 44.2 311 40.6 293.5 47C262.7 58.3 249 94.7 262.4 124.2C276 154 314 165.2 341.5 147C354.5 138.4 363.1 123 364.1 107.5C364.4 102.6 365.3 96.8 362.5 92.7ZM407.5 73.5L400.4 74.5C398 78.5 398.4 90 399.5 94.7C402 96 404.7 95.9 407.4 96.5C410 113.1 400.2 145.4 422.7 151.6C426.2 152.6 429.9 152.6 433.5 152.6C437.5 152.7 441.9 153.2 445.5 151.5C446.4 146.9 446.8 134.4 444.6 130.5C441.2 130.2 436.3 131.5 433.3 129.2C430.8 127.2 431.4 123.3 431.4 120.5C431.4 112.7 430.6 104.3 431.7 96.5C436.1 95.3 440.9 96.3 445.5 95.3C447.3 89.6 447.2 80.3 445.5 74.6L431.9 73.5C430.6 68.1 433.1 59.6 430.5 54.9C428.6 51.5 415.9 52 412.5 52.6C410.9 53 409.4 53.6 408.6 55.1C406.2 59.4 408.5 68.4 407.5 73.5ZM369.5 151.7C373.7 153.3 388.3 153.6 392.1 151.5C393.7 145.8 392.7 138.5 392.7 132.5L392.6 94.5C392.6 90.3 394.1 79 391.6 75.9C389.3 73.1 377.1 73.6 373.5 74C366.1 74.9 368.5 86.3 368.5 91.5L368.6 131.5C368.6 137.8 367.2 145.8 369.5 151.7Z"/><path class="word__oodo" fill-rule="evenodd" d="M658.6 77.5C652.6 75.1 647.4 72.8 640.7 73.4C600.7 77.2 595.6 136.7 633.5 148.3C639.6 150.1 646.5 150.5 652.6 148.3C655 147.4 657.1 146 659.5 145.4C660 146.5 660.6 148.1 661.7 148.7C665.5 150.7 678.5 149.6 682.5 148.5C684.6 142.8 683.3 126.4 683.4 119.5L683.3 71.5C683.2 65 684.5 55.7 683 49.5C681.4 42.8 664.3 43.5 661.3 46.8C659.2 49.1 659.7 52.6 659.7 55.5C659.6 61.4 661.1 72.7 658.6 77.5ZM482.5 73.4C442.6 77.6 435.8 134.6 473.5 147.9C478.2 149.6 483.5 150.4 488.5 150.1C494.4 149.7 499.9 148.2 505.1 145.6C509.6 143.3 513.4 139.9 516.5 136C537.9 109 517 69.8 482.5 73.4ZM560.7 73.4C547.4 75.2 535.8 83.3 530.4 95.7C521.3 116.5 532.4 142.7 554.8 148.6C560 149.9 565.1 150.5 570.5 149.8C597.8 146.3 613.1 114.6 598.4 91.1C593.4 83 585.5 77.6 576.6 74.7C571.5 73.1 566 72.7 560.7 73.4ZM723.5 73.4C712.2 74.9 701.4 80.8 695.3 90.7C682.1 112 692 141 716.3 148.4C721.5 150 727 150.6 732.5 150C755.6 147.5 770.6 124.8 765.8 102.5C762.8 89.1 752.1 79.1 739.5 74.9C734.4 73.2 728.9 72.7 723.5 73.4ZM483.7 96.4C464.6 99.7 469.4 131.1 490.4 126.7C509.1 122.7 503.7 93.1 483.7 96.4ZM562.7 96.4C543.1 99.7 548.6 131.4 569.3 126.6C587.9 122.4 582.5 93.1 562.7 96.4ZM644.6 96.4C625.3 97.8 626.9 127.6 646.5 126.8C665.9 126 664.2 95 644.6 96.4ZM724.7 96.4C705.3 99.9 711 131.7 732.3 126.6C750.4 122.3 744.3 92.9 724.7 96.4Z"/></svg></a>
+<a class="docs-header__title" href="../../" data-testid="docs-home">Documentation</a>
+<span class="docs-version" title="Pre-release: Gitoodo has not been released yet" data-version="dev"><span class="visually-hidden">Docs version: </span><span dir="ltr">dev</span><span class="visually-hidden"> (Pre-release: Gitoodo has not been released yet)</span></span>
+<div class="docs-header__tools">
+<div class="docs-search" role="search" data-testid="docs-search">
+<label class="visually-hidden" for="docs-search-input">Search the docs</label>
+<input id="docs-search-input" class="docs-search__input" type="search" placeholder="Search …" autocomplete="off" spellcheck="false" aria-describedby="docs-search-hint" aria-controls="docs-search-results" aria-expanded="false" role="combobox" aria-autocomplete="list" data-testid="docs-search-input">
+<p id="docs-search-hint" class="visually-hidden">Arrow keys choose, Enter opens, Escape closes.</p>
+<div id="docs-search-results" class="docs-search__results" role="listbox" aria-label="Search the docs" hidden data-empty="No page matches “{query}”." data-testid="docs-search-results"></div>
+</div>
+<div class="header__prefs"><details class="langs" name="header-popover" data-langs data-testid="docs-langs"><summary class="langs__toggle" data-testid="docs-langs-toggle"><svg class="langs__globe" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg><span class="visually-hidden">Language: </span><span class="langs__code" translate="no">EN</span></summary>
+<ul class="langs__list" aria-label="Language"><li><a href="../../de/" hreflang="de" lang="de" data-lang="de" data-track="language" data-track-name="de" data-testid="docs-langs-de"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Deutsch</span></a></li><li><a href="../../" hreflang="en" lang="en" data-lang="en" data-track="language" data-track-name="en" aria-current="page" data-testid="docs-langs-en"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>English</span></a></li><li><a href="../../zh-Hans/" hreflang="zh-Hans" lang="zh-Hans" data-lang="zh-Hans" data-track="language" data-track-name="zh-Hans" data-testid="docs-langs-zh-Hans"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>中文（简体）</span></a></li><li><a href="../../hi/" hreflang="hi" lang="hi" data-lang="hi" data-track="language" data-track-name="hi" data-testid="docs-langs-hi"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>हिन्दी</span></a></li><li><a href="../../es/" hreflang="es" lang="es" data-lang="es" data-track="language" data-track-name="es" data-testid="docs-langs-es"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Español</span></a></li><li><a href="../../ar/" hreflang="ar" lang="ar" data-lang="ar" data-track="language" data-track-name="ar" data-testid="docs-langs-ar"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>العربية</span></a></li></ul></details><button class="theme" type="button" hidden data-theme-toggle data-choice="system" data-label="Theme: {current}, switch to {next}" data-system="System" data-light="Light" data-dark="Dark" aria-label="Theme: System, switch to Light" title="Theme: System, switch to Light" data-testid="docs-theme"><svg class="theme__icon theme__icon--system" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg><svg class="theme__icon theme__icon--light" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg><svg class="theme__icon theme__icon--dark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></button></div>
+<button type="button" class="docs-menu" aria-controls="docs-nav" aria-expanded="false" hidden data-testid="docs-menu">Pages</button>
+</div>
+<a class="docs-header__link" href="https://github.com/silvio-l/gitoodo" data-testid="docs-github">GitHub</a>
+<a class="docs-install" href="../../../#download" data-testid="docs-install">Get notified</a>
+</div></header>
+<div class="docs-layout">
+<nav id="docs-nav" class="docs-nav" aria-label="Documentation" data-testid="docs-nav"><div class="docs-nav__section"><p class="docs-nav__title"><a href="../../" data-testid="docs-nav-section-user">For users</a></p><p class="docs-nav__group" id="docs-nav-user-0">Get started</p><ul aria-labelledby="docs-nav-user-0"><li><a href="../../introduction/" data-testid="docs-nav-docs-introduction">What is Gitoodo?</a></li><li><a href="../../getting-started/" data-testid="docs-nav-docs-getting-started">Getting started</a></li></ul><p class="docs-nav__group" id="docs-nav-user-1">Guides</p><ul aria-labelledby="docs-nav-user-1"><li><a href="../../self-hosted-forgejo-gitea/" data-testid="docs-nav-docs-self-hosted-forgejo-gitea">Forgejo and Gitea</a></li><li><a href="../../github-issues-to-pull-requests/" data-testid="docs-nav-docs-github-issues-to-pull-requests">GitHub issues to pull requests</a></li><li><a href="../../safe-auto-merge/" data-testid="docs-nav-docs-safe-auto-merge">Safe auto-merge</a></li><li><a href="../../parallel-coding-agents/" data-testid="docs-nav-docs-parallel-coding-agents">Parallel coding agents</a></li><li><a href="../../switch-from-another-agent-app/" data-testid="docs-nav-docs-switch-from-another-agent-app">Coming from another agent app</a></li></ul><p class="docs-nav__group" id="docs-nav-user-2">Daily use</p><ul aria-labelledby="docs-nav-user-2"><li><a href="../../daily-use/" data-testid="docs-nav-docs-daily-use">How to work with Gitoodo</a></li><li><a href="../../overview/" data-testid="docs-nav-docs-overview">Overview</a></li><li><a href="../../needs-you/" data-testid="docs-nav-docs-needs-you">Needs you</a></li><li><a href="../../questions/" data-testid="docs-nav-docs-questions">Asked of me</a></li><li><a href="../../board/" data-testid="docs-nav-docs-board">All repos</a></li><li><a href="../../chat/" data-testid="docs-nav-docs-chat">Chat</a></li><li><a href="../../repositories/" data-testid="docs-nav-docs-repositories">Repositories</a></li></ul><p class="docs-nav__group" id="docs-nav-user-3">Orchestrator</p><ul aria-labelledby="docs-nav-user-3"><li><a href="../../labels/" data-testid="docs-nav-docs-labels">Status labels and workflow</a></li><li><a href="../../merge-and-release/" data-testid="docs-nav-docs-merge-and-release">Merge control and release planning</a></li><li><a href="../../services/" data-testid="docs-nav-docs-services">Classifier, dispatcher and workers</a></li></ul><p class="docs-nav__group" id="docs-nav-user-4">Reference and help</p><ul aria-labelledby="docs-nav-user-4"><li><a href="../../settings/" data-testid="docs-nav-docs-settings">Settings</a></li><li><a href="../../status/" data-testid="docs-nav-docs-status">Status</a></li><li><a href="../../troubleshooting/" data-testid="docs-nav-docs-troubleshooting">Troubleshooting</a></li><li><a href="../../faq/" data-testid="docs-nav-docs-faq">FAQ</a></li><li><a href="../../privacy/" data-testid="docs-nav-docs-privacy">Privacy</a></li></ul></div><div class="docs-nav__section"><p class="docs-nav__title"><a href="../" data-testid="docs-nav-section-dev">For developers</a></p><p class="docs-nav__group" id="docs-nav-dev-0">Start here</p><ul aria-labelledby="docs-nav-dev-0"><li><a href="../architecture/" data-testid="docs-nav-docs-dev-architecture">Architecture</a></li><li><a href="../building/" data-testid="docs-nav-docs-dev-building">Building</a></li><li><a href="./" aria-current="page" data-testid="docs-nav-docs-dev-releasing">Release</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-1">Interfaces</p><ul aria-labelledby="docs-nav-dev-1"><li><a href="../question-format/" data-testid="docs-nav-docs-dev-question-format">Gitoodo question format (version 2)</a></li><li><a href="../cli/" data-testid="docs-nav-docs-dev-cli">Command line reference</a></li><li><a href="../daemon/" data-testid="docs-nav-docs-dev-daemon">Classifier daemon and command line</a></li><li><a href="../forge-tokens/" data-testid="docs-nav-docs-dev-forge-tokens">Token permissions per forge</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-2">Orchestrator</p><ul aria-labelledby="docs-nav-dev-2"><li><a href="../states/" data-testid="docs-nav-docs-dev-states">States: what Gitoodo shows and what you do about it</a></li><li><a href="../all-repos/" data-testid="docs-nav-docs-dev-all-repos">&quot;All repos&quot;: pages and where things went</a></li><li><a href="../orchestrator-spec/" data-testid="docs-nav-docs-dev-orchestrator-spec">Gitoodo Orchestrator – Specification (v1)</a></li><li><a href="../orchestrator-setup/" data-testid="docs-nav-docs-dev-orchestrator-setup">Orchestrator setup</a></li><li><a href="../dispatcher/" data-testid="docs-nav-docs-dev-dispatcher">Dispatcher</a></li><li><a href="../branch-rules/" data-testid="docs-nav-docs-dev-branch-rules">Branch rules that work with the autopilot</a></li><li><a href="../security/" data-testid="docs-nav-docs-dev-security">Security model of the orchestrator</a></li><li><a href="../satellites/" data-testid="docs-nav-docs-dev-satellites">Satellites</a></li><li><a href="../repo-hygiene/" data-testid="docs-nav-docs-dev-repo-hygiene">Repo hygiene</a></li><li><a href="../orchestrator-chat/" data-testid="docs-nav-docs-dev-orchestrator-chat">Orchestrator chat</a></li><li><a href="../release-planning/" data-testid="docs-nav-docs-dev-release-planning">Release planning</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-3">App internals</p><ul aria-labelledby="docs-nav-dev-3"><li><a href="../status-model/" data-testid="docs-nav-docs-dev-status-model">Overview status model</a></li><li><a href="../counters/" data-testid="docs-nav-docs-dev-counters">Counters</a></li><li><a href="../startup/" data-testid="docs-nav-docs-dev-startup">Start: first paint and loading state</a></li><li><a href="../logging/" data-testid="docs-nav-docs-dev-logging">Logging</a></li><li><a href="../localisation/" data-testid="docs-nav-docs-dev-localisation">Localisation</a></li><li><a href="../settings-backup/" data-testid="docs-nav-docs-dev-settings-backup">Settings export, import and backup</a></li><li><a href="../symlinks/" data-testid="docs-nav-docs-dev-symlinks">Symbolic links</a></li><li><a href="../window-frame/" data-testid="docs-nav-docs-dev-window-frame">Window frame</a></li><li><a href="../system-permissions/" data-testid="docs-nav-docs-dev-system-permissions">System permissions</a></li><li><a href="../test-access/" data-testid="docs-nav-docs-dev-test-access">Test access: driving the app without a human</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-4">Privacy and data</p><ul aria-labelledby="docs-nav-dev-4"><li><a href="../privacy-policy/" data-testid="docs-nav-docs-dev-privacy-policy">Privacy policy: feedback and usage statistics</a></li><li><a href="../network-inventory/" data-testid="docs-nav-docs-dev-network-inventory">Network inventory of the desktop app</a></li><li><a href="../chat-notification/" data-testid="docs-nav-docs-dev-chat-notification">Chat notification</a></li><li><a href="../support/" data-testid="docs-nav-docs-dev-support">Voluntary support</a></li></ul></div></nav>
+<main id="main" class="docs-main" tabindex="-1" data-testid="docs-main">
+<article class="docs-article">
+<p class="docs-eyebrow">For developers · Start here</p><h1>Release</h1>
+<details class="docs-toc-inline" data-testid="docs-toc-inline"><summary data-testid="docs-toc-inline-toggle">On this page</summary><ol><li class="docs-toc__l2"><a href="#assets" data-testid="docs-toc-inline-assets">Assets</a></li><li class="docs-toc__l2"><a href="#apple-silicon-only-decision-2026-11-16" data-testid="docs-toc-inline-apple-silicon-only-decision-2026-11-16">Apple silicon only (decision 2026-11-16)</a></li><li class="docs-toc__l2"><a href="#windows-msix-and-setup-decision-2026-11-16" data-testid="docs-toc-inline-windows-msix-and-setup-decision-2026-11-16">Windows: MSIX and setup (decision 2026-11-16)</a></li><li class="docs-toc__l2"><a href="#homebrew-prepared-not-published" data-testid="docs-toc-inline-homebrew-prepared-not-published">Homebrew (prepared, not published)</a></li><li class="docs-toc__l2"><a href="#app-identifier-decision-2026-11-16-595" data-testid="docs-toc-inline-app-identifier-decision-2026-11-16-595">App identifier (decision 2026-11-16, #595)</a></li><li class="docs-toc__l2"><a href="#credentials-names-only-never-in-files-or-logs" data-testid="docs-toc-inline-credentials-names-only-never-in-files-or-logs">Credentials (names only, never in files or logs)</a></li><li class="docs-toc__l2"><a href="#ship" data-testid="docs-toc-inline-ship">Ship</a></li><li class="docs-toc__l3"><a href="#what-ci-covers" data-testid="docs-toc-inline-what-ci-covers">What CI covers</a></li><li class="docs-toc__l2"><a href="#releasing-with-fastlane" data-testid="docs-toc-inline-releasing-with-fastlane">Releasing with fastlane</a></li><li class="docs-toc__l3"><a href="#github-release-from-main" data-testid="docs-toc-inline-github-release-from-main">GitHub release from main</a></li><li class="docs-toc__l2"><a href="#build" data-testid="docs-toc-inline-build">Build</a></li><li class="docs-toc__l3"><a href="#windows-publisher-check" data-testid="docs-toc-inline-windows-publisher-check">Windows publisher check</a></li><li class="docs-toc__l2"><a href="#verify-before-publishing" data-testid="docs-toc-inline-verify-before-publishing">Verify (before publishing)</a></li><li class="docs-toc__l3"><a href="#verified-010-at-7c7d883-2026-11-16" data-testid="docs-toc-inline-verified-010-at-7c7d883-2026-11-16">Verified: 0.1.0 at 7c7d883 (2026-11-16)</a></li><li class="docs-toc__l3"><a href="#verified-windows-installer-tests-2026-11-16-839" data-testid="docs-toc-inline-verified-windows-installer-tests-2026-11-16-839">Verified: Windows installer tests (2026-11-16, #839)</a></li><li class="docs-toc__l3"><a href="#verified-windows-one-liners-2026-11-16-564" data-testid="docs-toc-inline-verified-windows-one-liners-2026-11-16-564">Verified: Windows one-liners (2026-11-16, #564)</a></li><li class="docs-toc__l2"><a href="#website-and-documentation" data-testid="docs-toc-inline-website-and-documentation">Website and documentation</a></li><li class="docs-toc__l3"><a href="#the-docs-version" data-testid="docs-toc-inline-the-docs-version">The docs version</a></li><li class="docs-toc__l3"><a href="#what-the-docs-are-built-from" data-testid="docs-toc-inline-what-the-docs-are-built-from">What the docs are built from</a></li><li class="docs-toc__l3"><a href="#custom-domain-gitoodocom" data-testid="docs-toc-inline-custom-domain-gitoodocom">Custom domain (gitoodo.com)</a></li><li class="docs-toc__l2"><a href="#pre-launch-site" data-testid="docs-toc-inline-pre-launch-site">Pre-launch site</a></li><li class="docs-toc__l2"><a href="#publish-only-after-the-maintainers-release-approval-153" data-testid="docs-toc-inline-publish-only-after-the-maintainers-release-approval-153">Publish (only after the maintainer&#39;s release approval, #153)</a></li><li class="docs-toc__l2"><a href="#releasesjson" data-testid="docs-toc-inline-releasesjson">releases.json</a></li><li class="docs-toc__l2"><a href="#rolling-back" data-testid="docs-toc-inline-rolling-back">Rolling back</a></li></ol></details>
+<div class="docs-body">
+<p>How a Gitoodo release is built, checked and published (#152, #153, #562, #564). Users download an
+installer; building from source stays the fallback for people who want it.</p>
+<h2 id="assets">Assets<a class="docs-anchor" href="#assets" aria-label="Assets" data-testid="docs-md-anchor-assets">#</a></h2>
+<p>All files land in <code translate="no">target/release/dist/</code> on the Mac (the Windows files are copied there).</p>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col">File</th><th scope="col">For</th><th scope="col">Signing</th></tr></thead><tbody><tr><td><code translate="no">Gitoodo-&lt;version&gt;-macos-arm64.dmg</code></td><td>Download button, macOS 11+ on Apple silicon</td><td>Developer ID, notarized, stapled (DMG and app)</td></tr><tr><td><code translate="no">Gitoodo-macos-arm64.zip</code></td><td><code translate="no">install.sh</code> (one-line install and update)</td><td>the same notarized, stapled app</td></tr><tr><td><code translate="no">Gitoodo-&lt;version&gt;-windows-x64.msix</code></td><td>Download button once signed, Windows 10 2004+/11 x64 (per-user MSIX)</td><td>MSIX signature; publisher = certificate subject</td></tr><tr><td><code translate="no">Gitoodo.appinstaller</code></td><td>MSIX with automatic updates (always names the newest MSIX)</td><td>– (Windows checks the MSIX&#39;s signature)</td></tr><tr><td><code translate="no">Gitoodo-&lt;version&gt;-windows-x64-setup.exe</code></td><td>Windows 10/11 x64 per-user NSIS setup, no admin; download button while the MSIX is unsigned</td><td>Authenticode when a certificate is set up, else unsigned</td></tr><tr><td><code translate="no">gitoodo-aarch64-apple-darwin</code></td><td>Remote Macs (#441, <code translate="no">crates/core/src/remote_version.rs</code>)</td><td>Developer ID, notarized (no staple for bare binaries)</td></tr><tr><td><code translate="no">gitoodo-x86_64-pc-windows-msvc</code></td><td>Remote Windows machines (#958); the CLI <code translate="no">.exe</code>, saved there as <code translate="no">~\.local\bin\gitoodo.exe</code></td><td>Authenticode when a certificate is set up, else unsigned</td></tr><tr><td><code translate="no">install.sh</code>, <code translate="no">uninstall.sh</code></td><td>One-line install and removal on macOS</td><td>–</td></tr><tr><td><code translate="no">install.ps1</code>, <code translate="no">uninstall.ps1</code></td><td>One-line install and removal on Windows (MSIX or setup)</td><td>– (<code translate="no">install.ps1</code> checks the publisher)</td></tr><tr><td><code translate="no">*.sha256</code></td><td><code translate="no">shasum -a 256</code> format (<code translate="no">&lt;hash&gt;  &lt;file&gt;</code>)</td><td>–</td></tr><tr><td><code translate="no">releases.json</code></td><td>Landing page download switch (schema below)</td><td>–</td></tr></tbody></table></div>
+<p>The names of the installers match what the landing page accepts (<code translate="no">site/src/release.ts</code>: a <code translate="no">.dmg</code>
+for macOS; a <code translate="no">-setup.exe</code>, <code translate="no">.msi</code> or <code translate="no">.msix</code> for Windows). The unversioned zip keeps <code translate="no">releases/latest/download/...</code> working for
+<code translate="no">install.sh</code>. Linux CLI assets for remote machines (<code translate="no">gitoodo-x86_64-unknown-linux-gnu</code>,
+<code translate="no">gitoodo-aarch64-unknown-linux-gnu</code>) need a Linux build host and are not produced yet.</p>
+<h2 id="apple-silicon-only-decision-2026-11-16">Apple silicon only (decision 2026-11-16)<a class="docs-anchor" href="#apple-silicon-only-decision-2026-11-16" aria-label="Apple silicon only (decision 2026-11-16)" data-testid="docs-md-anchor-apple-silicon-only-decision-2026-11-16">#</a></h2>
+<p>Gitoodo for macOS ships for Apple silicon (<code translate="no">aarch64-apple-darwin</code>) only; there are no Intel
+(<code translate="no">x86_64-apple-darwin</code>) or universal builds. Reasons: macOS 27 is the last macOS for Intel Macs
+and Rosetta 2 ends with macOS 28, so macOS 27 already warns (&quot;App-Update erforderlich&quot;) when an
+app starts Intel code on Apple silicon; and there is no Intel Mac to test on. What this means:</p>
+<ul><li><code translate="no">release-mac.sh</code> builds and checks (<code translate="no">lipo -archs</code> = <code translate="no">arm64</code> for every binary in the bundle) the
+arm64 app and CLI only; <code translate="no">deny.toml</code> lists no Intel Mac target.</li><li><code translate="no">install.sh</code> refuses a Mac without Apple silicon; it asks <code translate="no">sysctl hw.optional.arm64</code>, so a
+Terminal running under Rosetta still counts as Apple silicon.</li><li>Remote machines (<code translate="no">remote_version.rs</code>, <code translate="no">satellite_host.rs</code>) detect the system the same way
+(<code translate="no">uname -sm</code>, corrected by <code translate="no">sysctl</code> on macOS). An Intel Mac gets the source <code translate="no">intel_mac</code>: the
+settings explain it (<code translate="no">hosts.versionIntelMac</code>) and offer no install, and nothing is downloaded.</li><li>To check a build, use <code translate="no">lipo -archs</code>; never run an x86_64 binary on an Apple silicon test Mac
+(it triggers the Rosetta warning there).</li><li>Windows stays x64.</li></ul>
+<h2 id="windows-msix-and-setup-decision-2026-11-16">Windows: MSIX and setup (decision 2026-11-16)<a class="docs-anchor" href="#windows-msix-and-setup-decision-2026-11-16" aria-label="Windows: MSIX and setup (decision 2026-11-16)" data-testid="docs-md-anchor-windows-msix-and-setup-decision-2026-11-16">#</a></h2>
+<p>Windows gets both, packed by <code translate="no">release-windows.ps1</code> from the same signed binaries:</p>
+<ul><li><strong>MSIX</strong> (<code translate="no">src-tauri/windows/AppxManifest.direct.template.xml</code>) is the main download once a
+signing certificate exists. Per user, no admin; Windows removes the package with all its files,
+links and the <code translate="no">gitoodo</code> alias cleanly; updates come from <code translate="no">Gitoodo.appinstaller</code> (checked on
+launch, every 24 h and in the background; <code translate="no">install.ps1</code> registers it); the publisher is shown and
+checked by Windows itself.</li><li><strong>Setup</strong> (per-user NSIS) stays: an MSIX installs only when signed by a certificate the machine
+trusts, so until the Windows certificate exists the unsigned setup (SmartScreen warning) is the
+only installer for normal users; it also runs on Windows 10 before 2004 and where sideloading of
+packages is blocked by policy. <code translate="no">releases.json</code> offers the setup first as long as the MSIX is
+unsigned.</li></ul>
+<p>What the direct MSIX needs, and how it is solved:</p>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col">Need</th><th scope="col">Solution</th></tr></thead><tbody><tr><td>One set of settings, logs, tokens</td><td>Write virtualization off (<code translate="no">desktop6:FileSystemWriteVirtualization</code>/<code translate="no">RegistryWriteVirtualization</code> = disabled, capability <code translate="no">unvirtualizedResources</code>, Windows 10 2004+): the app, the CLI and the services use the same <code translate="no">%APPDATA%</code>/<code translate="no">%LOCALAPPDATA%</code> folders as the setup install. Credential Manager is never virtualized.</td></tr><tr><td>Background services</td><td>Unchanged: <code translate="no">gitoodo service install</code> copies the CLI to <code translate="no">%LOCALAPPDATA%\de.gitoodo.app\bin</code> (outside the package) and registers the scheduled task <code translate="no">Gitoodo\Daemon</code> that runs that copy. Updates of the package do not touch it; the app refreshes the copy on launch (#529).</td></tr><tr><td><code translate="no">gitoodo</code> on the PATH</td><td>Second application <code translate="no">Cli</code> with the execution alias <code translate="no">gitoodo.exe</code> (console subsystem) in <code translate="no">%LOCALAPPDATA%\Microsoft\WindowsApps</code>.</td></tr><tr><td>Start at sign-in</td><td>The manifest&#39;s <code translate="no">GitoodoStartup</code> startup task; the direct build uses it when it runs packaged (<code translate="no">src-tauri/src/packaged.rs</code>, <code translate="no">autostart.rs</code>). A <code translate="no">Run</code> entry would name a versioned folder in <code translate="no">WindowsApps</code> that the next update removes.</td></tr><tr><td>Notifications</td><td>Packaged, the direct build posts through the package identity (<code translate="no">notify_windows.rs</code>), like the store build.</td></tr><tr><td>Updates</td><td><code translate="no">Gitoodo.appinstaller</code> names <code translate="no">releases/download/v&lt;version&gt;/Gitoodo-&lt;version&gt;-windows-x64.msix</code> and lives at <code translate="no">releases/latest/download/Gitoodo.appinstaller</code>; a newer package must carry the same publisher. The in-app update check still links to the release page.</td></tr><tr><td>Uninstall</td><td>Settings → Apps removes the package but cannot run anything first (MSIX has no uninstall hooks): a registered background service, settings and tokens stay. <code translate="no">uninstall.ps1</code> removes the package (<code translate="no">Remove-AppxPackage</code>) and all of that, and checks for leftovers.</td></tr></tbody></table></div>
+<p>Identity: <code translate="no">de.gitoodo.app</code> (the store build has its own Partner Center identity; both can
+be installed side by side and share the data of the direct build only through the unvirtualized
+folders). Switching between MSIX and setup with <code translate="no">install.ps1 -Package</code> removes the other install
+first and keeps settings, tokens and services.</p>
+<p>Checked on a Windows 11 x64 PC (2026-11-16) with a self-signed test certificate, removed
+afterwards: <code translate="no">release-windows.ps1 -SignCommand …</code> builds a signed setup and a signed MSIX (both
+binaries inside signed; MakeAppx accepts the manifest); <code translate="no">install.ps1</code> with the local MSIX checks
+checksum and publisher and installs it; <code translate="no">gitoodo --version</code> runs through the alias; <code translate="no">gitoodo service install</code> from the packaged command puts the stable copy into the real
+<code translate="no">%LOCALAPPDATA%\de.gitoodo.app\bin</code> and starts <code translate="no">Gitoodo\Daemon</code>; Credential Manager is
+read from the package (<code translate="no">token-access</code> → <code translate="no">readable</code>); the app runs with its package identity and
+writes only to the real data folders (nothing in the package&#39;s <code translate="no">LocalCache</code>); the App Installer
+file registers its update settings; switching MSIX → setup → MSIX keeps services, settings and
+tokens; <code translate="no">uninstall.ps1</code> removes all of it and <code translate="no">-Check</code> finds nothing. Not checked: the startup
+task and notifications in the UI, an update from a newer <code translate="no">.appinstaller</code> over HTTPS.
+<code translate="no">Add-AppxPackage</code> needs an interactive sign-in session (over SSH it fails with <code translate="no">0x80070005</code>).</p>
+<h2 id="homebrew-prepared-not-published">Homebrew (prepared, not published)<a class="docs-anchor" href="#homebrew-prepared-not-published" aria-label="Homebrew (prepared, not published)" data-testid="docs-md-anchor-homebrew-prepared-not-published">#</a></h2>
+<p><code translate="no">packaging/homebrew/gitoodo.rb</code> is a cask template in the usual style of a project&#39;s own tap: the versioned
+DMG URL, <code translate="no">livecheck</code> on the latest GitHub release, Apple silicon and macOS 11 as requirements,
+the <code translate="no">gitoodo</code> command as <code translate="no">binary</code>, <code translate="no">uninstall launchctl:</code> for the LaunchAgents and a <code translate="no">zap</code> list.
+Publishing it means a tap repository <code translate="no">silvio-l/homebrew-gitoodo</code> (<code translate="no">brew install --cask silvio-l/gitoodo/gitoodo</code>) and, per release, <code translate="no">version</code> and <code translate="no">sha256</code> from <code translate="no">releases.json</code>
+(<code translate="no">downloads.mac</code>); <code translate="no">brew style</code> passes on the template. A winget manifest (<code translate="no">InstallerType: msix</code>)
+can follow once the MSIX is signed.</p>
+<h2 id="app-identifier-decision-2026-11-16-595">App identifier (decision 2026-11-16, #595)<a class="docs-anchor" href="#app-identifier-decision-2026-11-16-595" aria-label="App identifier (decision 2026-11-16, #595)" data-testid="docs-md-anchor-app-identifier-decision-2026-11-16-595">#</a></h2>
+<p>Gitoodo is <code translate="no">de.gitoodo.app</code> on every system: bundle ID, keychain group <code translate="no">Q7V3X27S2U.de.gitoodo.app</code>,
+service helper <code translate="no">de.gitoodo.app.service</code>, launchd labels <code translate="no">de.gitoodo.app.{daemon,dispatcher}</code>,
+folders, MSIX identity and AUMID, test build <code translate="no">de.gitoodo.app.testaccess</code>. It is written once per
+language: <code translate="no">app_identifier!</code> in <code translate="no">crates/core/src/paths.rs</code> (Rust derives labels, groups and paths
+from it), <code translate="no">identifier</code> in <code translate="no">src-tauri/tauri.conf.json</code> (Tauri, <code translate="no">package.ps1</code>, <code translate="no">release-windows.ps1</code>,
+<code translate="no">build-local-mac.sh</code>), and the <code translate="no">identifier</code> variables of the install and uninstall scripts. Files
+that cannot derive it (Info.plists, entitlements, LaunchAgents, cask) are held equal by
+<code translate="no">scripts/check-identifier.py</code> in the gates and <code translate="no">src-tauri/src/identity_files.rs</code>; the gate also
+fails on any identifier built from a person&#39;s name.</p>
+<p>Gitoodo 0.1.x used <code translate="no">online.lindstedt.gitoodo</code>. The first start of a newer direct build moves
+everything once (<code translate="no">crates/core/src/identity_migration.rs</code>): it stops and removes the old login
+items/LaunchAgents (Windows: scheduled tasks, Linux: user units), moves settings, state, logs, web
+data and the stable CLI copy (a rename; when the new folder already exists, entry by entry, never
+overwriting), copies the keychain tokens from the old access group into the new one, reads them back
+and only then deletes the old items, and registers the services again under the new labels with
+their previous on/off state. It is idempotent and safe to interrupt; it logs what it moved, never a
+value. The CLI moves the folders on <code translate="no">service</code>, <code translate="no">status</code>, <code translate="no">doctor</code> and <code translate="no">diagnose</code> for headless
+installs. Not moved: preferences and caches (rebuilt), the store and test builds. <code translate="no">uninstall.sh</code>,
+<code translate="no">uninstall.ps1</code> and the cask remove both identifiers&#39; leftovers. The App Installer of a 0.1.x MSIX
+cannot update across identities: such installs update by running <code translate="no">install.ps1</code> again, which installs
+the new package and removes the old one (write virtualization is off, so no data goes with it).</p>
+<h2 id="credentials-names-only-never-in-files-or-logs">Credentials (names only, never in files or logs)<a class="docs-anchor" href="#credentials-names-only-never-in-files-or-logs" aria-label="Credentials (names only, never in files or logs)" data-testid="docs-md-anchor-credentials-names-only-never-in-files-or-logs">#</a></h2>
+<ul><li>macOS signing: the &quot;Developer ID Application&quot; identity of team <code translate="no">Q7V3X27S2U</code> in the login
+keychain (<code translate="no">APPLE_SIGNING_IDENTITY</code> picks one when there are several).</li><li>macOS keychain profiles (#594, docs/permissions.md &quot;Keychain&quot;): <code translate="no">src-tauri/profiles/direct.provisionprofile</code>
+(App ID <code translate="no">de.gitoodo.app</code>) and <code translate="no">src-tauri/profiles/service.provisionprofile</code> (App ID
+<code translate="no">de.gitoodo.app.service</code>), both Developer ID. With both, the build adds the service
+helper so the background services read tokens without a prompt; without them the release script
+warns.</li><li>macOS notarization: an App Store Connect API key, <code translate="no">APPLE_API_KEY</code> (key id), <code translate="no">APPLE_API_ISSUER</code>
+(issuer id) and the key file <code translate="no">~/.appstoreconnect/private_keys/AuthKey_&lt;id&gt;.p8</code>
+(<code translate="no">APPLE_API_KEY_PATH</code> overrides the path). When neither variable is set, <code translate="no">release-mac.sh</code> and
+<code translate="no">ship.sh</code> read <code translate="no">ASC_KEY_ID</code> and <code translate="no">ASC_ISSUER_ID</code> from <code translate="no">~/.appstoreconnect/asc_config</code> (plain
+<code translate="no">NAME=value</code> lines, the convention of fastlane-style setups; <code translate="no">APPLE_ASC_CONFIG</code> overrides the
+path). The file is read, never sourced, and its values are never printed; the environment
+always takes precedence.</li><li>Windows signing (optional for the setup, required for a usable MSIX): whatever the <code translate="no">-SignCommand</code>
+of <code translate="no">release-windows.ps1</code> needs, e.g. Azure Artifact Signing (formerly Trusted Signing) through
+<code translate="no">trusted-signing-cli</code> with <code translate="no">AZURE_CLIENT_ID</code>, <code translate="no">AZURE_CLIENT_SECRET</code>, <code translate="no">AZURE_TENANT_ID</code>, or a
+certificate in the Windows store for <code translate="no">signtool</code>. The MSIX publisher is read from the signed app
+(or <code translate="no">-MsixPublisher</code>); it must equal the certificate subject.</li><li>Publishing: a GitHub token with <code translate="no">contents: write</code> on <code translate="no">silvio-l/gitoodo</code> (only for the last step).</li><li>Microsoft Store upload (<code translate="no">fastlane windows_store</code>): a Partner Center (Microsoft Entra) app with
+tenant id, seller id, client id and client secret, stored once with <code translate="no">msstore reconfigure</code> (in CI
+from secrets); never in <code translate="no">fastlane/.env</code>.</li></ul>
+<h2 id="ship">Ship<a class="docs-anchor" href="#ship" aria-label="Ship" data-testid="docs-md-anchor-ship">#</a></h2>
+<p><code translate="no">scripts/ship.sh</code> runs the whole release on the Mac, phase by phase, and is the checklist below. It
+is internal tooling (it drives the internal forge and the public export) and not part of the public
+source; the public pieces it uses are the scripts named in this document and
+<code translate="no">.github/workflows/deploy-pages.yml</code>.</p>
+<div class="docs-code"><pre dir="ltr" translate="no" tabindex="0" data-lang="sh"><code>bash scripts/ship.sh --check                 # preconditions only; lists every missing piece
+bash scripts/ship.sh --prepare --version X.Y.Z   # PR to dev: version X.Y.Z, dated CHANGELOG section
+bash scripts/ship.sh --dry-run               # every phase, read-only checks real, changes printed
+bash scripts/ship.sh                         # the release; stops before publish without approval
+bash scripts/ship.sh --approve &quot;Release gitoodo freigegeben&quot;   # continues with publish</code></pre><button type="button" class="docs-code__copy" data-copy hidden data-testid="docs-md-copy-1">Copy</button></div>
+<p>Each phase is recorded in <code translate="no">target/ship/&lt;version&gt;/state</code> (a dry run in <code translate="no">.../dry-run/state</code>); a
+rerun resumes after the last finished phase, <code translate="no">--from &lt;phase&gt;</code> repeats a phase and all after it,
+<code translate="no">--only &lt;phase&gt;</code> runs one, <code translate="no">--status</code> shows the state. Settings (Windows host, notary key id,
+signing command, ...) come from the environment or <code translate="no">~/.config/gitoodo/ship.env</code>; tokens only from
+the keychain or the environment, never from that file, and nothing secret is printed. The script
+header lists every variable. <code translate="no">bash scripts/ship.test.sh</code> checks the script with fake tools (phase
+order, resume, refusals).</p>
+<ol><li><strong>preflight</strong>: on <code translate="no">dev</code>, clean, equal to <code translate="no">origin/dev</code>; <code translate="no">origin/main</code> an ancestor (fast-forward
+possible); CI green on HEAD; one version <code translate="no">X.Y.Z</code> in the Cargo workspace, every crate (the CLI
+included), <code translate="no">Cargo.lock</code>, <code translate="no">package.json</code>, <code translate="no">package-lock.json</code> and <code translate="no">src-tauri/tauri.conf.json</code>;
+<code translate="no">CHANGELOG.md</code> has <code translate="no">## [X.Y.Z] - YYYY-MM-DD</code>, no pending &quot;Unreleased&quot; entries, no version
+heading twice and no subheading (<code translate="no">### Added</code>, ...) twice within a section; Developer ID
+identity, notary key accepted by <code translate="no">notarytool</code>, Rust target, both Developer ID profiles; Windows
+build host reachable over ssh with a clean checkout, signing command set (or unsigned allowed);
+GitHub repo writable, Pages source &quot;GitHub Actions&quot;, no published release <code translate="no">vX.Y.Z</code>; export
+configuration present; tools. With <code translate="no">--with-store</code> also the App Store profile, the &quot;Apple
+Distribution&quot; and &quot;3rd Party Mac Developer Installer&quot; identities, MakeAppx and the Partner Center
+identity.</li><li><strong>gates</strong>: <code translate="no">GATES_FULL=1 bash scripts/ci-gates.sh</code> and the export dry run with <code translate="no">--build</code> on the
+release commit; both must be clean. This is the only place before publishing where every gate
+is sure to run (see &quot;What CI covers&quot; below).</li><li><strong>release-pr</strong>: branch <code translate="no">release/vX.Y.Z</code> at the release commit (<code translate="no">dev</code>&#39;s HEAD, so <code translate="no">dev</code> may move
+on) and its PR → <code translate="no">main</code> on the internal forge. It is merged only in publish, because <code translate="no">main</code> is
+exported every night.</li><li><strong>tag</strong>: annotated <code translate="no">vX.Y.Z</code> on the release commit, local until publish.</li><li><strong>build-mac</strong>: <code translate="no">release-mac.sh</code> in a worktree at the release commit (profiles copied in); then
+<code translate="no">spctl</code> and <code translate="no">stapler</code> on the DMG and the zipped app, <code translate="no">codesign --verify --deep --strict</code>,
+<code translate="no">lipo -archs</code> = <code translate="no">arm64</code>, the app version, the checksums.</li><li><strong>build-windows</strong>: <code translate="no">release-windows.ps1</code> on the Windows host at the release commit over ssh;
+every <code translate="no">Gitoodo-X.Y.Z-windows-*</code> asset it writes (with its <code translate="no">.sha256</code>) is copied back; checksum and
+Authenticode status (<code translate="no">Valid</code>, the expected signer) checked.</li><li><strong>store-mac</strong>, <strong>store-windows</strong> (optional, <code translate="no">--with-store</code>): the Mac App Store pkg
+(<code translate="no">scripts/build-appstore-mac.sh</code>, <a href="https://github.com/silvio-l/gitoodo/blob/main/docs/store.md" rel="noopener" data-testid="docs-md-link-1">store</a>, &quot;Submission build&quot;) and the store MSIX (<code translate="no">src-tauri/windows/package.ps1</code>
+with the Partner Center identity). They are not GitHub assets; the uploads stay manual.</li><li><strong>manifest</strong>: every <code translate="no">.sha256</code> checked, <code translate="no">release-manifest.py</code>, <code translate="no">releases.json</code> checked (version,
+macOS signed and notarized, Windows present and signed), release notes from the CHANGELOG.</li><li><strong>site</strong>: <code translate="no">GITOODO_SITE_RELEASES=&lt;dist&gt;/releases.json bash scripts/release-site.sh vX.Y.Z</code>: the
+tagged site with download buttons, docs version, link check; <code translate="no">releases.json</code> beside the page.</li><li><strong>publish</strong>, only with the exact phrase &quot;Release gitoodo freigegeben&quot; (asked, or <code translate="no">--approve</code>);
+without it the script stops with exit code 4 and nothing public has happened: push the tag
+internally; merge the release PR fast-forward-only with <code translate="no">head_commit_id</code>; export <code translate="no">main</code> and
+then the tag to GitHub (each as a plan run first); create the GitHub release as a draft, upload
+every file of the dist folder, compare the asset list, publish it as latest; dispatch
+<code translate="no">deploy-pages.yml</code> for the tag and wait for it; print the store upload steps.</li><li><strong>verify</strong>: download every public asset and compare it byte for byte; <code translate="no">releases/latest</code>
+names the version; <code translate="no">spctl</code> and <code translate="no">stapler</code> on the downloaded DMG;
+<code translate="no">curl -fsSL &lt;site&gt;/install.sh | GITOODO_VERIFY_ONLY=1 bash</code> (downloads and checks checksum,
+signature and Gatekeeper, installs nothing); the live page links both installers, every URL in
+<code translate="no">releases.json</code> answers 200, the install scripts equal the release&#39;s, the docs carry the tag;
+on the Windows host the setup&#39;s hash and signature.</li><li><strong>bump</strong>: PR to <code translate="no">dev</code> with the next version as <code translate="no">X.Y.(Z+1)-dev</code> (<code translate="no">--next</code> picks another) and a
+new empty &quot;Unreleased&quot; section.</li></ol>
+<p>The Pages workflow builds the tag with the release&#39;s <code translate="no">releases.json</code> through the same
+<code translate="no">release-site.sh</code>; it runs only when dispatched, so merges never change the live site.</p>
+<h3 id="what-ci-covers">What CI covers<a class="docs-anchor" href="#what-ci-covers" aria-label="What CI covers" data-testid="docs-md-anchor-what-ci-covers">#</a></h3>
+<ul><li>**Internal forge, <code translate="no">gate/nas</code>** (<code translate="no">.forgejo/workflows/gate.yml</code>, on every pull request and push to
+<code translate="no">dev</code>): only the cheap gates. Its runner image has neither npm nor cargo, so
+<code translate="no">scripts/ci-gates.sh</code> runs the allowlist, typos and script tests and prints <code translate="no">SKIPPED:</code> for the
+Node gates (Prettier, <code translate="no">tsc</code>, ESLint, Knip, Vitest, builds) and the Rust gates (fmt, clippy,
+tests, machete, deny); gitleaks and shellcheck run as well. The status then reads &quot;cheap gates
+green; Node/Rust gates SKIPPED&quot;. A green <code translate="no">gate/nas</code> therefore does not mean the code builds.</li><li>**<code translate="no">lab/ubu</code>, <code translate="no">lab/win</code>**: not set up for gitoodo yet (no <code translate="no">lab.yml</code>), so no such status exists.</li><li>**<code translate="no">lab/e2e-forge</code>** (<code translate="no">.forgejo/workflows/e2e-forge.yml</code>, on pushes to <code translate="no">dev</code> that touch the Rust
+code, or dispatched by hand): the real end-to-end run of the orchestrator against the Forgejo
+test repo (<a href="https://github.com/silvio-l/gitoodo/blob/main/docs/e2e-forge.md" rel="noopener" data-testid="docs-md-link-2">e2e-forge.md</a>) on the lab&#39;s Linux guest. It needs the repo Actions
+secret <code translate="no">GITOODO_E2E_FORGEJO_TOKEN</code>; without it the job ends green with &quot;SKIPPED&quot; and sets no
+status. Its status is not required for merging; check it before a release.</li><li><strong>GitHub CI</strong> (<code translate="no">.github/workflows/ci.yml</code>): every Node and Rust gate on Linux, but only on the
+exported <code translate="no">main</code> and on public pull requests, i.e. after the release has been merged.</li></ul>
+<p>Before a release, <code translate="no">GATES_FULL=1 bash scripts/ci-gates.sh</code> must pass locally on the release commit
+(a missing tool fails instead of being skipped); <code translate="no">ship.sh</code> runs exactly that in its <strong>gates</strong>
+phase and stops when it fails. Run it yourself before merging larger changes to <code translate="no">dev</code>.</p>
+<p>The Windows installer tests (<code translate="no">scripts/install-windows.test.ps1</code>, <code translate="no">scripts/uninstall-windows.test.ps1</code>)
+need Windows for their PATH and registry checks. <code translate="no">ci-gates.sh</code> runs them only where a PowerShell
+exists (on the Mac under <code translate="no">pwsh</code> without those checks, on the NAS gate not at all), so a green gate
+says nothing about them. Before a release they must pass on the Windows host (<code translate="no">SHIP_WIN_HOST</code>) at
+the release commit in Windows PowerShell 5.1 and in PowerShell 7: the <strong>gates</strong> phase of <code translate="no">ship.sh</code>
+runs both files in <code translate="no">powershell.exe</code> and <code translate="no">pwsh.exe</code> there and stops when one fails or <code translate="no">pwsh</code> is
+missing. By hand, in the repository root on Windows:</p>
+<div class="docs-code"><pre dir="ltr" translate="no" tabindex="0" data-lang="powershell"><code>foreach ($ps in &#39;powershell&#39;, &#39;pwsh&#39;) { foreach ($t in &#39;install&#39;, &#39;uninstall&#39;) {
+  &amp; $ps -NoProfile -NonInteractive -ExecutionPolicy Bypass -File &quot;scripts/$t-windows.test.ps1&quot; } }</code></pre><button type="button" class="docs-code__copy" data-copy hidden data-testid="docs-md-copy-2">Copy</button></div>
+<h2 id="releasing-with-fastlane">Releasing with fastlane<a class="docs-anchor" href="#releasing-with-fastlane" aria-label="Releasing with fastlane" data-testid="docs-md-anchor-releasing-with-fastlane">#</a></h2>
+<p><a href="https://fastlane.tools" rel="noopener" data-testid="docs-md-link-3">fastlane</a> drives the steps that talk to Apple, GitHub and the Microsoft
+Store. It does not replace the scripts: the lanes call <code translate="no">release-mac.sh</code> (build, Developer ID,
+notarization with <code translate="no">notarytool</code>), <code translate="no">build-appstore-mac.sh</code>, <code translate="no">release-manifest.py</code> and
+<code translate="no">release-check.py</code>, so a release built by hand, by <code translate="no">ship.sh</code> or by a lane is the same. Every lane
+works in a fork: no fixed paths or accounts, configuration from the environment or the
+git-ignored <code translate="no">fastlane/.env</code> (template: <code translate="no">fastlane/.env.example</code>; names and IDs only, never key
+contents or tokens).</p>
+<div class="docs-code"><pre dir="ltr" translate="no" tabindex="0" data-lang="sh"><code>bundle install                                   # once: fastlane from the Gemfile (Ruby 3.2+)
+bundle exec fastlane check                       # prerequisites, read-only
+bundle exec fastlane mac direct dry_run:true     # any lane: checks run, changes are only printed</code></pre><button type="button" class="docs-code__copy" data-copy hidden data-testid="docs-md-copy-3">Copy</button></div>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col">Target</th><th scope="col">Lane</th><th scope="col">Prerequisites</th></tr></thead><tbody><tr><td>Direct download, macOS</td><td><code translate="no">fastlane mac direct</code></td><td>Developer ID Application identity; App Store Connect API key (<code translate="no">APPLE_API_KEY</code>, <code translate="no">APPLE_API_ISSUER</code> or the <code translate="no">asc_config</code>, key file); <code translate="no">direct</code>/<code translate="no">service</code> profiles (<code translate="no">GITOODO_PROFILES_DIR</code> or <code translate="no">fastlane mac profiles</code>)</td></tr><tr><td>Direct download, Windows</td><td>none: <code translate="no">scripts/release-windows.ps1</code> on Windows</td><td>Windows build host, signing command; copy its <code translate="no">Gitoodo-&lt;version&gt;-windows-*</code> files, <code translate="no">Gitoodo.appinstaller</code> and their <code translate="no">.sha256</code> into <code translate="no">target/release/dist/</code></td></tr><tr><td>GitHub release (draft)</td><td><code translate="no">fastlane github_stage</code></td><td><code translate="no">gh auth login</code> (or <code translate="no">GITHUB_TOKEN</code>) with <code translate="no">contents: write</code>; the complete <code translate="no">target/release/dist/</code>; <code translate="no">GITOODO_GITHUB_REPO</code> for a fork</td></tr><tr><td>GitHub release (publish)</td><td>none: <code translate="no">.github/workflows/release.yml</code></td><td>the release tag <code translate="no">vX.Y.Z</code> on <code translate="no">main</code> of the GitHub repository (see below)</td></tr><tr><td>Mac App Store</td><td><code translate="no">fastlane mac store</code> (<code translate="no">upload:true</code>, <code translate="no">submit:true</code>)</td><td>&quot;Apple Distribution&quot; and &quot;3rd Party Mac Developer Installer&quot; identities; App Store profile for <code translate="no">de.gitoodo.app</code>; App Store Connect record; the API key with the App Manager role</td></tr><tr><td>Provisioning profiles</td><td><code translate="no">fastlane mac profiles</code> (<code translate="no">create:true</code>)</td><td>the API key; the App IDs <code translate="no">de.gitoodo.app</code> and <code translate="no">de.gitoodo.app.service</code> in the developer account</td></tr><tr><td>Microsoft Store</td><td><code translate="no">fastlane windows_store msix:&lt;path&gt;</code> (<code translate="no">upload:true</code>, <code translate="no">submit:true</code>)</td><td><a href="https://learn.microsoft.com/windows/apps/publish/msstore-dev-cli/overview" rel="noopener" data-testid="docs-md-link-4">msstore CLI</a> (macOS, Linux or Windows), configured once with <code translate="no">msstore reconfigure</code>; <code translate="no">MSSTORE_PRODUCT_ID</code>; the store MSIX from <code translate="no">src-tauri/windows/package.ps1</code></td></tr></tbody></table></div>
+<p>What each lane changes, and what not:</p>
+<ul><li><code translate="no">mac direct</code> writes <code translate="no">target/release/dist/</code> (the same as <code translate="no">bash scripts/release-mac.sh</code>). The
+notarization stays in the script (one <code translate="no">notarytool</code> submission for app and CLI, one for the DMG);
+fastlane&#39;s <code translate="no">notarize</code> action would only duplicate it.</li><li><code translate="no">github_stage</code> refreshes <code translate="no">releases.json</code>, checks the folder with
+<code translate="no">release-check.py dist</code> (every file of <code translate="no">releases.json</code>&#39;s <code translate="no">assets</code> present, sizes and SHA-256
+equal, every <code translate="no">.sha256</code> matching, no extra file, URLs on the tag), creates the release
+<code translate="no">vX.Y.Z</code> <strong>as a draft</strong> with the CHANGELOG section as notes, uploads every file and compares the
+list. A draft is visible only to the repository&#39;s maintainers; the lane refuses a release that
+is already published. fastlane&#39;s <code translate="no">set_github_release</code> cannot update a draft or mark the latest
+release, so the lane uses <code translate="no">gh</code>.</li><li><code translate="no">mac store</code> builds the package; only <code translate="no">upload:true</code> uploads it to App Store Connect (<code translate="no">deliver</code>,
+build only: <code translate="no">skip_metadata</code>, <code translate="no">skip_screenshots</code>), and only <code translate="no">submit:true</code> submits it for review.
+It refuses when <code translate="no">src-tauri/tauri.conf.json</code> and the Appfile name different identifiers.</li><li><code translate="no">windows_store</code> checks that the MSIX carries the release version; <code translate="no">upload:true</code> runs
+<code translate="no">msstore publish --noCommit</code> (the package lands in a Partner Center draft submission),
+<code translate="no">submit:true</code> commits it for certification. fastlane has no Microsoft Store support of its own;
+the third-party <code translate="no">sapfire</code> plugin runs on Windows only, Microsoft&#39;s <code translate="no">msstore</code> CLI also on the Mac.
+The first submission of the app is made by hand in Partner Center.</li><li><code translate="no">mac profiles</code> downloads the profiles read-only (sigh); <code translate="no">create:true</code> creates missing ones in the
+developer account.</li></ul>
+<h3 id="github-release-from-main">GitHub release from main<a class="docs-anchor" href="#github-release-from-main" aria-label="GitHub release from main" data-testid="docs-md-anchor-github-release-from-main">#</a></h3>
+<p><code translate="no">.github/workflows/release.yml</code> publishes the release when its tag <code translate="no">vX.Y.Z</code> arrives on the
+GitHub repository (or when started by hand with the tag). Here the tag only arrives through the
+export after the release approval: the release commit is merged into <code translate="no">main</code>, <code translate="no">main</code> and then the
+tag are exported (see <a href="#ship" data-testid="docs-md-link-5">Ship</a>, publish). The workflow builds and signs nothing; it</p>
+<ol><li>checks that the tag is on <code translate="no">main</code>, that the Cargo workspace, <code translate="no">package.json</code> and
+<code translate="no">tauri.conf.json</code> carry the version and that <code translate="no">CHANGELOG.md</code> has its section
+(<code translate="no">release-check.py tree</code>);</li><li>waits (up to 60 minutes) until the release <code translate="no">vX.Y.Z</code> lists every file named in its
+<code translate="no">releases.json</code> (staged by <code translate="no">github_stage</code> or by <code translate="no">ship.sh</code>), downloads all of them and runs
+<code translate="no">release-check.py dist</code>; a missing, extra or changed file fails the run and nothing is
+published;</li><li>sets the CHANGELOG section as notes and publishes the draft, as the latest release unless a
+newer version is already published; checks that <code translate="no">releases/latest/download/releases.json</code>
+names the version and starts <code translate="no">deploy-pages</code> for the tag.</li></ol>
+<p>A release that is already published (e.g. by <code translate="no">ship.sh</code>) is only checked again, so a rerun is safe.
+It needs no secret beyond the workflow&#39;s own token (<code translate="no">contents: write</code>, <code translate="no">actions: write</code>). For a
+second gate, add required reviewers to the <code translate="no">github-release</code> environment in the repository
+settings.</p>
+<p>Order of a release with fastlane: <code translate="no">mac direct</code> → Windows assets into the dist → <code translate="no">github_stage</code>
+(draft) → approval → tag and <code translate="no">main</code> on GitHub → the workflow publishes. The store lanes run
+after the approval, independently of GitHub.</p>
+<h2 id="build">Build<a class="docs-anchor" href="#build" aria-label="Build" data-testid="docs-md-anchor-build">#</a></h2>
+<p>macOS (Apple silicon Mac, Xcode command line tools, Python 3):</p>
+<div class="docs-code"><pre dir="ltr" translate="no" tabindex="0" data-lang="sh"><code>rustup target add aarch64-apple-darwin
+npm ci
+export APPLE_API_KEY=… APPLE_API_ISSUER=…   # from your App Store Connect key (or ~/.appstoreconnect/asc_config)
+bash scripts/release-mac.sh</code></pre><button type="button" class="docs-code__copy" data-copy hidden data-testid="docs-md-copy-4">Copy</button></div>
+<p>It refuses a bundle from another commit than <code translate="no">HEAD</code> or with any non-arm64 code, builds the app
+with the CLI, signs and notarizes the app and the CLI binary in one submission, staples the app, zips it, builds
+the DMG with <code translate="no">dmgbuild</code> (a pinned copy in <code translate="no">target/dmgbuild-venv</code>; it writes the Finder layout
+itself, so no Finder window opens), signs, notarizes and staples the DMG, writes the checksums and
+<code translate="no">releases.json</code>. About 10–20 minutes, most of it the release compile and notarization.</p>
+<p>Windows (any Windows 10/11 x64 with Node, the Rust MSVC toolchain and the C++ build tools;
+Tauri fetches NSIS itself), PowerShell in the repository root:</p>
+<div class="docs-code"><pre dir="ltr" translate="no" tabindex="0" data-lang="powershell"><code>npm ci
+./scripts/release-windows.ps1                       # unsigned release candidate
+./scripts/release-windows.ps1 -SignCommand &#39;…%1&#39;    # signed (see the script header)</code></pre><button type="button" class="docs-code__copy" data-copy hidden data-testid="docs-md-copy-5">Copy</button></div>
+<p>It builds the setup, then packs the same binaries as <code translate="no">Gitoodo-&lt;version&gt;-windows-x64.msix</code>
+(<code translate="no">src-tauri/windows/package.ps1 -Variant direct</code>, Windows SDK MakeAppx), signs it with the same
+command and writes <code translate="no">Gitoodo.appinstaller</code> (<code translate="no">-ReleaseBase</code> changes its links, e.g. for a local test
+server). <code translate="no">-NoMsix</code> skips the MSIX. Copy every file of <code translate="no">target\release\dist\</code> (with the
+<code translate="no">.sha256</code> files) into the Mac&#39;s <code translate="no">target/release/dist/</code>, then rerun
+<code translate="no">python3 scripts/release-manifest.py</code> there; it checks every <code translate="no">.sha256</code> against its file, checks
+that the <code translate="no">.appinstaller</code> names this release&#39;s MSIX and records the signature state.</p>
+<h3 id="windows-publisher-check">Windows publisher check<a class="docs-anchor" href="#windows-publisher-check" aria-label="Windows publisher check" data-testid="docs-md-anchor-windows-publisher-check">#</a></h3>
+<p><code translate="no">install.ps1</code> installs only a setup whose SHA-256 matches <code translate="no">downloads.windows.sha256</code> in
+<code translate="no">releases.json</code> and whose Authenticode signature is <code translate="no">Valid</code> and names the expected publisher
+(<code translate="no">$GitoodoSigner</code> in the script, overridable with <code translate="no">-Signer</code>/<code translate="no">GITOODO_SIGNER</code>; a certificate
+thumbprint can be pinned with <code translate="no">-Thumbprint</code>/<code translate="no">GITOODO_SIGNER_THUMBPRINT</code>). After the setup it also
+checks that <code translate="no">gitoodo.exe</code> carries the same signature. <code translate="no">$GitoodoSigner</code> is a placeholder
+(<code translate="no">Silvio Lindstedt</code>) until the Windows certificate exists: once it does, set it to the
+certificate&#39;s subject CN (<code translate="no">(Get-AuthenticodeSignature &lt;setup&gt;).SignerCertificate.GetNameInfo(&#39;SimpleName&#39;, $false)</code>)
+and pin it in the marked <code translate="no">TODO(signing)</code> constants: <code translate="no">$GitoodoSignerThumbprint</code> (SHA-1 thumbprint,
+<code translate="no">.SignerCertificate.Thumbprint</code>) and <code translate="no">$GitoodoSignerIssuer</code> (the issuing CA&#39;s CN,
+<code translate="no">.SignerCertificate.GetNameInfo(&#39;SimpleName&#39;, $true)</code>); both stay empty until the certificate
+exists, then a matching name also needs that issuer. Unsigned setups (today&#39;s release candidates)
+need <code translate="no">-AllowUnsigned</code>/<code translate="no">GITOODO_ALLOW_UNSIGNED=1</code>; without it the script stops with both ways on
+(the download with SmartScreen&#39;s &quot;More info → Run anyway&quot;, or the opt-in), and the site shows the
+SmartScreen hint instead of the PowerShell line while <code translate="no">downloads.windows.signed</code> is false. A
+broken or foreign signature is refused even then.</p>
+<p>The DMG background is <code translate="no">scripts/dmg/background.tiff</code> (1x and 2x), rendered from the brand lockup
+by <code translate="no">scripts/dmg/make-background.sh</code>; the icon positions live in <code translate="no">scripts/dmg/settings.py</code>.
+<code translate="no">scripts/dmg/build-dmg.sh &lt;app&gt; &lt;dmg&gt;</code> builds the image (release-mac.sh uses it) and runs
+<code translate="no">scripts/dmg/check-dmg.sh</code>, which mounts it read-only and hidden and requires the app, the
+Applications link, the background picture and the icon positions of <code translate="no">settings.py</code>. Both work on
+an unsigned local bundle for a layout check; nothing is opened.</p>
+<h2 id="verify-before-publishing">Verify (before publishing)<a class="docs-anchor" href="#verify-before-publishing" aria-label="Verify (before publishing)" data-testid="docs-md-anchor-verify-before-publishing">#</a></h2>
+<p>macOS, on a machine without Gitoodo (the MacBook test machine):</p>
+<ol><li>Copy the DMG over (<code translate="no">scp</code> sets no quarantine flag; add it to act like a browser download:
+<code translate="no">xattr -w com.apple.quarantine &quot;0081;$(printf %x $(date +%s));Safari;&quot; &lt;dmg&gt;</code>).</li><li><code translate="no">hdiutil attach</code>, copy <code translate="no">Gitoodo.app</code> to <code translate="no">/Applications</code>, <code translate="no">hdiutil detach</code>.</li><li><code translate="no">lipo -archs</code> on <code translate="no">Contents/MacOS/*</code> → <code translate="no">arm64</code>;
+<code translate="no">spctl -a -vv /Applications/Gitoodo.app</code> → <code translate="no">accepted</code>, <code translate="no">source=Notarized Developer ID</code>;
+<code translate="no">xcrun stapler validate</code> on the app and the DMG → <code translate="no">The validate action worked!</code>.</li><li>Open the app once: no Gatekeeper dialog other than the usual &quot;downloaded from the internet&quot;
+confirmation; the onboarding appears. Quit it.</li><li><code translate="no">bash scripts/uninstall.sh --keep-repos</code> (or the published one-liner), then <code translate="no">--check</code> reports
+nothing left.</li></ol>
+<p>Windows, on a Windows 11 test machine: run the setup (per-user, installs to <code translate="no">%LOCALAPPDATA%\Gitoodo</code>), launch from
+the Start menu, set up the background service from the app, quit, uninstall from Settings → Apps;
+the &quot;Gitoodo&quot; entry, the install folder, the shortcuts and the <code translate="no">Gitoodo\Daemon</code> task are gone (the
+uninstaller runs <code translate="no">gitoodo service uninstall classifier</code>; app data in
+<code translate="no">%LOCALAPPDATA%\de.gitoodo.app</code> stays, as usual for NSIS). An unsigned setup shows
+SmartScreen&#39;s &quot;Windows protected your PC&quot; for files with the internet zone mark. Run
+<code translate="no">gitoodo service install</code> from the desktop session, not over ssh: OpenSSH sets
+<code translate="no">USERDOMAIN=WORKGROUP</code>, and <code translate="no">schtasks</code> cannot map <code translate="no">WORKGROUP\&lt;user&gt;</code>.</p>
+<p>The one-liners, against a locally served asset set (no published release needed): put the setup,
+<code translate="no">releases.json</code>, <code translate="no">install.ps1</code> and <code translate="no">uninstall.ps1</code> in a folder, serve it with
+<code translate="no">python -m http.server 8765 --bind 127.0.0.1</code>, then</p>
+<div class="docs-code"><pre dir="ltr" translate="no" tabindex="0" data-lang="powershell"><code>$env:GITOODO_RELEASE_URL = &#39;http://127.0.0.1:8765&#39;; $env:GITOODO_ALLOW_UNSIGNED = &#39;1&#39;
+irm http://127.0.0.1:8765/install.ps1 | iex     # install; again with a newer setup = update
+irm http://127.0.0.1:8765/uninstall.ps1 | iex   # remove everything, ends with the leftover check</code></pre><button type="button" class="docs-code__copy" data-copy hidden data-testid="docs-md-copy-6">Copy</button></div>
+<p>Without <code translate="no">GITOODO_ALLOW_UNSIGNED</code> the unsigned setup must be refused; a changed <code translate="no">sha256</code> in the
+manifest must be refused too. <code translate="no">GITOODO_SETUP=&lt;path to setup.exe&gt;</code> installs a local file instead
+(its <code translate="no">releases.json</code> or <code translate="no">.sha256</code> must lie beside it).</p>
+<h3 id="verified-010-at-7c7d883-2026-11-16">Verified: 0.1.0 at 7c7d883 (2026-11-16)<a class="docs-anchor" href="#verified-010-at-7c7d883-2026-11-16" aria-label="Verified: 0.1.0 at 7c7d883 (2026-11-16)" data-testid="docs-md-anchor-verified-010-at-7c7d883-2026-11-16">#</a></h3>
+<ul><li>macOS (MacBook, macOS 27, Apple silicon): DMG and app <code translate="no">accepted</code> (Notarized Developer ID),
+both stapled, <code translate="no">syspolicy_check distribution</code> passed, <code translate="no">lipo -archs</code> = <code translate="no">arm64</code> for <code translate="no">gitoodo-app</code>
+and <code translate="no">gitoodo</code>, Applications link and background present. The first launch showed only the
+&quot;downloaded from the internet&quot; confirmation (with &quot;Apple checked it for malicious software&quot;);
+the onboarding appeared. <code translate="no">uninstall.sh --keep-repos</code> and <code translate="no">--check</code>: nothing left.</li><li>Windows (test machine, Windows 11 x64): the silent setup <code translate="no">/S</code> installed per user (publisher &quot;Silvio
+Lindstedt&quot;, Start menu and desktop link), the app started in the desktop session with the
+onboarding, the CLI reported <code translate="no">gitoodo 0.1.0</code>. The service installed from the desktop session ran
+as <code translate="no">Gitoodo\Daemon</code>; the silent uninstall removed the entry, folder, links, the task and every
+process. The setup is unsigned.</li></ul>
+<h3 id="verified-windows-installer-tests-2026-11-16-839">Verified: Windows installer tests (2026-11-16, #839)<a class="docs-anchor" href="#verified-windows-installer-tests-2026-11-16-839" aria-label="Verified: Windows installer tests (2026-11-16, #839)" data-testid="docs-md-anchor-verified-windows-installer-tests-2026-11-16-839">#</a></h3>
+<p><code translate="no">install-windows.test.ps1</code> (39 checks) and <code translate="no">uninstall-windows.test.ps1</code> (32 checks) passed on the
+Windows test machine (Windows 11 x64, Git for Windows) at dev <code translate="no">aa59d56</code>, each in Windows PowerShell
+5.1.26100.9818 and PowerShell 7.7.0; nothing needed fixing. The scratch registry key and the temp
+profiles were gone afterwards.</p>
+<h3 id="verified-windows-one-liners-2026-11-16-564">Verified: Windows one-liners (2026-11-16, #564)<a class="docs-anchor" href="#verified-windows-one-liners-2026-11-16-564" aria-label="Verified: Windows one-liners (2026-11-16, #564)" data-testid="docs-md-anchor-verified-windows-one-liners-2026-11-16-564">#</a></h3>
+<p>Against locally served unsigned 0.1.0 and 0.1.1 setups (<code translate="no">GITOODO_RELEASE_URL</code>, <code translate="no">irm | iex</code>):
+refused without <code translate="no">GITOODO_ALLOW_UNSIGNED</code> and with a changed <code translate="no">sha256</code>; installed 0.1.0 per user with
+<code translate="no">gitoodo</code> on the user PATH (REG_EXPAND_SZ kept, a new shell finds <code translate="no">gitoodo --version</code>); updated to
+0.1.1 in place (both CLI copies refreshed, PATH unchanged). In the desktop session the uninstaller
+removed the app, the PATH entry, the <code translate="no">Gitoodo\Daemon</code> task and its process, a <code translate="no">*.gitoodo</code>
+credential, the data folders, the links, the manufacturer keys and the skill; <code translate="no">-RemoveRepos</code> kept
+the clones while one held uncommitted changes and removed them once it was clean; <code translate="no">-KeepRepos</code>
+kept them; <code translate="no">-Check</code> found nothing left. The publisher check of a signed setup waits for the
+certificate.</p>
+<h2 id="website-and-documentation">Website and documentation<a class="docs-anchor" href="#website-and-documentation" aria-label="Website and documentation" data-testid="docs-md-anchor-website-and-documentation">#</a></h2>
+<p>Every release rebuilds the website and its docs from the tagged sources, so <code translate="no">/docs/</code> always
+describes the released version. <code translate="no">bash scripts/release-site.sh vX.Y.Z</code> checks that the tag points at
+HEAD and the work tree is clean, builds <code translate="no">site/dist</code> with <code translate="no">GITOODO_DOCS_VERSION=vX.Y.Z</code> (the
+production build, <code translate="no">npm run site:build:production</code>), checks every link and anchor
+(<code translate="no">npm run site:links</code>) and confirms that the docs carry the version. With
+<code translate="no">GITOODO_SITE_RELEASES=&lt;dist&gt;/releases.json</code> the page gets the release&#39;s download buttons
+(<code translate="no">site/releases.json</code> is written for the build in its short form and restored afterwards) and
+<code translate="no">site/dist/releases.json</code> is the release&#39;s manifest. <code translate="no">scripts/release-mac.sh</code> runs it by itself
+when HEAD carries <code translate="no">v&lt;version&gt;</code>; otherwise it prints the command. It publishes nothing; the
+<code translate="no">deploy-pages</code> workflow publishes it.</p>
+<p>The production build fails while the release it reads says <code translate="no">{ &quot;release&quot;: null }</code> (the checked-in
+<code translate="no">site/releases.json</code>), so the published page always offers the installers and the one-line install:
+run it with <code translate="no">GITOODO_SITE_RELEASES</code> (the ship script&#39;s site phase, the <code translate="no">deploy-pages</code> workflow and
+<code translate="no">scripts/release-mac.sh</code> once the dist holds both installers do). The site reads the short form as
+well as the release manifest itself (<code translate="no">site/src/release.ts</code>, a <code translate="no">.dmg</code> for macOS and a <code translate="no">-setup.exe</code>,
+<code translate="no">.msi</code> or <code translate="no">.msix</code> for Windows), so nothing has to be committed for a release. Every other build
+(<code translate="no">npm run site:build</code>, CI) is a local preview: without a release it shows a notice in place of the
+download buttons.</p>
+<h3 id="the-docs-version">The docs version<a class="docs-anchor" href="#the-docs-version" aria-label="The docs version" data-testid="docs-md-anchor-the-docs-version">#</a></h3>
+<p>Every docs page shows the version it was built for, in the header badge, at the end of each page
+and as <code translate="no">&lt;meta name=&quot;docs-version&quot;&gt;</code>:</p>
+<ul><li><strong>A release tag</strong> (<code translate="no">v1.2.3</code>) when <code translate="no">GITOODO_DOCS_VERSION</code> is set (by <code translate="no">scripts/release-site.sh</code>) or
+when the checkout is a tagged <code translate="no">v*</code> commit.</li><li>**<code translate="no">dev</code>** for every other build, with a tooltip naming the release it follows (the version in
+<code translate="no">site/releases.json</code>, otherwise <code translate="no">package.json</code>).</li></ul>
+<p>A release tag that is not of the form <code translate="no">vX.Y.Z</code>, or that differs from the version
+<code translate="no">site/releases.json</code> names, fails the build, so the docs badge and the download section never
+disagree. The logic lives in <code translate="no">site/src/docs/version.ts</code>.</p>
+<h3 id="what-the-docs-are-built-from">What the docs are built from<a class="docs-anchor" href="#what-the-docs-are-built-from" aria-label="What the docs are built from" data-testid="docs-md-anchor-what-the-docs-are-built-from">#</a></h3>
+<p><code translate="no">site/docs/build.ts</code>, called by <code translate="no">site/build.ts</code>, generates <code translate="no">site/dist/docs/</code> on every
+<code translate="no">npm run site:build</code>:</p>
+<ul><li><strong>User pages</strong> in all six site languages from the in-app help (<code translate="no">src/views/help/topics.ts</code> with
+the texts in <code translate="no">src/i18n/</code>), the settings structure (<code translate="no">src/views/settings/structure.ts</code>) and the
+pages written for the web in <code translate="no">site/docs/pages/&lt;lang&gt;/</code> (English is always there; a language
+without its own text shows the English one with a note).</li><li><strong>Developer pages</strong> in English from the curated documents in <code translate="no">docs/</code> (the list and the reasons
+for every excluded document are in <code translate="no">site/src/docs/registry.ts</code>), <code translate="no">site/docs/dev/</code> and the usage
+text of <code translate="no">gitoodo --help</code> (<code translate="no">crates/cli/src/main.rs</code>).</li><li><strong>Captures</strong> only from <code translate="no">site/shots/</code>.</li></ul>
+<p>The build fails on a link to a missing page or anchor. Archived docs of earlier major versions are
+not kept; the docs always describe the current release or, for <code translate="no">dev</code> builds, the development
+branch.</p>
+<h3 id="custom-domain-gitoodocom">Custom domain (gitoodo.com)<a class="docs-anchor" href="#custom-domain-gitoodocom" aria-label="Custom domain (gitoodo.com)" data-testid="docs-md-anchor-custom-domain-gitoodocom">#</a></h3>
+<p>The website lives at <code translate="no">https://gitoodo.com/</code>, the site root (no project path), on GitHub Pages of
+<code translate="no">silvio-l/gitoodo</code>. The one source is <code translate="no">SITE_URL</code> in <code translate="no">src/question/specUrl.ts</code> (canonical, hreflang,
+<code translate="no">og:url</code>, the one-line installs, the question format URL, the app&#39;s website and docs links); the
+pages link each other with relative paths. <code translate="no">www.gitoodo.com</code> redirects to the apex; the former
+project address on <code translate="no">github.io</code> redirects to the custom domain as long as it is set.</p>
+<ul><li><strong>CNAME:</strong> every build writes <code translate="no">site/dist/CNAME</code> with <code translate="no">gitoodo.com</code> (<code translate="no">site/src/domain.ts</code>).
+<code translate="no">npm run site:links</code> and <code translate="no">npm run site:links:prelaunch</code> fail without it, with another domain in
+it, or on any link to the former project address on <code translate="no">github.io</code> in a text file of the build
+(the <code translate="no">www</code> record below may name the Pages host).
+<code translate="no">scripts/publish-site-prelaunch.sh</code> writes it into the published commit as well: a branch
+published with <code translate="no">gh-pages</code> takes its custom domain from that file, and a force-push without it
+would drop the domain. A site deployed by the <code translate="no">deploy-pages</code> workflow (GitHub Actions) takes the
+domain from the repository&#39;s Pages setting instead; the file is harmless there.</li><li><strong>DNS (Cloudflare, &quot;DNS only&quot;, not proxied, so GitHub can issue and renew the certificate):</strong>
+apex <code translate="no">gitoodo.com</code> <code translate="no">A</code> 185.199.108.153, 185.199.109.153, 185.199.110.153, 185.199.111.153 and
+<code translate="no">AAAA</code> 2606:50c0:8000::153, 2606:50c0:8001::153, 2606:50c0:8002::153, 2606:50c0:8003::153;
+<code translate="no">www</code> <code translate="no">CNAME</code> <code translate="no">silvio-l.github.io</code>.</li><li><strong>Pages settings:</strong> custom domain <code translate="no">gitoodo.com</code>, then &quot;Enforce HTTPS&quot; once GitHub has issued the
+certificate (<code translate="no">gh api --method PUT repos/silvio-l/gitoodo/pages -f cname=gitoodo.com -F https_enforced=true</code>).
+Verifying the domain for the account (Settings, Pages, &quot;Verified domains&quot;) keeps others from
+claiming it.</li><li><strong>Outside this repository:</strong> the contact relay must answer the CORS preflight of
+<code translate="no">https://gitoodo.com</code> (sender <code translate="no">gitoodo-web</code>), and the Matomo measurable &quot;Gitoodo Website&quot; must
+list <code translate="no">https://gitoodo.com</code> (<code translate="no">scripts/matomo/create-gitoodo-site.php</code> adds it to an existing one);
+<code translate="no">excludeUnknownUrls</code> drops hits from any host it does not list.</li></ul>
+<h2 id="pre-launch-site">Pre-launch site<a class="docs-anchor" href="#pre-launch-site" aria-label="Pre-launch site" data-testid="docs-md-anchor-pre-launch-site">#</a></h2>
+<p>Before the first release the website can go live on its own, without installers: the pre-launch
+build. It is a deliberate mode, never the fallback of a failed release
+build.</p>
+<ul><li><strong>Build:</strong> <code translate="no">bash scripts/site-prelaunch.sh</code> (= <code translate="no">npm run site:build:prelaunch</code>, i.e.
+<code translate="no">node site/build.ts --production --prelaunch</code>; <code translate="no">GITOODO_SITE_PRELAUNCH=1</code> does the same as
+<code translate="no">--prelaunch</code>, then <code translate="no">npm run site:links:prelaunch</code>). It only runs while <code translate="no">site/releases.json</code> says
+<code translate="no">{ &quot;release&quot;: null }</code> and without a release tag (<code translate="no">site/src/release.ts</code> <code translate="no">siteRelease</code>,
+<code translate="no">site/src/docs/version.ts</code>); it renders the repository links as with <code translate="no">VITE_REPO_PUBLIC=1</code>. <code translate="no">--production</code> without
+<code translate="no">--prelaunch</code> still fails on <code translate="no">{ &quot;release&quot;: null }</code>.</li><li><strong>What the page shows:</strong> no download buttons, no one-line install and no <code translate="no">install.sh</code> /
+<code translate="no">install.ps1</code> beside the page. The download section says that the first release is on its way
+(in all six languages, <code translate="no">soon</code> in <code translate="no">site/src/copy/</code>), and its button and the hero&#39;s open the contact
+form with a short &quot;please let me know&quot; message filled in; without JavaScript they are a mail to
+the GbR mailbox. The header button and the footer link read &quot;Get notified&quot;. The repository is
+linked everywhere as in the public-repo build: GitHub in the header and the mobile menu, the
+footer (GitHub, issues, changelog, licence, skill, the app&#39;s privacy policy), the star link, the
+hero&#39;s source link, the question format&#39;s source and &quot;Edit on GitHub&quot; and the source links of
+the docs. Deep links (blob, edit) open <code translate="no">main</code>, the only branch the release export pushes; until
+the first release exports the code there, the ones to files the pre-launch <code translate="no">main</code> does not hold
+(changelog, skill, the app&#39;s privacy policy, &quot;Edit on GitHub&quot;) end on a 404; that is accepted.
+Only the &quot;build from source&quot; commands stay out of the download section. Every build also writes
+<code translate="no">robots.txt</code>, <code translate="no">sitemap.xml</code> (from the built pages, <code translate="no">site/src/sitemap.ts</code>), <code translate="no">BingSiteAuth.xml</code> (the
+search engine ownership proof of gitoodo.com), the branded
+<code translate="no">404.html</code> and the <code translate="no">/en/</code> redirect; both link checks fail without the crawl files.
+The docs badge reads <code translate="no">dev</code> with the tooltip &quot;Pre-release: Gitoodo has not been released yet&quot;, and
+&quot;Getting started&quot; notes under its install heading that the commands work from the first release
+on. There is no preview banner.</li><li><strong>Contact form:</strong> the pre-launch build is a production build, so the form posts as the live
+sender <code translate="no">gitoodo-web</code>. The relay must answer the CORS preflight of the page&#39;s origin
+<code translate="no">https://gitoodo.com</code>; on 2026-11-16 it still answered only the former origin of the Pages
+address (<code translate="no">gitoodo.com</code> got 403), so the form fails until the relay allows it. A message from the
+live page is a real mail to the team.</li><li><strong>Check:</strong> <code translate="no">npm run site:links:prelaunch</code> (<code translate="no">site/docs/check-prelaunch.ts</code>, logic in
+<code translate="no">site/src/prelaunch.ts</code>) allows links into the repository and fails on any broken internal link
+or anchor of any page, on installers in <code translate="no">site/dist</code>, on a landing page that is not a pre-launch build, and
+on a missing or wrong <code translate="no">CNAME</code> or a link to the former Pages address
+(<a href="#custom-domain-gitoodocom" data-testid="docs-md-link-6">Custom domain</a>).</li><li><strong>Publish (only with the maintainer&#39;s approval):</strong> the repository stays unpublished, so the
+<code translate="no">deploy-pages</code> workflow (it builds from a tag of the repository) cannot be used.
+<code translate="no">bash scripts/publish-site-prelaunch.sh silvio-l/gitoodo</code> checks <code translate="no">site/dist</code> again and prepares
+one orphan commit with only the built files plus <code translate="no">.nojekyll</code> and <code translate="no">CNAME</code> (<code translate="no">gitoodo.com</code>; anything
+that looks like source
+stops it); it is a dry run and pushes nothing. <code translate="no">--publish</code> force-pushes that commit to the branch
+<code translate="no">gh-pages</code>. The script never changes the Pages settings; it prints the call that switches Pages
+from the workflow to the branch once:
+<code translate="no">gh api --method PUT repos/silvio-l/gitoodo/pages -f build_type=legacy -f &#39;source[branch]=gh-pages&#39; -f &#39;source[path]=/&#39;</code>.
+The site is then at <code translate="no">https://gitoodo.com/</code>.</li><li><strong>Side effect on an empty repository:</strong> the first pushed branch becomes the default branch, so
+<code translate="no">github.com/silvio-l/gitoodo</code> would show the built HTML as the repository&#39;s code. To avoid that,
+push a <code translate="no">main</code> with only a short README first (that is publishing too and needs the same
+approval), then <code translate="no">gh-pages</code>; or accept it until the release replaces it.</li><li>**Pre-launch <code translate="no">main</code>:** GitHub <code translate="no">main</code> holds a hand-made pre-launch state, not an export: a short
+README (no download, no source link, &quot;Get notified&quot; via the website&#39;s contact form), <code translate="no">LICENSE</code>,
+<code translate="no">CODE_OF_CONDUCT.md</code>, a pre-launch <code translate="no">CONTRIBUTING.md</code> and <code translate="no">SECURITY.md</code>, <code translate="no">.github/FUNDING.yml</code>
+and the README&#39;s images under <code translate="no">.github/assets/</code>. No source code, no workflows. It is not kept in
+this repository; the global <code translate="no">pre-push</code> hook blocks git pushes to GitHub, so the maintainer pushes
+it by hand. Repository settings for this phase: Issues, Wiki, Projects and Discussions off,
+private vulnerability reporting and Dependabot alerts on, squash as the only merge button.</li><li>**Pre-launch <code translate="no">main</code> and the export:** <code translate="no">repos/gitoodo.json</code> in the export repository sets
+<code translate="no">first_export: &quot;reset&quot;</code>. As long as the head of public <code translate="no">main</code> carries no <code translate="no">GitOrigin-RevId</code>
+trailer, every export run (nightly or dispatched) stops with &quot;first export of silvio-l/gitoodo
+must be the one-time history reset (RESET_HISTORY) — nothing pushed&quot; and exits 0, so the nightly
+run counts it as done and nothing is published or overwritten. Without any public <code translate="no">main</code>, the
+first nightly run would instead export internal <code translate="no">main</code> on its own as a fresh root commit; the
+pre-launch <code translate="no">main</code> therefore also guards against an unintended first export.</li><li><strong>At the first release:</strong> run the one-time history reset of the export on the NAS
+(<code translate="no">RESET_HISTORY=&quot;RESET silvio-l/gitoodo&quot;</code> for <code translate="no">export-run.sh</code>; never a workflow dispatch). It
+force-pushes (with lease) one fresh root commit of the exported tree to <code translate="no">main</code>: the exported
+<code translate="no">README.md</code>, community files and <code translate="no">.github/</code> (issue and pull request templates, workflows) replace
+the pre-launch ones, and the pre-launch commit leaves the history of <code translate="no">main</code>. Later exports are
+normal incremental syncs. Then switch Pages back to the workflow
+(<code translate="no">gh api --method PUT repos/silvio-l/gitoodo/pages -f build_type=workflow</code>), publish the release
+site as described below and delete the <code translate="no">gh-pages</code> branch; a <code translate="no">site/releases.json</code> with a release
+makes the pre-launch build fail from then on. Finally turn Issues on
+(<code translate="no">gh api -X PATCH repos/silvio-l/gitoodo -F has_issues=true</code>; the issue templates arrive with the
+export) and drop &quot;First release coming soon.&quot; from the repository description.</li></ul>
+<h2 id="publish-only-after-the-maintainers-release-approval-153">Publish (only after the maintainer&#39;s release approval, #153)<a class="docs-anchor" href="#publish-only-after-the-maintainers-release-approval-153" aria-label="Publish (only after the maintainer&#39;s release approval, #153)" data-testid="docs-md-anchor-publish-only-after-the-maintainers-release-approval-153">#</a></h2>
+<p>The publish phase of <a href="#ship" data-testid="docs-md-link-7">Ship</a> does these steps; by hand they are:</p>
+<ol><li>Push the tag <code translate="no">v&lt;version&gt;</code> of the release commit, merge it into <code translate="no">main</code>, and export <code translate="no">main</code> and
+the tag to GitHub <code translate="no">silvio-l/gitoodo</code>.</li><li>Create the GitHub release <code translate="no">v&lt;version&gt;</code> <strong>as a draft</strong> with the notes from <code translate="no">CHANGELOG.md</code>,
+upload every file of <code translate="no">target/release/dist/</code> (including <code translate="no">releases.json</code>, <code translate="no">Gitoodo.appinstaller</code>,
+<code translate="no">install.sh</code>, <code translate="no">uninstall.sh</code>, <code translate="no">install.ps1</code>, <code translate="no">uninstall.ps1</code> and all <code translate="no">.sha256</code>), compare the
+uploaded list with <code translate="no">assets</code> in <code translate="no">releases.json</code>, and only then publish it. Until it is published,
+<code translate="no">releases/latest/download/...</code> (the one-liners, the <code translate="no">.appinstaller</code>) keeps serving the previous
+release complete, never a half-uploaded one.</li><li>Run the <code translate="no">deploy-pages</code> workflow of the GitHub repo for the tag
+(<code translate="no">gh workflow run deploy-pages.yml --ref main -f tag=v&lt;version&gt;</code>): it builds <code translate="no">site/dist</code> with
+<code translate="no">scripts/release-site.sh</code> and the release&#39;s <code translate="no">releases.json</code> and publishes it
+(<code translate="no">https://gitoodo.com/</code>, <a href="#custom-domain-gitoodocom" data-testid="docs-md-link-8">Custom domain</a>).</li><li>Check from a clean machine: the landing page download, <code translate="no">curl … | bash</code> on a Mac,
+<code translate="no">irm … | iex</code> on Windows, and the download URLs in <code translate="no">releases.json</code> (<code translate="no">curl -fIL &lt;url&gt;</code> answers
+200).</li></ol>
+<h2 id="releasesjson">releases.json<a class="docs-anchor" href="#releasesjson" aria-label="releases.json" data-testid="docs-md-anchor-releasesjson">#</a></h2>
+<div class="docs-code"><pre dir="ltr" translate="no" tabindex="0" data-lang="json"><code>{
+  &quot;schemaVersion&quot;: 1,
+  &quot;version&quot;: &quot;0.1.0&quot;,
+  &quot;tag&quot;: &quot;v0.1.0&quot;,
+  &quot;date&quot;: &quot;2026-11-16&quot;,
+  &quot;releaseUrl&quot;: &quot;https://github.com/silvio-l/gitoodo/releases/tag/v0.1.0&quot;,
+  &quot;downloads&quot;: {
+    &quot;mac&quot;: {
+      &quot;file&quot;: &quot;Gitoodo-0.1.0-macos-arm64.dmg&quot;,
+      &quot;url&quot;: &quot;https://github.com/silvio-l/gitoodo/releases/download/v0.1.0/Gitoodo-0.1.0-macos-arm64.dmg&quot;,
+      &quot;size&quot;: 0,
+      &quot;sha256&quot;: &quot;…&quot;,
+      &quot;kind&quot;: &quot;dmg&quot;,
+      &quot;arch&quot;: &quot;arm64&quot;,
+      &quot;minOs&quot;: &quot;11.0&quot;,
+      &quot;signed&quot;: true,
+      &quot;notarized&quot;: true
+    },
+    &quot;windows&quot;: { &quot;…&quot;: &quot;the same object as windowsMsix or windowsSetup, see below&quot; },
+    &quot;windowsMsix&quot;: {
+      &quot;file&quot;: &quot;Gitoodo-0.1.0-windows-x64.msix&quot;,
+      &quot;url&quot;: &quot;https://github.com/silvio-l/gitoodo/releases/download/v0.1.0/Gitoodo-0.1.0-windows-x64.msix&quot;,
+      &quot;size&quot;: 0,
+      &quot;sha256&quot;: &quot;…&quot;,
+      &quot;kind&quot;: &quot;msix&quot;,
+      &quot;arch&quot;: &quot;x64&quot;,
+      &quot;minOs&quot;: &quot;10.0.19041&quot;,
+      &quot;signed&quot;: true,
+      &quot;notarized&quot;: false,
+      &quot;appInstaller&quot;: {
+        &quot;file&quot;: &quot;Gitoodo.appinstaller&quot;,
+        &quot;url&quot;: &quot;https://github.com/silvio-l/gitoodo/releases/latest/download/Gitoodo.appinstaller&quot;
+      }
+    },
+    &quot;windowsSetup&quot;: {
+      &quot;file&quot;: &quot;Gitoodo-0.1.0-windows-x64-setup.exe&quot;,
+      &quot;url&quot;: &quot;https://github.com/silvio-l/gitoodo/releases/download/v0.1.0/Gitoodo-0.1.0-windows-x64-setup.exe&quot;,
+      &quot;size&quot;: 0,
+      &quot;sha256&quot;: &quot;…&quot;,
+      &quot;kind&quot;: &quot;nsis&quot;,
+      &quot;arch&quot;: &quot;x64&quot;,
+      &quot;minOs&quot;: &quot;10&quot;,
+      &quot;signed&quot;: false,
+      &quot;notarized&quot;: false
+    }
+  },
+  &quot;macInstallCommand&quot;: &quot;curl -fsSL https://gitoodo.com/install.sh | bash&quot;,
+  &quot;macUninstallCommand&quot;: &quot;curl -fsSL https://gitoodo.com/uninstall.sh | bash&quot;,
+  &quot;windowsInstallCommand&quot;: &quot;irm https://gitoodo.com/install.ps1 | iex&quot;,
+  &quot;windowsUninstallCommand&quot;: &quot;irm https://gitoodo.com/uninstall.ps1 | iex&quot;,
+  &quot;assets&quot;: [{ &quot;file&quot;: &quot;…&quot;, &quot;url&quot;: &quot;…&quot;, &quot;size&quot;: 0, &quot;sha256&quot;: &quot;…&quot; }]
+}</code></pre><button type="button" class="docs-code__copy" data-copy hidden data-testid="docs-md-copy-7">Copy</button></div>
+<ul><li><code translate="no">downloads</code> holds one entry per platform (<code translate="no">mac</code>, <code translate="no">windows</code>), the one offered first; a platform
+without an installer is absent. <code translate="no">windows</code> is the MSIX when it is signed (or the only Windows
+file), otherwise the setup; <code translate="no">windowsMsix</code> and <code translate="no">windowsSetup</code> list each format that exists. The
+landing page reads <code translate="no">version</code>, <code translate="no">releaseUrl</code> and <code translate="no">url</code>, <code translate="no">size</code>, <code translate="no">sha256</code> of <code translate="no">downloads.mac</code> and
+<code translate="no">downloads.windows</code> (<code translate="no">site/src/release.ts</code>) and needs both. <code translate="no">size</code> is in bytes, <code translate="no">sha256</code>
+lowercase hex.</li><li><code translate="no">arch</code> is <code translate="no">arm64</code> (macOS, Apple silicon only) or <code translate="no">x64</code> (Windows).</li><li><code translate="no">minOs</code> is the macOS version (<code translate="no">LSMinimumSystemVersion</code>) or the Windows major version.</li><li><code translate="no">signed</code>/<code translate="no">notarized</code> are checked from the files, not configured; the page may show a hint for an
+unsigned Windows setup.</li><li><code translate="no">assets</code> lists every file of the release except the <code translate="no">.sha256</code> files and the manifest.</li><li><code translate="no">GITOODO_RELEASE_BASE</code> changes the URL base (forks).</li><li><code translate="no">install.ps1</code> reads <code translate="no">&lt;base&gt;/releases.json</code> (default
+<code translate="no">https://github.com/silvio-l/gitoodo/releases/latest/download</code>, override with <code translate="no">-ReleaseUrl</code> or
+<code translate="no">GITOODO_RELEASE_URL</code>) and needs <code translate="no">file</code> and <code translate="no">sha256</code> of <code translate="no">downloads.windows</code> (or of
+<code translate="no">windowsMsix</code>/<code translate="no">windowsSetup</code> for <code translate="no">-Package msix</code>/<code translate="no">setup</code>).</li></ul>
+<h2 id="rolling-back">Rolling back<a class="docs-anchor" href="#rolling-back" aria-label="Rolling back" data-testid="docs-md-anchor-rolling-back">#</a></h2>
+<p>To go back to an earlier release, install it over the current one; settings, accounts, tokens and
+the background service stay, as with an update:</p>
+<ul><li>macOS: <code translate="no">curl -fsSL https://gitoodo.com/install.sh | GITOODO_RELEASE_URL=https://github.com/silvio-l/gitoodo/releases/download/vX.Y.Z bash</code>,
+or the older DMG from that release&#39;s page dragged over the app in Applications.</li><li>Windows: <code translate="no">$env:GITOODO_RELEASE_URL = &#39;https://github.com/silvio-l/gitoodo/releases/download/vX.Y.Z&#39;; irm https://gitoodo.com/install.ps1 | iex</code>
+or the older setup <code translate="no">.exe</code> from the release page. An installed MSIX refuses a lower version;
+add <code translate="no">$env:GITOODO_PACKAGE = &#39;setup&#39;</code>, which removes the MSIX first and keeps settings,
+accounts and tokens (header of <code translate="no">scripts/install.ps1</code>).</li></ul>
+<p><strong>Data compatibility.</strong> Every data file in the config folder carries a <code translate="no">schema_version</code>, and
+migrations only go forward: a newer Gitoodo upgrades the files on its first start, an older one
+refuses them unchanged (<code translate="no">StoreError::UnsupportedVersion</code>). The app then logs
+<code translate="no">startup_failed</code> and shows a native dialog (&quot;This Gitoodo (…) is older than your data …&quot;, with
+the log folder) instead of quitting silently. A rollback across a schema change therefore needs
+either the newer version again, or the settings exported before the update (Settings → Backup,
+<code translate="no">docs/settings-backup.md</code>) imported into a fresh config folder of the older version. Rolling back
+between releases without a schema change needs nothing; name schema changes in the release notes.</p>
+</div>
+<div class="docs-meta"><a class="docs-edit" href="https://github.com/silvio-l/gitoodo/edit/main/docs/release.md" data-testid="docs-edit">Edit on GitHub</a><span class="docs-meta__version">Docs version: <span dir="ltr">dev</span></span></div>
+</article>
+<nav class="docs-pager" aria-label="Previous / Next" data-testid="docs-pager"><a class="docs-pager__previous" href="../building/" rel="prev" data-testid="docs-pager-previous"><span class="docs-pager__label">Previous</span><span class="docs-pager__title">Building</span></a><a class="docs-pager__next" href="../question-format/" rel="next" data-testid="docs-pager-next"><span class="docs-pager__label">Next</span><span class="docs-pager__title">Gitoodo question format (version 2)</span></a></nav>
+</main>
+<aside class="docs-toc" aria-labelledby="docs-toc-title" data-testid="docs-toc"><h2 id="docs-toc-title">On this page</h2><ol><li class="docs-toc__l2"><a href="#assets" data-testid="docs-toc-assets">Assets</a></li><li class="docs-toc__l2"><a href="#apple-silicon-only-decision-2026-11-16" data-testid="docs-toc-apple-silicon-only-decision-2026-11-16">Apple silicon only (decision 2026-11-16)</a></li><li class="docs-toc__l2"><a href="#windows-msix-and-setup-decision-2026-11-16" data-testid="docs-toc-windows-msix-and-setup-decision-2026-11-16">Windows: MSIX and setup (decision 2026-11-16)</a></li><li class="docs-toc__l2"><a href="#homebrew-prepared-not-published" data-testid="docs-toc-homebrew-prepared-not-published">Homebrew (prepared, not published)</a></li><li class="docs-toc__l2"><a href="#app-identifier-decision-2026-11-16-595" data-testid="docs-toc-app-identifier-decision-2026-11-16-595">App identifier (decision 2026-11-16, #595)</a></li><li class="docs-toc__l2"><a href="#credentials-names-only-never-in-files-or-logs" data-testid="docs-toc-credentials-names-only-never-in-files-or-logs">Credentials (names only, never in files or logs)</a></li><li class="docs-toc__l2"><a href="#ship" data-testid="docs-toc-ship">Ship</a></li><li class="docs-toc__l3"><a href="#what-ci-covers" data-testid="docs-toc-what-ci-covers">What CI covers</a></li><li class="docs-toc__l2"><a href="#releasing-with-fastlane" data-testid="docs-toc-releasing-with-fastlane">Releasing with fastlane</a></li><li class="docs-toc__l3"><a href="#github-release-from-main" data-testid="docs-toc-github-release-from-main">GitHub release from main</a></li><li class="docs-toc__l2"><a href="#build" data-testid="docs-toc-build">Build</a></li><li class="docs-toc__l3"><a href="#windows-publisher-check" data-testid="docs-toc-windows-publisher-check">Windows publisher check</a></li><li class="docs-toc__l2"><a href="#verify-before-publishing" data-testid="docs-toc-verify-before-publishing">Verify (before publishing)</a></li><li class="docs-toc__l3"><a href="#verified-010-at-7c7d883-2026-11-16" data-testid="docs-toc-verified-010-at-7c7d883-2026-11-16">Verified: 0.1.0 at 7c7d883 (2026-11-16)</a></li><li class="docs-toc__l3"><a href="#verified-windows-installer-tests-2026-11-16-839" data-testid="docs-toc-verified-windows-installer-tests-2026-11-16-839">Verified: Windows installer tests (2026-11-16, #839)</a></li><li class="docs-toc__l3"><a href="#verified-windows-one-liners-2026-11-16-564" data-testid="docs-toc-verified-windows-one-liners-2026-11-16-564">Verified: Windows one-liners (2026-11-16, #564)</a></li><li class="docs-toc__l2"><a href="#website-and-documentation" data-testid="docs-toc-website-and-documentation">Website and documentation</a></li><li class="docs-toc__l3"><a href="#the-docs-version" data-testid="docs-toc-the-docs-version">The docs version</a></li><li class="docs-toc__l3"><a href="#what-the-docs-are-built-from" data-testid="docs-toc-what-the-docs-are-built-from">What the docs are built from</a></li><li class="docs-toc__l3"><a href="#custom-domain-gitoodocom" data-testid="docs-toc-custom-domain-gitoodocom">Custom domain (gitoodo.com)</a></li><li class="docs-toc__l2"><a href="#pre-launch-site" data-testid="docs-toc-pre-launch-site">Pre-launch site</a></li><li class="docs-toc__l2"><a href="#publish-only-after-the-maintainers-release-approval-153" data-testid="docs-toc-publish-only-after-the-maintainers-release-approval-153">Publish (only after the maintainer&#39;s release approval, #153)</a></li><li class="docs-toc__l2"><a href="#releasesjson" data-testid="docs-toc-releasesjson">releases.json</a></li><li class="docs-toc__l2"><a href="#rolling-back" data-testid="docs-toc-rolling-back">Rolling back</a></li></ol></aside>
+</div>
+<footer class="docs-footer" data-testid="docs-footer"><div class="docs-footer__inner">
+<p class="docs-muted">The developer docs are in English only.</p>
+<ul class="docs-footer__links">
+<li><a href="../../../" data-testid="docs-footer-site">Website</a></li>
+<li><a href="../../../privacy/" data-testid="docs-footer-privacy">Privacy</a></li>
+<li><a href="https://github.com/silvio-l/gitoodo/blob/main/LICENSE" data-testid="docs-footer-license">MIT</a></li>
+</ul>
+</div></footer>
+</body>
+</html>

@@ -1,0 +1,41 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:04.200
+From idea to merged pull request.
+How an issue moves through Gitoodo.
+
+2
+00:00:04.200 --> 00:00:10.400
+Talk through what you want to build in the orchestrator chat.
+Gitoodo proposes the issues. Nothing is created until you click Apply.
+
+3
+00:00:10.400 --> 00:00:15.400
+Once an issue is clear, it moves to Ready.
+The board shows each issue’s state and the reason for it.
+
+4
+00:00:15.400 --> 00:00:20.600
+An agent starts on every ready issue.
+From In progress to In review, you see every step.
+
+5
+00:00:20.600 --> 00:00:25.400
+When a decision is missing, the agent asks you.
+The recommendation is already selected.
+
+6
+00:00:25.400 --> 00:00:30.400
+One click, and the agent carries on.
+Your answer lands in the issue as a comment.
+
+7
+00:00:30.400 --> 00:00:35.000
+The overview shows what is waiting for you.
+Open questions, failing checks and blockers in one place.
+
+8
+00:00:35.000 --> 00:00:38.400
+Gitoodo
+Free · Open source · macOS and Windows

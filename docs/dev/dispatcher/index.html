@@ -1,0 +1,903 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self'; style-src 'self'; script-src 'self' 'sha256-zclDvgIbJxhMP3hLx0Pe9wEzIPlPNUNObuWsVD7xB/M='; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="color-scheme" content="light dark">
+<script>try{var t=localStorage.getItem("gitoodo-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<title>Dispatcher – Gitoodo</title>
+<meta name="description" content="gitoodo dispatcher runs in the foreground (own process, own service later) and starts one worker (Claude Code, Codex or Gemini CLI, see &quot;Worker launch per agent&quot;) per ready issue, …">
+<meta name="docs-version" content="dev">
+<link rel="canonical" href="https://gitoodo.com/docs/dev/dispatcher/">
+
+<meta property="og:title" content="Dispatcher – Gitoodo">
+<meta property="og:description" content="gitoodo dispatcher runs in the foreground (own process, own service later) and starts one worker (Claude Code, Codex or Gemini CLI, see &quot;Worker launch per agent&quot;) per ready issue, …">
+<meta property="og:url" content="https://gitoodo.com/docs/dev/dispatcher/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Gitoodo">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://gitoodo.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../../assets/docs.css">
+<script defer src="../../../assets/docs.js"></script>
+</head>
+<body class="docs" data-lang="en" data-docs-root="../../" data-search-index="../../search/en.json" data-copied="Copied">
+<a class="skip" href="#main" data-testid="docs-skip">Skip to content</a>
+<header class="docs-header" data-testid="docs-header"><div class="docs-header__inner">
+<a class="lockup" href="../../../" aria-label="Gitoodo" data-testid="docs-logo"><svg class="lockup__art" data-brand="wordmark" viewBox="9.3 9.4 767.3 182.9" focusable="false" aria-hidden="true"><path class="logo__tray" fill-rule="evenodd" d="M66.7 89.5C54.7 90.9 52.5 108.4 63.6 112.9C69.4 115.3 80 113.9 86.5 113.9L136.5 114C143.6 114 155.7 115.4 157 105.5C157.8 99.1 154.7 91.2 147.7 89.6C141.7 88.1 126.5 89.3 119.5 89.3L84.5 89.3C78.7 89.3 72.5 88.8 66.7 89.5ZM210.5 93.7C206.3 95.4 202.9 98.6 198.6 100.3C196.7 101 193.8 101.2 192.6 103.1C191.3 105.1 191.8 108.3 191.8 110.5C191.8 115.6 192.1 120.9 191.5 125.9C184.9 128.1 171 126.6 163.5 126.6C159.8 126.6 155.9 126.2 152.5 128C144.2 132.6 147.8 144.9 143.6 152.1C138.9 160 121.4 157.2 113.5 157.2C110.3 157.2 106.8 157.7 103.6 156.7C92.4 153.3 98.2 135 89.9 128.6C86.5 125.9 81.6 126.6 77.5 126.6C69.3 126.6 58.2 128 50.5 126.1C48.8 117.6 51.8 108.1 49.7 99.7C47.3 90.3 31.5 89.8 27 97.5C25.1 100.8 24 104.7 22.6 108.2C19.8 115.2 15.3 122.8 16.1 130.5C16.6 134.9 19.5 139.2 21.5 143L31.8 163.7C35.7 171.7 38.9 183.6 48.9 185.5C52.3 186.2 56 185.8 59.5 185.8L83.5 185.8L157.5 185.8L183.5 185.8C188.2 185.8 193.2 186.3 197.4 183.8C203.4 180.3 207.1 168.8 210.3 162.7L221.6 140.2C223.6 136.2 226.1 132.2 226 127.5C225.9 121.1 221.5 114.3 219.2 108.4C217.1 103 215.9 96.5 210.5 93.7Z"/><path class="logo__bars" fill-rule="evenodd" d="M156.8 26.5C155.2 15.4 142.9 17.7 134.5 17.6C114.8 17.4 95.2 17.5 75.5 17.7C65.3 17.7 55.7 18.3 56.4 31.5C57.2 45.7 76.1 42.3 85.5 42.3L126.5 42.3C130.4 42.3 141.2 43.2 144.4 41.9C146.3 41.1 147.2 38.3 148.2 36.7C150.7 33 154.3 30.1 156.8 26.5ZM139.5 55.3C134 52 124.8 53.6 118.5 53.6L83.5 53.7C77.8 53.7 71.1 52.8 65.5 54C59.3 55.3 55.6 61.8 56.5 67.9C58.2 79.3 69.7 78.2 78.5 78.2L123.5 78.2C128.6 78.2 137 79.9 140.6 75.2C142.4 72.9 141 70.6 140.5 68C139.7 63.8 141 59.3 139.5 55.3Z"/><path class="logo__check" fill-rule="evenodd" d="M177.7 26.4C142.8 32.5 139 82.7 173 93.5C177.7 95 182.6 95.5 187.5 94.9C224.6 90.3 228 37.8 192.5 27.2C187.7 25.8 182.6 25.6 177.7 26.4ZM177.5 65.1C172.9 61.8 171.9 57.4 165.5 58.3C160.3 63.5 167.1 67.9 170.8 71.7C172.5 73.5 174.3 76 176.8 76.5C180.5 77.3 183.2 73.1 185.3 70.8L200.1 55.6C203 52.6 204.8 49.9 201.5 46.5C200 46.2 199.2 45.8 197.6 46.2C195.1 46.9 192.6 50.5 190.9 52.4C187.1 56.5 182.5 62.6 177.5 65.1Z"/><path class="word__git" fill-rule="evenodd" d="M379.6 38.4C360.7 39.7 362.8 67.8 381.5 66.9C400 66.1 398.7 37.2 379.6 38.4ZM362.5 92.7C357.9 91.8 353.1 92.2 348.5 92.2L325.5 92.2C321.8 92.2 314.8 90.8 311.8 93.3C308.9 95.8 309.6 111.2 311 114.5C317.2 118.1 327.7 114.3 334.7 116.5C329.4 130.4 309.1 132.6 297.7 125.8C288.9 120.6 283.8 110.5 283.8 100.5C283.6 81.9 299.6 66.6 318.5 71.2C328.3 73.6 329.5 78.5 336.5 83C340.9 81.5 353.8 72.2 356.6 68.5C355.1 63.6 350.2 59.4 346.3 56.2C332 44.2 311 40.6 293.5 47C262.7 58.3 249 94.7 262.4 124.2C276 154 314 165.2 341.5 147C354.5 138.4 363.1 123 364.1 107.5C364.4 102.6 365.3 96.8 362.5 92.7ZM407.5 73.5L400.4 74.5C398 78.5 398.4 90 399.5 94.7C402 96 404.7 95.9 407.4 96.5C410 113.1 400.2 145.4 422.7 151.6C426.2 152.6 429.9 152.6 433.5 152.6C437.5 152.7 441.9 153.2 445.5 151.5C446.4 146.9 446.8 134.4 444.6 130.5C441.2 130.2 436.3 131.5 433.3 129.2C430.8 127.2 431.4 123.3 431.4 120.5C431.4 112.7 430.6 104.3 431.7 96.5C436.1 95.3 440.9 96.3 445.5 95.3C447.3 89.6 447.2 80.3 445.5 74.6L431.9 73.5C430.6 68.1 433.1 59.6 430.5 54.9C428.6 51.5 415.9 52 412.5 52.6C410.9 53 409.4 53.6 408.6 55.1C406.2 59.4 408.5 68.4 407.5 73.5ZM369.5 151.7C373.7 153.3 388.3 153.6 392.1 151.5C393.7 145.8 392.7 138.5 392.7 132.5L392.6 94.5C392.6 90.3 394.1 79 391.6 75.9C389.3 73.1 377.1 73.6 373.5 74C366.1 74.9 368.5 86.3 368.5 91.5L368.6 131.5C368.6 137.8 367.2 145.8 369.5 151.7Z"/><path class="word__oodo" fill-rule="evenodd" d="M658.6 77.5C652.6 75.1 647.4 72.8 640.7 73.4C600.7 77.2 595.6 136.7 633.5 148.3C639.6 150.1 646.5 150.5 652.6 148.3C655 147.4 657.1 146 659.5 145.4C660 146.5 660.6 148.1 661.7 148.7C665.5 150.7 678.5 149.6 682.5 148.5C684.6 142.8 683.3 126.4 683.4 119.5L683.3 71.5C683.2 65 684.5 55.7 683 49.5C681.4 42.8 664.3 43.5 661.3 46.8C659.2 49.1 659.7 52.6 659.7 55.5C659.6 61.4 661.1 72.7 658.6 77.5ZM482.5 73.4C442.6 77.6 435.8 134.6 473.5 147.9C478.2 149.6 483.5 150.4 488.5 150.1C494.4 149.7 499.9 148.2 505.1 145.6C509.6 143.3 513.4 139.9 516.5 136C537.9 109 517 69.8 482.5 73.4ZM560.7 73.4C547.4 75.2 535.8 83.3 530.4 95.7C521.3 116.5 532.4 142.7 554.8 148.6C560 149.9 565.1 150.5 570.5 149.8C597.8 146.3 613.1 114.6 598.4 91.1C593.4 83 585.5 77.6 576.6 74.7C571.5 73.1 566 72.7 560.7 73.4ZM723.5 73.4C712.2 74.9 701.4 80.8 695.3 90.7C682.1 112 692 141 716.3 148.4C721.5 150 727 150.6 732.5 150C755.6 147.5 770.6 124.8 765.8 102.5C762.8 89.1 752.1 79.1 739.5 74.9C734.4 73.2 728.9 72.7 723.5 73.4ZM483.7 96.4C464.6 99.7 469.4 131.1 490.4 126.7C509.1 122.7 503.7 93.1 483.7 96.4ZM562.7 96.4C543.1 99.7 548.6 131.4 569.3 126.6C587.9 122.4 582.5 93.1 562.7 96.4ZM644.6 96.4C625.3 97.8 626.9 127.6 646.5 126.8C665.9 126 664.2 95 644.6 96.4ZM724.7 96.4C705.3 99.9 711 131.7 732.3 126.6C750.4 122.3 744.3 92.9 724.7 96.4Z"/></svg></a>
+<a class="docs-header__title" href="../../" data-testid="docs-home">Documentation</a>
+<span class="docs-version" title="Pre-release: Gitoodo has not been released yet" data-version="dev"><span class="visually-hidden">Docs version: </span><span dir="ltr">dev</span><span class="visually-hidden"> (Pre-release: Gitoodo has not been released yet)</span></span>
+<div class="docs-header__tools">
+<div class="docs-search" role="search" data-testid="docs-search">
+<label class="visually-hidden" for="docs-search-input">Search the docs</label>
+<input id="docs-search-input" class="docs-search__input" type="search" placeholder="Search …" autocomplete="off" spellcheck="false" aria-describedby="docs-search-hint" aria-controls="docs-search-results" aria-expanded="false" role="combobox" aria-autocomplete="list" data-testid="docs-search-input">
+<p id="docs-search-hint" class="visually-hidden">Arrow keys choose, Enter opens, Escape closes.</p>
+<div id="docs-search-results" class="docs-search__results" role="listbox" aria-label="Search the docs" hidden data-empty="No page matches “{query}”." data-testid="docs-search-results"></div>
+</div>
+<div class="header__prefs"><details class="langs" name="header-popover" data-langs data-testid="docs-langs"><summary class="langs__toggle" data-testid="docs-langs-toggle"><svg class="langs__globe" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg><span class="visually-hidden">Language: </span><span class="langs__code" translate="no">EN</span></summary>
+<ul class="langs__list" aria-label="Language"><li><a href="../../de/" hreflang="de" lang="de" data-lang="de" data-track="language" data-track-name="de" data-testid="docs-langs-de"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Deutsch</span></a></li><li><a href="../../" hreflang="en" lang="en" data-lang="en" data-track="language" data-track-name="en" aria-current="page" data-testid="docs-langs-en"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>English</span></a></li><li><a href="../../zh-Hans/" hreflang="zh-Hans" lang="zh-Hans" data-lang="zh-Hans" data-track="language" data-track-name="zh-Hans" data-testid="docs-langs-zh-Hans"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>中文（简体）</span></a></li><li><a href="../../hi/" hreflang="hi" lang="hi" data-lang="hi" data-track="language" data-track-name="hi" data-testid="docs-langs-hi"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>हिन्दी</span></a></li><li><a href="../../es/" hreflang="es" lang="es" data-lang="es" data-track="language" data-track-name="es" data-testid="docs-langs-es"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Español</span></a></li><li><a href="../../ar/" hreflang="ar" lang="ar" data-lang="ar" data-track="language" data-track-name="ar" data-testid="docs-langs-ar"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>العربية</span></a></li></ul></details><button class="theme" type="button" hidden data-theme-toggle data-choice="system" data-label="Theme: {current}, switch to {next}" data-system="System" data-light="Light" data-dark="Dark" aria-label="Theme: System, switch to Light" title="Theme: System, switch to Light" data-testid="docs-theme"><svg class="theme__icon theme__icon--system" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg><svg class="theme__icon theme__icon--light" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg><svg class="theme__icon theme__icon--dark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></button></div>
+<button type="button" class="docs-menu" aria-controls="docs-nav" aria-expanded="false" hidden data-testid="docs-menu">Pages</button>
+</div>
+<a class="docs-header__link" href="https://github.com/silvio-l/gitoodo" data-testid="docs-github">GitHub</a>
+<a class="docs-install" href="../../../#download" data-testid="docs-install">Get notified</a>
+</div></header>
+<div class="docs-layout">
+<nav id="docs-nav" class="docs-nav" aria-label="Documentation" data-testid="docs-nav"><div class="docs-nav__section"><p class="docs-nav__title"><a href="../../" data-testid="docs-nav-section-user">For users</a></p><p class="docs-nav__group" id="docs-nav-user-0">Get started</p><ul aria-labelledby="docs-nav-user-0"><li><a href="../../introduction/" data-testid="docs-nav-docs-introduction">What is Gitoodo?</a></li><li><a href="../../getting-started/" data-testid="docs-nav-docs-getting-started">Getting started</a></li></ul><p class="docs-nav__group" id="docs-nav-user-1">Guides</p><ul aria-labelledby="docs-nav-user-1"><li><a href="../../self-hosted-forgejo-gitea/" data-testid="docs-nav-docs-self-hosted-forgejo-gitea">Forgejo and Gitea</a></li><li><a href="../../github-issues-to-pull-requests/" data-testid="docs-nav-docs-github-issues-to-pull-requests">GitHub issues to pull requests</a></li><li><a href="../../safe-auto-merge/" data-testid="docs-nav-docs-safe-auto-merge">Safe auto-merge</a></li><li><a href="../../parallel-coding-agents/" data-testid="docs-nav-docs-parallel-coding-agents">Parallel coding agents</a></li><li><a href="../../switch-from-another-agent-app/" data-testid="docs-nav-docs-switch-from-another-agent-app">Coming from another agent app</a></li></ul><p class="docs-nav__group" id="docs-nav-user-2">Daily use</p><ul aria-labelledby="docs-nav-user-2"><li><a href="../../daily-use/" data-testid="docs-nav-docs-daily-use">How to work with Gitoodo</a></li><li><a href="../../overview/" data-testid="docs-nav-docs-overview">Overview</a></li><li><a href="../../needs-you/" data-testid="docs-nav-docs-needs-you">Needs you</a></li><li><a href="../../questions/" data-testid="docs-nav-docs-questions">Asked of me</a></li><li><a href="../../board/" data-testid="docs-nav-docs-board">All repos</a></li><li><a href="../../chat/" data-testid="docs-nav-docs-chat">Chat</a></li><li><a href="../../repositories/" data-testid="docs-nav-docs-repositories">Repositories</a></li></ul><p class="docs-nav__group" id="docs-nav-user-3">Orchestrator</p><ul aria-labelledby="docs-nav-user-3"><li><a href="../../labels/" data-testid="docs-nav-docs-labels">Status labels and workflow</a></li><li><a href="../../merge-and-release/" data-testid="docs-nav-docs-merge-and-release">Merge control and release planning</a></li><li><a href="../../services/" data-testid="docs-nav-docs-services">Classifier, dispatcher and workers</a></li></ul><p class="docs-nav__group" id="docs-nav-user-4">Reference and help</p><ul aria-labelledby="docs-nav-user-4"><li><a href="../../settings/" data-testid="docs-nav-docs-settings">Settings</a></li><li><a href="../../status/" data-testid="docs-nav-docs-status">Status</a></li><li><a href="../../troubleshooting/" data-testid="docs-nav-docs-troubleshooting">Troubleshooting</a></li><li><a href="../../faq/" data-testid="docs-nav-docs-faq">FAQ</a></li><li><a href="../../privacy/" data-testid="docs-nav-docs-privacy">Privacy</a></li></ul></div><div class="docs-nav__section"><p class="docs-nav__title"><a href="../" data-testid="docs-nav-section-dev">For developers</a></p><p class="docs-nav__group" id="docs-nav-dev-0">Start here</p><ul aria-labelledby="docs-nav-dev-0"><li><a href="../architecture/" data-testid="docs-nav-docs-dev-architecture">Architecture</a></li><li><a href="../building/" data-testid="docs-nav-docs-dev-building">Building</a></li><li><a href="../releasing/" data-testid="docs-nav-docs-dev-releasing">Release</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-1">Interfaces</p><ul aria-labelledby="docs-nav-dev-1"><li><a href="../question-format/" data-testid="docs-nav-docs-dev-question-format">Gitoodo question format (version 2)</a></li><li><a href="../cli/" data-testid="docs-nav-docs-dev-cli">Command line reference</a></li><li><a href="../daemon/" data-testid="docs-nav-docs-dev-daemon">Classifier daemon and command line</a></li><li><a href="../forge-tokens/" data-testid="docs-nav-docs-dev-forge-tokens">Token permissions per forge</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-2">Orchestrator</p><ul aria-labelledby="docs-nav-dev-2"><li><a href="../states/" data-testid="docs-nav-docs-dev-states">States: what Gitoodo shows and what you do about it</a></li><li><a href="../all-repos/" data-testid="docs-nav-docs-dev-all-repos">&quot;All repos&quot;: pages and where things went</a></li><li><a href="../orchestrator-spec/" data-testid="docs-nav-docs-dev-orchestrator-spec">Gitoodo Orchestrator – Specification (v1)</a></li><li><a href="../orchestrator-setup/" data-testid="docs-nav-docs-dev-orchestrator-setup">Orchestrator setup</a></li><li><a href="./" aria-current="page" data-testid="docs-nav-docs-dev-dispatcher">Dispatcher</a></li><li><a href="../branch-rules/" data-testid="docs-nav-docs-dev-branch-rules">Branch rules that work with the autopilot</a></li><li><a href="../security/" data-testid="docs-nav-docs-dev-security">Security model of the orchestrator</a></li><li><a href="../satellites/" data-testid="docs-nav-docs-dev-satellites">Satellites</a></li><li><a href="../repo-hygiene/" data-testid="docs-nav-docs-dev-repo-hygiene">Repo hygiene</a></li><li><a href="../orchestrator-chat/" data-testid="docs-nav-docs-dev-orchestrator-chat">Orchestrator chat</a></li><li><a href="../release-planning/" data-testid="docs-nav-docs-dev-release-planning">Release planning</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-3">App internals</p><ul aria-labelledby="docs-nav-dev-3"><li><a href="../status-model/" data-testid="docs-nav-docs-dev-status-model">Overview status model</a></li><li><a href="../counters/" data-testid="docs-nav-docs-dev-counters">Counters</a></li><li><a href="../startup/" data-testid="docs-nav-docs-dev-startup">Start: first paint and loading state</a></li><li><a href="../logging/" data-testid="docs-nav-docs-dev-logging">Logging</a></li><li><a href="../localisation/" data-testid="docs-nav-docs-dev-localisation">Localisation</a></li><li><a href="../settings-backup/" data-testid="docs-nav-docs-dev-settings-backup">Settings export, import and backup</a></li><li><a href="../symlinks/" data-testid="docs-nav-docs-dev-symlinks">Symbolic links</a></li><li><a href="../window-frame/" data-testid="docs-nav-docs-dev-window-frame">Window frame</a></li><li><a href="../system-permissions/" data-testid="docs-nav-docs-dev-system-permissions">System permissions</a></li><li><a href="../test-access/" data-testid="docs-nav-docs-dev-test-access">Test access: driving the app without a human</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-4">Privacy and data</p><ul aria-labelledby="docs-nav-dev-4"><li><a href="../privacy-policy/" data-testid="docs-nav-docs-dev-privacy-policy">Privacy policy: feedback and usage statistics</a></li><li><a href="../network-inventory/" data-testid="docs-nav-docs-dev-network-inventory">Network inventory of the desktop app</a></li><li><a href="../chat-notification/" data-testid="docs-nav-docs-dev-chat-notification">Chat notification</a></li><li><a href="../support/" data-testid="docs-nav-docs-dev-support">Voluntary support</a></li></ul></div></nav>
+<main id="main" class="docs-main" tabindex="-1" data-testid="docs-main">
+<article class="docs-article">
+<p class="docs-eyebrow">For developers · Orchestrator</p><h1>Dispatcher</h1>
+<details class="docs-toc-inline" data-testid="docs-toc-inline"><summary data-testid="docs-toc-inline-toggle">On this page</summary><ol><li class="docs-toc__l2"><a href="#what-it-does" data-testid="docs-toc-inline-what-it-does">What it does</a></li><li class="docs-toc__l2"><a href="#workers-survive-an-update-965" data-testid="docs-toc-inline-workers-survive-an-update-965">Workers survive an update (#965)</a></li><li class="docs-toc__l2"><a href="#starting-right-away-965" data-testid="docs-toc-inline-starting-right-away-965">Starting right away (#965)</a></li><li class="docs-toc__l2"><a href="#machine-faults-982" data-testid="docs-toc-inline-machine-faults-982">Machine faults (#982)</a></li><li class="docs-toc__l2"><a href="#worker-launch-per-agent" data-testid="docs-toc-inline-worker-launch-per-agent">Worker launch per agent</a></li><li class="docs-toc__l3"><a href="#what-a-worker-loads" data-testid="docs-toc-inline-what-a-worker-loads">What a worker loads</a></li><li class="docs-toc__l2"><a href="#settings-in-the-app" data-testid="docs-toc-inline-settings-in-the-app">Settings in the app</a></li><li class="docs-toc__l3"><a href="#repository-settings-926" data-testid="docs-toc-inline-repository-settings-926">Repository settings (#926)</a></li><li class="docs-toc__l3"><a href="#saving-without-a-save-button-935" data-testid="docs-toc-inline-saving-without-a-save-button-935">Saving without a save button (#935)</a></li><li class="docs-toc__l2"><a href="#worker-commands" data-testid="docs-toc-inline-worker-commands">Worker commands</a></li><li class="docs-toc__l2"><a href="#attach-protocol" data-testid="docs-toc-inline-attach-protocol">Attach protocol</a></li><li class="docs-toc__l2"><a href="#human-control-568" data-testid="docs-toc-inline-human-control-568">Human control (#568)</a></li><li class="docs-toc__l2"><a href="#emergency-stop" data-testid="docs-toc-inline-emergency-stop">Emergency stop</a></li><li class="docs-toc__l2"><a href="#workers-per-machine-967" data-testid="docs-toc-inline-workers-per-machine-967">Workers per machine (#967)</a></li><li class="docs-toc__l2"><a href="#test-desktop-for-desktop-checks-986-995" data-testid="docs-toc-inline-test-desktop-for-desktop-checks-986-995">Test desktop for desktop checks (#986, #995)</a></li><li class="docs-toc__l2"><a href="#fair-share-across-repositories-959" data-testid="docs-toc-inline-fair-share-across-repositories-959">Fair share across repositories (#959)</a></li><li class="docs-toc__l2"><a href="#steering-from-the-overview-352" data-testid="docs-toc-inline-steering-from-the-overview-352">Steering from the overview (#352)</a></li><li class="docs-toc__l2"><a href="#live-terminal-in-the-app" data-testid="docs-toc-inline-live-terminal-in-the-app">Live terminal in the app</a></li><li class="docs-toc__l2"><a href="#usage-limits" data-testid="docs-toc-inline-usage-limits">Usage limits</a></li><li class="docs-toc__l2"><a href="#worker-delivery" data-testid="docs-toc-inline-worker-delivery">Worker delivery</a></li><li class="docs-toc__l2"><a href="#worker-follow-up-issues" data-testid="docs-toc-inline-worker-follow-up-issues">Worker follow-up issues</a></li><li class="docs-toc__l2"><a href="#splitting-an-issue-into-parts" data-testid="docs-toc-inline-splitting-an-issue-into-parts">Splitting an issue into parts</a></li><li class="docs-toc__l2"><a href="#deviations-from-the-spec" data-testid="docs-toc-inline-deviations-from-the-spec">Deviations from the spec</a></li></ol></details>
+<div class="docs-body">
+<p><code translate="no">gitoodo dispatcher</code> runs in the foreground (own process, own service later) and starts one worker
+(Claude Code, Codex or Gemini CLI, see &quot;Worker launch per agent&quot;) per ready issue, each in its own git worktree behind a PTY. It is a client of the
+classifier: it reads the read model, claims work with <code translate="no">next</code>, reports with <code translate="no">done</code> and never writes
+labels itself. <code translate="no">stalled</code> and <code translate="no">needs-human</code> go out as <code translate="no">Request::Flag</code>; only the classifier sets them.</p>
+<h2 id="what-it-does">What it does<a class="docs-anchor" href="#what-it-does" aria-label="What it does" data-testid="docs-md-anchor-what-it-does">#</a></h2>
+<ul><li><strong>Push loop (5 s):</strong> repos in an active state, ready issues by score, host choice
+(<code translate="no">choose_host</code>, local host only for now), claim via the classifier, lease, worktree
+(<code translate="no">dispatch.worktree_root</code>, branch <code translate="no">dispatch.branch_prefix</code>), worker start. Limits come from
+<code translate="no">dispatch.max_workers</code> (default 2, so a first setup does not start workers in many repos at
+once), <code translate="no">cores_per_worker</code>, each machine&#39;s own &quot;workers at once&quot; (#967, see &quot;Workers per
+machine&quot;) and <code translate="no">min_free_memory_mb</code>. The slots are shared fairly across repositories (see &quot;Fair
+share across repositories&quot;).</li><li><strong>Readiness:</strong> an issue without the <code translate="no">ready</code> label (or a legacy alias such as <code translate="no">status:bereit</code>) is
+only ready by a trusted author and a complete body, and never in a repo whose backlog setting is
+<code translate="no">New</code> for issues from before adoption (intake reason <code translate="no">backlog</code>; it waits for approval). Every new
+ready decision logs <code translate="no">classifier.ready</code> with <code translate="no">via</code> = <code translate="no">label</code> or <code translate="no">trusted_author</code> (issues ready when
+first seen at debug); <code translate="no">classifier.ready_seen</code> counts those per poll, split into <code translate="no">label</code> and
+<code translate="no">trusted_author</code>.</li><li><strong>One instance (release-gate review M7):</strong> at start the dispatcher takes an OS file lock
+(<code translate="no">dispatcher.lock</code>) in its config folder and in its state folder, before it touches any lease;
+the OS frees it when the process dies, so a crash leaves no stale lock. A second dispatcher for
+the same folders (second install, a restart while the old one still runs) exits at once, or under
+a service manager waits until the lock is free. Only then, and after it owns the control socket,
+does it release leases.</li><li><strong>Leases (60 s):</strong> every running worker&#39;s lease is renewed. Each local lease names its owner
+(machine, process id, start time). At start only the local leases whose owner is provably gone
+are released: an earlier process on this machine that no longer runs, or a lease from a version
+that did not record owners. Leases owned on another machine and satellite leases are never
+deleted at start; they expire by time or follow the unreachable grace. The forge-side
+<code translate="no">gitoodo:lease v1</code> comments are never deleted. An issue whose dead local lease is released at
+start goes back into the queue (<code translate="no">Flag::Release</code> on the next push tick: <code translate="no">in-progress</code> removed,
+<code translate="no">ready</code> set), so a killed dispatcher leaves no orphans behind (#337).</li><li><strong>Orphans (#337):</strong> an issue labelled <code translate="no">in-progress</code> without a running worker is orphaned (no
+lease, lease expired, worker ended, or a <code translate="no">local</code> lease of unknown origin). It takes no worker
+slot. The dispatcher cleans orphans up by itself (#868): once a minute it looks for them in the
+repos it may write to (paused or active), and one that is still orphaned after
+<code translate="no">orphans::GRACE_SECS</code> (five minutes) goes back to <code translate="no">ready</code> through the classifier
+(<code translate="no">Flag::Requeue</code>, the same fresh read and swap as &quot;Reset&quot;); a worker that starts meanwhile, here
+or on a satellite, ends the grace. Logged as <code translate="no">dispatch.orphan_requeued</code>. The board lists orphans
+apart on the workers page until then; &quot;Reset&quot; (<code translate="no">reset_orphans</code>, core
+<code translate="no">orchestration::orphans::reset</code>) does it at once: it reads each picked issue fresh, leaves any
+the dispatcher runs a worker for, and swaps <code translate="no">in-progress</code> for <code translate="no">ready</code>. The classifier marks the
+leases this machine&#39;s dispatcher took (<code translate="no">LeaseHolder.ours</code>, <code translate="no">Lease.origin</code> names the machine), so
+&quot;runs on another machine&quot; is shown only for a known other machine.</li><li>**Broken <code translate="no">orchestration.json</code> (M9):** the dispatcher keeps running. Running workers stay managed
+with the last valid configuration (lease renewal, merges, restarts, hygiene, remote polls); no
+new worker or automation starts until the file is valid again (wait reason <code translate="no">config_invalid</code>).
+The problem is reported once per distinct problem: the log (<code translate="no">dispatch.config_invalid</code>), a
+desktop alert (<code translate="no">config_invalid</code>) and <code translate="no">config_problem</code> in the status, each with the file path and
+for a parse error the line and column, never the file&#39;s content. <code translate="no">gitoodo doctor</code> prints the
+same check. A valid file clears it (<code translate="no">dispatch.config_valid</code>). Broken from the start, there is no
+fallback and nothing is dispatched.</li><li><strong>Hang policy:</strong> no output and no hook ping for <code translate="no">dispatch.hang_timeout_seconds</code> restarts the
+worker in the same worktree; after <code translate="no">dispatch.max_restarts</code> restarts the issue is flagged
+<code translate="no">stalled</code>. A locked login (see &quot;Usage limits&quot;) is waiting, never a hang or a restart.</li><li><strong>Machine faults (#982):</strong> a start that fails before the agent runs is the machine&#39;s fault, not
+the issue&#39;s: the agent is missing or signed out, or the clone, the worktree or the spawn fails
+(here or on a satellite, also on a restart). See &quot;Machine faults&quot; below.</li><li><strong>Exit with a pull request:</strong> <code translate="no">merge_when_ready</code> (the forge&#39;s auto-merge where the forge itself
+requires checks, else merge pinned to the head SHA once the checks pass). Pending pulls are
+retried every minute; failed checks restart the worker.
+Exit without a pull request counts as a restart.
+After a dispatcher restart (#565) the waiting pulls are rebuilt from the forge: an open pull on the
+dispatcher&#39;s own branch for the issue (<code translate="no">&lt;branch_prefix&gt;/&lt;n&gt;-…</code>, the pull&#39;s branch name as the
+forge reports it, even when the issue&#39;s title changed) whose issue is open, has a worktree here
+and does not wait for a person (<code translate="no">needs-human</code>, <code translate="no">stalled</code>). A person&#39;s own pull that closes the
+same issue from another branch is never taken up, updated or merged.
+Merge gate (<code translate="no">dispatch::merge::decide</code>, pure): the style is the configured one (default squash) when
+the repo settings allow it, otherwise the first allowed of squash, fast-forward-only, merge, rebase.
+Every merge is pinned to the checked head SHA (Forgejo <code translate="no">head_commit_id</code>). The style per repo is the
+one set in that repository&#39;s settings → Merging (<code translate="no">repos[].merge_method</code>, #926), else the global
+<code translate="no">dispatch.merge_method</code>; the first attempt of each pull logs the effective style and why
+(<code translate="no">merge style squash (repo setting)</code>, <code translate="no">squash (dispatcher default)</code>, or <code translate="no">squash (dispatcher default rebase is not allowed by the forge)</code>).
+Behind-base update (#383): a pull whose branch is behind its base is brought up to date locally
+and the checks are awaited again. Fast-forward-only and rebase rebase the branch onto the base
+(linear history); squash and merge commit merge the base into the branch. The push uses the
+credential-free askpass path of the worker push; the branch is pushed only with
+<code translate="no">--force-with-lease</code> on the pull&#39;s head SHA, so a foreign push is never overwritten. The worker&#39;s
+worktree is used while it has the branch checked out clean at that SHA; when it is gone (cleaned
+up, a restart) or holds other commits (a later run that never pushed) or uncommitted changes, the
+update runs in a temporary detached worktree of the repository&#39;s clone, from the head the forge
+reported, with hooks off, and the worker&#39;s worktree stays as it is. A real conflict is not
+retried: the pull gets a comment naming the files and the issue is <code translate="no">stalled</code> with the cause
+<code translate="no">conflict</code>. At most 3 updates per pull (a base that still moves on: <code translate="no">base_moving</code>); a failed
+update does not count as one, is tried once more, and a second failure in a row stalls the issue
+with <code translate="no">update_failed</code> and the reason in the log (<code translate="no">dispatch.branch_stuck</code>). A satellite run is updated on the satellite (#391): the dispatcher sends
+<code translate="no">update_branch</code> over SSH and the satellite runs the same update with its own git credentials
+(helper or SSH key, no token, no extra forge permission), pushing with the same lease. When the
+satellite has no usable credential or is unreachable, the run log states why and the issue is
+<code translate="no">stalled</code> with <code translate="no">update_failed</code>. The forge&#39;s own &quot;update branch&quot; call is not used, except on GitLab projects with
+fast-forward or semi-linear merges: there GitLab rebases the branch itself (its
+rebase call on the merge request) and the new head is awaited like a push; a branch GitLab cannot
+rebase (conflict) takes the local update. GitLab&#39;s 406 (&quot;branch cannot be merged&quot;) is a refusal like
+405/409, so a refused, stale branch is updated instead of failing.
+Which checks gate: the checks the forge requires, read from the classic branch protection and,
+on GitHub, the rulesets of the base branch (<code translate="no">GET /repos/{o}/{r}/rules/branches/{branch}</code>, rule
+<code translate="no">required_status_checks</code>); on Gitea/Forgejo the protection rule named like the base branch, else the
+first glob rule that matches it (<code translate="no">release/*</code>, <code translate="no">{main,dev}</code>; by <code translate="no">priority</code> where reported), whose
+required contexts may be globs too; on GitLab the head pipeline when &quot;Pipelines must succeed&quot; is on
+(pending until it exists; a pipeline of an older head counts as pending). Only then is the forge&#39;s
+auto-merge used, since without required checks it would merge at once. When the forge requires
+nothing or hides its rules, every check the head reported gates (statuses and check runs: success,
+neutral and skipped pass, pending waits, a failure fails), plus the repo&#39;s extra checks. A head with
+no check at all waits <code translate="no">dispatch.ci_grace_seconds</code> (default 180 s, 0-3600) from when the gate first
+saw it, so CI that has not started yet is not taken for &quot;no CI&quot;; a repo without CI merges after that.
+Failed merge calls: the next attempt waits 1, 2, 4 … up to 30 minutes (a back-off round does not
+use up a merge attempt), and the alert <code translate="no">merge_failed</code> names a cause category (<code translate="no">auth</code> 401/403,
+<code translate="no">protection</code>, <code translate="no">conflict</code> or behind, <code translate="no">not_acceptable</code> 406, <code translate="no">server</code>, <code translate="no">other</code>), never the forge&#39;s text;
+the same cause for the same pull is alerted once, then again only after 1 h, 2 h … up to a day; a new
+cause at once. The full error stays in the dispatcher log.
+A merge the branch protection refuses (<code translate="no">protection</code>) is diagnosed (#942): the dispatcher reads the
+rule of the base branch (repository account first, merge account second) and names the cause
+(<code translate="no">merge_allowlist</code>, <code translate="no">check_missing</code>, <code translate="no">check_failing</code>, <code translate="no">approvals</code>, <code translate="no">outdated</code>, <code translate="no">unknown</code>,
+<code translate="no">unreadable</code>). An outdated branch is updated and merged again, a failed required check goes back
+to the worker. Every other cause is kept in <code translate="no">merge-blocks.json</code> in the state folder, one entry per
+pull request, notified once per pull request and cause (the entry survives a restart, so a restart
+does not notify again) and shown as a card in &quot;Asked of me&quot;. For the merge allowlist, a required
+check that never reports and missing approvals the dispatcher stops merging; it reads the rule again
+every 120 s, and at once after &quot;Allow the merge account&quot; on the card, and merges once the cause is
+gone. These waits use up no merge attempt. GitLab rules are not read (<code translate="no">unreadable</code>). The same
+causes are checked ahead of time when a repository is added or its autopilot switched on (the
+setup check: readiness items <code translate="no">merge-account</code>, <code translate="no">worker-push</code>, <code translate="no">reporting-checks</code>, <code translate="no">approvals</code>); the
+check only shows them and never holds the switch up. See
+<a href="../branch-rules/" data-testid="docs-md-link-1">Branch rules that work with the autopilot</a>.</li><li><strong>Sweeper (5 min and after each merge):</strong> removes worktrees of merged or closed issues and their
+local branches; a worktree with unmerged commits is reported once (<code translate="no">needs-human</code>) and kept. The
+same tick runs the reconcile round of the <a href="../repo-hygiene/" data-testid="docs-md-link-2">repo hygiene</a> (#771): Gitoodo&#39;s worktrees
+and branches without lease or worker, also after a crash, in every checkout and on satellites;
+stale remote branches; maintenance; and the disk guard before each new local worker.</li><li><strong>Shutdown:</strong> SIGTERM or ctrl-c stops the workers, removes the control socket and exits.</li><li>Logs go to <code translate="no">dispatcher.jsonl</code> in the log folder (<a href="../logging/" data-testid="docs-md-link-3">logging</a>) with issue keys only,
+never tokens; stderr only takes bootstrap output (<code translate="no">dispatcher.stderr.log</code>).</li></ul>
+<p><strong>Agent programs (#963).</strong> Every supported coding agent (Claude Code, Codex, Gemini CLI) is found
+by itself; nothing has to be set. Only when an agent is not found does the dispatcher settings page
+offer that agent&#39;s own program path (<code translate="no">dispatch.agent_programs</code> with <code translate="no">claude_code</code>, <code translate="no">codex</code> and
+<code translate="no">gemini</code>, each empty by default), and only for an agent new workers start on (the workers&#39; agent,
+or an agent with a share of the worker distribution); a set path stays visible to change or clear
+it. A set path must point to an existing file. The former single field <code translate="no">dispatch.worker_program</code>
+moves once to <code translate="no">agent_programs.claude_code</code>: the app does it at start under its config-write lock
+(the dispatcher never writes <code translate="no">orchestration.json</code>, it reads the old field the same way until then).
+<code translate="no">claude</code> or an empty value is dropped (found automatically); an absolute path to an existing file
+or a bare command name other than <code translate="no">claude</code> (such as a wrapper) is moved; a path to a missing file is
+dropped, so Claude Code is found automatically, and the log records <code translate="no">config.worker_program_migrated</code>
+with the outcome only (<code translate="no">automatic</code>, <code translate="no">moved</code>, <code translate="no">missing</code>, <code translate="no">already_set</code>), never the path. A path
+already set for Claude Code wins over the old field. For tests, <code translate="no">GITOODO_WORKER_PROGRAM</code> overrides
+Claude Code&#39;s program for one run; an empty value is ignored. A bare name such as <code translate="no">claude</code> is
+looked up independent of the service&#39;s own <code translate="no">PATH</code> (#982), because a launchd/systemd service runs
+with a short one: the service&#39;s <code translate="no">PATH</code>, then the <code translate="no">PATH</code> of the user&#39;s login shell (<code translate="no">$SHELL -l</code>,
+read once at dispatcher start with a 5 s limit), then the usual install folders (<code translate="no">~/.local/bin</code>,
+<code translate="no">~/.claude/local</code>, <code translate="no">/opt/homebrew/bin</code>, <code translate="no">/usr/local/bin</code>, …). Only absolute folders count, so the
+result is always a full path. Not found, the issue is not dispatched and the reason reads &quot;claude
+was not found in PATH, the login shell&#39;s PATH or the usual install folders …&quot;; a path (with <code translate="no">/</code>) is
+used as given and must exist. The folder of the found program is put first in the worker&#39;s <code translate="no">PATH</code>
+(not for <code translate="no">clean_env</code> workers or remote hosts). At start the dispatcher logs where it found the
+orchestrator&#39;s agent (<code translate="no">dispatch.agent_found</code> with <code translate="no">path</code> and <code translate="no">source</code>: <code translate="no">configured</code>, <code translate="no">path</code>,
+<code translate="no">login_shell</code>, <code translate="no">known_folder</code>) or that it is missing (<code translate="no">dispatch.agent_missing</code>); missing while a
+repository has Autopilot on, this machine is paused at once (see &quot;Machine faults&quot;).</p>
+<h2 id="workers-survive-an-update-965">Workers survive an update (#965)<a class="docs-anchor" href="#workers-survive-an-update-965" aria-label="Workers survive an update (#965)" data-testid="docs-md-anchor-workers-survive-an-update-965">#</a></h2>
+<p>Running workers outlive every update or restart of the app and the dispatcher service. The user
+does nothing; the work goes on where it was.</p>
+<ul><li><strong>Worker hosts.</strong> The dispatcher does not start the agent as its own child. It starts a small
+host process (<code translate="no">gitoodo worker-host</code>, hidden) that owns the agent&#39;s terminal (PTY) and keeps it
+running. The start command reaches the host on its stdin (with the worker&#39;s capability, which is
+never written to disk or onto a command line); the host answers with one line (its pid and the
+agent&#39;s) and from then on serves a private socket: <code translate="no">&lt;state&gt;/runs/&lt;id&gt;.sock</code> (mode 0600 in a
+0700 folder) on macOS and Linux, the named pipe <code translate="no">\\.\pipe\gitoodo-worker-&lt;user&gt;-&lt;id&gt;</code> (current
+user only) on Windows. The dispatcher attaches to it with the same frames as the
+<a href="#attach-protocol" data-testid="docs-md-link-4">attach protocol</a>: output with the backlog of the ring, size, input, resize,
+and the exit code. Each worker has a run file <code translate="no">&lt;state&gt;/runs/&lt;id&gt;.json</code> with everything needed
+to take it over (issue, worktree, branch, lease, run id, agent, session id, the program and
+arguments Gitoodo built, a SHA-256 of the capability, pids). It keeps no environment at all: a
+dispatcher that takes the worker over builds the environment again as for any start, from its
+own environment and the configuration, so no token, credential in a URL or capability is ever
+written there. The backlog a viewer gets on attaching (and the redraw after a re-attach) is the
+host&#39;s output ring in memory only and goes with the host. The only output on disk is the run&#39;s
+transcript in the log folder, which the host writes exactly as a dispatcher-run worker always
+did (#749, its own retention).</li><li><strong>Detached per platform.</strong><ul><li>macOS: the host starts in its own process group (<code translate="no">setpgid</code>); the agent under it gets its own
+session from the PTY. The dispatcher&#39;s launchd agent has <code translate="no">AbandonProcessGroup</code>, so launchd
+does not end the workers when it stops or restarts the service, and a terminal hangup is
+ignored by the host.</li><li>Linux: the same process group; the systemd user unit has <code translate="no">KillMode=process</code>, so stopping or
+restarting the unit ends only the dispatcher. A user manager that ends at logout (no
+lingering) still ends everything it runs, as before.</li><li>Windows: the host starts with <code translate="no">CREATE_BREAKAWAY_FROM_JOB</code>, <code translate="no">CREATE_NEW_PROCESS_GROUP</code> and
+<code translate="no">CREATE_NO_WINDOW</code>; a job that does not allow breaking away refuses the first flag, then the
+host starts without it (it then stays in that job and ends with it; the resume below takes
+over). The agent runs in a ConPTY owned by the host. ConPTY starts by asking for the cursor
+position and holds the program&#39;s output until it is answered; the worker&#39;s own reader
+answers it (a fresh terminal, top left) and keeps it out of the output, so a worker nobody
+watches runs on and a viewer attaching later does not answer it a second time.</li></ul></li><li><strong>Shutdown.</strong> A dispatcher that stops (update, service restart, app quit) leaves the hosted
+workers running, refreshes their run files and logs <code translate="no">dispatch.shutdown</code> with <code translate="no">kept</code>. A watchdog
+exit or a crash leaves them running too; the run files are written at every start and restart.</li><li><strong>Take-over at start.</strong> After the instance lock and the control socket and before any lease is
+released, the new dispatcher reads every run file and asks its host how it is
+(<code translate="no">dispatch.handover</code> sums it up):<ul><li>Host there, worker running: it re-attaches (output, status, terminal; <code translate="no">dispatch.worker_reattached</code>),
+takes the lease over with a fresh term (also when it expired while no dispatcher renewed it)
+and recognises the worker&#39;s capability again by its hash. The sessions page shows the worker
+with its old start time.</li><li>Worker ended during the update: the host keeps the exit code (<code translate="no">&lt;id&gt;.exit</code>) until a dispatcher
+took it, at most 24 h. The new dispatcher re-attaches, gets the end and handles it as usual
+(finish, merge flow, restart).</li><li>Host gone (a reboot, a crash of the host): the agent resumes its own session in the kept
+worktree, with the same lease and run id (<code translate="no">dispatch.worker_resumed</code>): Claude Code with
+<code translate="no">--resume &lt;id&gt;</code> (each worker is started with a preset <code translate="no">--session-id</code>, its transcript must
+exist), Codex with <code translate="no">resume &lt;id&gt;</code> (its newest session log in that worktree), and a short note
+to continue where it left off. Gemini CLI and custom programs have no resume by id yet; they,
+and a worktree without a session, start afresh in the same worktree with the original brief.</li><li>Another worker holds the issue now, or the worktree is gone: the run is dropped
+(<code translate="no">dispatch.handover_dropped</code>, <code translate="no">held</code>, <code translate="no">worktree_gone</code>); a still running host is ended first.
+A dead owner&#39;s lease is then freed by the usual start pass and the issue goes back into the
+queue.</li></ul></li><li><strong>Never twice.</strong> One dispatcher per folders (instance lock); a run is taken over only when the
+lease is missing, its own (same worker) or abandoned (<code translate="no">LeaseStore::take_over</code>); a lease of
+another worker wins, and the outlived worker is ended. A host whose dispatcher stays away for 15
+minutes ends its worker without an exit code, so the next dispatcher resumes instead of
+re-attaching late. A dispatcher that cannot be reached is waited for by a worker&#39;s own
+<code translate="no">gitoodo worker …</code> commands for up to 3 minutes (reconnect every 2 s), so an update in the
+middle of a merge request loses nothing.</li><li><strong>Paused for disk space (#970):</strong> a worker the disk guard paused keeps its processes stopped
+across the update; its run file says so, the new dispatcher counts it as paused (never silent,
+never restarted) and its first disk reading resumes it, or keeps it paused while the disk is
+still full.</li><li><strong>Not hosted:</strong> automation sessions (<code translate="no">session:</code> keys) are children of the dispatcher and end
+with it, as before. Satellites: see <a href="../satellites/#updating-a-satellite-965" data-testid="docs-md-link-5">satellites</a>.</li><li><strong>App.</strong> While the dispatcher is away the work area keeps the running sessions and shows one
+quiet line, &quot;Reconnecting 3 workers …&quot;; an open terminal reconnects by itself. After 3 minutes
+without a dispatcher it names what to do (quit and reopen Gitoodo; the sessions continue).</li><li><strong>Verified:</strong> the real <code translate="no">gitoodo worker-host</code> with a real agent process outliving its first
+dispatcher and taken over by a second (<code translate="no">crates/cli/tests/worker_host.rs</code>) on macOS and on
+Windows 11 (named pipe, ConPTY under the host). <strong>Not verified on real machines yet:</strong> an
+update of the installed app with workers running, the Windows breakaway inside the scheduled
+task&#39;s job, and a real Claude Code or Codex resume (the arguments are tested, not the agents&#39;
+behaviour).</li></ul>
+<h2 id="starting-right-away-965">Starting right away (#965)<a class="docs-anchor" href="#starting-right-away-965" aria-label="Starting right away (#965)" data-testid="docs-md-anchor-starting-right-away-965">#</a></h2>
+<p>Workers start as soon as the dispatcher may start them, not after the next slow round.</p>
+<ul><li><strong>At start.</strong> The classifier keeps the model of its last poll in <code translate="no">dispatch-model.json</code> in its
+state folder and answers <code translate="no">dispatch_model</code> with it until its first poll of this run is done (a
+full poll of many repositories takes up to a minute and a half); the first round starts on it
+at once. Starts stay safe: the lease table, the worker limits and the disk check decide as
+always, and an issue that changed meanwhile is caught by the classifier&#39;s next model.</li><li><strong>Leftover search off the start path.</strong> The search for pull requests of an earlier dispatcher
+runs in parallel per repository (90 s at most each) in the background. Putting released
+issues back into the queue and the orphan sweep wait for it, so nothing is started twice; new starts do not.</li><li><strong>Resume.</strong> The dispatcher checks the switch every second. When it opens (a resume, the end of an
+emergency stop, the first repository switched on) it starts a round at once, puts the merge
+round back by a full interval, clears the start back-offs of every machine and asks for a fresh
+usage check of a limited agent (<code translate="no">dispatch.resumed</code>).</li><li><strong>Not yet fixed.</strong> A start can still wait behind the classifier&#39;s reconcile of the same
+repository&#39;s writes (both take one lock; seen at 24.5 s for a large repository).</li></ul>
+<h2 id="machine-faults-982">Machine faults (#982)<a class="docs-anchor" href="#machine-faults-982" aria-label="Machine faults (#982)" data-testid="docs-md-anchor-machine-faults-982">#</a></h2>
+<p>A worker start that fails before the agent runs says nothing about the issue: <code translate="no">spawn_failed</code>, the
+agent missing or signed out, or a clone or worktree error on the machine. Before, every such start
+flagged the issue <code translate="no">stalled</code>, so one broken machine stalled the whole queue.</p>
+<ul><li><strong>The issue goes back unchanged.</strong> The run ends as <code translate="no">start_failed</code>, the lease goes and the issue
+goes back into the queue (<code translate="no">Flag::Requeue</code>: <code translate="no">in-progress</code> for <code translate="no">ready</code>). It counts no restart and is
+never flagged <code translate="no">stalled</code>. A restart of a running issue that fails the same way does the same
+instead of giving up.</li><li><strong>The machine pauses.</strong> After the first such failure the machine (this one or a satellite) takes
+no new start; other machines go on. The back-off is 1, 2, 5, 10 and then every 15 minutes; after
+it the next ready issue is the retry. A start that works ends the pause by itself
+(<code translate="no">dispatch.machine_resumed</code>). While this machine is paused and no satellite is online, the
+dispatch wait reason is <code translate="no">machine_fault</code>.</li><li><strong>One alert per pause.</strong> The alert <code translate="no">machine_fault</code> names the machine and the kind
+(<code translate="no">agent_missing</code>, <code translate="no">agent_login</code>, <code translate="no">no_checkout</code>, <code translate="no">start_failed</code>, <code translate="no">unreachable</code>), never the
+error&#39;s raw text; the app words it (&quot;Coding agent not found on this computer&quot; plus the next
+step; for a worker machine its name and the action there) and a click opens the status page.
+A worker machine that did not answer (<code translate="no">unreachable</code>) gives no alert and no status-page problem
+(#965): it is retried by itself, the work goes elsewhere and Settings shows it offline. A
+satellite that answered with a reason is never <code translate="no">unreachable</code>; the fault also keeps the agent and
+repository of the failed start, and the status page shows the reason after the machine&#39;s name.
+<code translate="no">DispatcherStatus.machine_faults</code> lists the paused machines (kind, since, failures, next retry,
+readable reason); the status page and the Autopilot card show it.</li><li><strong>Recovery.</strong> <code translate="no">start-faults.json</code> in the state folder notes per issue the machine faults of
+attempts that never reached the agent; a run that reaches it removes the issue, entries go after
+30 days. At start and after a machine recovered (10 per push round, after its dispatch, #988),
+every issue that is <code translate="no">stalled</code> in a repository
+the dispatcher may write to and noted there goes back to <code translate="no">ready</code> (<code translate="no">Flag::Restore</code>: the classifier
+reads it fresh, posts a short note marked <code translate="no">&lt;!-- gitoodo:auto --&gt;</code> and swaps the labels). The first
+time the file is filled from the dispatcher&#39;s own run log (<code translate="no">run.end</code> with <code translate="no">start_failed</code> and no
+<code translate="no">worker.run</code> of the issue), so issues stalled by an older version come back too.</li></ul>
+<h2 id="worker-launch-per-agent">Worker launch per agent<a class="docs-anchor" href="#worker-launch-per-agent" aria-label="Worker launch per agent" data-testid="docs-md-anchor-worker-launch-per-agent">#</a></h2>
+<p>The step&#39;s agent (<code translate="no">ai.agents.orchestrator</code>, or the worker pool&#39;s choice) decides the command line;
+the permission flags follow the repo&#39;s worker mode (<code translate="no">docs/security.md</code>). Every worker runs in its
+PTY with <code translate="no">GITOODO_ISSUE</code> and a full-colour terminal.</p>
+<ul><li><strong>Claude Code:</strong> the interactive session, <code translate="no">claude &lt;permission flags&gt; --settings &lt;json&gt; [--model m] &lt;prompt&gt;</code>. The settings add the status line and the <code translate="no">Stop</code>/<code translate="no">StopFailure</code> hooks, each calling
+<code translate="no">gitoodo hook &lt;event&gt;</code>.</li><li><strong>Codex (#934):</strong> the interactive terminal UI too, so the session shows Codex&#39;s own screen and its
+input line (<code translate="no">instruct</code>, <code translate="no">hold</code>, a typing viewer): <code translate="no">codex --no-daemon &lt;permission flags&gt; [-c notices off] --enable hooks --dangerously-bypass-hook-trust -c hooks.&lt;Event&gt;=… [--model m] -- &lt;prompt&gt;</code>. <code translate="no">--no-daemon</code> keeps each session off the shared background server, which would hand it
+the environment and hooks of the first session. The hooks are session settings, nothing is
+written to <code translate="no">~/.codex</code>: <code translate="no">Stop</code> reports <code translate="no">stop</code>, <code translate="no">UserPromptSubmit</code> and <code translate="no">PostToolUse</code> report
+<code translate="no">activity</code>. The host that starts the process adds the worktree&#39;s folder trust as
+<code translate="no">-c projects={&quot;&lt;worktree&gt;&quot;={trust_level=…}}</code> (as given and resolved), so Codex&#39;s trust menu never
+swallows the first input. The worker starts from the clean environment (no API keys).</li><li><strong>Gemini CLI:</strong> headless, <code translate="no">gemini --yolo [--sandbox …] [--model m] -p &lt;prompt&gt;</code>; it exits when done.</li></ul>
+<p>A satellite gets the same arguments; it resolves its own <code translate="no">codex</code> or <code translate="no">gemini</code> (<code translate="no">acp::worker_binary</code>)
+and adds the folder trust for its own path.</p>
+<h3 id="what-a-worker-loads">What a worker loads<a class="docs-anchor" href="#what-a-worker-loads" aria-label="What a worker loads" data-testid="docs-md-anchor-what-a-worker-loads">#</a></h3>
+<p>A worker does one issue in one worktree. Everything an agent loads at its start is sent with every
+model call of the session, so the user&#39;s personal setup (dozens of skills and slash commands,
+plugins, MCP servers with their tool lists, memory) costs tokens on every turn and adds tools the
+issue does not need. Workers therefore start lean (<code translate="no">agent::lean</code>); the measured start context of a
+one-line task dropped by about a third for Claude Code (9,538 → 6,466 tokens, 18 → 10 tools) and a
+quarter for Codex (16,157 → 11,908 tokens).</p>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col">Kept</th><th scope="col">Switched off for workers</th></tr></thead><tbody><tr><td>The repository&#39;s instructions (<code translate="no">CLAUDE.md</code>, <code translate="no">AGENTS.md</code>) and its project settings</td><td>The user&#39;s MCP servers (unless the repo allows them, below)</td></tr><tr><td>Gitoodo&#39;s own hooks and status line, passed per session</td><td>Plugins and their marketplaces, skills, slash commands</td></tr><tr><td>Permission mode, sandbox and folder trust (<code translate="no">docs/security.md</code>)</td><td>Memory, output styles</td></tr><tr><td>Login, model choice, the sub-agent setting</td><td>Extra tools a worker never needs (scheduling, worktree switching, app connectors, browser and computer use, image generation)</td></tr></tbody></table></div>
+<ul><li><strong>Claude Code:</strong> <code translate="no">--disable-slash-commands</code> (no skills, no slash commands),
+<code translate="no">--strict-mcp-config --mcp-config {&quot;mcpServers&quot;:{}}</code> (no MCP server from any source),
+<code translate="no">--disallowed-tools CronCreate CronDelete CronList ScheduleWakeup EnterWorktree ExitWorktree</code>
+(with <code translate="no">Agent</code> when sub-agents are off), and in the session settings <code translate="no">autoMemoryEnabled: false</code>,
+<code translate="no">outputStyle: &quot;default&quot;</code> and <code translate="no">enabledPlugins</code> with every plugin the user&#39;s <code translate="no">settings.json</code>
+enables set to <code translate="no">false</code>. The user&#39;s settings files still load: they carry the login helper, the
+provider environment, deny rules and the model. Hooks the user wrote there stay too, since they
+cannot be dropped without dropping those settings; plugin hooks go with the plugins.</li><li><strong>Codex:</strong> <code translate="no">-c features.&lt;name&gt;=false</code> for <code translate="no">plugins</code>, <code translate="no">apps</code>, <code translate="no">memories</code>, <code translate="no">browser_use</code>,
+<code translate="no">computer_use</code>, <code translate="no">in_app_browser</code>, <code translate="no">image_generation</code>, <code translate="no">tool_suggest</code> and <code translate="no">goals</code>,
+<code translate="no">-c skills.include_instructions=false -c skills.bundled.enabled=false</code>,
+<code translate="no">-c mcp_servers.&lt;name&gt;.enabled=false</code> for each server of the user&#39;s <code translate="no">config.toml</code>, and
+<code translate="no">-c hooks.&lt;Event&gt;=[]</code> for each hook event there that Gitoodo does not set itself. Unknown keys and
+feature names are ignored by Codex, so older versions start the same way.</li><li><strong>Gemini CLI:</strong> unchanged.</li></ul>
+<p>The host that starts the process completes the arguments from its own configuration: the dispatcher
+sends a marker (<code translate="no">--disable-slash-commands</code> for Claude Code, <code translate="no">-c gitoodo_worker_mcp=[…]</code> for Codex)
+and <code translate="no">PtyWorker::spawn</code> reads the user&#39;s plugins (<code translate="no">CLAUDE_CONFIG_DIR</code> or <code translate="no">~/.claude/settings.json</code>)
+and the Codex servers and hooks (<code translate="no">CODEX_HOME</code> or <code translate="no">~/.codex/config.toml</code>) there, so a worker machine
+switches off its own. Nothing is written to those folders. Automations and the user&#39;s own sessions
+(#991) keep the full setup: they run the user&#39;s own prompt and may rely on the user&#39;s tools.</p>
+<p><strong>MCP servers per repository:</strong> a repository whose workers need a server names it under Settings →
+repository → Workers → &quot;MCP servers for workers&quot; (<code translate="no">worker_mcp_servers</code> in <code translate="no">orchestration.json</code>,
+letters, digits, <code translate="no">_ - .</code>, at most 20; none by default). The name is the one in the agent&#39;s own
+configuration. Claude Code then loads its configured servers filtered to these
+(<code translate="no">allowedMcpServers</code> in the session settings); Codex keeps these and switches off the others of the
+user&#39;s <code translate="no">config.toml</code>. Servers a repository defines in its own <code translate="no">.mcp.json</code> or <code translate="no">.codex/config.toml</code>
+count like the others for Claude Code and stay untouched for Codex.</p>
+<p><strong>Sub-agents (#952):</strong> unless the repo setting <code translate="no">worker_sub_agents</code> is on (Settings → repo options
+&quot;Workers may use sub-agents&quot;, default off), Claude Code gets <code translate="no">--disallowed-tools Agent</code> (before
+<code translate="no">--settings</code>, so the option&#39;s values end there and never swallow the prompt) and Codex
+<code translate="no">-c features.multi_agent=false -c features.multi_agent_v2=false</code>; Gemini CLI has no such switch.
+The prompt tells the worker not to start other agent sessions. Every 15 seconds the dispatcher (and
+each satellite for its own workers, told by <code translate="no">sub_agents</code> in the spawn request) lists the processes
+and looks for <code translate="no">claude</code>, <code translate="no">codex</code> or <code translate="no">gemini</code> below an issue worker&#39;s agent process
+(<code translate="no">nested_agents::nested</code>, pure over <code translate="no">(pid, ppid, name)</code> records; the worker&#39;s own agent and its
+same-agent helper processes do not count). A find is logged once as <code translate="no">dispatch.nested_agent</code> and,
+with the setting off, ended each round it is still there (<code translate="no">docs/security.md</code>).</p>
+<p>Usage of sub-agents needs no extra counting: the usage Gitoodo shows is the login&#39;s limit windows
+(status line, usage endpoint, Codex limits read), and a sub-agent runs under the same login, so its
+consumption is already in them.</p>
+<p><strong>How a run ends:</strong> a turn end (<code translate="no">Stop</code>) and <code translate="no">activity</code> are signs of life for the hang policy. A
+run ends by <code translate="no">gitoodo ask</code> (parked), <code translate="no">gitoodo worker split</code>, <code translate="no">gitoodo worker blocked</code>, an exit of
+the agent (with or without a pull request, see above), <code translate="no">stop</code>/<code translate="no">cancel</code>, or the hang policy.</p>
+<p><strong>A turn end without a result.</strong> An issue worker whose turn ends (<code translate="no">Stop</code>, Claude Code and Codex
+alike) before it delivered, asked, split or recorded a dependency is not working any more, it waits.
+30 seconds later, unless a tool call or a new turn came in between, the dispatcher looks at it:</p>
+<ul><li>At its usage limit (a <code translate="no">StopFailure</code>, a Claude lock, a Codex report that says blocked): nothing;
+<code translate="no">continue</code> follows at the reset.</li><li>Someone typed into the session in the last 10 minutes or left unsent text in it: the worker is
+theirs. It is listed <code translate="no">idle</code> (the tile says &quot;Idle, waits for your reply&quot;) until it draws again.</li><li>Otherwise the dispatcher types one reminder (<code translate="no">NUDGE_LINE</code>): finish with <code translate="no">gitoodo worker pr</code>,
+<code translate="no">gitoodo ask</code>, <code translate="no">gitoodo worker split</code> or <code translate="no">gitoodo worker blocked</code>, or go on. A second such turn
+end of the same process ends it (<code translate="no">dispatch.worker_idle</code>); the exit without a pull request counts
+as a restart like any other, so an idle agent no longer sits until the hang policy.
+An automation session ends at its first <code translate="no">Stop</code> with
+success. A Codex issue worker also ends with the turn that opened its pull request: after a
+successful <code translate="no">gitoodo worker pr</code> its next <code translate="no">Stop</code> ends the process and the exit counts as success, so
+the merge gate starts at once, as it did when the headless run exited there. A Claude Code session
+stays open after delivery until the hang policy ends it (unchanged). Without the <code translate="no">Stop</code> hook (Codex
+held it back) a Codex worker falls back to that hang path too. A restart (hang, failed checks,
+steering) starts a fresh session with the brief; no earlier session is resumed.</li></ul>
+<p><strong>Usage limits:</strong> Claude Code reports a hit limit through <code translate="no">StopFailure</code> and its status line. Codex
+has neither: each <code translate="no">Stop</code> of a Codex worker asks for a fresh Codex limits read on the next usage tick
+(at most once a minute, not while that read backs off), next to the regular poll and the read after
+a failed exit. A report that says blocked marks the running Codex workers limited; the first report
+that no longer does types <code translate="no">continue</code> into them, like the reset of a Claude lock.</p>
+<p><strong>Typing into Codex:</strong> an instruction (and <code translate="no">continue</code>) goes in as one bracketed paste
+(<code translate="no">ESC [200~ … ESC [201~</code>) and the Enter follows as its own write 250 ms later, because the Codex UI
+takes a fast burst of keys as a paste and an Enter inside it as a line break.</p>
+<h2 id="settings-in-the-app">Settings in the app<a class="docs-anchor" href="#settings-in-the-app" aria-label="Settings in the app" data-testid="docs-md-anchor-settings-in-the-app">#</a></h2>
+<p>Settings → Dispatcher edits the <code translate="no">dispatch</code> block of <code translate="no">orchestration.json</code> (worker limit, usage
+threshold, agent programs, clone and worktree folders, projects folders, base branch, default merge
+style, trusted authors). Every field saves by itself (#935): pickers, switches and the merge style at
+once, text and number fields after a short pause in typing and when the field is left. Each save
+reads the stored form again and sends it with only that field changed, so two fields saved in a row
+never undo each other. The core runs the same validation as the daemon (<code translate="no">Config::field_errors</code>) and
+writes the file only when the value is valid, under the app&#39;s config write lock; a refused value is
+not saved, stays in its field as typed and shows its problem there. Settings without a field in the
+app (branch prefix, restarts, timeouts) are kept as they are, and their errors are shown at the top.
+A running dispatcher reads the file every round, so changes apply on its next round; without a
+running dispatcher they apply at its next start. The dispatcher itself never writes
+<code translate="no">orchestration.json</code>. The merge style offers what the core supports; the default is squash. A
+repository can choose its own style in its own settings (below); the repository&#39;s forge settings
+win: a style it does not allow falls back as described under &quot;Exit with a pull request&quot;.</p>
+<h3 id="repository-settings-926">Repository settings (#926)<a class="docs-anchor" href="#repository-settings-926" aria-label="Repository settings (#926)" data-testid="docs-md-anchor-repository-settings-926">#</a></h3>
+<p>Everything Gitoodo does in one repository is on that repository&#39;s own settings page, opened from
+the gear in the repository view&#39;s header, from &quot;Settings&quot; in the menu of its sidebar row, from its
+row in Settings → Repos and from the settings search (which finds every section of every
+connected repository and opens it there). The app settings keep only what is the same everywhere
+and the defaults for repositories without their own value; they have no per-repository rows any
+more. Where a repository has its own value, its setting says so, names the default and offers
+&quot;Use the default&quot;. Nothing moves into files in the repository: every value stays where it was
+stored before, on this computer, and works the same for every forge.</p>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col">Section</th><th scope="col">Option</th><th scope="col">Stored in</th><th scope="col">Before #926</th></tr></thead><tbody><tr><td>Autopilot</td><td>On or paused</td><td>app settings (<code translate="no">disabled_repos</code>)</td><td>Settings → Repos, row and detail</td></tr><tr><td>Autopilot</td><td>Orchestrator rights check</td><td>read from the forge</td><td>repository detail, &quot;Gitoodo for this repository&quot;</td></tr><tr><td>Merging</td><td>Merge style (own or default)</td><td><code translate="no">orchestration.json</code>, <code translate="no">repos[].merge_method</code></td><td>Settings → Dispatcher, one row per repository</td></tr><tr><td>Merging</td><td>Required checks</td><td><code translate="no">orchestration.json</code>, repository policy</td><td>repository detail, &quot;Order and merge gate&quot;</td></tr><tr><td>Questions</td><td>Who answers, routing rules, format link in the label</td><td><code translate="no">orchestration.json</code>, repository options</td><td>repository detail, &quot;Rules for this repository&quot;</td></tr><tr><td>Questions</td><td>Language on the forge (own or the one under Settings → Language)</td><td><code translate="no">orchestration.json</code>, <code translate="no">repos[].forge_language</code></td><td>repository detail, &quot;Rules for this repository&quot; (#980)</td></tr><tr><td>Workers</td><td>Guarded permissions, follow-up issues, sub-agents</td><td><code translate="no">orchestration.json</code>, repository options</td><td>repository detail, &quot;Rules for this repository&quot;</td></tr><tr><td>Workers</td><td>MCP servers for workers (none by default)</td><td><code translate="no">orchestration.json</code>, <code translate="no">repos[].worker_mcp_servers</code></td><td>new</td></tr><tr><td>Workers</td><td>Approve each follow-up (own or <code translate="no">dispatch.follow_up_approval</code>)</td><td><code translate="no">orchestration.json</code>, <code translate="no">repos[].follow_up_approval</code></td><td>Settings → Repos, rule switches</td></tr><tr><td>Releases</td><td>Release planning</td><td><code translate="no">orchestration.json</code>, repository options</td><td>repository detail, &quot;Gitoodo for this repository&quot;</td></tr><tr><td>Local copy</td><td>Working copy path, clone</td><td><code translate="no">orchestration.json</code>, repository entry</td><td>repository detail, &quot;On this computer&quot;</td></tr><tr><td>On the forge</td><td>Recommended settings checklist, adopt</td><td>the forge (written only after confirmation)</td><td>repository detail, &quot;On the forge&quot;</td></tr><tr><td>Order (Advanced)</td><td>Own score weights, boost label</td><td><code translate="no">orchestration.json</code>, repository policy</td><td>repository detail, &quot;Order and merge gate&quot;</td></tr><tr><td>Overview (Advanced)</td><td>Stale after (own days or default)</td><td>app settings (<code translate="no">stale.repos</code>)</td><td>Settings → Overview, one row per repository</td></tr></tbody></table></div>
+<p>The projects folders (where existing working copies are looked for) are the same for every
+repository and moved from the repository detail to Settings → Dispatcher → Advanced. Release
+management will get its home in the &quot;Releases&quot; section; a new repository-level group gets its own
+section id in <code translate="no">REPO_SECTIONS</code> (<code translate="no">src/views/settings/structure.ts</code>), which also feeds the search and
+the web docs.</p>
+<h3 id="saving-without-a-save-button-935">Saving without a save button (#935)<a class="docs-anchor" href="#saving-without-a-save-button-935" aria-label="Saving without a save button (#935)" data-testid="docs-md-anchor-saving-without-a-save-button-935">#</a></h3>
+<p>No settings page has a Save button any more. Each panel saves through the existing commands and
+their config write lock, one save after the other (<code translate="no">SaveQueue</code>, <code translate="no">src/views/settings/autoSave.ts</code>):
+of several waiting values of one field only the newest is written. A quiet &quot;Saved&quot; confirms it for
+two seconds; a failed save (offline, a locked file, a refused value) shows an error bar at the panel
+with &quot;Try again&quot;, and the controls show what is stored. No change asks for a confirmation unless it
+is destructive (removing a webhook address or a label on the forge).</p>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col">Place</th><th scope="col">Before</th><th scope="col">Now</th></tr></thead><tbody><tr><td>Settings → Dispatcher</td><td>one form with Save and Discard</td><td>every field saves by itself</td></tr><tr><td>Settings → Dispatcher, merge style per repository</td><td>rows in the form</td><td>the repository&#39;s settings, at once</td></tr><tr><td>Repository detail, options and policy</td><td>Save per part</td><td>every field saves by itself; a half-filled routing rule waits until label and login are set</td></tr><tr><td>Repository detail, local copy path</td><td>&quot;Use path&quot;</td><td>on leaving the field or Return</td></tr><tr><td>Repository detail, projects folders</td><td>&quot;Save folders&quot;</td><td>Settings → Dispatcher → Advanced, by itself</td></tr><tr><td>Settings → Overview, stale days</td><td>Save per account</td><td>by itself; per repository in its settings</td></tr><tr><td>Settings → Chat notification, webhook address</td><td>Save</td><td>on leaving the field or Return (a secret, never half-typed)</td></tr><tr><td>Settings → Chat notification, handles</td><td>&quot;Save mappings&quot;</td><td>each complete row at once, a typed handle after a pause</td></tr><tr><td>Settings → AI assist, session primer</td><td>Save</td><td>after a pause and on leaving the text; &quot;Reset&quot; stays</td></tr></tbody></table></div>
+<p>Kept on purpose: the automation editor (it creates or edits one automation with several required
+fields, so &quot;Add&quot; and &quot;Save&quot; finish the item), renaming this machine (it changes which <code translate="no">host:</code> labels
+this machine takes, so it stays an explicit rename with Cancel), and the multi-step assistants
+(token wizard, setup assistant, remote machines).</p>
+<h2 id="worker-commands">Worker commands<a class="docs-anchor" href="#worker-commands" aria-label="Worker commands" data-testid="docs-md-anchor-worker-commands">#</a></h2>
+<ul><li><code translate="no">gitoodo ask [--issue &lt;key&gt;]</code> reads a JSON spec from stdin (<code translate="no">id</code>, <code translate="no">to</code>, optional <code translate="no">context</code>
+(at most 3 lines), <code translate="no">deadline</code>, <code translate="no">questions</code> with <code translate="no">text</code>, <code translate="no">kind</code>, <code translate="no">options</code>, <code translate="no">recommendation</code>), renders
+it in question format v2 (<code translate="no">docs/question-format.md</code>) as <code translate="no">worker</code> block, posts it as a comment, asks the
+classifier for <code translate="no">needs-human</code> and parks the worker: it is stopped without restart or report until a human
+answers. The issue defaults to <code translate="no">GITOODO_ISSUE</code>, which the dispatcher sets (<code translate="no">account/owner/name#n</code>).
+Before posting it checks that the human can decide from the card alone (#949): a <code translate="no">context</code> of at
+least one sentence, every question ending in <code translate="no">?</code>, a <code translate="no">consequence</code> for every option of a choice
+question. Otherwise it posts nothing and names every problem (<code translate="no">question not posted: …</code>), so the
+worker rewrites the spec. The skill (<code translate="no">skill/gitoodo-questions/SKILL.md</code>) shows the spec with a good
+and a bad example.</li><li><code translate="no">gitoodo worker follow-up --title &lt;t&gt; --body-file &lt;path|-&gt; [--label &lt;kind&gt;]</code> proposes a follow-up
+issue for work outside the worker&#39;s own issue (spec 8.3, #337). See &quot;Worker follow-up issues&quot;.</li><li><code translate="no">gitoodo worker split --plan &lt;path|-&gt;</code> splits the worker&#39;s issue into parts before it writes code
+(#1012). See &quot;Splitting an issue into parts&quot;.</li><li><code translate="no">gitoodo worker blocked --on &lt;#n[,#m]&gt; --reason &lt;text&gt;</code> says the worker&#39;s issue cannot go on
+before other issues land. The broker checks the references (<code translate="no">#n</code>, <code translate="no">repo#n</code>, <code translate="no">owner/repo#n</code>, at
+most 10, not the issue itself, at least one still open), adds a <code translate="no">Depends on …</code> line for the
+missing ones to the issue&#39;s description, which the classifier reads as <code translate="no">blocked</code>, and posts a
+short note with the reason (&quot;Waits for #361. …&quot;, marked as Gitoodo&#39;s own, so it declares nothing
+itself). Then the run ends as <code translate="no">blocked</code>: the lease goes, an untouched worktree goes, and the issue
+waits in the queue until its dependencies are closed. It is never counted as a restart or a
+failure. Refusals start with <code translate="no">dependency not recorded:</code> and name the problem; satellites refuse
+for now.</li><li><code translate="no">gitoodo hook status-line|stop|stop-failure|activity</code> reports a Claude Code or Codex hook to the
+dispatcher; silent when none runs. It reads (and drops) the hook&#39;s JSON input, prints nothing and
+never fails the hook.</li></ul>
+<h2 id="attach-protocol">Attach protocol<a class="docs-anchor" href="#attach-protocol" aria-label="Attach protocol" data-testid="docs-md-anchor-attach-protocol">#</a></h2>
+<p>Unix socket <code translate="no">dispatcher.sock</code> in the private runtime folder (<code translate="no">dispatcher_rpc::socket_path</code>), mode 0600
+in a 0700 folder; newline-delimited JSON (<code translate="no">crates/core/src/dispatcher_rpc.rs</code>). On Windows the same
+protocol runs over the named pipe <code translate="no">\\.\pipe\gitoodo-dispatcher-&lt;user&gt;</code> (<code translate="no">dispatcher_rpc::pipe_name</code>): its
+DACL grants access to the current user&#39;s SID only, remote clients are rejected and the first instance
+is created exclusively, so a second dispatcher or a foreign process cannot take the name (#354; the
+pipe code is the small <code translate="no">gitoodo-pipe-security</code> crate, the only place with <code translate="no">unsafe</code>). A pipe serves one
+client per instance, so the dispatcher creates the next instance before it hands over a connection.
+Named pipes have no half-close: the client detaches by shutting down its write side. A connection starts
+with one request:</p>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col">Request</th><th scope="col">Reply</th></tr></thead><tbody><tr><td><code translate="no">{&quot;cmd&quot;:&quot;list&quot;}</code></td><td><code translate="no">workers</code>: issue, worker, host, restarts, agent, started_at (unix s; optional, #723), held (only when true, #884); limited, limited_until (unix s), idle (each only when set)</td></tr><tr><td><code translate="no">{&quot;cmd&quot;:&quot;park&quot;,&quot;issue&quot;:k}</code></td><td><code translate="no">ok</code>, or <code translate="no">error</code> when no such worker runs</td></tr><tr><td><code translate="no">{&quot;cmd&quot;:&quot;stop&quot;,&quot;issue&quot;:k}</code></td><td><code translate="no">ok</code>, or <code translate="no">error</code> when no such worker runs</td></tr><tr><td><code translate="no">{&quot;cmd&quot;:&quot;restart&quot;,&quot;issue&quot;:k}</code></td><td><code translate="no">ok</code>, or <code translate="no">error</code> (no such worker, parked)</td></tr><tr><td><code translate="no">{&quot;cmd&quot;:&quot;instruct&quot;,&quot;issue&quot;:k,&quot;text&quot;:t}</code></td><td><code translate="no">ok</code>, or <code translate="no">error</code> (no such worker, empty or too long, half-typed line; see below)</td></tr><tr><td><code translate="no">{&quot;cmd&quot;:&quot;hold&quot;,&quot;issue&quot;:k}</code></td><td><code translate="no">ok</code>, or <code translate="no">error</code> (no local worker, half-typed line; see below)</td></tr><tr><td><code translate="no">{&quot;cmd&quot;:&quot;resume&quot;,&quot;issue&quot;:k}</code></td><td><code translate="no">ok</code>, or <code translate="no">error</code> (no local worker, half-typed line)</td></tr><tr><td><code translate="no">{&quot;cmd&quot;:&quot;cancel&quot;,&quot;issue&quot;:k}</code></td><td><code translate="no">ok</code>, or <code translate="no">error</code> when no such worker runs</td></tr><tr><td><code translate="no">{&quot;cmd&quot;:&quot;hook&quot;,&quot;issue&quot;:k,&quot;event&quot;:e}</code></td><td><code translate="no">ok</code>; optional <code translate="no">&quot;usage&quot;</code>: a snapshot</td></tr><tr><td><code translate="no">{&quot;cmd&quot;:&quot;status&quot;}</code></td><td><code translate="no">status</code>: usage, lock, counts (below)</td></tr><tr><td><code translate="no">{&quot;cmd&quot;:&quot;recheck&quot;,&quot;agent&quot;:a}</code></td><td><code translate="no">status</code> after asking agent <code translate="no">a</code>&#39;s usage source again (&quot;Resume now&quot;, see Usage limits)</td></tr><tr><td><code translate="no">{&quot;cmd&quot;:&quot;attach&quot;,&quot;issue&quot;:k}</code></td><td>stream of frames, see below</td></tr></tbody></table></div>
+<p><code translate="no">instruct</code> (#883) writes <code translate="no">t</code> into the worker&#39;s terminal as one line (line breaks become spaces,
+control characters go, at most 4000 characters) and Enter 250 ms later, so an agent does not read the
+Enter as part of a paste. Nothing goes to the forge. The dispatcher counts the keys typing viewers send
+per worker (characters add, Backspace takes one away, Enter, Ctrl-C and Ctrl-U empty the line, escape
+sequences change nothing); while that count is above zero a human left unsent text in the agent&#39;s
+input line, and <code translate="no">instruct</code> answers <code translate="no">error</code> starting with <code translate="no">the input line holds unsent text</code> instead
+of gluing the instruction to it. A started or restarted worker starts with an empty line. For a worker
+on a satellite the dispatcher opens the satellite&#39;s attach stream and sends the line as <code translate="no">input</code> frames.</p>
+<p><code translate="no">hold</code> (#884) pauses a worker softly: it sends the agent an instruction (the same path as <code translate="no">instruct</code>)
+to finish the step it is on, then stop and wait, and marks the worker <code translate="no">held</code>. The worker keeps its
+process, worktree and lease; while held, quiet is not a hang, so the dispatcher does not restart it.
+<code translate="no">resume</code> sends &quot;continue where you left off&quot; and ends the mark; both answer <code translate="no">ok</code> without sending
+anything when the worker already is in that state. A restart ends the mark. <code translate="no">cancel</code> ends the worker
+and puts the issue back into the queue: the lease is released without the <code translate="no">needs-human</code> flag, so the
+next free slot picks the issue up again with a fresh agent. Unlike <code translate="no">stop</code>, nobody has to decide first.</p>
+<p>After <code translate="no">attach</code> the dispatcher sends <code translate="no">output</code> frames (hex bytes; first the 256 KiB backlog, then live
+output) and a final <code translate="no">exit</code> frame. When the worker is restarted while a viewer is attached (hang,
+failed checks, steering), the stream does not end: it goes on with the new process after a terminal
+reset (<code translate="no">ESC c</code>), its backlog and its size, so the <code translate="no">exit</code> frame always means the worker is really
+gone. The client may send <code translate="no">input</code> frames (hex bytes) at any time; they are
+written to the worker&#39;s terminal, and <code translate="no">{&quot;frame&quot;:&quot;resize&quot;,&quot;cols&quot;:c,&quot;rows&quot;:r}</code> frames, which set the size of
+the worker&#39;s terminal (zero sizes are ignored). Bytes of the terminal are opaque, so a client can render
+them with any terminal emulator. Closing the connection detaches; the worker keeps running.</p>
+<h2 id="human-control-568">Human control (#568)<a class="docs-anchor" href="#human-control-568" aria-label="Human control (#568)" data-testid="docs-md-anchor-human-control-568">#</a></h2>
+<p>The dispatcher reads <code translate="no">control.json</code> on every push tick (spec §5.7). While the global switch is
+paused it starts no worker and merges nothing, and it stops the running ones (lease released,
+<code translate="no">in-progress</code> removed, no <code translate="no">needs-human</code>). Workers of a repo that is no longer <code translate="no">active</code> are stopped
+the same way. A held PR keeps waiting without using a merge attempt, a vetoed PR is flagged
+<code translate="no">needs-human</code> and never merged. Questions, stalls, failed merges and vetoes are written to
+<code translate="no">activity/alerts.jsonl</code> for the app&#39;s desktop notifications; each alert names its account, repository
+and item, so a click opens it (#939, <code translate="no">docs/counters.md</code>), and a failed merge carries its <code translate="no">cause</code>
+(including <code translate="no">checks</code> and <code translate="no">attempts</code>), which the app words in the UI language.</p>
+<h2 id="emergency-stop">Emergency stop<a class="docs-anchor" href="#emergency-stop" aria-label="Emergency stop" data-testid="docs-md-anchor-emergency-stop">#</a></h2>
+<p>&quot;Alles anhalten&quot; stops all orchestration at once. It is <code translate="no">halted</code> in <code translate="no">orchestration.json</code>
+(<code translate="no">gitoodo_core::orchestration::halt</code>), set from the stop control in the title bar, the tray
+menu, Cmd/Ctrl+Shift+H or <code translate="no">gitoodo stop-all</code>, and lifted with &quot;Fortsetzen&quot; or
+<code translate="no">gitoodo resume</code>. While halted:</p>
+<ul><li>the dispatcher starts no worker and no automation, merges nothing, updates no branch and skips
+the cleanup round; running workers are stopped like a pause above (lease released,
+<code translate="no">in-progress</code> removed so the issue is <code translate="no">ready</code> again, worktree kept);</li><li>the classifier writes nothing (labels, comments, milestones, approvals); reading and the read
+model go on, so the app keeps showing everything;</li><li>the repos keep their own states. Resuming does not switch anything on: every repo continues as
+it was (<code translate="no">active</code>, <code translate="no">paused</code>, <code translate="no">observed</code>).</li></ul>
+<p>The older global pause (<code translate="no">paused</code> in <code translate="no">control.json</code>) still counts as halted and is moved into
+<code translate="no">halted</code> at the next start.</p>
+<p><strong>Across restarts</strong> (#925): the stop keeps its state. What ran when the app ended runs again
+after a restart of the app, the services or the machine; what was halted stays halted until the
+user resumes. A start only folds the older global pause into <code translate="no">halted</code> and drops the former
+start-mode fields (<code translate="no">on_start</code>, <code translate="no">start_session</code>) from the file; files that still have them load
+as before. A missing <code translate="no">orchestration.json</code> (fresh install) is not created.</p>
+<p><code translate="no">dispatch.max_workers</code> defaults to 2 when the file does not set it; the dispatcher never runs more
+workers than that over all hosts.</p>
+<h2 id="workers-per-machine-967">Workers per machine (#967)<a class="docs-anchor" href="#workers-per-machine-967" aria-label="Workers per machine (#967)" data-testid="docs-md-anchor-workers-per-machine-967">#</a></h2>
+<p>A machine runs at most <code translate="no">capacity = min(automatic, max_workers)</code> workers at once: automatic is one
+per <code translate="no">dispatch.cores_per_worker</code> cores (at least one), <code translate="no">max_workers</code> the user&#39;s own maximum for that
+machine (<code translate="no">local_host.max_workers</code> for this one, <code translate="no">hosts[].max_workers</code> for a satellite; absent =
+automatic; set in Settings › Worker machines, <code translate="no">docs/orchestrator/satellites.md</code>).</p>
+<ul><li><strong>Host choice:</strong> a machine at its capacity takes no new worker; among the others the lowest load
+<code translate="no">running / capacity</code> wins, so a capped machine counts as fuller than its cores suggest.</li><li><strong>Fair share:</strong> the share splits the slots the machines offer together: the sum of the
+capacities of this machine and every satellite that answers, never more than <code translate="no">max_workers</code>
+(<code translate="no">dispatch::host::slots</code>). Capped machines therefore never promise a repository slots no machine
+can fill.</li><li><strong>Wait reason:</strong> an issue pinned to a machine (<code translate="no">host:</code>) that is full because of its own maximum,
+not its cores, waits with reason <code translate="no">host_limit</code>; <code translate="no">host-wait.json</code> and the read model carry the
+machine and the number (<code translate="no">limit: {host, max}</code>, this machine by its own name), the log says
+&quot;<code translate="no">studio</code> runs at most 2 at once&quot;, and the board says &quot;Waits for “studio”: it already runs as many
+workers as you set for this machine (2).&quot; with the link to the worker machines. A machine full
+by its cores keeps <code translate="no">at_capacity</code>. The wait ends by itself and is never notified.</li></ul>
+<h2 id="test-desktop-for-desktop-checks-986-995">Test desktop for desktop checks (#986, #995)<a class="docs-anchor" href="#test-desktop-for-desktop-checks-986-995" aria-label="Test desktop for desktop checks (#986, #995)" data-testid="docs-md-anchor-test-desktop-for-desktop-checks-986-995">#</a></h2>
+<p>Workers that check native apps use Agent Desktop (<a href="../system-permissions/#agent-desktop-desktop-control" data-testid="docs-md-link-6">permissions</a>).
+Every machine whose Agent Desktop is ready and whose desktop use is not off is a test desktop for
+its platform, so a cross-platform app is checked on each platform it targets. When a worker has at
+least one test desktop, its brief gets a paragraph (<code translate="no">brief::desktop_rule</code>): the desktops with name
+and platform, a check on every platform the repository or the issue targets (its own machine
+first), <code translate="no">--on NAME</code> for another machine, every Agent Desktop command as <code translate="no">gitoodo desktop [--on NAME] &lt;command&gt; ...</code> (never the <code translate="no">agent-desktop</code> program directly), <code translate="no">gitoodo desktop-turn [--on NAME] &quot;WHAT&quot;</code> to wait for a desktop, one desktop command at a time, <code translate="no">gitoodo desktop-turn [--on NAME] --done</code> before long builds or test runs, and <code translate="no">gitoodo ask</code> instead of guessing when a
+platform, a permission or the app is missing. Workers start without skills (&quot;What a worker
+loads&quot;), so the paragraph points to the guide Agent Desktop ships: <code translate="no">gitoodo desktop skills list</code>
+and <code translate="no">gitoodo desktop skills get NAME</code> print the version-matched skills (the same text the
+assistants&#39; skill folders hold for the user&#39;s own sessions).</p>
+<ul><li><strong>Setting, per machine:</strong> <code translate="no">desktop</code> on <code translate="no">local_host</code> and on each <code translate="no">hosts[]</code> entry of
+<code translate="no">orchestration.json</code> (Settings › Worker machines › &quot;Desktop tests&quot; on each machine&#39;s card):
+<code translate="no">{&quot;mode&quot;: &quot;off&quot;}</code> (not allowed), <code translate="no">{&quot;mode&quot;: &quot;when_idle&quot;, &quot;idle_seconds&quot;: N}</code> (30–3600, the
+default with 120 s, not written) or <code translate="no">{&quot;mode&quot;: &quot;always&quot;}</code> (also while someone works there, for a
+dedicated test machine). The field shows on this machine&#39;s card when Agent Desktop can run here
+(not in the store build) and on a worker computer&#39;s card once its setup reported Agent Desktop.
+The former single <code translate="no">test_desktop</code> block (<code translate="no">target</code>, <code translate="no">while_in_use</code>, <code translate="no">idle_seconds</code>) is still read:
+on load its values move to the named machine (absent target = this machine; a name that is no
+longer a machine is dropped), and it is never written again.</li><li><strong>Which desktops a worker gets</strong> (<code translate="no">dispatcher::usable_desktops</code>): for a worker on this machine,
+this machine when Agent Desktop is installed here, and every worker computer whose last setup
+(<code translate="no">desktop-rollout.json</code> in the config folder) found an Agent Desktop version, that answers the
+dispatcher (its reported system is the platform) and is not still being set up. A worker computer
+whose permission still waits for the person there is listed with that note, so the worker asks
+instead of failing. A worker on a worker computer gets only that computer&#39;s own desktop: the
+worker computer knows neither the other machines nor their SSH sign-in (keys and kept passwords
+stay on the machine running the dispatcher), so it cannot reach another desktop.</li><li><strong>Worker environment:</strong> <code translate="no">GITOODO_DESKTOP_SESSION</code> (<code translate="no">Gitoodo &lt;repo&gt;#&lt;n&gt;</code>, so a waiting worker
+names the holder), <code translate="no">GITOODO_DESKTOPS</code> (JSON list of <code translate="no">{name, platform, guard, own, needs_permission}</code>; <code translate="no">guard</code> is the idle threshold in seconds, 0 = any time; <code translate="no">own</code> is the machine
+the worker runs on, used without <code translate="no">--on</code>) and, for a worker on this machine,
+<code translate="no">GITOODO_DESKTOP_WAIT</code> (<code translate="no">&lt;state&gt;/desktop-wait/&lt;worker key&gt;.json</code>).</li><li><strong>Turns</strong> (<code translate="no">crates/core/src/desktop_turn.rs</code>): one session holds a desktop at a time, recorded in
+<code translate="no">&lt;state&gt;/desktop-wait/local.lease</code> under a file lock <strong>on the machine that owns the desktop</strong>. A
+worker there takes it directly; a worker reaching it with <code translate="no">--on</code> runs <code translate="no">gitoodo desktop-turn --remote &lt;base64 JSON&gt;</code> there over SSH (the same link <code translate="no">gitoodo desktop</code> uses), so both meet at
+the same lease and never act side by side. The first <code translate="no">gitoodo desktop</code> command of a worker takes
+the desktop when it is free; <code translate="no">gitoodo desktop-turn &quot;WHAT&quot;</code> polls for up to 100 s (every 2 s here,
+every 5 s over SSH) and prints <code translate="no">OK</code>, <code translate="no">BUSY: &lt;holder&gt; …</code> or <code translate="no">PERSON: …</code>, each naming the machine;
+both waiting answers (and a desktop command refused for the same reason) exit with code 75, and
+the worker runs it again within 90 s. A turn ends with <code translate="no">--done</code> or by itself 10 minutes after the
+last desktop command. With &quot;when idle&quot;, a new turn also waits until nobody has used mouse or
+keyboard at that desktop for the set time, measured on the machine that owns it: macOS reads the
+HID system (works from SSH too), Windows asks <code translate="no">GetLastInputInfo</code> in the signed-in session (from
+SSH through the same interactive bridge as the desktop commands). Where the idle time is unknown
+(Linux, or Windows without a signed-in session, where the desktop command itself then reports
+that nobody is signed in) only the turns apply.</li><li><strong>A person comes first, at every command:</strong> under &quot;when idle&quot; every <code translate="no">gitoodo desktop</code> command
+of the holder measures the idle time again, not only the first one. The lease notes when the
+holder&#39;s last command ended (<code translate="no">acted</code>); input later than that (2 s slack for late events) came
+from a person, so the turn ends at once: the lease is removed, the command is refused with
+<code translate="no">PERSON</code> (exit 75), and anyone waiting gets <code translate="no">PERSON</code> too, not <code translate="no">BUSY</code>. A new turn then needs the
+full idle time again. Only a single command already running finishes. &quot;Always&quot; never measures.
+Each grant, refusal and ended turn is appended with the measured idle seconds to
+<code translate="no">&lt;state&gt;/desktop-wait/&lt;target&gt;.turns</code> (JSON lines, no secrets, kept to about 256 KB).</li><li><strong>No way around the turn:</strong> in a worker (<code translate="no">GITOODO_ISSUE</code> set), the <code translate="no">agent-desktop</code> launcher
+Gitoodo installs in <code translate="no">~/.local/bin</code> runs <code translate="no">gitoodo desktop &lt;command&gt;</code> instead of the program, so
+a skill that names <code translate="no">agent-desktop</code> still takes the turn; without <code translate="no">gitoodo</code> it refuses (exit 126).
+On Windows the launcher always went through <code translate="no">gitoodo desktop</code>. A worker without any usable
+desktop (desktop use off everywhere it can reach) is refused by <code translate="no">gitoodo desktop</code> (exit 2)
+instead of running the program unchecked. A person&#39;s own <code translate="no">agent-desktop</code> commands outside a
+worker run directly as before.</li><li><strong>Another machine&#39;s desktop:</strong> <code translate="no">gitoodo desktop --on NAME</code> sends the command over SSH to that
+computer&#39;s <code translate="no">gitoodo desktop</code> (arguments as base64 JSON, so no remote shell reinterprets them).
+On Windows it runs in the signed-in desktop session, which must be unlocked.</li><li><strong>Wait reason:</strong> while a worker on this machine waits, the wait file holds <code translate="no">desktop_wait {target, reason: busy|person, holder}</code> with the machine&#39;s name as <code translate="no">target</code>; the read model carries it for
+issues with a lease (a file older than 60 s counts as left over), and the board shows &quot;Waits for
+the desktop of “hp840” while another worker uses it.&quot; or &quot;Waits until nobody works at “mac”.&quot;
+with the holder in the tooltip. It is calm: the worker goes on by itself. The file goes when the
+worker gets the desktop, and the dispatcher removes it when the worker ends. Workers on worker
+computers report no wait to the board (their wait file would lie on the other machine).</li><li><strong>Moving to a free desktop elsewhere</strong> (<code translate="no">crates/core/src/desktop_move.rs</code>,
+<code translate="no">dispatcher_desktop.rs</code>): a worker on this machine that has waited 3 minutes for a desktop
+(busy or someone working there; the wait keeps its start across the worker&#39;s requests) moves
+once to another worker machine whose desktop of the same system is free. Each dispatch round
+looks at the waiting workers. A candidate is a worker machine with a usable desktop of that
+system (not the waited one), whose labels allow the run (<code translate="no">os:</code>, and the system a <code translate="no">host:</code> alias
+such as <code translate="no">host:mac</code> stands for), that takes a worker now (online, the run&#39;s agent ready, a free
+slot, not paused) and whose desktop would grant a turn right now under its own setting. The look
+is <code translate="no">gitoodo desktop-turn --remote</code> with <code translate="no">probe: true</code> over SSH, in the background, valid for
+90 s; it takes nothing there (an older Gitoodo there takes the turn and is handed it back at
+once). Machines whose desktop may be used &quot;always&quot; come first, then by name. The move: the
+worker is ended, what it had not committed becomes one <code translate="no">WIP: …</code> commit (hooks skipped), the
+branch is pushed with the account from this machine, the lease moves to the target and the run
+starts there with the same run ID through the usual satellite start (the copy with the pushed
+branch comes from this machine, #965) and a brief section &quot;Moved here for desktop tests&quot;. The
+local worktree and branch then go; a later run here fetches the branch from the forge first.
+The log says <code translate="no">dispatch.desktop_move_started</code> and <code translate="no">dispatch.desktop_moved</code> (from, to), the tile
+&quot;Moved to “laptop” for desktop tests.&quot; while that run lasts.</li><li><strong>When not:</strong> never for an issue pinned to a machine (<code translate="no">host:</code> naming a machine, or naming
+neither a machine nor a system), never twice in one run, never for a worker paused, stopped,
+held or done (a stop at the same moment wins). When the work cannot be committed or pushed
+(<code translate="no">dispatch.desktop_move_refused</code>), the worker starts again here and keeps waiting. When the
+start on the target fails, the issue goes back into the queue with its work on the forge and
+in the worktree here. When no machine fits, the worker keeps waiting, the look repeats every
+minute, and the board adds &quot;No other machine can take the desktop tests right now.&quot;
+(<code translate="no">desktop_wait.no_other</code>; <code translate="no">dispatch.desktop_no_other</code> once per run).</li><li><strong>Placement:</strong> an issue whose run waited for a desktop is remembered with that desktop&#39;s system
+(<code translate="no">&lt;state&gt;/desktop-needs.json</code>, 14 days, forgotten when the issue is finished). Its next start
+goes to a machine whose desktop of that system is free right now (this machine&#39;s is asked
+directly), before the usual placement; with none free, or pinned to a machine, the usual
+placement decides. An issue is only known to need a desktop from such a wait: there is no
+label for it.</li><li><strong>Not done:</strong> running only the desktop commands on another machine while the worker stays here
+would need the app under test built and started there; moving the whole run does that. After
+a move the worker reaches only its new machine&#39;s desktop (worker machines do not hold the SSH
+sign-ins of the others), so a check on a further platform waits for a question to the user.</li></ul>
+<h2 id="fair-share-across-repositories-959">Fair share across repositories (#959)<a class="docs-anchor" href="#fair-share-across-repositories-959" aria-label="Fair share across repositories (#959)" data-testid="docs-md-anchor-fair-share-across-repositories-959">#</a></h2>
+<p>The push loop asks the pure planner <code translate="no">dispatch::fair::plan</code> which repository starts next; inside
+the repository the best ready issue (score, then the classifier&#39;s order) still goes first.</p>
+<ul><li><strong>Share:</strong> every repository with Autopilot on that has ready issues or running workers (here and
+on satellites) is active and gets <code translate="no">floor(slots / active)</code> slots, at least one; <code translate="no">slots</code> is
+<code translate="no">max_workers</code>, or fewer when the machines&#39; capacities add up to less (#967). A repository
+at its share starts nothing more while another one below its share has ready work.</li><li><strong>Rotation:</strong> repositories below their share go first, in turns: one that never started goes
+first (best ready score first), then the one whose last start is the oldest; a repository that
+just started goes to the end. The order is kept in memory across ticks (<code translate="no">fair::Turns</code>); after a
+restart every repository starts even, and a repository switched off or removed leaves it.</li><li><strong>Urgent issues:</strong> a ready <code translate="no">priority:p0</code> issue (also the legacy <code translate="no">prio:0</code>) puts its repository at
+the front of its group; the classifier already starts p0 first inside a repository. Urgency
+neither breaks the share nor the global limit.</li><li><strong>No idle slot:</strong> slots no repository below its share can use (no ready work there) go to the
+repositories with more ready work, in the same order, so no slot stays free while anything is
+ready. <code translate="no">max_workers</code> and every host limit (cores, memory, usage, <code translate="no">os:</code>/<code translate="no">host:</code>) still hold.</li><li><strong>No weighting:</strong> every repository counts the same.</li><li><strong>Several starts per tick:</strong> the loop plans again after each start; a repository whose ready
+issues no host takes or the classifier does not hand out sits out the rest of the tick, so its
+slot goes to the next one. A repository whose issues are all pinned to a full or missing machine
+is below its share but never holds a free slot back.</li><li><strong>Wait reason:</strong> a ready issue held back by the share is written to <code translate="no">host-wait.json</code> with reason
+<code translate="no">repo_share</code> and shows on the board as &quot;Waits for a free slot of this repository.&quot; (no link to
+the hosts, nothing to set up); a reason a host gives for a pinned issue wins. While slots are
+free but no machine takes an issue without labels, the share is not what holds it: the issue
+shows that machine reason instead. It ends by itself and is never notified.</li><li><strong>Why a machine takes nothing:</strong> a machine with free slots that takes no worker while work is
+ready logs <code translate="no">dispatch.host_rejected</code> with the reason per agent, once per change
+(<a href="../logging/" data-testid="docs-md-link-7">logging</a>); <code translate="no">gitoodo diagnose</code> lists it per machine.</li></ul>
+<h2 id="steering-from-the-overview-352">Steering from the overview (#352)<a class="docs-anchor" href="#steering-from-the-overview-352" aria-label="Steering from the overview (#352)" data-testid="docs-md-anchor-steering-from-the-overview-352">#</a></h2>
+<p>The overview steers through the dispatcher and the existing mechanisms; every Tauri command needs
+orchestrator mode and returns <code translate="no">{action, target}</code> or a <code translate="no">steering</code> error (<code translate="no">kind: &quot;steering&quot;</code> with a
+<code translate="no">reason</code>: <code translate="no">direct_mode</code>, <code translate="no">dispatcher_offline</code>, <code translate="no">refused</code> (the dispatcher&#39;s message names the cause),
+<code translate="no">invalid_state</code>, <code translate="no">half_typed</code>, <code translate="no">invalid_instruction</code>). Direct mode has no dispatcher, so the commands are refused there.</p>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col">Command (Tauri)</th><th scope="col">Effect</th></tr></thead><tbody><tr><td><code translate="no">park_worker(issue)</code></td><td><code translate="no">park</code>: the worker ends without restart or report and keeps its lease (waiting for a human)</td></tr><tr><td><code translate="no">stop_worker(issue)</code></td><td><code translate="no">stop</code>: the worker ends for good; the lease is released and the issue gets the <code translate="no">needs-human</code> flag, so it is not dispatched again by itself</td></tr><tr><td><code translate="no">hold_worker(issue)</code></td><td><code translate="no">hold</code>: soft pause, the agent finishes its step and waits</td></tr><tr><td><code translate="no">unhold_worker(issue)</code></td><td><code translate="no">resume</code>: the held agent carries on</td></tr><tr><td><code translate="no">cancel_worker(issue)</code></td><td><code translate="no">cancel</code>: the worker ends, the lease is released and the issue goes back into the queue</td></tr><tr><td><code translate="no">restart_worker(issue)</code></td><td><code translate="no">restart</code>: kills the process and starts it again in the same worktree; counts as a restart</td></tr><tr><td><code translate="no">instruct_worker(issue, text)</code></td><td><code translate="no">instruct</code>: one line into the agent&#39;s terminal, then Enter; <code translate="no">half_typed</code> while a human left unsent text there, <code translate="no">invalid_instruction</code> for an empty or too long text</td></tr><tr><td><code translate="no">boost_issue</code> / <code translate="no">unboost_issue</code></td><td>adds / removes the manual boost label (<code translate="no">score.boost_label</code>) the queue score already reads</td></tr><tr><td><code translate="no">pause_repo</code> / <code translate="no">resume_repo</code></td><td>repo state <code translate="no">active</code> to <code translate="no">paused</code> and back in <code translate="no">orchestration.json</code>; other states are <code translate="no">invalid_state</code></td></tr></tbody></table></div>
+<p><code translate="no">issue</code> is the worker key (<code translate="no">&lt;account&gt;/&lt;owner&gt;/&lt;repo&gt;#&lt;n&gt;</code>) from <code translate="no">dispatcher_workers</code>. Steering reaches
+workers on the local host only; workers on a satellite are not in the dispatcher&#39;s local list and
+answer <code translate="no">refused</code>. <code translate="no">instruct_worker</code> is the exception: it reaches satellite workers through their
+attach stream, like the terminal.</p>
+<p>In the overview, the sessions page and an enlarged tile of the repository view, each worker that
+runs on this host offers pause (or continue while held), restart and cancel (#884). Cancel and
+restart ask once before they run; a held worker&#39;s tile says &quot;Paused&quot;. Park and stop stay in the
+protocol and the commands for scripts. Issues that wait in the queue offer a boost toggle, and a
+boosted issue keeps the toggle so it can be unboosted. Active and paused repos offer pause or
+resume in their header. Every action shows a pending, done or failed line under its row, and a
+<code translate="no">steering</code> error is shown in plain words. When the app turns out to be in direct mode, the controls
+disappear and one line says why. The read model marks a boosted issue with <code translate="no">boosted: true</code>.</p>
+<h2 id="live-terminal-in-the-app">Live terminal in the app<a class="docs-anchor" href="#live-terminal-in-the-app" aria-label="Live terminal in the app" data-testid="docs-md-anchor-live-terminal-in-the-app">#</a></h2>
+<p>In orchestrator mode the agent dashboard asks the dispatcher every five seconds for its workers
+(<code translate="no">dispatcher_workers</code>; quiet, &quot;no dispatcher running&quot; is a normal state). An issue with a running
+worker gets a &quot;Terminal&quot; button; it attaches (<code translate="no">dispatcher_attach</code>), shows the backlog and live output in
+xterm.js, sends keystrokes (<code translate="no">dispatcher_input</code>) and the terminal size (<code translate="no">dispatcher_resize</code>), and
+&quot;Detach&quot; closes the connection (<code translate="no">dispatcher_detach</code>). The client lives in
+<code translate="no">crates/core/src/dispatcher_client.rs</code>: Unix sockets on macOS/Linux, the current user’s named pipe
+on Windows. Worker lists, status, attach, input, resize and detach use the same app commands on
+every platform. Without a listening dispatcher the app reports <code translate="no">offline</code>. Named pipes have no
+half-close; detaching drops both connection halves so the server releases that viewer.</p>
+<p>Run <code translate="no">cargo test -p gitoodo-core --lib dispatcher_client::tests</code> on Windows to check the real
+named-pipe transport: attach with backlog, input, resize and exit, plus worker/status polling
+while a read-only sizing view stays attached, live output and detach. The polling test uses
+separate pipe instances as the dispatcher does; the client and server must both close in time.</p>
+<p>Device check (2026-11-19, Windows 11 x64): the <code translate="no">test-access</code> app against an isolated protocol
+fixture using <code translate="no">create_private_pipe</code> showed one worker, backlog and live output, and 37% usage.
+Opening the full terminal sent <code translate="no">Attach { interactive: false, sizing: true }</code>; resizing the app
+changed the received terminal size from 84×27 to 86×18. Detaching returned to the live worker
+list. This checks the app commands over a real named pipe, without starting a coding agent or
+using the showcase’s in-memory transport. The same app flow was also checked on macOS with
+an isolated Unix-socket fixture (resize to 85×29 cells, then detach).</p>
+<p>Workers run with <code translate="no">TERM=xterm-256color</code>, <code translate="no">COLORTERM=truecolor</code> and <code translate="no">TERM_PROGRAM=gitoodo</code> on every
+host (<code translate="no">crates/cli/src/pty_host.rs</code>). Agents that support synchronized output (<code translate="no">CSI ? 2026 h/l</code>) wrap
+each redraw in it, and xterm.js then shows only finished frames, without the cursor jumping through
+a half-drawn one (#928). Claude Code sends these frames only for terminals it recognises, so the PTY
+also sets <code translate="no">CLAUDE_CODE_FORCE_SYNC_OUTPUT=1</code>. A backlog sent again starts with a terminal reset, so a
+frame left open never holds the view.</p>
+<p><strong>Reconnecting.</strong> A stream that closes without the worker&#39;s <code translate="no">exit</code> (the dispatcher is updated or
+restarted) is attached again, first after 2 seconds, then after twice as long each time, at most
+every 30 seconds, for up to 3 minutes. For a worker the dispatcher still lists, a refused or broken
+attach is tried again too. A worker tile and the opened session attach anew when the worker&#39;s
+restart count changes (a new process after an exit without a pull request). Only then does a tile
+say what happened: &quot;This worker has ended. Gitoodo takes the next step for the issue.&quot; when the
+worker is gone, &quot;The dispatcher cannot be reached. Once it runs again, it carries on with the issue
+and the worker shows up here again.&quot; when the dispatcher did not come back.</p>
+<p><strong>Tile states.</strong> Working; waiting for an answer; checks running; paused (soft pause or disk);
+paused at the usage limit (&quot;Paused until 14:20&quot;, the reset from the agent&#39;s lock, with the line
+&quot;Usage limit reached. The worker carries on by itself afterwards.&quot;); idle (&quot;The agent ended its turn
+and waits for your reply in the session.&quot;).</p>
+<h2 id="usage-limits">Usage limits<a class="docs-anchor" href="#usage-limits" aria-label="Usage limits" data-testid="docs-md-anchor-usage-limits">#</a></h2>
+<p><strong>Worker distribution.</strong> With <code translate="no">dispatch.worker_pool</code> set, new workers are spread over the agents
+by share of starts (not tokens or cost): <code translate="no">codex_percent</code> (default 50) and <code translate="no">gemini_percent</code> (default
+0, #963) with Claude Code taking the rest; the two shares together are at most 100. With
+<code translate="no">redistribute</code> an agent at its limit or not ready hands its starts to the others, and the chosen
+shares resume afterwards; <code translate="no">pause_unknown_usage</code> holds back an agent whose usage is not known yet.
+On a worker machine that holds only while a worker of that agent runs there: an idle worker
+machine often cannot read its usage (the agent&#39;s access token there runs out between runs, or its
+credential store is closed to a session without a desktop) and only a run renews it, so one worker
+of each agent may start there to find out; a further one waits for the report that run brings. A
+known limit and a not-ready agent still keep it off the machine.
+Each agent runs its own model choice (<code translate="no">ai.models.workers</code> in the settings, one per agent; empty =
+the workers&#39; step choice when it belongs to that agent, else its recommended model). Worker
+machines report every agent they find, Gemini CLI included (#957).</p>
+<p>The usage limits below apply to Claude Code and Codex. Gemini CLI reports no usage: it is never
+held back by the threshold or by &quot;pause on unknown usage&quot;, only by not being ready.</p>
+<p>The dispatcher tracks the Claude Code login of this host: the 5-hour window, the weekly window and the
+weekly window per model, each with percent used and reset time, plus the time of the report and a
+<code translate="no">stale</code> flag (no report for 10 minutes). Sources, newest report wins:</p>
+<ol><li><strong>Status line:</strong> workers start with <code translate="no">--settings</code> that sets <code translate="no">statusLine</code> to <code translate="no">gitoodo hook status-line</code>;
+its <code translate="no">rate_limits</code> JSON from stdin is forwarded as <code translate="no">usage</code> in the <code translate="no">hook</code> request.</li><li><strong>OAuth usage endpoint</strong> (<code translate="no">https://api.anthropic.com/api/oauth/usage</code>), for times when no session
+runs. Polled every 15 minutes after a good answer and only while workers are wanted; failures
+back off exponentially from 5 minutes up to 1 hour and <code translate="no">Retry-After</code> is honoured. The token is read-only from Claude&#39;s own
+login (macOS keychain, else <code translate="no">~/.claude/.credentials.json</code>), kept in memory, never refreshed,
+never logged or sent to the app.</li><li><strong>StopFailure hook:</strong> a usage-limit failure marks the limit as reached.</li></ol>
+<p>Gating: at or above <code translate="no">dispatch.usage_threshold_percent</code> (default 90, 1..=100) no new worker starts;
+running ones continue. When the limit is reached the login is locked until the reset (5 minutes
+when the reset is unknown): the lock is not a hang and no restart is counted. At the reset the
+dispatcher types <code translate="no">continue</code> and Enter into the terminals of the workers that hit the limit. Such a
+worker keeps its run; <code translate="no">list</code> marks it <code translate="no">limited</code> with <code translate="no">limited_until</code> (the lock&#39;s end, when known), and
+its tile says &quot;Paused until …&quot; instead of &quot;Working&quot;. The lock holds back new workers of that agent.</p>
+<p><strong>At the limit.</strong> While an agent is locked or a window of it is full, its usage source (OAuth
+endpoint, Codex app server) is asked every 5 minutes instead of every 15, or just after a known reset
+when that comes sooner, never more than once a minute; a back-off after failures and <code translate="no">Retry-After</code>
+stay. When the source reports room in every window again, the lock ends at once (also a lock with a
+known reset), the stopped workers get <code translate="no">continue</code> and new workers start with the next push round.
+Free again, the agent goes back to the normal interval.</p>
+<p><strong>Check at the reset.</strong> No timer of its own is needed: the usage round runs every 30 seconds and
+asks a locked agent&#39;s source at its known reset plus 15 seconds (<code translate="no">RESET_GRACE_SECS</code>), or every
+5 minutes while the reset is unknown (a lock from the StopFailure hook lasts 5 minutes and is then
+checked again). A known lock also ends by its time; the push round every 5 seconds sees that
+(<code translate="no">poll_unlock</code>), types <code translate="no">continue</code> into the stopped workers and starts new ones in the same round.
+Each window (5-hour, weekly, weekly per model) is tracked with its own reset; the lock lasts until
+the last full window resets. Worker machines pace their own logins the same way (#1036): at the
+limit each machine asks its source at the reset instead of the normal interval and reports the
+fresh values with the next poll of the main host (at most 20 seconds).</p>
+<p><strong>Locks survive a restart.</strong> <code translate="no">usage-cache.json</code> keeps each agent&#39;s lock (<code translate="no">until</code>, and whether the
+reset was known) beside its last values. A new dispatcher re-arms a kept lock that has not ended
+yet (at most 8 days ahead; a lock of this run is never replaced), marks the workers it takes over
+as stopped by the limit and wakes them at the reset as before. A lock that ended while nothing ran
+is dropped.</p>
+<p><strong>Resume now and Check limits now.</strong> <code translate="no">{&quot;cmd&quot;:&quot;recheck&quot;,&quot;agent&quot;:&quot;claude_code&quot;}</code> (or <code translate="no">&quot;codex&quot;</code>)
+wakes the usage round at once: the agent&#39;s source is asked right away unless it was asked less
+than 30 seconds ago (<code translate="no">MIN_CHECK_SECS</code>) or still asks to wait (<code translate="no">Retry-After</code>), and the reply is the
+<code translate="no">status</code> after that round (at most 30 seconds later). The same request reaches every connected
+worker machine, which asks its own logins at once and answers when its report is fresh (at most
+20 seconds). Free again, the lock ends at once and workers start with the next push round; still
+at the limit, the lock stays and the fresh values show. The app sends it from &quot;Resume now&quot; (one
+agent) and from &quot;Check limits now&quot; at the top of &quot;Agent usage&quot; (every agent with usage, at most
+once per 30 seconds, with &quot;Checked just now&quot; afterwards); the command line has
+<code translate="no">gitoodo usage --refresh [--json]</code> (without <code translate="no">--refresh</code> it prints the last values). The dispatcher
+never writes <code translate="no">orchestration.json</code> for it.</p>
+<p><strong>After a restart (#988).</strong> The last good values of each agent are kept in <code translate="no">usage-cache.json</code> in the
+state folder. At start they show at once (marked stale by their age, <code translate="no">seeded</code> in the status), and
+for the start of new workers a kept report counts as current for at most 3 hours, until this run&#39;s
+first own report replaces it, also with &quot;pause on unknown usage&quot; on: an agent that was open keeps
+starting workers, one that was at its limit stays held. Each agent without current values (no
+report in the last 10 minutes) is asked at once (OAuth endpoint, Codex app server), beside the
+recovery of pull requests and before the first placement; a back-off after failed queries (a rate
+limit) is kept. The start-up order is: free dead leases, check the agent, recover pull requests
+and ask for usage (together), first push round; the cleanup of leftovers a minute later. Stalled
+issues of machine faults (#982) go back into the queue 10 per push round, after that round&#39;s
+dispatch, so a long list never holds up the first workers.</p>
+<p><strong>Why nothing starts.</strong> Every entry of <code translate="no">providers</code> carries <code translate="no">wait</code> while that agent takes no new
+worker: <code translate="no">not_ready</code> (not installed or not signed in, see <code translate="no">usage.problem</code>), <code translate="no">limit</code> (<code translate="no">window</code>
+<code translate="no">five_hour</code> or <code translate="no">week</code>, <code translate="no">until</code> the reset in unix seconds when known) or <code translate="no">checking</code> (no current
+values yet and unknown usage counts as no capacity). While every agent waits this way and ready
+issues are queued, the work area (repository sessions and &quot;All repositories&quot;) says why in one line,
+e.g. &quot;No new session starts: Claude Code: weekly limit until Fri 15:00 · Codex: checking usage …&quot;
+(<code translate="no">repo-usage-gate</code>).</p>
+<p><code translate="no">{&quot;cmd&quot;:&quot;status&quot;}</code> replies <code translate="no">{&quot;reply&quot;:&quot;status&quot;,&quot;status&quot;:{...}}</code> with <code translate="no">usage</code> (windows, <code translate="no">stale</code>,
+<code translate="no">updated_at</code>), <code translate="no">threshold_percent</code>, <code translate="no">throttled</code>, <code translate="no">locked_until</code> (unix seconds or null), <code translate="no">workers</code>,
+<code translate="no">max_workers</code> and <code translate="no">queued</code> (ready issues without a slot, as of the last push round), plus
+<code translate="no">config_problem</code> while <code translate="no">orchestration.json</code> cannot be used.</p>
+<p>In orchestrator mode the app&#39;s status bar asks for it every 15 seconds (<code translate="no">dispatcher_status</code>) and
+shows the 5-hour and weekly percentages; an agent paused at its limit shows &quot;paused until 14:20&quot;
+instead (or &quot;paused until reset&quot; when the end is unknown). A click opens the details: reset times,
+throttled or paused (with the time work resumes and a &quot;Resume now&quot; button that has the dispatcher
+check that agent again; still at the limit, it says &quot;Still at the limit, resets 14:20&quot;), how old the
+values are (stale marked), running workers and queue length. A window whose reset time has passed counts as 0 %. Without a dispatcher the bar only says
+&quot;Dispatcher off&quot;; in direct mode it shows nothing.</p>
+<h2 id="worker-delivery">Worker delivery<a class="docs-anchor" href="#worker-delivery" aria-label="Worker delivery" data-testid="docs-md-anchor-worker-delivery">#</a></h2>
+<p><code translate="no">gitoodo worker pr [--title T] [--body TEXT]</code> pushes the worker&#39;s branch and opens the pull request
+with <code translate="no">Closes #N</code> (default title: issue title plus <code translate="no">(#N)</code>); <code translate="no">gitoodo worker push</code> only pushes. Both
+run in the worker&#39;s worktree, read <code translate="no">GITOODO_ISSUE</code>, and hand the delivery to the dispatcher&#39;s
+broker (capability in <code translate="no">GITOODO_WORKER_CAPABILITY</code>), which holds the account&#39;s token. Inside a worker
+without a capability they refuse and never fall back to the keychain (release-gate review H2,
+<code translate="no">docs/security.md</code>). The token never reaches the worker&#39;s environment, files, git config, remote URL
+or logs.</p>
+<p>How the push gets its credential: <code translate="no">git push</code> runs as a child in a scratch git directory Gitoodo
+configures itself (<code translate="no">token_git.rs</code>; objects from the checkout, never its config or hooks) with an
+explicit https URL built from the account origin (not the worktree&#39;s <code translate="no">origin</code>), system and global
+config off, hooks and fsmonitor off, <code translate="no">credential.helper</code> and <code translate="no">core.askPass</code> cleared,
+<code translate="no">GIT_TERMINAL_PROMPT=0</code>, and <code translate="no">GIT_ASKPASS</code> pointing at the <code translate="no">gitoodo</code> binary itself
+(<code translate="no">gitoodo askpass</code>). Only that child gets <code translate="no">GITOODO_ASKPASS_USER</code>/<code translate="no">GITOODO_ASKPASS_TOKEN</code>/
+<code translate="no">GITOODO_ASKPASS_HOST</code>; the askpass call answers git&#39;s username and password prompts from them, and
+only for prompts that name the forge host. Details and the proxy rule: <code translate="no">docs/security.md</code>. Alternatives rejected: a token in the
+remote URL or git config (persists on disk and in <code translate="no">ps</code>), a credential helper script (a file with
+the secret path or token), a setup-assistant check only (needs credentials in the worker&#39;s reach).
+The same route serves the dispatcher&#39;s fetch of the base branch before it cuts a worktree
+(<code translate="no">worker_pr::fetch_base</code>) and the branch updates (#385). Git output is scrubbed of the token, and
+a refused login (missing, expired or unauthorized token) is turned into a readable reason.
+Satellites hold no token and still fetch with their own git credentials. Branch guard: never <code translate="no">main</code>, <code translate="no">master</code>, <code translate="no">dev</code>, <code translate="no">HEAD</code> or the base
+branch; the refspec is <code translate="no">HEAD:refs/heads/&lt;branch&gt;</code>, so there is no force push.</p>
+<p>Residual risk: for the few seconds of the push the token is in the environment of the git child
+(same user, readable by processes of that user, as for any askpass flow). Limits: a worker on a
+satellite has no token, so these commands refuse there; a satellite sends the branch back and this computer pushes it and opens the pull request (#582; the behind-base update runs there with the satellite&#39;s own git credentials). The path
+of the <code translate="no">gitoodo</code> binary must not contain spaces.</p>
+<h2 id="worker-follow-up-issues">Worker follow-up issues<a class="docs-anchor" href="#worker-follow-up-issues" aria-label="Worker follow-up issues" data-testid="docs-md-anchor-worker-follow-up-issues">#</a></h2>
+<p>A worker that finds work outside its issue (a bug elsewhere, a missing test, outdated docs) proposes
+it with <code translate="no">gitoodo worker follow-up</code>; the worker brief says when to use it and that it is never a way to
+hand off parts of the worker&#39;s own task (that is a split, below). The command reads the body from the file (<code translate="no">-</code> is stdin, at
+most 16 KiB) and sends a <code translate="no">follow_up</code> action to the broker with the worker&#39;s capability, like
+<code translate="no">worker pr</code>; there is no direct path, so a worker without a capability or on a satellite is refused.</p>
+<p>The broker checks, in order: capability and issue path, title and body (<code translate="no">follow_up::validate</code>), the
+repo setting <code translate="no">worker_follow_ups</code> in <code translate="no">orchestration.json</code> (default on; Settings → repo options &quot;Workers
+may propose follow-up issues&quot;), a live lease of this worker on its issue (the lease file in the state
+folder), and the budgets: <code translate="no">dispatch.max_follow_ups_per_run</code> per run (default 3, 0–20, no field in the
+form; 0 switches the brief line off and refuses every proposal) and 10 per repo and hour. A
+proposal that creates nothing (duplicate, unknown label, too deep, forge error) gives its slot back.
+Chains stop at <code translate="no">follow_up::MAX_DEPTH</code> (3): the marker carries <code translate="no">depth=D</code>, the parent&#39;s depth is read
+from its body, and a proposal from an issue at depth 3 is refused (&quot;too deep&quot;). Then
+<code translate="no">follow_up::open</code> creates the issue with the account&#39;s token: dedupe by normalised title against the
+open issues, body with the worker&#39;s text (<code translate="no">&lt;!--</code> defused) plus the footer &quot;Follow-up from #N (worker
+W)&quot; and the <code translate="no">gitoodo:follow-up</code> marker, label <code translate="no">gitoodo</code> when the repo has it and the optional kind
+label (only existing labels that are no workflow, priority, host or release label), and a note on the
+parent issue. The broker never labels it <code translate="no">ready</code> itself; the classifier&#39;s intake does on its next
+run, or, where the repo has &quot;Approve each follow-up before it is worked on&quot; on (<code translate="no">follow_up_approval</code>,
+default <code translate="no">dispatch.follow_up_approval</code>, off; Settings → Dispatcher), asks the repo&#39;s human for
+approval first (<code translate="no">docs/security.md</code>, &quot;Worker follow-up issues&quot;). The note on the parent and the reply
+to the worker say which of the two happens.</p>
+<p>Replies are one line for the worker: the new issue number on success, otherwise
+<code translate="no">follow-up issue not created: &lt;reason&gt;</code>. Forge and transport errors are logged
+(<code translate="no">dispatch.follow_up_refused</code>, <code translate="no">dispatch.follow_up_created</code>, without tokens or texts) and reach the
+worker only as the broker&#39;s generic refusal.</p>
+<h2 id="splitting-an-issue-into-parts">Splitting an issue into parts<a class="docs-anchor" href="#splitting-an-issue-into-parts" aria-label="Splitting an issue into parts" data-testid="docs-md-anchor-splitting-an-issue-into-parts">#</a></h2>
+<p>The brief starts with the scope of the issue (<code translate="no">split::brief_section</code>, #1012): where splitting is
+offered (setting <code translate="no">worker_follow_ups</code>, local workers), the worker first sizes up the issue and either
+does all of it in this run (preferred) or, before writing code, writes a plan and runs <code translate="no">gitoodo worker split --plan &lt;file&gt;</code> (file or <code translate="no">-</code> for stdin, at most 32 KiB). Without the offer the brief says
+to do the whole issue in one run; a part&#39;s brief says it is never split again; a parent whose parts
+are all closed gets the list of its parts and the task to integrate and verify the whole.</p>
+<p>The command sends a <code translate="no">split</code> action to the broker with the worker&#39;s capability. The broker checks, in
+order: capability and issue path, the plan (<code translate="no">split::parse</code> and <code translate="no">split::validate</code>: 2–8 parts, a
+reason, each part by <code translate="no">follow_up::validate</code>, <code translate="no">after</code> only naming earlier parts, no two equal
+titles), the repo setting, a live lease of this worker and at most 5 splits per repo and hour (apart
+from the follow-up budget; a split that creates nothing gives its slot back). Then <code translate="no">split::open</code>
+reads the repository&#39;s issues (open and closed), refuses a parent that is itself a part, a parent
+whose parts are all closed and a part that depends on the parent, reuses the parts that exist by
+index, checks titles and labels of the missing ones, and creates them in order (body, <code translate="no">Depends on</code>
+line for the <code translate="no">after</code> parts, footer with the <code translate="no">gitoodo:part</code> marker, label <code translate="no">gitoodo</code> and the optional
+kind). A note on the parent lists the parts.</p>
+<p>On success the worker reads the part numbers and that it must stop without a pull request; the
+broker marks the run as split and stops the worker once the reply is out. Its end is reported as
+<code translate="no">Event::Split</code>: run result <code translate="no">split</code> (a good end), trace <code translate="no">dispatch.split</code>, lease released, worktree and
+branch removed when the worktree holds no work of its own (no changed file, no commit that no remote
+has; otherwise it stays for the integrating run, <code translate="no">dispatch.split_kept_worktree</code>), and the parent back
+to <code translate="no">ready</code> (<code translate="no">Flag::Requeue</code>), where it waits for its open parts like for a dependency. Parts count as
+Gitoodo&#39;s own when the login it writes with now or an earlier one (<code translate="no">orchestrator_writers</code>) opened
+them, so a switched forge account keeps the parent waiting. A refusal reaches the worker as <code translate="no">issue not split: &lt;reason&gt;</code>
+(<code translate="no">dispatch.split_refused</code>); it changes nothing on the parent, and the worker goes on (fix the plan or
+do the issue in this run).</p>
+<h2 id="deviations-from-the-spec">Deviations from the spec<a class="docs-anchor" href="#deviations-from-the-spec" aria-label="Deviations from the spec" data-testid="docs-md-anchor-deviations-from-the-spec">#</a></h2>
+<ul><li>Only the local host is used; the host abstraction is in place for SSH satellites (step 8).</li><li>The hang policy counts in one-second ticks; the git-change signal is not fed yet, so output and hook
+pings are the only proof of life.</li></ul>
+</div>
+<div class="docs-meta"><a class="docs-edit" href="https://github.com/silvio-l/gitoodo/edit/main/docs/orchestrator/dispatcher.md" data-testid="docs-edit">Edit on GitHub</a><span class="docs-meta__version">Docs version: <span dir="ltr">dev</span></span></div>
+</article>
+<nav class="docs-pager" aria-label="Previous / Next" data-testid="docs-pager"><a class="docs-pager__previous" href="../orchestrator-setup/" rel="prev" data-testid="docs-pager-previous"><span class="docs-pager__label">Previous</span><span class="docs-pager__title">Orchestrator setup</span></a><a class="docs-pager__next" href="../branch-rules/" rel="next" data-testid="docs-pager-next"><span class="docs-pager__label">Next</span><span class="docs-pager__title">Branch rules that work with the autopilot</span></a></nav>
+</main>
+<aside class="docs-toc" aria-labelledby="docs-toc-title" data-testid="docs-toc"><h2 id="docs-toc-title">On this page</h2><ol><li class="docs-toc__l2"><a href="#what-it-does" data-testid="docs-toc-what-it-does">What it does</a></li><li class="docs-toc__l2"><a href="#workers-survive-an-update-965" data-testid="docs-toc-workers-survive-an-update-965">Workers survive an update (#965)</a></li><li class="docs-toc__l2"><a href="#starting-right-away-965" data-testid="docs-toc-starting-right-away-965">Starting right away (#965)</a></li><li class="docs-toc__l2"><a href="#machine-faults-982" data-testid="docs-toc-machine-faults-982">Machine faults (#982)</a></li><li class="docs-toc__l2"><a href="#worker-launch-per-agent" data-testid="docs-toc-worker-launch-per-agent">Worker launch per agent</a></li><li class="docs-toc__l3"><a href="#what-a-worker-loads" data-testid="docs-toc-what-a-worker-loads">What a worker loads</a></li><li class="docs-toc__l2"><a href="#settings-in-the-app" data-testid="docs-toc-settings-in-the-app">Settings in the app</a></li><li class="docs-toc__l3"><a href="#repository-settings-926" data-testid="docs-toc-repository-settings-926">Repository settings (#926)</a></li><li class="docs-toc__l3"><a href="#saving-without-a-save-button-935" data-testid="docs-toc-saving-without-a-save-button-935">Saving without a save button (#935)</a></li><li class="docs-toc__l2"><a href="#worker-commands" data-testid="docs-toc-worker-commands">Worker commands</a></li><li class="docs-toc__l2"><a href="#attach-protocol" data-testid="docs-toc-attach-protocol">Attach protocol</a></li><li class="docs-toc__l2"><a href="#human-control-568" data-testid="docs-toc-human-control-568">Human control (#568)</a></li><li class="docs-toc__l2"><a href="#emergency-stop" data-testid="docs-toc-emergency-stop">Emergency stop</a></li><li class="docs-toc__l2"><a href="#workers-per-machine-967" data-testid="docs-toc-workers-per-machine-967">Workers per machine (#967)</a></li><li class="docs-toc__l2"><a href="#test-desktop-for-desktop-checks-986-995" data-testid="docs-toc-test-desktop-for-desktop-checks-986-995">Test desktop for desktop checks (#986, #995)</a></li><li class="docs-toc__l2"><a href="#fair-share-across-repositories-959" data-testid="docs-toc-fair-share-across-repositories-959">Fair share across repositories (#959)</a></li><li class="docs-toc__l2"><a href="#steering-from-the-overview-352" data-testid="docs-toc-steering-from-the-overview-352">Steering from the overview (#352)</a></li><li class="docs-toc__l2"><a href="#live-terminal-in-the-app" data-testid="docs-toc-live-terminal-in-the-app">Live terminal in the app</a></li><li class="docs-toc__l2"><a href="#usage-limits" data-testid="docs-toc-usage-limits">Usage limits</a></li><li class="docs-toc__l2"><a href="#worker-delivery" data-testid="docs-toc-worker-delivery">Worker delivery</a></li><li class="docs-toc__l2"><a href="#worker-follow-up-issues" data-testid="docs-toc-worker-follow-up-issues">Worker follow-up issues</a></li><li class="docs-toc__l2"><a href="#splitting-an-issue-into-parts" data-testid="docs-toc-splitting-an-issue-into-parts">Splitting an issue into parts</a></li><li class="docs-toc__l2"><a href="#deviations-from-the-spec" data-testid="docs-toc-deviations-from-the-spec">Deviations from the spec</a></li></ol></aside>
+</div>
+<footer class="docs-footer" data-testid="docs-footer"><div class="docs-footer__inner">
+<p class="docs-muted">The developer docs are in English only.</p>
+<ul class="docs-footer__links">
+<li><a href="../../../" data-testid="docs-footer-site">Website</a></li>
+<li><a href="../../../privacy/" data-testid="docs-footer-privacy">Privacy</a></li>
+<li><a href="https://github.com/silvio-l/gitoodo/blob/main/LICENSE" data-testid="docs-footer-license">MIT</a></li>
+</ul>
+</div></footer>
+</body>
+</html>
