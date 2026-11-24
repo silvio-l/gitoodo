@@ -1,0 +1,1016 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self'; style-src 'self'; script-src 'self' 'sha256-zclDvgIbJxhMP3hLx0Pe9wEzIPlPNUNObuWsVD7xB/M='; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="color-scheme" content="light dark">
+<script>try{var t=localStorage.getItem("gitoodo-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<title>Release planning – Gitoodo</title>
+<meta name="description" content="Mental model, as the app says it: a release is one goal per repository: which issues have to be in before you publish. Gitoodo works on release issues first. Using releases The …">
+<meta name="docs-version" content="dev">
+<link rel="canonical" href="https://gitoodo.com/docs/dev/release-planning/">
+
+<meta property="og:title" content="Release planning – Gitoodo">
+<meta property="og:description" content="Mental model, as the app says it: a release is one goal per repository: which issues have to be in before you publish. Gitoodo works on release issues first. Using releases The …">
+<meta property="og:url" content="https://gitoodo.com/docs/dev/release-planning/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Gitoodo">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://gitoodo.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../../assets/docs.css">
+<script defer src="../../../assets/docs.js"></script>
+</head>
+<body class="docs" data-lang="en" data-docs-root="../../" data-search-index="../../search/en.json" data-copied="Copied">
+<a class="skip" href="#main" data-testid="docs-skip">Skip to content</a>
+<header class="docs-header" data-testid="docs-header"><div class="docs-header__inner">
+<a class="lockup" href="../../../" aria-label="Gitoodo" data-testid="docs-logo"><svg class="lockup__art" data-brand="wordmark" viewBox="9.3 9.4 767.3 182.9" focusable="false" aria-hidden="true"><path class="logo__tray" fill-rule="evenodd" d="M66.7 89.5C54.7 90.9 52.5 108.4 63.6 112.9C69.4 115.3 80 113.9 86.5 113.9L136.5 114C143.6 114 155.7 115.4 157 105.5C157.8 99.1 154.7 91.2 147.7 89.6C141.7 88.1 126.5 89.3 119.5 89.3L84.5 89.3C78.7 89.3 72.5 88.8 66.7 89.5ZM210.5 93.7C206.3 95.4 202.9 98.6 198.6 100.3C196.7 101 193.8 101.2 192.6 103.1C191.3 105.1 191.8 108.3 191.8 110.5C191.8 115.6 192.1 120.9 191.5 125.9C184.9 128.1 171 126.6 163.5 126.6C159.8 126.6 155.9 126.2 152.5 128C144.2 132.6 147.8 144.9 143.6 152.1C138.9 160 121.4 157.2 113.5 157.2C110.3 157.2 106.8 157.7 103.6 156.7C92.4 153.3 98.2 135 89.9 128.6C86.5 125.9 81.6 126.6 77.5 126.6C69.3 126.6 58.2 128 50.5 126.1C48.8 117.6 51.8 108.1 49.7 99.7C47.3 90.3 31.5 89.8 27 97.5C25.1 100.8 24 104.7 22.6 108.2C19.8 115.2 15.3 122.8 16.1 130.5C16.6 134.9 19.5 139.2 21.5 143L31.8 163.7C35.7 171.7 38.9 183.6 48.9 185.5C52.3 186.2 56 185.8 59.5 185.8L83.5 185.8L157.5 185.8L183.5 185.8C188.2 185.8 193.2 186.3 197.4 183.8C203.4 180.3 207.1 168.8 210.3 162.7L221.6 140.2C223.6 136.2 226.1 132.2 226 127.5C225.9 121.1 221.5 114.3 219.2 108.4C217.1 103 215.9 96.5 210.5 93.7Z"/><path class="logo__bars" fill-rule="evenodd" d="M156.8 26.5C155.2 15.4 142.9 17.7 134.5 17.6C114.8 17.4 95.2 17.5 75.5 17.7C65.3 17.7 55.7 18.3 56.4 31.5C57.2 45.7 76.1 42.3 85.5 42.3L126.5 42.3C130.4 42.3 141.2 43.2 144.4 41.9C146.3 41.1 147.2 38.3 148.2 36.7C150.7 33 154.3 30.1 156.8 26.5ZM139.5 55.3C134 52 124.8 53.6 118.5 53.6L83.5 53.7C77.8 53.7 71.1 52.8 65.5 54C59.3 55.3 55.6 61.8 56.5 67.9C58.2 79.3 69.7 78.2 78.5 78.2L123.5 78.2C128.6 78.2 137 79.9 140.6 75.2C142.4 72.9 141 70.6 140.5 68C139.7 63.8 141 59.3 139.5 55.3Z"/><path class="logo__check" fill-rule="evenodd" d="M177.7 26.4C142.8 32.5 139 82.7 173 93.5C177.7 95 182.6 95.5 187.5 94.9C224.6 90.3 228 37.8 192.5 27.2C187.7 25.8 182.6 25.6 177.7 26.4ZM177.5 65.1C172.9 61.8 171.9 57.4 165.5 58.3C160.3 63.5 167.1 67.9 170.8 71.7C172.5 73.5 174.3 76 176.8 76.5C180.5 77.3 183.2 73.1 185.3 70.8L200.1 55.6C203 52.6 204.8 49.9 201.5 46.5C200 46.2 199.2 45.8 197.6 46.2C195.1 46.9 192.6 50.5 190.9 52.4C187.1 56.5 182.5 62.6 177.5 65.1Z"/><path class="word__git" fill-rule="evenodd" d="M379.6 38.4C360.7 39.7 362.8 67.8 381.5 66.9C400 66.1 398.7 37.2 379.6 38.4ZM362.5 92.7C357.9 91.8 353.1 92.2 348.5 92.2L325.5 92.2C321.8 92.2 314.8 90.8 311.8 93.3C308.9 95.8 309.6 111.2 311 114.5C317.2 118.1 327.7 114.3 334.7 116.5C329.4 130.4 309.1 132.6 297.7 125.8C288.9 120.6 283.8 110.5 283.8 100.5C283.6 81.9 299.6 66.6 318.5 71.2C328.3 73.6 329.5 78.5 336.5 83C340.9 81.5 353.8 72.2 356.6 68.5C355.1 63.6 350.2 59.4 346.3 56.2C332 44.2 311 40.6 293.5 47C262.7 58.3 249 94.7 262.4 124.2C276 154 314 165.2 341.5 147C354.5 138.4 363.1 123 364.1 107.5C364.4 102.6 365.3 96.8 362.5 92.7ZM407.5 73.5L400.4 74.5C398 78.5 398.4 90 399.5 94.7C402 96 404.7 95.9 407.4 96.5C410 113.1 400.2 145.4 422.7 151.6C426.2 152.6 429.9 152.6 433.5 152.6C437.5 152.7 441.9 153.2 445.5 151.5C446.4 146.9 446.8 134.4 444.6 130.5C441.2 130.2 436.3 131.5 433.3 129.2C430.8 127.2 431.4 123.3 431.4 120.5C431.4 112.7 430.6 104.3 431.7 96.5C436.1 95.3 440.9 96.3 445.5 95.3C447.3 89.6 447.2 80.3 445.5 74.6L431.9 73.5C430.6 68.1 433.1 59.6 430.5 54.9C428.6 51.5 415.9 52 412.5 52.6C410.9 53 409.4 53.6 408.6 55.1C406.2 59.4 408.5 68.4 407.5 73.5ZM369.5 151.7C373.7 153.3 388.3 153.6 392.1 151.5C393.7 145.8 392.7 138.5 392.7 132.5L392.6 94.5C392.6 90.3 394.1 79 391.6 75.9C389.3 73.1 377.1 73.6 373.5 74C366.1 74.9 368.5 86.3 368.5 91.5L368.6 131.5C368.6 137.8 367.2 145.8 369.5 151.7Z"/><path class="word__oodo" fill-rule="evenodd" d="M658.6 77.5C652.6 75.1 647.4 72.8 640.7 73.4C600.7 77.2 595.6 136.7 633.5 148.3C639.6 150.1 646.5 150.5 652.6 148.3C655 147.4 657.1 146 659.5 145.4C660 146.5 660.6 148.1 661.7 148.7C665.5 150.7 678.5 149.6 682.5 148.5C684.6 142.8 683.3 126.4 683.4 119.5L683.3 71.5C683.2 65 684.5 55.7 683 49.5C681.4 42.8 664.3 43.5 661.3 46.8C659.2 49.1 659.7 52.6 659.7 55.5C659.6 61.4 661.1 72.7 658.6 77.5ZM482.5 73.4C442.6 77.6 435.8 134.6 473.5 147.9C478.2 149.6 483.5 150.4 488.5 150.1C494.4 149.7 499.9 148.2 505.1 145.6C509.6 143.3 513.4 139.9 516.5 136C537.9 109 517 69.8 482.5 73.4ZM560.7 73.4C547.4 75.2 535.8 83.3 530.4 95.7C521.3 116.5 532.4 142.7 554.8 148.6C560 149.9 565.1 150.5 570.5 149.8C597.8 146.3 613.1 114.6 598.4 91.1C593.4 83 585.5 77.6 576.6 74.7C571.5 73.1 566 72.7 560.7 73.4ZM723.5 73.4C712.2 74.9 701.4 80.8 695.3 90.7C682.1 112 692 141 716.3 148.4C721.5 150 727 150.6 732.5 150C755.6 147.5 770.6 124.8 765.8 102.5C762.8 89.1 752.1 79.1 739.5 74.9C734.4 73.2 728.9 72.7 723.5 73.4ZM483.7 96.4C464.6 99.7 469.4 131.1 490.4 126.7C509.1 122.7 503.7 93.1 483.7 96.4ZM562.7 96.4C543.1 99.7 548.6 131.4 569.3 126.6C587.9 122.4 582.5 93.1 562.7 96.4ZM644.6 96.4C625.3 97.8 626.9 127.6 646.5 126.8C665.9 126 664.2 95 644.6 96.4ZM724.7 96.4C705.3 99.9 711 131.7 732.3 126.6C750.4 122.3 744.3 92.9 724.7 96.4Z"/></svg></a>
+<a class="docs-header__title" href="../../" data-testid="docs-home">Documentation</a>
+<span class="docs-version" title="Pre-release: Gitoodo has not been released yet" data-version="dev"><span class="visually-hidden">Docs version: </span><span dir="ltr">dev</span><span class="visually-hidden"> (Pre-release: Gitoodo has not been released yet)</span></span>
+<div class="docs-header__tools">
+<div class="docs-search" role="search" data-testid="docs-search">
+<label class="visually-hidden" for="docs-search-input">Search the docs</label>
+<input id="docs-search-input" class="docs-search__input" type="search" placeholder="Search …" autocomplete="off" spellcheck="false" aria-describedby="docs-search-hint" aria-controls="docs-search-results" aria-expanded="false" role="combobox" aria-autocomplete="list" data-testid="docs-search-input">
+<p id="docs-search-hint" class="visually-hidden">Arrow keys choose, Enter opens, Escape closes.</p>
+<div id="docs-search-results" class="docs-search__results" role="listbox" aria-label="Search the docs" hidden data-empty="No page matches “{query}”." data-testid="docs-search-results"></div>
+<p id="docs-search-status" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true" data-count="Results: {count}" data-testid="docs-search-status"></p>
+</div>
+<div class="header__prefs"><details class="langs" name="header-popover" data-langs data-testid="docs-langs"><summary class="langs__toggle" data-testid="docs-langs-toggle"><svg class="langs__globe" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg><span class="visually-hidden">Language: </span><span class="langs__code" translate="no">EN</span></summary>
+<ul class="langs__list" aria-label="Language"><li><a href="../../de/" hreflang="de" lang="de" data-lang="de" data-track="language" data-track-name="de" data-testid="docs-langs-de"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Deutsch</span></a></li><li><a href="../../" hreflang="en" lang="en" data-lang="en" data-track="language" data-track-name="en" aria-current="page" data-testid="docs-langs-en"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>English</span></a></li><li><a href="../../zh-Hans/" hreflang="zh-Hans" lang="zh-Hans" data-lang="zh-Hans" data-track="language" data-track-name="zh-Hans" data-testid="docs-langs-zh-Hans"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>中文（简体）</span></a></li><li><a href="../../hi/" hreflang="hi" lang="hi" data-lang="hi" data-track="language" data-track-name="hi" data-testid="docs-langs-hi"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>हिन्दी</span></a></li><li><a href="../../es/" hreflang="es" lang="es" data-lang="es" data-track="language" data-track-name="es" data-testid="docs-langs-es"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Español</span></a></li><li><a href="../../ar/" hreflang="ar" lang="ar" data-lang="ar" data-track="language" data-track-name="ar" data-testid="docs-langs-ar"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>العربية</span></a></li></ul></details><button class="theme" type="button" hidden data-theme-toggle data-choice="system" data-label="Theme: {current}, switch to {next}" data-system="System" data-light="Light" data-dark="Dark" aria-label="Theme: System, switch to Light" title="Theme: System, switch to Light" data-testid="docs-theme"><svg class="theme__icon theme__icon--system" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg><svg class="theme__icon theme__icon--light" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg><svg class="theme__icon theme__icon--dark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></button></div>
+<button type="button" class="docs-menu" aria-controls="docs-nav" aria-expanded="false" hidden data-testid="docs-menu">Pages</button>
+</div>
+<a class="docs-header__link" href="https://github.com/silvio-l/gitoodo" data-testid="docs-github">GitHub</a>
+<a class="docs-install" href="../../../#download" data-testid="docs-install">Get notified</a>
+</div></header>
+<div class="docs-layout">
+<nav id="docs-nav" class="docs-nav" aria-label="Documentation" data-testid="docs-nav"><div class="docs-nav__section"><p class="docs-nav__title"><a href="../../" data-testid="docs-nav-section-user">For users</a></p><p class="docs-nav__group" id="docs-nav-user-0">Get started</p><ul aria-labelledby="docs-nav-user-0"><li><a href="../../introduction/" data-testid="docs-nav-docs-introduction">What is Gitoodo?</a></li><li><a href="../../getting-started/" data-testid="docs-nav-docs-getting-started">Getting started</a></li></ul><p class="docs-nav__group" id="docs-nav-user-1">Guides</p><ul aria-labelledby="docs-nav-user-1"><li><a href="../../self-hosted-forges/" data-testid="docs-nav-docs-self-hosted-forges">Forgejo and Gitea</a></li><li><a href="../../github-issues-to-pull-requests/" data-testid="docs-nav-docs-github-issues-to-pull-requests">GitHub issues to pull requests</a></li><li><a href="../../safe-auto-merge/" data-testid="docs-nav-docs-safe-auto-merge">Safe auto-merge</a></li><li><a href="../../parallel-coding-agents/" data-testid="docs-nav-docs-parallel-coding-agents">Parallel coding agents</a></li><li><a href="../../switch-from-another-agent-app/" data-testid="docs-nav-docs-switch-from-another-agent-app">Coming from another agent app</a></li></ul><p class="docs-nav__group" id="docs-nav-user-2">Daily use</p><ul aria-labelledby="docs-nav-user-2"><li><a href="../../daily-use/" data-testid="docs-nav-docs-daily-use">How to work with Gitoodo</a></li><li><a href="../../overview/" data-testid="docs-nav-docs-overview">Overview</a></li><li><a href="../../needs-you/" data-testid="docs-nav-docs-needs-you">Needs you</a></li><li><a href="../../questions/" data-testid="docs-nav-docs-questions">Asked of me</a></li><li><a href="../../board/" data-testid="docs-nav-docs-board">All repos</a></li><li><a href="../../chat/" data-testid="docs-nav-docs-chat">Chat</a></li><li><a href="../../repositories/" data-testid="docs-nav-docs-repositories">Repositories</a></li></ul><p class="docs-nav__group" id="docs-nav-user-3">Orchestrator</p><ul aria-labelledby="docs-nav-user-3"><li><a href="../../labels/" data-testid="docs-nav-docs-labels">Status labels and workflow</a></li><li><a href="../../merge-and-release/" data-testid="docs-nav-docs-merge-and-release">Merge control</a></li><li><a href="../../releases/" data-testid="docs-nav-docs-releases">Releases</a></li><li><a href="../../services/" data-testid="docs-nav-docs-services">Classifier, dispatcher and workers</a></li></ul><p class="docs-nav__group" id="docs-nav-user-4">Reference and help</p><ul aria-labelledby="docs-nav-user-4"><li><a href="../../settings/" data-testid="docs-nav-docs-settings">Settings</a></li><li><a href="../../status/" data-testid="docs-nav-docs-status">Status</a></li><li><a href="../../troubleshooting/" data-testid="docs-nav-docs-troubleshooting">Troubleshooting</a></li><li><a href="../../faq/" data-testid="docs-nav-docs-faq">FAQ</a></li><li><a href="../../privacy/" data-testid="docs-nav-docs-privacy">Privacy</a></li></ul></div><div class="docs-nav__section"><p class="docs-nav__title"><a href="../" data-testid="docs-nav-section-dev">For developers</a></p><p class="docs-nav__group" id="docs-nav-dev-0">Start here</p><ul aria-labelledby="docs-nav-dev-0"><li><a href="../architecture/" data-testid="docs-nav-docs-dev-architecture">Architecture</a></li><li><a href="../building/" data-testid="docs-nav-docs-dev-building">Building</a></li><li><a href="../releasing/" data-testid="docs-nav-docs-dev-releasing">Release</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-1">Interfaces</p><ul aria-labelledby="docs-nav-dev-1"><li><a href="../question-format/" data-testid="docs-nav-docs-dev-question-format">Gitoodo question format (version 2)</a></li><li><a href="../cli/" data-testid="docs-nav-docs-dev-cli">Command line reference</a></li><li><a href="../daemon/" data-testid="docs-nav-docs-dev-daemon">Classifier daemon and command line</a></li><li><a href="../phone-access/" data-testid="docs-nav-docs-dev-phone-access">Phone access</a></li><li><a href="../forge-tokens/" data-testid="docs-nav-docs-dev-forge-tokens">Token permissions per forge</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-2">Orchestrator</p><ul aria-labelledby="docs-nav-dev-2"><li><a href="../states/" data-testid="docs-nav-docs-dev-states">States: what Gitoodo shows and what you do about it</a></li><li><a href="../all-repos/" data-testid="docs-nav-docs-dev-all-repos">&quot;All repos&quot;: pages and where things went</a></li><li><a href="../orchestrator-spec/" data-testid="docs-nav-docs-dev-orchestrator-spec">Gitoodo Orchestrator – Specification (v1)</a></li><li><a href="../orchestrator-setup/" data-testid="docs-nav-docs-dev-orchestrator-setup">Orchestrator setup</a></li><li><a href="../dispatcher/" data-testid="docs-nav-docs-dev-dispatcher">Dispatcher</a></li><li><a href="../queue-order/" data-testid="docs-nav-docs-dev-queue-order">Queue order and slot share</a></li><li><a href="../branch-rules/" data-testid="docs-nav-docs-dev-branch-rules">Branch rules that work with the autopilot</a></li><li><a href="../security/" data-testid="docs-nav-docs-dev-security">Security model of the orchestrator</a></li><li><a href="../satellites/" data-testid="docs-nav-docs-dev-satellites">Satellites</a></li><li><a href="../keychains/" data-testid="docs-nav-docs-dev-keychains">Keychains, signing and dialogs</a></li><li><a href="../local-inputs/" data-testid="docs-nav-docs-dev-local-inputs">Local inputs</a></li><li><a href="../resolver/" data-testid="docs-nav-docs-dev-resolver">The resolver for stuck issues</a></li><li><a href="../triage/" data-testid="docs-nav-docs-dev-triage">Triage</a></li><li><a href="../repo-hygiene/" data-testid="docs-nav-docs-dev-repo-hygiene">Repo hygiene</a></li><li><a href="../storage-cleanup/" data-testid="docs-nav-docs-dev-storage-cleanup">Automatic disk cleanup</a></li><li><a href="../orchestrator-chat/" data-testid="docs-nav-docs-dev-orchestrator-chat">Orchestrator chat</a></li><li><a href="./" aria-current="page" data-testid="docs-nav-docs-dev-release-planning">Release planning</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-3">App internals</p><ul aria-labelledby="docs-nav-dev-3"><li><a href="../status-model/" data-testid="docs-nav-docs-dev-status-model">Overview status model</a></li><li><a href="../counters/" data-testid="docs-nav-docs-dev-counters">Counters</a></li><li><a href="../startup/" data-testid="docs-nav-docs-dev-startup">Start: first paint and loading state</a></li><li><a href="../logging/" data-testid="docs-nav-docs-dev-logging">Logging</a></li><li><a href="../localisation/" data-testid="docs-nav-docs-dev-localisation">Localisation</a></li><li><a href="../settings-backup/" data-testid="docs-nav-docs-dev-settings-backup">Settings export, import and backup</a></li><li><a href="../symlinks/" data-testid="docs-nav-docs-dev-symlinks">Symbolic links</a></li><li><a href="../window-frame/" data-testid="docs-nav-docs-dev-window-frame">Window frame</a></li><li><a href="../system-permissions/" data-testid="docs-nav-docs-dev-system-permissions">System permissions</a></li><li><a href="../test-access/" data-testid="docs-nav-docs-dev-test-access">Test access: driving the app without a human</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-4">Privacy and data</p><ul aria-labelledby="docs-nav-dev-4"><li><a href="../privacy-policy/" data-testid="docs-nav-docs-dev-privacy-policy">Privacy policy: feedback, usage statistics and the phone app</a></li><li><a href="../network-inventory/" data-testid="docs-nav-docs-dev-network-inventory">Network inventory of the desktop app and the phone app</a></li><li><a href="../chat-notification/" data-testid="docs-nav-docs-dev-chat-notification">Chat notification</a></li><li><a href="../support/" data-testid="docs-nav-docs-dev-support">Voluntary support</a></li></ul></div></nav>
+<main id="main" class="docs-main" tabindex="-1" data-testid="docs-main">
+<article class="docs-article">
+<p class="docs-eyebrow">For developers · Orchestrator</p><h1>Release planning</h1>
+<details class="docs-toc-inline" data-testid="docs-toc-inline"><summary data-testid="docs-toc-inline-toggle">On this page</summary><ol><li class="docs-toc__l2"><a href="#using-releases" data-testid="docs-toc-inline-using-releases">Using releases</a></li><li class="docs-toc__l2"><a href="#scope" data-testid="docs-toc-inline-scope">Scope</a></li><li class="docs-toc__l3"><a href="#dependencies-join-the-release-1824-before-pulled-in-issues-1530" data-testid="docs-toc-inline-dependencies-join-the-release-1824-before-pulled-in-issues-1530">Dependencies join the release (#1824, before: pulled-in issues, #1530)</a></li><li class="docs-toc__l2"><a href="#labels-and-milestones" data-testid="docs-toc-inline-labels-and-milestones">Labels and milestones</a></li><li class="docs-toc__l3"><a href="#forge-calls-core-only" data-testid="docs-toc-inline-forge-calls-core-only">Forge calls (core only)</a></li><li class="docs-toc__l3"><a href="#version-logic-and-suggestion-1142" data-testid="docs-toc-inline-version-logic-and-suggestion-1142">Version logic and suggestion (#1142)</a></li><li class="docs-toc__l2"><a href="#assignment-rules-1143" data-testid="docs-toc-inline-assignment-rules-1143">Assignment rules (#1143)</a></li><li class="docs-toc__l2"><a href="#completing-a-release-and-its-automations-1145" data-testid="docs-toc-inline-completing-a-release-and-its-automations-1145">Completing a release and its automations (#1145)</a></li><li class="docs-toc__l2"><a href="#closing-a-release" data-testid="docs-toc-inline-closing-a-release">Closing a release</a></li><li class="docs-toc__l2"><a href="#releases-never-appear-by-themselves-1476" data-testid="docs-toc-inline-releases-never-appear-by-themselves-1476">Releases never appear by themselves (#1476)</a></li><li class="docs-toc__l2"><a href="#removing-a-release-1476" data-testid="docs-toc-inline-removing-a-release-1476">Removing a release (#1476)</a></li><li class="docs-toc__l2"><a href="#editing-a-release-1499" data-testid="docs-toc-inline-editing-a-release-1499">Editing a release (#1499)</a></li><li class="docs-toc__l2"><a href="#releases-by-hand-1141" data-testid="docs-toc-inline-releases-by-hand-1141">Releases by hand (#1141)</a></li><li class="docs-toc__l2"><a href="#release-view-completing-runs-settings-and-sessions-1146" data-testid="docs-toc-inline-release-view-completing-runs-settings-and-sessions-1146">Release view: completing, runs, settings and sessions (#1146)</a></li><li class="docs-toc__l2"><a href="#release-settings-templates-and-suggestions-1147" data-testid="docs-toc-inline-release-settings-templates-and-suggestions-1147">Release settings, templates and suggestions (#1147)</a></li><li class="docs-toc__l3"><a href="#what-each-step-needs" data-testid="docs-toc-inline-what-each-step-needs">What each step needs</a></li><li class="docs-toc__l2"><a href="#queue-order" data-testid="docs-toc-inline-queue-order">Queue order</a></li><li class="docs-toc__l2"><a href="#release-focus-1442" data-testid="docs-toc-inline-release-focus-1442">Release focus (#1442)</a></li><li class="docs-toc__l2"><a href="#states" data-testid="docs-toc-inline-states">States</a></li><li class="docs-toc__l2"><a href="#surfaces" data-testid="docs-toc-inline-surfaces">Surfaces</a></li><li class="docs-toc__l2"><a href="#app" data-testid="docs-toc-inline-app">App</a></li></ol></details>
+<div class="docs-body">
+<p>Mental model, as the app says it: a release is one goal per repository: which issues have to be in
+before you publish. Gitoodo works on release issues first.</p>
+<h2 id="using-releases">Using releases<a class="docs-anchor" href="#using-releases" aria-label="Using releases" data-testid="docs-md-anchor-using-releases">#</a></h2>
+<p>The board tab &quot;Release&quot; shows every repository with release planning on as a tree: below each
+repository its open releases, the next one first, and last &quot;Ohne Release&quot; with its open issues in
+no release, so every open issue of the repository is found below it (see &quot;Release tree&quot; under
+&quot;App&quot;). A short walk through it:</p>
+<ol><li><strong>Plan.</strong> &quot;Neues Release&quot; on a repository row creates a release, a milestone named with a
+version (the dialog suggests the next one). The flag on a board row or &quot;Ändern&quot; in the issue
+sheet puts an issue into the next release, a later one or none. Without any release, the empty
+state offers both: add issues to the next release, or create a release with a version.</li><li><strong>Let the autopilot work.</strong> Issues of the next release go first in the queue, and the issues
+they depend on with them. Nothing else changes; the rest of the queue runs as before.</li><li><strong>Set it up once</strong> (gear &quot;Release-Einstellungen&quot; on the repository row, always shown): pick a
+template and &quot;Übernehmen&quot;, then adjust the tabs. Versionierung decides the version suggestion,
+Zuordnung the rules that put issues into a release or suggest them, Abschluss the steps that run
+when you complete a release, Sitzung the task of the release session. Every change saves by
+itself, like the other repository settings (#926); a part with problems stays unsaved and says
+so.</li><li><strong>Prepare</strong> (&quot;Release-Sitzung …&quot; in the release&#39;s &quot;…&quot;): a release session gives a coding agent
+or a plain terminal the version, the issues and the notes, in the working copy or a fresh
+worktree.</li><li><strong>Complete</strong> (&quot;Release abschließen&quot;, a ticked circle, once every issue is done): the dialog
+shows the plan first, where open issues go and every step, the irreversible ones marked, and
+nothing runs before you confirm. A token that lacks a right the steps need refuses the plan
+before anything is written. A failed step can be retried or skipped from the run row.
+&quot;Danach&quot; decides what the autopilot does once the release is closed: &quot;Autopilot anhalten&quot;
+(the default) pauses it, and the tree then offers &quot;Mit 1.6.0 starten&quot;; &quot;Gleich mit 1.6.0
+weitermachen&quot; lets it go straight on with the next release.</li></ol>
+<p>The help center has a topic &quot;Releases&quot; of its own (the release page&#39;s help link opens it).</p>
+<p><strong>Command steps</strong> run your own scripts in the local checkout of the repository. The templates point
+at <code translate="no">./scripts/release/*.sh</code>, which the repository provides; until it does, the step fails with the
+script&#39;s error and nothing else happens. A minimal skeleton:</p>
+<div class="docs-code"><pre dir="ltr" translate="no" tabindex="0" data-lang="sh"><code>#!/bin/sh
+# scripts/release/upload.sh: upload the build of this release.
+set -eu
+echo &quot;Uploading ${GITOODO_RELEASE_TAG} of ${GITOODO_REPO}&quot;
+# The notes are in &quot;$GITOODO_RELEASE_NOTES_FILE&quot;, the issues as JSON in &quot;$GITOODO_RELEASE_ISSUES&quot;.
+# Exit 0 when done; any other exit fails the step and shows the last lines of the output.</code></pre><button type="button" class="docs-code__copy" data-copy hidden data-testid="docs-md-copy-1">Copy</button></div>
+<p>A step gets no token; a script that needs one reads it from the system&#39;s own secret store. A
+<strong>version script</strong> (scheme &quot;Eigenes Skript&quot;) prints the next version and gets
+<code translate="no">GITOODO_LAST_VERSION</code>, <code translate="no">GITOODO_VERSION_RAISE</code> and the release&#39;s issues (see &quot;Own script&quot; below).</p>
+<h2 id="scope">Scope<a class="docs-anchor" href="#scope" aria-label="Scope" data-testid="docs-md-anchor-scope">#</a></h2>
+<p>Per repository, an issue belongs to the next release when</p>
+<ol><li>it is in the next release milestone (see &quot;Queue order&quot;), open or closed (reason <code translate="no">milestone</code>),</li><li>it carries <code translate="no">release:next</code> (reason <code translate="no">label</code>), or</li><li>it is a dependency, recursively, of a member (reason <code translate="no">dependency</code>).</li></ol>
+<p>Only dependencies inside the same repository count. A closed issue stays in only through the
+milestone, the label or as a dependency, so a finished dependency stays part of the release. While
+no release milestone is open, <code translate="no">release:next</code> alone is the next release.</p>
+<h3 id="dependencies-join-the-release-1824-before-pulled-in-issues-1530">Dependencies join the release (#1824, before: pulled-in issues, #1530)<a class="docs-anchor" href="#dependencies-join-the-release-1824-before-pulled-in-issues-1530" aria-label="Dependencies join the release (#1824, before: pulled-in issues, #1530)" data-testid="docs-md-anchor-dependencies-join-the-release-1824-before-pulled-in-issues-1530">#</a></h3>
+<p>The sub-tasks and blockers of an issue are needed for it, so they join its release on their own;
+nobody has to add them by hand. A dependency is what the release view shows as one: a dependency
+line (<code translate="no">Depends on #12</code>, <code translate="no">Wartet auf: #12</code>, …) in the issue&#39;s body or in a person&#39;s comment, the
+forge&#39;s own dependencies, and the open parts of a split issue (#2061; only parts Gitoodo&#39;s own
+accounts opened, the same rule as for the parent&#39;s wait). A split gives each new part the parent&#39;s
+milestone and <code translate="no">release:next</code> at once; a part without one (split before, or the write failed) joins
+in the hygiene&#39;s next pass.</p>
+<ul><li><strong>When an issue goes into a release</strong> (the add dialog, &quot;+&quot;, &quot;Change release …&quot;, the chat), its open
+dependencies in the same repository go with it in the same operation, transitively. The add
+dialog says so before saving (&quot;+ 3 dependencies (sub-tasks and blockers) come along&quot;) and marks
+each one on its row. After saving, the release view shows them at once, already below the
+issue that needs them (the same rule as the report&#39;s, among the added issues); the next poll
+confirms the place and may move one below a member that was in the release before.</li><li><strong>The hygiene pass</strong> adds dependencies that appear later: for every open issue in an open
+release, its open dependencies join that release, the earliest release first. Each join is
+logged (<code translate="no">release.dependency_joined</code>) and named in the classifier&#39;s activity (&quot;#12 joined v1.4 as a
+dependency of #10&quot;). These writes count towards the pass&#39;s limit of release writes. Without the
+milestone rule the pass only writes <code translate="no">release:next</code>; a dependency of a release milestone then
+joins when its issue is put into the release in the app.</li><li><strong>Where a dependency already is decides:</strong> in the same release or an earlier one it stays (the
+earlier release ships it first anyway); in no release it joins. In a later release it is pulled
+forward into the release that needs it (the activity says so: &quot;pulled forward from v1.5&quot;) only
+when a pass of Gitoodo put it there (a rule or an earlier join, kept as <code translate="no">placed</code> in
+<code translate="no">release-rules.json</code> while the issue is still there). One a person put into a later release, in
+the app or on the forge, stays where they put it (#2061): the hygiene never undoes a person&#39;s
+release choice. Its release then waits for it (&quot;Out of order&quot; below), and the focus never starts
+it for the earlier release; moving one of the two in the app resolves it. Putting an issue into a
+release in the app (&quot;Change release …&quot;) is the person&#39;s own choice and takes its dependencies
+along from a later release too.</li><li><strong>Moving an issue into a later release takes the issues that wait for it along</strong> (#2046). An
+issue in an earlier release that waits for the moved one (directly or over another such issue)
+could not be done before it, so its release could not ship either; it goes into the same later
+release in the same operation. &quot;Change release …&quot; says so before saving (&quot;+ 2 issues waiting for
+it go along: #154, #300&quot;), and each move is logged (<code translate="no">release.dependent_followed</code>). Issues already
+in that release or a later one, and issues in no release, stay where they are.</li><li><strong>The order stays visible.</strong> Every row says what it waits for (&quot;waits for #249, #2160&quot;); a
+blocker that is planned in a later release or in none is named in red below it (&quot;Out of order:
+#2160 is planned later or in no release&quot;), so a split that came from the forge, a removal by
+hand or an older build is seen at once. Taking an issue out of every release while issues in a
+release wait for it says so in &quot;Change release …&quot; before saving; they stay.</li><li><strong>Closed</strong> dependencies are done and are ignored.</li><li><strong>Another repository:</strong> a dependency there never joins (each repository plans its own releases).
+It is listed under its member (&quot;belongs to #44 · other repo (owner/lib) · not in the release&quot;),
+does not count, and while it is open it still holds the release&#39;s completion.</li><li><strong>A removal by hand sticks:</strong> a dependency a person takes out of the release stays out while its
+issue still needs it, like for the assignment rules. It is then listed under its member as &quot;belongs
+to #44 · not in the release&quot; and holds the completion while open.</li><li><strong>The counts name what they leave out.</strong> The release&#39;s summary line counts members only (&quot;2 open ·
+1 in progress&quot;) and adds the open items it lists without counting them (&quot;+1 not in the release&quot;),
+so the rows and the numbers add up.</li><li><strong>Taking an issue out keeps its dependencies.</strong> Gitoodo has no reliable record of whether a person
+also wanted a dependency in the release on its own (it may have been added by hand before, or
+be needed by another issue), so it leaves them where they are; take them out by hand if they
+should go too.</li></ul>
+<p>Dependencies that joined are members like every other issue: they count in the progress (<code translate="no">3/5</code>,
+&quot;1 open · 1 in progress&quot;), the same as the forge&#39;s milestone. The release view lists every item
+below the item of the same release that needs it (<code translate="no">via</code>: the first item, by number, at the top of
+its dependency chain), one level indented; a later release does the same.</p>
+<p>Every issue that is a member gets a release chip (flag and version) on its rows: the Issues list of
+a repository, the board of all repositories and the detail sheet. Its milestone is the one source;
+a label or a pulled-in issue never makes a chip. The chip opens the release view at that release
+(a later one opened too). The row&#39;s release choice then reads &quot;Change release …&quot;.</p>
+<p>Open <code translate="no">priority:p0</code> issues used to be members by themselves (reason <code translate="no">priority</code>), without anything on
+the forge. Since #1143 the assignment rule &quot;Urgent issues join the next release&quot; (on by default,
+see &quot;Assignment rules&quot;) writes them into the next release instead, so they are visible on the forge
+and a person can take them out again. The reason <code translate="no">priority</code> is no longer sent.</p>
+<p>Gitoodo writes only <code translate="no">release:next</code>. It reads the legacy <code translate="no">release:muss</code> as <code translate="no">release:next</code> and
+<code translate="no">release:später</code> as &quot;not in the next release&quot; (it adds nothing); neither is ever written. Adding
+an issue through the app removes a legacy later label from it.</p>
+<p>Planning is switched per repository in the settings, right beside the repository&#39;s activation
+(&quot;Release planning&quot;, default on; stored as <code translate="no">releases</code> in the repository options). With it off, the
+repository has no scope, no bonus and does not appear in the views.</p>
+<h2 id="labels-and-milestones">Labels and milestones<a class="docs-anchor" href="#labels-and-milestones" aria-label="Labels and milestones" data-testid="docs-md-anchor-labels-and-milestones">#</a></h2>
+<p>A repository plans its releases as milestones: **a milestone whose title is a version is a
+release**, and <code translate="no">release:next</code> stands for &quot;the next release, version not decided yet&quot;. Other
+milestones (sprints, themes) stay the user&#39;s own and are never treated as releases. Several open
+release milestones are a normal state: the next one is picked as in &quot;Queue order&quot;, the others are
+later releases (see &quot;Releases by hand&quot;).</p>
+<p>Membership is the milestone. <code translate="no">release:next</code> only marks issues for the next release while it has no
+version; as soon as a release milestone becomes the next release (created in the app, on the forge
+or by the user&#39;s answer to the milestone question), the hygiene moves every open <code translate="no">release:next</code>
+issue without a milestone into it and takes the label off (<code translate="no">hygiene::takes_over</code>). This also carries
+data from before the milestone model over without a migration step: an existing <code translate="no">release:next</code>
+issue keeps counting as the next release and moves into the milestone on the first poll after it
+exists. It uses only the forge adapter&#39;s milestone and label calls, so it works the same on Forgejo/Gitea,
+GitHub and GitLab (the calls per forge: <code translate="no">crates/core/tests/release_forge.rs</code>).
+The forge calls behind it came with step 1 of epic #1139 (#1140); the app shows all of it since
+#1148.</p>
+<p>A milestone title counts as a release version (<code translate="no">forge::release::release_version</code>) when, after
+trimming, it is</p>
+<ol><li>optionally <code translate="no">v</code>/<code translate="no">V</code> directly before the number, or one of the words <code translate="no">version</code>, <code translate="no">release</code>, <code translate="no">build</code>,
+<code translate="no">ver</code> (any case) followed by a space, <code translate="no">-</code> or <code translate="no">_</code>,</li><li>then one to four numbers separated by dots (each at most nine digits),</li><li>then optionally a pre-release or build part after <code translate="no">-</code> or <code translate="no">+</code> of letters, digits, dots and hyphens
+(<code translate="no">-rc.1</code>, <code translate="no">+20261119</code>), allowed only after a dotted number or a prefix word,</li></ol>
+<p>and nothing else. So <code translate="no">v1.2.3</code>, <code translate="no">1.2</code>, <code translate="no">2026.11</code>, <code translate="no">42</code>, <code translate="no">build 42</code>, <code translate="no">Release 1.4</code> and <code translate="no">1.0.0-rc.1</code>
+are releases; <code translate="no">Sprint 12</code>, <code translate="no">Q4 2026</code>, <code translate="no">Milestone 3</code>, <code translate="no">v1.2 Winter</code>, <code translate="no">1.x</code>, <code translate="no">1.2.3.4.5</code>, <code translate="no">12-sprint</code>
+and <code translate="no">2026-11-19</code> are not.</p>
+<h3 id="forge-calls-core-only">Forge calls (core only)<a class="docs-anchor" href="#forge-calls-core-only" aria-label="Forge calls (core only)" data-testid="docs-md-anchor-forge-calls-core-only">#</a></h3>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col"></th><th scope="col">Forgejo/Gitea</th><th scope="col">GitHub</th><th scope="col">GitLab</th></tr></thead><tbody><tr><td>Milestones: list, create, edit, close, reopen</td><td><code translate="no">milestones</code> (<code translate="no">state</code>)</td><td><code translate="no">milestones</code> (<code translate="no">state</code>, by number)</td><td><code translate="no">milestones</code> (<code translate="no">state_event</code>)</td></tr><tr><td>Issues of a milestone</td><td><code translate="no">issues?milestones=&lt;title&gt;</code></td><td><code translate="no">issues?milestone=&lt;number&gt;</code></td><td><code translate="no">issues?milestone=&lt;title&gt;</code></td></tr><tr><td>Assign/unassign an issue</td><td><code translate="no">milestone</code> (0 clears)</td><td><code translate="no">milestone</code> (null clears)</td><td><code translate="no">milestone_id</code> (0 clears)</td></tr><tr><td>Delete a milestone (#1476)</td><td><code translate="no">DELETE milestones/{id}</code></td><td><code translate="no">DELETE milestones/{number}</code></td><td><code translate="no">DELETE milestones/{id}</code></td></tr><tr><td>Tag on a commit</td><td><code translate="no">tags</code></td><td><code translate="no">git/tags</code> (annotated) + <code translate="no">git/refs</code></td><td><code translate="no">repository/tags</code></td></tr><tr><td>Delete a tag (#1476)</td><td><code translate="no">DELETE tags/{name}</code></td><td><code translate="no">DELETE git/refs/tags/{name}</code></td><td><code translate="no">DELETE repository/tags/{name}</code></td></tr><tr><td>Release: create, read, edit</td><td><code translate="no">releases</code> (drafts)</td><td><code translate="no">releases</code> (drafts)</td><td><code translate="no">releases</code>, no drafts</td></tr><tr><td>Right for tags and releases</td><td><code translate="no">write:repository</code> + write access</td><td>Contents: Read and write (<code translate="no">repo</code>) + write access</td><td><code translate="no">api</code> + at least Developer</td></tr></tbody></table></div>
+<p>Rules that hold on every forge:</p>
+<ul><li>Creating a tag is idempotent: the same tag on the same commit is success, on another commit it is
+refused and the tag is never moved or deleted.</li><li>A release is created as a draft where the forge has drafts. An existing draft is reused (name and
+notes updated, it stays a draft); a published release is left as it is and only changed on an
+explicit call. GitLab has no drafts: a draft request is refused before anything is sent, and a
+GitLab release is public as soon as it exists.</li><li>GitLab group milestones can be read and assigned, but not edited or closed through the project;
+the error says to change them in the group&#39;s milestones or to use a project milestone. Gitoodo
+never edits a group milestone, because that would change other repositories too.</li><li>Every write goes through the audit log (<code translate="no">milestone_create</code>, <code translate="no">milestone_edit</code>, <code translate="no">tag_create</code>,
+<code translate="no">release_create</code>, <code translate="no">release_edit</code>, <code translate="no">milestone_delete</code>, <code translate="no">tag_delete</code>). Refusals (403, 404, 405, 409, 422) name the missing right or
+the cause and never contain the token.</li><li>The release rights (<code translate="no">rights::check_release</code>) are checked separately from the mode check, so they
+do not appear as missing in the app yet.</li></ul>
+<p>Known limits: Forgejo and Gitea cannot clear a due date once set (their API ignores an empty
+one), so the app offers &quot;Kein Datum&quot; only on GitHub and GitLab (<code translate="no">release::can_clear_due</code>); tag protection rules
+(GitHub rulesets, Forgejo/Gitea tag protection, GitLab protected tags) are not read in advance, so
+a protected tag shows up as a refusal when it is created; GitLab has no pre-release flag.</p>
+<h3 id="version-logic-and-suggestion-1142">Version logic and suggestion (#1142)<a class="docs-anchor" href="#version-logic-and-suggestion-1142" aria-label="Version logic and suggestion (#1142)" data-testid="docs-md-anchor-version-logic-and-suggestion-1142">#</a></h3>
+<p>Step 3 of #1139 adds the version rules in the Rust core (<code translate="no">orchestration::version</code>). They are set in
+the release settings (tab Versionierung, #1147); the release dialogs show the suggestion with its
+reason (see &quot;Surfaces&quot; below).</p>
+<p><strong>Config.</strong> Each repository can have a <code translate="no">version</code> entry in its rule in <code translate="no">orchestration.json</code> in the
+app&#39;s config folder. It is never stored in the repository. Without the entry the repository uses
+SemVer with every preset.</p>
+<div class="docs-code"><pre dir="ltr" translate="no" tabindex="0" data-lang="json"><code>{
+  &quot;scheme&quot;: { &quot;kind&quot;: &quot;semver&quot; },
+  &quot;raises&quot;: [{ &quot;source&quot;: &quot;label&quot;, &quot;name&quot;: &quot;api-change&quot;, &quot;part&quot;: &quot;major&quot; }],
+  &quot;presets&quot;: [&quot;plain&quot;, &quot;prefixed&quot;, &quot;issue_types&quot;],
+  &quot;default_part&quot;: &quot;patch&quot;
+}</code></pre><button type="button" class="docs-code__copy" data-copy hidden data-testid="docs-md-copy-2">Copy</button></div>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col"><code translate="no">scheme.kind</code></th><th scope="col">Version</th></tr></thead><tbody><tr><td><code translate="no">semver</code></td><td><code translate="no">v1.4.2</code></td></tr><tr><td><code translate="no">calendar</code></td><td><code translate="no">pattern</code> from <code translate="no">YYYY</code>, <code translate="no">YY</code>, <code translate="no">MM</code>, <code translate="no">M</code>, <code translate="no">DD</code>, <code translate="no">D</code> and the counter <code translate="no">N</code>: <code translate="no">YYYY.MM</code>, <code translate="no">YYYY.MM.N</code></td></tr><tr><td><code translate="no">build</code></td><td>one rising number: <code translate="no">42</code>, <code translate="no">build 42</code></td></tr><tr><td><code translate="no">pattern</code></td><td>text around <code translate="no">{major}</code>, <code translate="no">{minor}</code>, <code translate="no">{patch}</code> or <code translate="no">{n}</code>: <code translate="no">v{major}.{minor}.{patch}</code>, <code translate="no">release-{major}.{minor}</code>, <code translate="no">build-{n}</code></td></tr><tr><td><code translate="no">script</code></td><td><code translate="no">command</code> runs in the local checkout and prints the version</td></tr></tbody></table></div>
+<p>A pattern is refused when it cannot be read back as a version: a field twice or two fields without
+text between them, digits in the text, a calendar without year or month, the counter not last,
+<code translate="no">{n}</code> mixed with the other fields, fields out of order, or a result that is no release title
+(<code translate="no">b{n}</code> gives <code translate="no">b0</code>, which is not a version; <code translate="no">build-{n}</code> is). Patterns and commands are limited to
+1000 characters, own rules to 200. <code translate="no">version_config_validate</code> lists the problems with field, code and
+text.</p>
+<p><strong>Raise of an issue.</strong> Each label (<code translate="no">source: label</code>) and the native issue type (<code translate="no">source: type</code>) is
+looked up, case-insensitive: first the repository&#39;s own <code translate="no">raises</code>, then the presets. An own rule
+replaces the preset for that name. The issue raises the highest part found; an issue that no rule
+matches raises <code translate="no">default_part</code>. Native types are GitHub&#39;s organisation issue types (<code translate="no">type.name</code>)
+and GitLab&#39;s <code translate="no">issue_type</code> (<code translate="no">issue</code>, <code translate="no">incident</code>, <code translate="no">task</code>); Forgejo/Gitea have none and use labels only.
+The <code translate="no">prefixed</code> preset takes the <code translate="no">plain</code> words after <code translate="no">type:</code>, <code translate="no">type::</code>, <code translate="no">type/</code>, <code translate="no">typ:</code>, <code translate="no">kind/</code> or
+<code translate="no">kind:</code> (<code translate="no">type::feature</code>, <code translate="no">kind/bug</code>).</p>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col">Preset</th><th scope="col">major</th><th scope="col">minor</th><th scope="col">patch</th></tr></thead><tbody><tr><td><code translate="no">plain</code></td><td><code translate="no">breaking</code>, <code translate="no">breaking-change</code></td><td><code translate="no">feature</code>, <code translate="no">enhancement</code></td><td><code translate="no">bug</code>, <code translate="no">fix</code>, <code translate="no">bugfix</code>, <code translate="no">security</code></td></tr><tr><td><code translate="no">prefixed</code></td><td><code translate="no">type:breaking</code>, …</td><td><code translate="no">type::feature</code>, …</td><td><code translate="no">kind/bug</code>, …</td></tr><tr><td><code translate="no">issue_types</code></td><td><code translate="no">Breaking</code>, <code translate="no">Breaking change</code></td><td><code translate="no">Feature</code>, <code translate="no">Enhancement</code></td><td><code translate="no">Bug</code>, <code translate="no">Incident</code></td></tr></tbody></table></div>
+<p><strong>Suggestion.</strong></p>
+<ul><li>The release&#39;s issues are the issues of the next release milestone (see &quot;Queue order&quot;) plus the
+release scope, open or closed.</li><li>The highest raise among them is applied to the last released version. The reason names the
+issues at that raise: &quot;minor because of #12, #15&quot; (the first ten, then &quot;and N more&quot;), or &quot;patch,
+no issue asks for more&quot;.</li><li>The last released version is the highest version that fits the scheme among the closed release
+milestones and the tags. Neither source wins by kind; the higher version wins, so a tag made
+without a milestone counts as much as a milestone closed without a tag. On a tie the milestone&#39;s
+spelling is kept and the origin is <code translate="no">both</code>. Pre-release versions (<code translate="no">1.3.0-rc.1</code>) never count, build
+metadata (<code translate="no">+…</code>) is ignored. If the forge refuses the tags, the milestones alone are used and
+<code translate="no">tags_read</code> is <code translate="no">false</code>.</li><li>Before 1.0 (SemVer and patterns with major and minor) a breaking change raises the minor part
+(<code translate="no">0.4.2</code> → <code translate="no">0.5.0</code>). 1.0.0 is never suggested; the user sets it by changing the suggestion.</li><li>A part the pattern does not have raises the lowest part it has (<code translate="no">release-{major}.{minor}</code>: a
+patch raises the minor part).</li><li>Without a previous version: SemVer <code translate="no">0.1.0</code> (plain numbers; a prefix such as <code translate="no">v</code> only comes from an
+earlier release or tag), a pattern with major and minor <code translate="no">0.1.0</code> in its form,
+a major-only pattern, <code translate="no">{n}</code> and <code translate="no">build</code> give <code translate="no">1</code>, calendar gives today&#39;s period with counter 0.</li><li>Calendar ignores the raise: today&#39;s period (UTC) with counter 0, or the next counter while the
+last version is in the same period. Without a counter, a second release in one period is an
+error, as is a last version later than today.</li></ul>
+<p><strong>Own script.</strong> The script runs only in the user&#39;s local checkout of the repository (a plain clone
+outside the worktree root, never a worktree), through the same runner as the automations&#39;
+prechecks (<code translate="no">automations::command</code>): environment cleared down to the automations&#39; allow-list, so no
+token is passed, stdin closed, 60 s timeout, at most 64 KiB of stdout and of stderr each. Inputs:</p>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col">Variable</th><th scope="col">Value</th></tr></thead><tbody><tr><td><code translate="no">GITOODO_LAST_VERSION</code></td><td>the last released version, empty without one</td></tr><tr><td><code translate="no">GITOODO_RELEASE_ISSUES</code></td><td>path of a JSON temp file with the release&#39;s issues, removed afterwards</td></tr><tr><td><code translate="no">GITOODO_VERSION_RAISE</code></td><td><code translate="no">major</code>, <code translate="no">minor</code> or <code translate="no">patch</code></td></tr><tr><td><code translate="no">GITOODO_REPO</code></td><td><code translate="no">owner/name</code></td></tr></tbody></table></div>
+<p>Its stdout must be exactly one line (one trailing line break allowed) that is a release title of at
+most 100 characters. Anything else (exit code not 0, a timeout, too much output, no line, several
+lines, no version) is an error that shows stdout and stderr; it never becomes a version. The
+hygiene and the MCP tool never run the script: the hygiene skips the milestone question with a
+notice, the MCP tool answers that the app or the CLI runs it.</p>
+<p><strong>Naming the next milestone.</strong> The hygiene&#39;s question to create the next release milestone
+proposes the suggestion&#39;s version (it used to count up the last number of the newest milestone).</p>
+<p><strong>In the dialogs.</strong> &quot;Release anlegen …&quot;, &quot;Neues Release&quot; and the next release in &quot;Release
+abschließen&quot; prefill the suggestion and say why under the field, written in the person&#39;s language
+from <code translate="no">basis</code> and <code translate="no">last</code> (for example &quot;Vorschlag: Minor steigt wegen #12, #15. Ausgehend von
+v1.4.2.&quot;; <code translate="no">last</code> is an open release when the new one comes after it); the script scheme adds what
+the script wrote to stderr under &quot;Ausgabe des Skripts&quot;. The reason disappears once another version
+is typed. A suggestion that fails (invalid settings, a scheme that cannot count on, a script that
+cannot run or fails, an unreachable forge) says so there and asks for the version, with the
+details below it: the settings&#39; problems, or the message and, for a failed script, its stdout and
+stderr, open from the start. The field stays empty; a failure never becomes a version, and nothing
+counts up the last number of a title any more.</p>
+<p><strong>Surfaces.</strong> The release settings (tab Versionierung, #1147) and the dialogs&#39; version suggestion, and:</p>
+<ul><li>Tauri: <code translate="no">version_suggest(account, repo)</code> (<code translate="no">outcome</code>: <code translate="no">suggested</code> with the suggestion, or <code translate="no">failed</code>
+with the failure), <code translate="no">version_config(account, repo)</code>, <code translate="no">version_config_validate(config)</code> and
+<code translate="no">set_version_config(account, repo, config | null)</code> (<code translate="no">saved</code> or <code translate="no">invalid</code> with the problems).</li><li>CLI: <code translate="no">gitoodo release-version --repo owner/name [--account id] [--json] [--check]</code>, for example
+<code translate="no">v1.5.0 (minor because of #11, #13; last v1.4.2 from a closed milestone)</code>. <code translate="no">--check</code> only checks
+the stored config.</li><li>MCP tool <code translate="no">ledger_version_suggestion</code> (optional <code translate="no">repo</code>).</li></ul>
+<h2 id="assignment-rules-1143">Assignment rules (#1143)<a class="docs-anchor" href="#assignment-rules-1143" aria-label="Assignment rules (#1143)" data-testid="docs-md-anchor-assignment-rules-1143">#</a></h2>
+<p>Each repository has a list of assignment rules in the app&#39;s orchestration config
+(<code translate="no">orchestration.json</code>, <code translate="no">release_rules</code> in the repository&#39;s entry; never in the repository). The
+rules decide which issues join which release by themselves; they are edited in the release settings
+(tab Zuordnung, #1147).</p>
+<p>A rule (<code translate="no">orchestration::assignment::AssignmentRule</code>) has</p>
+<ul><li>an <code translate="no">id</code> (unique in the list) and a <code translate="no">name</code>, <code translate="no">enabled</code> (default on);</li><li><code translate="no">conditions</code> over the issue and <code translate="no">combine</code>: <code translate="no">all</code> (default) or <code translate="no">any</code>. Attributes:<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col"><code translate="no">attribute</code></th><th scope="col">condition</th></tr></thead><tbody><tr><td><code translate="no">label</code></td><td>carries the label <code translate="no">value</code> (any case; the catalog&#39;s name is resolved per repo)</td></tr><tr><td><code translate="no">state</code></td><td><code translate="no">open</code> or <code translate="no">closed</code></td></tr><tr><td><code translate="no">author</code></td><td>opened by the login <code translate="no">value</code> (any case, <code translate="no">@</code> optional)</td></tr><tr><td><code translate="no">origin</code></td><td><code translate="no">follow_up</code> (a worker follow-up by its marker, or a body that names</td></tr><tr><td></td><td>&quot;Follow-up of #n&quot;/&quot;Follow-up from #n&quot;/&quot;Folge von #n&quot;) or <code translate="no">follow_up_in_release</code></td></tr><tr><td></td><td>(the parent, open or closed, is in an open release milestone or carries</td></tr><tr><td></td><td><code translate="no">release:next</code>)</td></tr><tr><td><code translate="no">age</code></td><td>days since it was opened, <code translate="no">at_least</code> and/or <code translate="no">at_most</code></td></tr><tr><td><code translate="no">priority</code></td><td>the priority label&#39;s level: <code translate="no">value</code> <code translate="no">p0</code>…<code translate="no">p3</code>, or <code translate="no">at_least</code>/<code translate="no">at_most</code> as numbers</td></tr><tr><td><code translate="no">issue_type</code></td><td>the forge&#39;s native issue type <code translate="no">value</code> (GitHub types, GitLab issue/incident/task)</td></tr></tbody></table></div></li></ul>
+<ul><li>a <code translate="no">target</code>: <code translate="no">{&quot;kind&quot;:&quot;next&quot;}</code> (the next release: its milestone when one with a version is open,
+else <code translate="no">release:next</code>), <code translate="no">{&quot;kind&quot;:&quot;parent&quot;}</code> (the release of the issue&#39;s parent; used with
+<code translate="no">origin</code>) or <code translate="no">{&quot;kind&quot;:&quot;named&quot;,&quot;title&quot;:&quot;v2.0&quot;}</code> (an open release milestone by title);</li><li>an <code translate="no">effect</code>: <code translate="no">assign</code> writes the release on the forge, <code translate="no">suggest</code> stores a suggestion and writes
+nothing.</li></ul>
+<p><strong>Evaluation.</strong> The rules run on every poll inside the existing hygiene pass (no loop of their
+own, the same writer lock) whenever release planning or the milestone rule is on. With the
+milestone rule off, they write no milestone: the next release is then always <code translate="no">release:next</code>, and a
+rule whose release is a milestone (a named release, a parent in a milestone) does nothing. So an
+open <code translate="no">priority:p0</code> issue gets <code translate="no">release:next</code> in a repository with release planning on and the
+milestone rule off, and the queue takes it first as before. They look at open issues
+(closed ones only for a rule with a <code translate="no">state</code> condition) of kind issue that are in no milestone and
+carry no <code translate="no">release:next</code>; an issue in a sprint or any other milestone is never moved. The first
+enabled, valid rule that matches decides. Writing the milestone or the label is idempotent: an
+issue that is in a release is left alone, so the next pass writes nothing. At most
+<code translate="no">MAX_WRITES_PER_RUN</code> (10) assignments are written per repository and pass; the rest follow on the
+next passes with a notice (&quot;N more release assignments pending&quot;).</p>
+<p><strong>Validation.</strong> Storing rules refuses an empty condition list, a condition without a value or with
+an invalid one (<code translate="no">state: merged</code>, <code translate="no">priority: high</code>, <code translate="no">age</code> without bounds or with <code translate="no">at_least</code> above
+<code translate="no">at_most</code>), an unknown attribute, a named target that is not a version, more than 50 rules or 20
+conditions, an empty or duplicate id; each problem names its field
+(<code translate="no">rules[0].conditions[1].value</code>) and a code. A named release that is not open on the forge is only
+a warning when storing (<code translate="no">unknown_release</code>). During a pass an invalid rule, or one whose named
+release is gone, is skipped with a notice and never stops the pass; a config from a newer version
+with an attribute this one does not know still loads.</p>
+<p><strong>Removals by hand stick.</strong> Each pass remembers which issues were in which release
+(<code translate="no">release-rules.json</code> in the state folder, per account and repository). An issue that was in a
+release and is in none on the next pass was taken out by a person (on the forge or in the app): a
+removal marker for that issue and release keeps every rule from putting it back there. A removal of
+<code translate="no">release:next</code> binds to the milestone that becomes the next release, so it also holds when the
+version is decided. Moving an issue to another release is no removal, but a later release a person
+chose is kept: the file also remembers where a pass itself put an issue (<code translate="no">placed</code>), and only such an
+issue is ever pulled forward for a dependency (#2061). A closed milestone sending its
+issues to the backlog is none either. Markers of a release are dropped once it is closed or gone,
+so the rules may act again in a later release. Dismissing a suggestion counts as a removal. The file
+holds only issue numbers, milestone ids, rule ids and times; deleting it loses the markers and the
+waiting suggestions, nothing else.</p>
+<p><strong>Templates.</strong> <code translate="no">assignment::templates()</code> offers three rules:</p>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col"><code translate="no">id</code></th><th scope="col">name</th><th scope="col">rule</th></tr></thead><tbody><tr><td><code translate="no">follow_ups</code></td><td>Follow-ups join their parent&#39;s release</td><td><code translate="no">origin</code> = <code translate="no">follow_up_in_release</code>, target <code translate="no">parent</code>, assign</td></tr><tr><td><code translate="no">urgent</code></td><td>Urgent issues join the next release</td><td><code translate="no">priority</code> at most 0 (<code translate="no">p0</code>), target <code translate="no">next</code>, assign</td></tr><tr><td><code translate="no">bugs</code></td><td>Bugs join the next release</td><td>any of the bug labels or the issue type <code translate="no">Bug</code>, target <code translate="no">next</code>, suggest</td></tr></tbody></table></div>
+<p>A repository without its own list (<code translate="no">release_rules</code> absent) uses the defaults: <code translate="no">follow_ups</code>, and
+<code translate="no">urgent</code> when release planning is on. They replace the former fixed behaviour without a migration
+step: follow-ups of an issue in the next release milestone still join it (now also of a later open
+release, and of an issue with <code translate="no">release:next</code>), and open <code translate="no">priority:p0</code> issues are in the next release
+as before, now written on the forge. Storing an own list replaces the defaults; <code translate="no">null</code> goes back to
+them.</p>
+<p><strong>Suggestions.</strong> A suggesting rule&#39;s match is kept as a suggestion (issue, title, link, release,
+rule, since when) until it is approved, dismissed or no longer matches. Approving writes the
+release like an assigning rule (a suggested <code translate="no">release:next</code> goes to the next release milestone if one
+is open by then); dismissing writes nothing and leaves a removal marker.</p>
+<p><strong>Surfaces.</strong> The release view&#39;s dialogs (below), and:</p>
+<ul><li>Tauri: <code translate="no">release_rules(account, repo)</code> (<code translate="no">rules</code>, <code translate="no">defaults</code>), <code translate="no">release_rules_validate(rules)</code>,
+<code translate="no">release_rule_templates()</code>, <code translate="no">set_release_rules(account, repo, rules | null)</code> (<code translate="no">saved</code> with the
+rules in effect and <code translate="no">warnings</code>, or <code translate="no">invalid</code> with the problems), <code translate="no">release_suggestions(account?, repo?)</code>, <code translate="no">release_suggestion_approve(account, repo, issue)</code> and
+<code translate="no">release_suggestion_dismiss(account, repo, issue)</code>.</li><li>CLI: <code translate="no">gitoodo release-rules --repo owner/name [--account id] [--json]</code>: the rules in effect, their
+problems and the waiting suggestions (read only).</li><li>MCP tool <code translate="no">ledger_release_suggestions</code> (optional <code translate="no">repo</code>, read only).</li></ul>
+<h2 id="completing-a-release-and-its-automations-1145">Completing a release and its automations (#1145)<a class="docs-anchor" href="#completing-a-release-and-its-automations-1145" aria-label="Completing a release and its automations (#1145)" data-testid="docs-md-anchor-completing-a-release-and-its-automations-1145">#</a></h2>
+<p>Completing a release is a deliberate act of the user in the app. It raises the event &quot;release
+completed&quot; and then runs the repository&#39;s release automation steps in order, with visible progress
+per step. The dialogs are part of the release view (see &quot;Release view: completing, runs, settings
+and sessions&quot;). The code is <code translate="no">orchestration::release_run</code> in the core.</p>
+<p><strong>Completion</strong> (<code translate="no">release_run::prepare</code>, then <code translate="no">release_run::complete</code>). The request names the release
+milestone, the confirmed version (the suggestion of the version logic, editable), optionally a
+commit, and where open issues go. Completing is refused, with a reason in words, when</p>
+<ul><li>the milestone is gone, closed, or no release (its title is no version);</li><li>the version is no version or no valid tag name (the version is also the tag&#39;s name);</li><li>issues of the release are still open: the refusal lists them and the open release milestones they
+can move to. With <code translate="no">move_open</code> (<code translate="no">{&quot;to&quot;:&quot;milestone&quot;,&quot;id&quot;:…}</code> or <code translate="no">{&quot;to&quot;:&quot;next_label&quot;}</code>, which takes
+the milestone off and adds <code translate="no">release:next</code>) they move first, then the release is completed without
+them;</li><li>the release was completed already (then its run is retried or skipped instead);</li><li>a step needs the base branch and the forge names no default branch, or the chosen commit is no SHA;</li><li>a step that cannot be undone has no confirmation (below).</li></ul>
+<p>The plan the app shows before &quot;Complete&quot; lists every step with what it will do (&quot;Create the
+annotated tag 1.2.0 on commit 0123456789&quot;), the closed issues and merged pull requests for the
+notes, the notes themselves, the base branch and the commit (the base branch&#39;s head at the time of
+the preview, or the chosen commit). Preparing reads the forge and writes nothing.</p>
+<p><strong>Confirmation of irreversible steps.</strong> Creating a tag, creating a forge release and a command step
+marked <code translate="no">irreversible</code> (on by default) cannot be undone. They run only with a confirmation the app
+alone can create, built like the other approvals (the typed confirmation of a repository delete and
+the chat proposals that apply only after the human&#39;s OK):</p>
+<ul><li><code translate="no">release_complete_preview</code> computes the plan and its fingerprint (SHA-256 over account,
+repository, milestone, version, tag, base branch, commit, the step list and the issues that move;
+not the notes) and asks the <code translate="no">ConfirmationBook</code> for a token: 128 random bits, bound to that
+fingerprint, used once, valid for 10 minutes. The book lives only in the memory of the app process
+(Tauri state); the token goes to the window and is never written to a file or a log.</li><li><code translate="no">release_complete</code> re-plans and redeems the token for the new fingerprint. A plan that changed
+meanwhile (someone pushed to the base branch, the steps were edited) has another fingerprint, and
+the token confirms nothing. Only a redeemed token yields the <code translate="no">Confirmed</code> proof the irreversible
+steps need; the proof has no public constructor and is not deserialisable, so nothing read from a
+file, the forge, the CLI or the MCP becomes one.</li><li>Without a valid token completion is refused (<code translate="no">needs_confirmation</code> with the steps), nothing is
+written and no event is raised. A run driven without the proof (anything outside the app) stops at
+the first irreversible step and waits (&quot;waiting for your confirmation in the app&quot;).</li><li>The CLI, <code translate="no">gitoodo mcp</code> (and so the chat and the agents) and the background services run in other
+processes and have no book. They only read the runs; there is no tool or command that completes,
+retries or skips.</li><li>Retrying a step, or skipping one while irreversible steps follow, needs a new token for the run&#39;s
+fingerprint (<code translate="no">release_run_confirmation</code>), which the window asks for when the user confirms the
+dialog naming those steps.</li></ul>
+<p><strong>Steps.</strong> Each repository has an ordered list in the app&#39;s orchestration config
+(<code translate="no">release_automations</code> in the repository&#39;s entry of <code translate="no">orchestration.json</code>; never in the repository).
+Without one it uses the defaults on every forge: close milestone, notes, create tag, create forge
+release (draft).</p>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col"><code translate="no">kind</code></th><th scope="col">fields</th><th scope="col">does</th></tr></thead><tbody><tr><td><code translate="no">close_milestone</code></td><td></td><td>renames the milestone to the version when its title differs, then closes it; already closed: done</td></tr><tr><td><code translate="no">notes</code></td><td><code translate="no">changelog</code> (optional path, e.g. <code translate="no">CHANGELOG.md</code>)</td><td>the notes from the release&#39;s closed issues and merged pull requests, grouped by the version logic&#39;s raise (breaking, features, fixes, other); with <code translate="no">changelog</code> also a section <code translate="no">## 1.2.0 - date</code> in that file, committed on the branch <code translate="no">release/&lt;tag&gt;-notes</code> with a pull request into the base branch, never on it</td></tr><tr><td><code translate="no">create_tag</code></td><td><code translate="no">message</code> (optional, <code translate="no">{version}</code> allowed)</td><td>an annotated tag named like the version on the plan&#39;s commit; existing on the same commit: done; on another commit: failed with the choices below, the tag is moved only when the person chose so</td></tr><tr><td><code translate="no">create_release</code></td><td><code translate="no">draft</code> (default <code translate="no">true</code>)</td><td>the forge release of the tag with the notes; a draft where the forge has drafts (GitLab has none and publishes, the plan says so); an existing draft gets the notes, a published one is left alone</td></tr><tr><td><code translate="no">command</code></td><td><code translate="no">name</code>, <code translate="no">command</code>, <code translate="no">timeout_secs</code> (600, at most 3600), <code translate="no">irreversible</code> (default <code translate="no">true</code>)</td><td>a command from the app&#39;s config in the user&#39;s local checkout (never a worktree)</td></tr></tbody></table></div>
+<p>A command step runs through the automations&#39; shared runner: only the allow-listed environment
+(<code translate="no">PATH</code>, <code translate="no">HOME</code>, <code translate="no">USER</code>, <code translate="no">LANG</code>, <code translate="no">LC_ALL</code>, <code translate="no">TMPDIR</code>, <code translate="no">SHELL</code>, on Windows <code translate="no">SystemRoot</code>, <code translate="no">COMSPEC</code>),
+never a token, plus <code translate="no">GITOODO_RELEASE_VERSION</code>, <code translate="no">GITOODO_RELEASE_TAG</code>, <code translate="no">GITOODO_RELEASE_COMMIT</code>,
+<code translate="no">GITOODO_RELEASE_BASE</code>, <code translate="no">GITOODO_RELEASE_MILESTONE</code>, <code translate="no">GITOODO_REPO</code>, <code translate="no">GITOODO_RELEASE_ISSUES</code> (a
+JSON file with the items: <code translate="no">kind</code>, <code translate="no">number</code>, <code translate="no">title</code>, <code translate="no">labels</code>, <code translate="no">type</code>, <code translate="no">html_url</code>, <code translate="no">group</code>),
+<code translate="no">GITOODO_RELEASE_NOTES</code> (at most 32 KiB) and <code translate="no">GITOODO_RELEASE_NOTES_FILE</code> (all of them). It is
+stopped after its timeout or 1 MiB of output; exit 0 is done, anything else failed. The step keeps
+the last 2000 characters of its output without escape sequences and with secrets scrubbed.</p>
+<p>Storing steps refuses more than 20 steps, a built-in step twice, a changelog path that is absolute or
+has <code translate="no">..</code>, an empty command or name, a command or message over 1000 characters and a timeout out of
+range; each problem names the step index, the field and a code.</p>
+<p><strong>Progress.</strong> The event and the run of its steps are stored in <code translate="no">release-runs.json</code> in the state
+folder (20 runs per repository) after every change, so they survive a restart. Each step is
+<code translate="no">pending</code>, <code translate="no">running</code>, <code translate="no">done</code>, <code translate="no">failed</code> (with the result line and the output) or <code translate="no">skipped</code>, with its
+attempts, start and end, and a link to what it made (the release, the pull request). The run is
+<code translate="no">pending</code> (steps left, nothing running, e.g. waiting for the confirmation), <code translate="no">running</code>, <code translate="no">failed</code> or
+<code translate="no">done</code>. A failed step stops the chain. &quot;Retry this step&quot; (<code translate="no">retry</code>) runs only the first unfinished
+step again and goes on; &quot;Skip&quot; (<code translate="no">skip</code>) marks it skipped and goes on. Done and skipped steps never
+run again, and tag and release creation check the forge first, so a retry after a crash creates
+nothing twice; the notes step finds an open pull request or an existing section. A step that was
+running when the app stopped is failed as &quot;interrupted&quot; at the next app start (<code translate="no">recover</code>), so the
+user checks the forge and retries or skips it. One run is driven by one task at a time.</p>
+<p><strong>A version whose tag exists already.</strong> With a tag or release step, <code translate="no">prepare</code> reads the version&#39;s
+tag before anything is written (<code translate="no">forge::release::check_tag</code>). On the plan&#39;s commit it goes on. On
+another commit the preview and completing are refused (<code translate="no">tag_taken</code>) with the facts (<code translate="no">TagTaken</code>:
+tag, its commit, the wanted commit, when it was made where the forge says, how many commits it is
+behind via the forge&#39;s compare, and its forge release if any) and <code translate="no">next</code>, the next version no tag
+and no other milestone has (<code translate="no">next_free_version</code>: the last number counts up, <code translate="no">v</code> and other prefixes
+stay, a pre-release counts up its last number or gets <code translate="no">.1</code>, build metadata is dropped). The milestone
+is not touched. The request&#39;s <code translate="no">tag</code> then picks <code translate="no">use_existing</code> (the plan&#39;s commit becomes the tag&#39;s)
+or <code translate="no">replace</code> (the tag step moves it; the plan&#39;s fingerprint covers the commit it moves from); a tag
+with a forge release refuses both, only another version helps. Moving deletes and recreates the tag
+on Forgejo/Gitea and GitLab and forces the ref (<code translate="no">PATCH git/refs/tags/…</code> with <code translate="no">force</code>) on GitHub;
+it is audited as <code translate="no">tag_move</code> and never touches a tag that moved meanwhile.</p>
+<p>A tag made between the preview and the step fails the step with the same facts in <code translate="no">conflict</code>, and a
+run from before this check gets them when its dialog opens (<code translate="no">refresh_conflict</code>, reads only).
+<code translate="no">resolve(id, step, choice, token)</code> goes on with <code translate="no">next_version</code> (checked free again; the milestone the
+run closed is renamed, a changelog notes step runs again for the new version), <code translate="no">use_existing</code> or
+<code translate="no">replace</code>, with a fresh confirmation for the steps ahead. <strong>Discarding</strong> (<code translate="no">discard(id, reopen)</code>)
+removes a failed or waiting run from the list into <code translate="no">discarded</code> in the same file (20 kept); nothing
+on the forge is undone, and with <code translate="no">reopen</code> the milestone the run closed opens again.</p>
+<p><strong>Forge calls</strong> (core only, audited writes): the merged pull requests of a milestone (Forgejo/Gitea
+closed pulls of the issue list with <code translate="no">merged</code>, GitHub closed issues with <code translate="no">pull_request.merged_at</code>,
+GitLab merged merge requests), a branch head, a file on a ref, and one file as one commit on a new
+branch (Forgejo/Gitea <code translate="no">contents</code> with <code translate="no">new_branch</code>, GitHub a branch ref and <code translate="no">contents</code>, GitLab
+<code translate="no">repository/commits</code> with <code translate="no">start_branch</code>; a branch equal to the base is refused before any request;
+audit action <code translate="no">file_commit</code>).</p>
+<p><strong>Rights before the plan</strong> (#1139). <code translate="no">prepare</code> checks the token&#39;s rights for the configured steps
+before the plan is shown (<code translate="no">rights::missing_release_rights</code>): closing the milestone and moving open
+issues need the issues right, tag, release and a CHANGELOG commit the releases right. A right the
+forge surely does not give refuses with <code translate="no">missing_rights</code> (each with its key and what to grant), so
+nothing is written; a user, role or scope list the forge does not reveal counts as given, and the
+step&#39;s own refusal still names the right then.</p>
+<p><strong>Surfaces.</strong> The release view&#39;s completion and run dialogs (#1146, see &quot;Release view&quot; below), and:</p>
+<ul><li>Tauri: <code translate="no">release_steps(account, repo)</code> (<code translate="no">steps</code>, <code translate="no">defaults</code>), <code translate="no">release_steps_validate(steps)</code>,
+<code translate="no">set_release_steps(account, repo, steps | null)</code> (<code translate="no">saved</code> or <code translate="no">invalid</code> with the problems),
+<code translate="no">release_complete_preview(account, repo, request)</code> (<code translate="no">plan</code> with the plan and the token, or
+<code translate="no">refused</code> with the reason), <code translate="no">release_complete(account, repo, request, token, after?)</code> (<code translate="no">started</code>
+with the run, whose steps go on in the background, or <code translate="no">refused</code>; <code translate="no">after</code> is <code translate="no">pause</code>, the default,
+or <code translate="no">continue</code>, see &quot;Danach&quot; below), <code translate="no">release_runs(account?, repo?)</code>,
+<code translate="no">release_run_confirmation(id)</code>, <code translate="no">release_run_retry(id, step, token?)</code>,
+<code translate="no">release_run_skip(id, step, token?)</code>, <code translate="no">release_run_resolve(id, step, choice, token?)</code>
+(<code translate="no">choice</code> <code translate="no">{&quot;choice&quot;: &quot;next_version&quot;, &quot;version&quot;}</code>, <code translate="no">{&quot;choice&quot;: &quot;use_existing&quot;}</code> or
+<code translate="no">{&quot;choice&quot;: &quot;replace&quot;}</code>), <code translate="no">release_run_check(id)</code> and <code translate="no">release_run_discard(id, reopen)</code> (<code translate="no">changed</code>
+with the run, or <code translate="no">refused</code>; a discard is logged as <code translate="no">release_run_discarded</code> with the steps that
+stay).</li><li>CLI: <code translate="no">gitoodo release-runs [--repo owner/name] [--account id] [--json]</code> (read only).</li><li>MCP tool <code translate="no">ledger_release_runs</code> (optional <code translate="no">repo</code>, read only).</li></ul>
+<h2 id="closing-a-release">Closing a release<a class="docs-anchor" href="#closing-a-release" aria-label="Closing a release" data-testid="docs-md-anchor-closing-a-release">#</a></h2>
+<p>&quot;Release abschließen&quot; appears once every member is merged or closed. After a confirmation Gitoodo</p>
+<ol><li>removes <code translate="no">release:next</code> from the closed members (dependency members need nothing),</li><li>closes the planned milestone if the user asks and no other open issue is still in it (otherwise it
+says so and keeps it),</li><li>creates the next release with the given version only when the user ticks &quot;Nächstes Release auch
+anlegen&quot; (off by default, #1476; the dialog proposes the version suggestion for a release after
+the open ones, else counts up the last number); the name must be a free version, checked before
+anything is written.</li></ol>
+<p>Members of the next milestone lose <code translate="no">release:next</code> too, so a closed issue does not come back into the
+next scope through a stale label. This label-only dialog serves a next release without a version;
+the tag, the notes and the steps of the release settings run only for a release with a version, and
+the dialog says so in one line. Writes use the account&#39;s token in the Rust core
+(<code translate="no">release_membership</code>, <code translate="no">release_assign</code>, <code translate="no">release_create</code>, <code translate="no">release_cut</code>, <code translate="no">release_remove</code>), go
+through the forge write log (<code translate="no">activity/forge-writes.jsonl</code>, reason <code translate="no">app: release …</code>) and trigger a
+poll; the app shows the change at once until the poll confirms it.</p>
+<p>An opened candidate in &quot;Issues hinzufügen&quot; can also be acted on right there (#1818): next to &quot;Auf
+der Forge öffnen&quot; it shows its priority with raise and lower (the repository&#39;s own priority labels,
+the same <code translate="no">set_issue_priority</code> command and pending store as the board, so the chip and &quot;Wichtigste
+zuerst&quot; change at once) and &quot;Schließen&quot;, which asks once in the row (&quot;Ja, schließen&quot; takes the
+focus) and then closes the issue with <code translate="no">close_issue</code>, without a comment. A closed issue leaves the
+list and the selection at once and stays out until the read model drops it, at most <code translate="no">CLOSING_MS</code>
+(10 min, <code translate="no">src/state/closing.ts</code>); a refused close or priority step is taken back and the dialog
+says why.</p>
+<h2 id="releases-never-appear-by-themselves-1476">Releases never appear by themselves (#1476)<a class="docs-anchor" href="#releases-never-appear-by-themselves-1476" aria-label="Releases never appear by themselves (#1476)" data-testid="docs-md-anchor-releases-never-appear-by-themselves-1476">#</a></h2>
+<p>A release milestone is created only by a deliberate act of the user, and each creation is logged
+with its trigger (<code translate="no">release.milestone_created</code>, <code translate="no">docs/logging.md</code>):</p>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col">Trigger</th><th scope="col">Where</th></tr></thead><tbody><tr><td><code translate="no">next_dialog</code></td><td>&quot;Release anlegen&quot; next to a next release without a version; the dialog &quot;Nächstes Release auf der Forge anlegen&quot; with the button &quot;0.1.0 anlegen&quot;</td></tr><tr><td><code translate="no">new_dialog</code></td><td>&quot;Neues Release&quot; of a repository; same button with the version</td></tr><tr><td><code translate="no">cut_dialog</code></td><td>&quot;Release abschließen&quot; with &quot;Nächstes Release auch anlegen&quot; ticked by the user</td></tr><tr><td><code translate="no">forge_answer</code></td><td>The user&#39;s own &quot;yes&quot; to the milestone question on the forge (spec 5.4)</td></tr></tbody></table></div>
+<ul><li><strong>The milestone question</strong> counts only an answer to exactly that question: the app&#39;s answer
+marker with its id, or a plain answer by a trusted human before any newer question in the issue.
+It has no recommended default and no deadline, so silence never creates anything. Gitoodo creates
+the version the question named; when the suggestion has changed since, it asks again instead.</li><li><strong>Views and reads never write.</strong> Opening the release view, a dialog or the milestone line only
+reads; the button that writes names the version. <code translate="no">crates/core/tests/no_auto_milestones.rs</code> and
+<code translate="no">src/views/dashboard/releaseRemove.test.ts</code> fail as soon as another place calls a creating
+command.</li><li><strong>Agents never touch releases.</strong> Workers, release sessions and the question skill are told never
+to create, rename, close or delete milestones, forge releases or tags, nor to move issues between
+milestones (<code translate="no">brief::RELEASE_RULE</code>); workers have no forge credentials anyway.</li></ul>
+<h2 id="removing-a-release-1476">Removing a release (#1476)<a class="docs-anchor" href="#removing-a-release-1476" aria-label="Removing a release (#1476)" data-testid="docs-md-anchor-removing-a-release-1476">#</a></h2>
+<p>&quot;Release entfernen …&quot; in the hover actions of every release in the release view removes a release
+the user does not want, in one confirmed step (<code translate="no">release_remove_preview</code>, <code translate="no">release_remove</code>,
+<code translate="no">orchestration::release_remove</code>). The dialog first reads what would happen (it writes nothing):</p>
+<ul><li><strong>Open issues</strong> go where the user picks: into the next release (default; the release that is
+next once this one is gone, else <code translate="no">release:next</code>), into another open release, or into no release.
+They move first, in chunks of 100, the same way as &quot;Release zuordnen&quot;.</li><li><strong>Delete or only close.</strong> Deleting removes the milestone on the forge (Forgejo/Gitea <code translate="no">DELETE milestones/{id}</code>, GitHub <code translate="no">DELETE milestones/{number}</code>, GitLab <code translate="no">DELETE milestones/{id}</code>); every
+forge then unlinks it from its finished issues, so they lose the link, and the dialog says how
+many. &quot;Nur schließen&quot; closes the milestone instead and the finished issues keep it, unless the
+user also unlinks them. A deleted milestone cannot be restored; the dialog says so once, next to
+the button.</li><li><strong>Tags.</strong> A tag Gitoodo made for this release (a release run&#39;s tag step, on the run&#39;s commit)
+can go with it when the release was never published. A tag with a forge release, a tag on
+another commit and a tag Gitoodo did not make are never offered.</li><li><strong>Refused</strong>, with the reason and nothing written: a GitLab group milestone (it belongs to the
+group and every project in it; change it in the group), a release whose run is pending, running
+or failed (complete or discard it first), and deleting a published release (it can be closed).</li></ul>
+<p><strong>Feedback while it runs (#1512).</strong> Confirming closes the sheet at once. The release&#39;s row dims
+and shows the working mark with &quot;Wird entfernt …&quot; (&quot;Wird geschlossen …&quot;); after about 2.5 s it
+names the steps the core reports through a channel (<code translate="no">Progress</code>: <code translate="no">move</code>/<code translate="no">unlink</code> with done and
+total, <code translate="no">milestone</code>, <code translate="no">tag</code>), e.g. &quot;Issues verschieben 3 von 4 · Release löschen&quot;. The issue writes
+of a chunk run with bounded parallelism (<code translate="no">PARALLEL_WRITES</code> = 4, results in issue order), the same
+for &quot;Release zuordnen&quot; and the unlinking of finished issues. Once the forge confirmed it, the
+release leaves the row, the later releases and the pickers at once and its open issues show where
+they went (from the outcome&#39;s <code translate="no">moved</code> and <code translate="no">moved_to</code>), without waiting for the classifier&#39;s next
+poll; a deletion says so in the toast (&quot;v1.0.0 entfernt · 4 Issues nach v0.1.0 verschoben&quot;), a
+closing in the note with &quot;Wieder öffnen&quot;, which brings the release back at once the same way. A
+failure or refusal brings the row back as it was and says what happened, including issues that had
+already moved and stay there. These view states hold until the report shows the change, at most
+<code translate="no">PENDING_MS</code> (3 min); before #1512 the view dropped them on the first report after the save, which
+could still be stale, and only the classifier&#39;s next poll (minutes on many repositories) made the
+release go, with nothing shown meanwhile.</p>
+<p>After the only release is removed, the next release has no version again; the hygiene may ask the
+milestone question again, which never creates anything by itself. Every removal is an audit event
+(<code translate="no">release.milestone_removed</code>) and goes through the forge write log (<code translate="no">milestone_delete</code>,
+<code translate="no">milestone_close</code>, <code translate="no">milestone_set</code>, <code translate="no">label_add</code>, <code translate="no">label_remove</code>, <code translate="no">tag_delete</code>).</p>
+<h2 id="editing-a-release-1499">Editing a release (#1499)<a class="docs-anchor" href="#editing-a-release-1499" aria-label="Editing a release (#1499)" data-testid="docs-md-anchor-editing-a-release-1499">#</a></h2>
+<p>For the user a release is one thing, the &quot;Release&quot;; that the forge keeps it as a milestone is said
+only where the forge matters (the tooltip of the release&#39;s &quot;…&quot;, a GitLab group milestone, forge
+errors and fields). A test (<code translate="no">src/i18n/terminology.test.ts</code>) keeps the German and English texts to
+that.</p>
+<p>Every open release is a node of its own below its repository, e.g. &quot;v1.5.5 · fällig 11. Nov.&quot;
+(&quot;überfällig seit 11. Nov.&quot; once the date has passed, calm, in the text&#39;s colour). Its &quot;…&quot; at the
+node&#39;s end opens the release&#39;s menu (&quot;Issues hinzufügen&quot;, &quot;Release abschließen …&quot;, &quot;Release-Sitzung
+…&quot; while none runs, then):</p>
+<ul><li><strong>Bearbeiten …</strong>: version, due date (date picker, &quot;Kein Datum&quot; where the forge can clear it) and
+description in one sheet (<code translate="no">release_edit_view</code>, <code translate="no">release_edit</code>, <code translate="no">orchestration::release_edit</code>).
+The version is checked as typed (a version, not taken by another milestone of the repository,
+open or closed; it stays while a release run of it is in progress). The core checks again and
+asks first (&quot;Trotzdem speichern&quot;) when the version does not fit the repository&#39;s version scheme,
+when a tag named like the new version exists already (#1419: &quot;Tag v1.6.0 gibt es schon (auf
+0123456)&quot;; completing the release then offers to use it, move it or take another version, see
+&quot;A version whose tag exists already&quot;; a tag that cannot be read never warns) or when the save
+changes which release is next (and so what the autopilot works on). A GitLab group milestone is
+refused with the hint to edit it in the group.</li><li><strong>Datum verschieben</strong> (only when overdue): the same sheet with only the date, a week from today
+suggested.</li><li><strong>Schließen …</strong>: the removal sheet set to closing (open issues move as there). Afterwards the
+note offers <strong>Wieder öffnen</strong> (<code translate="no">release_edit</code> with <code translate="no">open: true</code>, trigger <code translate="no">reopen</code>, no confirm).</li><li><strong>Release entfernen …</strong> as above.</li><li><strong>Autopilot</strong> (&quot;▷&quot; beside &quot;…&quot; on every node): the release focus (#1442), the same choice on
+every node of the repository (&quot;Next release&quot;, &quot;Only v1.5.0&quot; per open release, &quot;All issues&quot;).
+Making a later release the current one (#1419) is this choice: picking a later release
+makes the autopilot work on it, while which release is <em>next</em> stays the one rule of &quot;Next model&quot;
+(due first, else the lowest version), so the order never depends on a hidden flag. The node the
+autopilot works on carries &quot;aktiv&quot; and a filled &quot;▷&quot;; &quot;All issues&quot; says so once in the
+repository&#39;s line (&quot;Autopilot: all issues&quot;).</li></ul>
+<p><strong>Closed releases (#1419).</strong> Under its open releases each repository has a quiet row
+&quot;N geschlossen&quot; (<code translate="no">release-closed-&lt;repo&gt;</code>), collapsed by default and left out while a search narrows
+the tree. Opened, it lists the repository&#39;s closed releases (closed milestones whose title is a
+version, highest version first; GitLab group milestones stay out, they are reopened in the group),
+each with its version, its former due date and <strong>Wieder öffnen</strong>. The read model carries them as
+<code translate="no">release.closed</code> (<code translate="no">orchestration::release::closed_releases</code>, from the milestone read the poll does
+anyway, so nothing more is fetched). Reopening calls <code translate="no">release_edit</code> with <code translate="no">open: true</code> and trigger
+<code translate="no">reopen_closed</code>: unlike the undo right after closing it asks first when the reopened release would
+become the next one (the note names the change and offers &quot;Trotzdem wieder öffnen&quot;), then the
+release shows among the open ones at once and leaves the closed ones.</p>
+<p>A release without issues yet is a node like any other (#1701, &quot;Keine offenen Issues&quot;), so an
+empty or mistaken release can be edited, closed or removed there; without any open release the
+repository row keeps the plain milestone line with &quot;Release anlegen&quot;.</p>
+<p>A save writes the milestone once, only with what changed, shows at once in the row (rolled back on
+a failure or a refusal, held until the report has it, #1512) and asks the classifier to poll. The
+autopilot choice from the menu works the same way: the row and the menu read the one focus of the
+repository, which shows the choice at once with a turning mark while it is saved, keeps it until
+the report has it and goes back with a note when saving fails (before #1512 the menu kept its own
+choice while the row waited for the next poll, so they disagreed). Every save is an audit event
+(<code translate="no">release.milestone_edited</code> with <code translate="no">trigger</code> <code translate="no">edit_dialog</code>, <code translate="no">move_date</code>, <code translate="no">reopen</code> or <code translate="no">reopen_closed</code>) and goes through
+the forge write log (<code translate="no">milestone_edit</code>, reason <code translate="no">app: release edit</code>).</p>
+<h2 id="releases-by-hand-1141">Releases by hand (#1141)<a class="docs-anchor" href="#releases-by-hand-1141" aria-label="Releases by hand (#1141)" data-testid="docs-md-anchor-releases-by-hand-1141">#</a></h2>
+<p>Step 2 of #1139: several planned releases per repository, created and filled by hand, in the core,
+the read model and the app (unlocked for everyone with #1148).</p>
+<ul><li><strong>Several releases are normal.</strong> Every open milestone with a version title is a planned release;
+the next one is picked as in &quot;Queue order&quot;, the others are later releases. Sprints and other
+milestones are never releases and never count. The findings report &quot;several open release
+milestones&quot; only when two of them tie for the next release (same due date and version), never for
+later releases or sprints.</li><li><strong>New release</strong> (<code translate="no">release_create(account, repo, title, trigger)</code>, <code translate="no">release::create_release</code>): creates an
+open milestone named with a version. The title must be a version (<code translate="no">forge::release</code>) that no open
+or closed milestone of the repository has yet (any case); an open sprint or another release never
+blocks it. The dialog prefills the version suggestion (#1142) for a release after the open ones
+(<code translate="no">version_suggest</code> with <code translate="no">newRelease: true</code>, which treats the open releases as released; a calendar
+version counts from the period of a planned release that lies ahead, so <code translate="no">2026.12.1</code> follows a
+planned <code translate="no">2026.12.0</code> instead of failing, <code translate="no">version::new_release_day</code>). When the
+new release is the next one, the open <code translate="no">release:next</code> issues without a milestone move into it and
+lose the label.</li><li><strong>Assign and remove</strong> (<code translate="no">release_assign(account, repo, numbers, to)</code>, <code translate="no">release::assign</code>) with <code translate="no">to</code>
+one of <code translate="no">{&quot;kind&quot;: &quot;next&quot;}</code>, <code translate="no">{&quot;kind&quot;: &quot;release&quot;, &quot;id&quot;: n}</code> and <code translate="no">{&quot;kind&quot;: &quot;none&quot;}</code>. &quot;Next&quot; sets the
+next release milestone, or <code translate="no">release:next</code> while the next release has no version; a release sets
+its milestone and removes <code translate="no">release:next</code> (for a later release); &quot;none&quot; removes both the release
+milestone and <code translate="no">release:next</code>. A sprint or another non-release milestone stays: an issue in a
+sprint keeps it unless it goes into a release. Issues whose place does not change are not
+written; the answer lists the ones that changed. Dependencies follow the issue that needs them as
+before; &quot;none&quot; cannot take out an issue that is in only as a dependency.</li><li><strong>The release on the issue</strong>: the read model carries <code translate="no">release_title</code> per issue, the version of its
+open release milestone, else the next release&#39;s version when the issue is in its scope. The
+board shows it as a small tag in the row&#39;s meta line, the issue sheet as the fact &quot;Release&quot; with
+&quot;Ändern&quot;, and the flag button opens the release choice instead of toggling (open releases, the
+next one marked; &quot;Next release&quot; while it has no version; &quot;No release&quot;). p0 issues stay in by rule.</li><li><strong>Release view</strong>: every open release of a repository as a node with its milestone members (see
+&quot;Release tree&quot;). Every item has &quot;Release ändern&quot; (on hover or focus) instead of the plain remove,
+and every repository row &quot;Neues Release&quot; beside &quot;+&quot;. Every release&#39;s &quot;…&quot; has &quot;Issues
+hinzufügen&quot; (#1683) with that release chosen, also while it has no issue yet.</li><li><strong>Hygiene</strong>: an open issue in the next release milestone loses <code translate="no">release:next</code>; the milestone says
+it all.</li></ul>
+<p>The report and the read model add <code translate="no">releases</code> per repository, the open releases in planning order:</p>
+<div class="docs-code"><pre dir="ltr" translate="no" tabindex="0" data-lang="json"><code>&quot;releases&quot;: [
+  { &quot;id&quot;: 3, &quot;title&quot;: &quot;v1.4.0&quot;, &quot;due&quot;: &quot;2026-12-01&quot;, &quot;next&quot;: true, &quot;items&quot;: [] },
+  { &quot;id&quot;: 5, &quot;title&quot;: &quot;v1.5.0&quot;, &quot;items&quot;: [{ &quot;number&quot;: 14, &quot;reason&quot;: &quot;milestone&quot;, &quot;...&quot;: &quot;...&quot; }] }
+]</code></pre><button type="button" class="docs-code__copy" data-copy hidden data-testid="docs-md-copy-3">Copy</button></div>
+<p>The next release&#39;s <code translate="no">items</code> are the scope (<code translate="no">release.items</code>); a later release lists its issues, open
+and closed.</p>
+<h2 id="release-view-completing-runs-settings-and-sessions-1146">Release view: completing, runs, settings and sessions (#1146)<a class="docs-anchor" href="#release-view-completing-runs-settings-and-sessions-1146" aria-label="Release view: completing, runs, settings and sessions (#1146)" data-testid="docs-md-anchor-release-view-completing-runs-settings-and-sessions-1146">#</a></h2>
+<p>Step 7 of #1139. Only what needs the person stays visible; the rest shows on hover or focus of its
+row.</p>
+<ul><li><strong>Release abschließen.</strong> On a release with a version, &quot;Release abschließen&quot; in its &quot;…&quot; (and as
+the node&#39;s button once everything in the next release is done) opens the completion dialog
+(rules 9 to 11). The
+dialog takes the version (prefilled with the release&#39;s title, checked as it is typed) and shows
+the plan the core prepared: open issues with where they go (another open release or &quot;Ins nächste
+Release&quot;, which sets <code translate="no">release:next</code>), every step by name with &quot;nicht umkehrbar&quot; on the ones that
+cannot be undone, the command of a command step, the changelog file of the notes step, and the
+notes on demand. &quot;Abschließen&quot; sends the plan&#39;s confirmation token; the core&#39;s own summary of a
+step shows on hover. A repository without a named next release keeps the label-only dialog of
+&quot;Closing a release&quot;.</li><li><strong>Danach.</strong> While the repository&#39;s autopilot is on, the completion dialog asks what follows:
+&quot;Autopilot anhalten&quot; (the default, &quot;Du startest das nächste Release selbst, wenn du so weit
+bist&quot;) or &quot;Gleich mit 1.6.0 weitermachen&quot; (&quot;mit allen Issues&quot; when no release follows). With
+the pause the core stores the repository as paused after the completion was accepted and before
+its steps run, so no worker starts on the next release in between; a refused completion pauses
+nothing. It wakes the classifier, logs <code translate="no">release.autopilot_paused</code> and notes the pause on the run
+(<code translate="no">paused_autopilot</code>). A pause that cannot be stored is logged (<code translate="no">release.autopilot_pause_failed</code>)
+and the steps run anyway. A paused autopilot stays paused; the dialog says so in one line
+instead of asking. Afterwards the release the autopilot works on (or the repository row, when
+it takes every issue) reads &quot;Autopilot angehalten nach 1.5.5&quot; with &quot;Mit 1.6.0 starten&quot;, which
+switches the autopilot on again like the sidebar does. The line goes once the autopilot is on.</li><li><strong>Right after completing.</strong> The closed release leaves the tree as soon as its run closed the
+milestone, and the next release becomes the one the autopilot works on, without waiting for the
+classifier&#39;s next read. The app asks the classifier to read the repository again when the
+milestone step is done and when the run ends (also after a discard that reopens the milestone);
+when the view sees a run end it reads the report and the milestones again two seconds later.</li><li><strong>The cut dialog</strong> no longer offers to name the next release when a later release exists; it says
+which release is next afterwards.</li><li><strong>Runs.</strong> A run that is not done (and a done one for 10 minutes) shows as a row &quot;Release v1.3.0&quot;
+under its repository with where it is (&quot;Schritt 2 von 4&quot;, &quot;Hängt bei: Upload&quot;). The row opens the
+run: done steps as a check mark with their result on hover, the failed step with its result, its
+output on demand and &quot;Überspringen&quot; and &quot;Erneut versuchen&quot;. When irreversible steps lie ahead the
+dialog names them and asks once more before it fetches the token (<code translate="no">release_run_confirmation</code>).
+A failed run lists what is done already (&quot;Done already: …&quot;). At a taken tag the row reads
+&quot;v1.5.0 exists already – pick a version or discard&quot;, and the step shows the plain facts (the
+short commits on hover) with &quot;Publish as v1.5.1&quot;, &quot;Create the release for the existing tag&quot;,
+&quot;Move the tag to the current state&quot; (the last two only without a forge release; the move asks
+once more) and &quot;Überspringen&quot;, never &quot;Erneut versuchen&quot;. &quot;Release abschließen&quot; offers the
+same three as options under the version when the preview meets a taken tag. &quot;Discard release&quot;
+on a failed or waiting run asks first and names what stays on the forge (the closed milestone,
+the done steps); at a taken tag it offers to reopen the milestone the run closed.
+The view reads the runs every 3 seconds while one runs, else with the release report.</li><li><strong>Release-Einstellungen</strong> (gear on the repository row): the steps of &quot;Release
+abschließen&quot; in order, each with its fields (changelog file, tag message, draft, name, command,
+timeout, &quot;Nicht umkehrbar, vorher nachfragen&quot;), moved up and down, removed, added (every built-in
+step once, commands any number of times) or set back to the defaults; the core&#39;s problems show at
+their step and field. Below them the task of the release session.</li><li><strong>Release session</strong> (&quot;Release-Sitzung …&quot; in a release&#39;s &quot;…&quot;). The start
+dialog asks &quot;Womit&quot; (a coding agent, the chosen one when several are installed, or &quot;Terminal&quot;,
+the person&#39;s own shell) and &quot;Wo läuft die Sitzung?&quot; (the working copy or a fresh worktree), and
+for an agent the task, prefilled with the repository&#39;s task. While the session runs, the
+release&#39;s node shows a small terminal mark with a live dot before &quot;▷&quot;; it opens the session. See
+<code translate="no">docs/agent-session.md</code> (&quot;Release sessions&quot;).</li></ul>
+<p><strong>Session task.</strong> Each repository can keep its own task text in <code translate="no">orchestration.json</code>
+(<code translate="no">release_session_task</code>, at most 4000 characters, never in the repository); without one it uses the
+default (<code translate="no">release_run::session::DEFAULT_TASK</code>: check the issues and the base branch, update the
+changelog and version numbers, run the checks, say what is left before completing). Storing the
+default or an empty text removes the repository&#39;s own.</p>
+<p>Tauri: <code translate="no">release_session_task(account, repo)</code> (<code translate="no">task</code>, <code translate="no">default</code>, <code translate="no">default_task</code>),
+<code translate="no">set_release_session_task(account, repo, task | null)</code> and <code translate="no">release_session_start(account, repo, milestone, mode, workspace, agent?, task?)</code> with <code translate="no">mode</code> <code translate="no">agent</code> or <code translate="no">terminal</code> and <code translate="no">workspace</code>
+<code translate="no">local_copy</code> or <code translate="no">worktree</code>.</p>
+<h2 id="release-settings-templates-and-suggestions-1147">Release settings, templates and suggestions (#1147)<a class="docs-anchor" href="#release-settings-templates-and-suggestions-1147" aria-label="Release settings, templates and suggestions (#1147)" data-testid="docs-md-anchor-release-settings-templates-and-suggestions-1147">#</a></h2>
+<p>Step 8 of #1139. &quot;Release-Einstellungen&quot; on the repository row holds every part of a repository&#39;s
+release management on four tabs. Every change saves by itself (#926, #935, #1139): a part waits
+700 ms after its last edit, is checked by the core (<code translate="no">version_config_validate</code>,
+<code translate="no">release_rules_validate</code>, <code translate="no">release_steps_validate</code>) and stored when it is valid; a part with
+problems stays unsaved, opens its tab and the dialog says &quot;Nicht gespeichert&quot;. A tab with problems
+shows their number. &quot;Fertig&quot; saves what still waits and closes; a failed save keeps the dialog open
+with &quot;Erneut versuchen&quot;.</p>
+<ul><li><strong>Vorlage.</strong> A ready-made setup fills all four tabs at once (&quot;Übernehmen&quot;) and saves them; every
+field stays editable and the dialog says that command steps are placeholders.
+The core names template texts by stable ids (setup <code translate="no">id</code>, rule <code translate="no">template</code>, a command step&#39;s
+<code translate="no">template</code>, see <code translate="no">SetupCommand</code>), and the app keys its translations by them, never by the English
+text. Command steps get their names in the app&#39;s language when applied; from then on the name is
+the person&#39;s text. A template rule nobody renamed is stored without a name and shows in the app&#39;s
+language (the CLI shows the English template name). The default task and a setup&#39;s task stay
+English in the core; the app shows them translated and hands back the core text while the person
+leaves them unchanged, an edited task is the person&#39;s own. The browser demo reads the templates
+from <code translate="no">src/platform/demo/releaseTemplates.json</code>, which a core test keeps equal to the templates
+(<code translate="no">GITOODO_UPDATE_DEMO=1 cargo test -p gitoodo-core demo_copy</code> rewrites it).</li><li><strong>Versionierung.</strong> The scheme (semantic version, calendar version, build number, own pattern, own
+script) with one line on what it does; a calendar or free pattern with its examples as chips; a
+script&#39;s command with the variables it gets. For SemVer, a free pattern and a script: the presets
+(plain labels, prefixed labels, the forge&#39;s issue types), the repository&#39;s own raises (label or
+type, name, part) and the part raised when nothing matches.</li><li><strong>Zuordnung.</strong> The rules in order, the first that matches decides. Each rule has a switch, a name
+(templates show their translated name until it is changed), &quot;Wenn alle/eine der Bedingungen
+zutreffen&quot;, its conditions (attribute and a value control that fits it: text for label, author
+and issue type, a choice for state and origin, at least/at most days for the age, exactly/at
+least as urgent/at most as urgent for the priority p0–p3) and &quot;Dann zuordnen zu/vorschlagen für&quot;
+the next release, the parent issue&#39;s release or a named release. &quot;Regel hinzufügen&quot; adds an empty
+rule or a template not in the list yet; &quot;Standardregeln&quot; goes back to the defaults. A named
+release that is not open is stored with a warning, shown before the dialog closes.</li><li><strong>Abschluss</strong> and <strong>Sitzung</strong>: the steps and the release session&#39;s task as in #1146.</li></ul>
+<p><strong>Suggestions.</strong> A rule that only suggests puts nothing into a release. While suggestions wait, the
+repository row shows &quot;2 Vorschläge&quot; next to its milestone, open or closed; it opens a sheet that
+lists each issue with its release and rule (a template&#39;s rule under its translated name until it
+is renamed) and offers &quot;Übernehmen&quot; (<code translate="no">release_suggestion_approve</code>, the issue goes into that
+release) and &quot;Ablehnen&quot; (<code translate="no">release_suggestion_dismiss</code>, the suggestion does not come back for that
+release). The view reads the suggestions with the runs.</p>
+<p><strong>Templates</strong> (<code translate="no">orchestration::release_templates</code>, Tauri <code translate="no">release_templates</code>): the setups, the
+example version schemes and the rule templates. Templates hold no paths outside the repository, no
+accounts, hosts or secrets (a test checks the serialized form); a command step points at a script
+under <code translate="no">./scripts/release/</code> the repository provides.</p>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col">Setup</th><th scope="col">Version</th><th scope="col">Rules</th><th scope="col">Steps</th><th scope="col">Session task</th></tr></thead><tbody><tr><td><code translate="no">tag_only</code></td><td>SemVer</td><td>follow-ups, urgent</td><td>close milestone, tag</td><td>default</td></tr><tr><td><code translate="no">tag_and_release</code></td><td>SemVer</td><td>follow-ups, urgent</td><td>the default steps (close milestone, notes, tag, draft release)</td><td>default</td></tr><tr><td><code translate="no">library</code></td><td>SemVer</td><td>follow-ups, urgent, bugs (suggest)</td><td>close milestone, notes with <code translate="no">CHANGELOG.md</code> pull request, tag, published release, <code translate="no">publish.sh</code> (irreversible)</td><td>default</td></tr><tr><td><code translate="no">web_service</code></td><td>calendar <code translate="no">YYYY.MM.N</code></td><td>follow-ups, urgent</td><td>close milestone, notes, tag</td><td>default</td></tr><tr><td><code translate="no">desktop_app</code></td><td>SemVer</td><td>follow-ups, urgent, bugs (suggest)</td><td><code translate="no">build.sh</code> (not irreversible), notes, close milestone, tag, draft release, <code translate="no">upload.sh</code>, <code translate="no">publish.sh</code>, <code translate="no">package-managers.sh</code>, <code translate="no">stores.sh</code></td><td>its own</td></tr><tr><td><code translate="no">release_session</code></td><td>SemVer</td><td>follow-ups, urgent</td><td>the default steps</td><td>its own</td></tr></tbody></table></div>
+<p><code translate="no">tag_only</code> is for repositories whose release is their tag (a deployment or a package build follows
+the tag in the forge&#39;s CI). <code translate="no">release_session</code> is for repositories that prefer an agent: its task
+has the release session do the whole preparation (check the issues and the base branch, a changelog
+section, the version wherever the repository keeps it, the checks, user-facing notes for the draft)
+and bring the changes onto the base branch only through a pull request; completing then closes the
+milestone, tags and drafts the forge release, which the person reads before publishing it.</p>
+<h3 id="what-each-step-needs">What each step needs<a class="docs-anchor" href="#what-each-step-needs" aria-label="What each step needs" data-testid="docs-md-anchor-what-each-step-needs">#</a></h3>
+<p>Every setup is complete when it is applied: the built-in steps need nothing in the repository, the
+command steps need the script they point at. What a step needs before &quot;Release abschließen&quot; works:</p>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col">Step</th><th scope="col">Needs in the repository</th><th scope="col">Right of the token</th><th scope="col">Before it runs</th></tr></thead><tbody><tr><td><code translate="no">close_milestone</code></td><td>nothing</td><td>issues (milestones)</td><td>the release&#39;s issues are done or moved</td></tr><tr><td><code translate="no">notes</code></td><td>nothing; with <code translate="no">changelog</code> a path inside it (created if new)</td><td>with <code translate="no">changelog</code>: releases (commit and pull request)</td><td>nothing</td></tr><tr><td><code translate="no">create_tag</code></td><td>the base branch (or the chosen commit)</td><td>releases (tags)</td><td>the confirmation; the tag is free or on the commit</td></tr><tr><td><code translate="no">create_release</code></td><td>a tag step before it, or the tag on the forge</td><td>releases</td><td>the confirmation</td></tr><tr><td><code translate="no">command</code></td><td>the script, executable, in the local checkout</td><td>none: a step never gets a token</td><td>the confirmation when <code translate="no">irreversible</code></td></tr></tbody></table></div>
+<p>A command step runs in the person&#39;s local checkout (a plain clone, never a worktree) with the
+variables of &quot;Completing a release and its automations&quot; (<code translate="no">GITOODO_RELEASE_VERSION</code>,
+<code translate="no">GITOODO_RELEASE_TAG</code>, <code translate="no">GITOODO_RELEASE_COMMIT</code>, <code translate="no">GITOODO_RELEASE_BASE</code>,
+<code translate="no">GITOODO_RELEASE_MILESTONE</code>, <code translate="no">GITOODO_REPO</code>, <code translate="no">GITOODO_RELEASE_ISSUES</code>, <code translate="no">GITOODO_RELEASE_NOTES</code>,
+<code translate="no">GITOODO_RELEASE_NOTES_FILE</code>), the allow-listed environment and nothing else. It is done with exit
+0; any other exit, its timeout or more than 1 MiB of output fails it, and the run stops there until
+&quot;Erneut versuchen&quot; or &quot;Überspringen&quot;. A script that needs a credential reads it from the system&#39;s
+secret store or the user&#39;s own tooling, never from Gitoodo. The command scripts of the setups:</p>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col">Command (<code translate="no">template</code>)</th><th scope="col">Script</th><th scope="col">Timeout</th><th scope="col">Irreversible</th><th scope="col">Runs</th><th scope="col">The script must</th></tr></thead><tbody><tr><td>Check and build (<code translate="no">build</code>)</td><td><code translate="no">scripts/release/build.sh</code></td><td>3600 s</td><td>no</td><td>first, before any write</td><td>run the checks and build every asset of <code translate="no">GITOODO_RELEASE_VERSION</code> from <code translate="no">GITOODO_RELEASE_COMMIT</code>, signed with the user&#39;s own identity, into a folder the later scripts find (e.g. <code translate="no">dist/&lt;tag&gt;/</code>); fail on any problem</td></tr><tr><td>Upload (<code translate="no">upload</code>)</td><td><code translate="no">scripts/release/upload.sh</code></td><td>3600 s</td><td>yes</td><td>after the draft release</td><td>upload the built assets to the draft release of <code translate="no">GITOODO_RELEASE_TAG</code> (or elsewhere) and write the update feed; succeed again when they are already there</td></tr><tr><td>Publish (<code translate="no">publish_release</code>)</td><td><code translate="no">scripts/release/publish.sh</code></td><td>600 s</td><td>yes</td><td>after the upload</td><td>publish the draft release of <code translate="no">GITOODO_RELEASE_TAG</code> and check that the feed serves the new version</td></tr><tr><td>Package managers (<code translate="no">package_managers</code>)</td><td><code translate="no">scripts/release/package-managers.sh</code></td><td>600 s</td><td>yes</td><td>after publishing</td><td>update the package manager manifests to the published version and its checksums</td></tr><tr><td>Stores (<code translate="no">stores</code>)</td><td><code translate="no">scripts/release/stores.sh</code></td><td>3600 s</td><td>yes</td><td>last</td><td>submit the build to the app stores, with the notes from <code translate="no">GITOODO_RELEASE_NOTES_FILE</code> where a store wants them</td></tr><tr><td>Publish package (<code translate="no">publish_package</code>)</td><td><code translate="no">scripts/release/publish.sh</code></td><td>600 s</td><td>yes</td><td>after the published release</td><td>publish the package of <code translate="no">GITOODO_RELEASE_VERSION</code> to its registry from the tagged commit</td></tr></tbody></table></div>
+<p>Every script after the first must be safe to run twice: a retry after a failure or a crash runs it
+again. The version script of the scheme &quot;Eigenes Skript&quot; (<code translate="no">scripts/release/next-version.sh</code> in the
+scheme templates) is no step: it runs for the suggestion and must print exactly one line with the
+version (see &quot;Own script&quot;).</p>
+<p>The release session (both the default task and a setup&#39;s own) needs a coding agent configured in
+the app, or opens a plain shell; it gets the same values in its environment and the issues and the
+notes as files, never a token.</p>
+<p>The desktop setup is taken from a real release flow of a signed desktop app with an update feed,
+package managers and app stores, reduced to building blocks:</p>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col">Stage of the original flow</th><th scope="col">Building block</th></tr></thead><tbody><tr><td>CI gate, builds per system, signing, notarizing, checksums</td><td>command &quot;Check and build&quot;</td></tr><tr><td>CHANGELOG section, user-facing notes in several languages</td><td>notes step and the release session&#39;s task</td></tr><tr><td>approval file before the first public write</td><td>the app&#39;s confirmation of irreversible steps</td></tr><tr><td>tag, draft release on the forge</td><td><code translate="no">create_tag</code>, <code translate="no">create_release</code> (draft)</td></tr><tr><td>uploading the assets, signed update feed</td><td>command &quot;Upload assets and update feed&quot;</td></tr><tr><td>publishing the release and checking the feed</td><td>command &quot;Publish the release&quot;</td></tr><tr><td>package manager manifests and buckets</td><td>command &quot;Package managers&quot;</td></tr><tr><td>store screenshots and submissions</td><td>command &quot;Submit to the stores&quot;</td></tr><tr><td>stamps to resume after a failure</td><td>the run&#39;s state with &quot;Erneut versuchen&quot; and &quot;Überspringen&quot;</td></tr></tbody></table></div>
+<p>Its tags are <code translate="no">vX.Y.Z</code> (SemVer with the <code translate="no">v</code> prefix, raised by the issue types), its build files keep
+<code translate="no">X.Y.Z+build</code>; a script scheme can read that version (<code translate="no">GITOODO_LAST_VERSION</code> holds the last
+release, a planned open release counts as the last). Such a script decides on its own: when it
+prints the version the build file already has, a release created after a planned one gets the same
+version suggested, which the person changes before creating it.</p>
+<p>Test ids: <code translate="no">release-settings-dialog</code>, <code translate="no">release-setup-pick</code>, <code translate="no">release-setup-apply</code>,
+<code translate="no">release-setup-applied</code>, <code translate="no">release-tab-{version,rules,steps,session}</code>, <code translate="no">release-version-scheme</code>,
+<code translate="no">release-version-pattern</code>, <code translate="no">release-version-example-&lt;pattern&gt;</code>, <code translate="no">release-version-command</code>,
+<code translate="no">release-version-preset-&lt;preset&gt;</code>, <code translate="no">release-version-raise-&lt;n&gt;-*</code>, <code translate="no">release-version-default</code>,
+<code translate="no">release-rule-&lt;n&gt;</code> (<code translate="no">-on</code>, <code translate="no">-name</code>, <code translate="no">-combine</code>, <code translate="no">-condition-&lt;m&gt;-*</code>, <code translate="no">-effect</code>, <code translate="no">-target</code>,
+<code translate="no">-title</code>), <code translate="no">release-rules-kind</code>, <code translate="no">release-rules-add</code>, <code translate="no">release-rules-reset</code>,
+<code translate="no">release-suggestions-&lt;repo&gt;</code>, <code translate="no">release-suggestions-dialog</code>, <code translate="no">release-suggestion-&lt;issue&gt;-take</code> and
+<code translate="no">-decline</code>.</p>
+<h2 id="queue-order">Queue order<a class="docs-anchor" href="#queue-order" aria-label="Queue order" data-testid="docs-md-anchor-queue-order">#</a></h2>
+<p>The autopilot works on the next release first (release management rule 12, spec 7.1 item 4). The
+next release of a repository is:</p>
+<ul><li>every scope member (<code translate="no">release:next</code> and their dependencies), and</li><li>every open issue of the next release milestone, with the issues it depends on. The next release
+milestone is the open milestone whose title is a version (<code translate="no">v1.2.3</code>, <code translate="no">1.2</code>, <code translate="no">2026.11</code>,
+<code translate="no">build 42</code>; not <code translate="no">Sprint 12</code>) that is due first, else the one with the lowest version, else the
+oldest. Two that tie on due date and version are not guessed: then only the label counts until
+the tie is resolved (the findings name it). Later and closed milestones do not count.</li></ul>
+<p>These issues and boosted ones form the queue&#39;s first group; the score (priority, age, boost,
+release bonus <code translate="no">score.release_bonus</code>) orders each group. The release bonus grows as the next
+release&#39;s due date nears (#1850): in full without a due date and from one day before it (also
+overdue), <code translate="no">score.release_far_percent</code> (25 %) of it from <code translate="no">score.release_due_days</code> (14) days away,
+linear in between; a release due soon also moves its repository ahead in the share of the worker
+slots and may take more than the equal share when it cannot make its date otherwise. See
+<a href="../queue-order/" data-testid="docs-md-link-1">Queue order and slot share</a>. A blocked release issue is skipped like any
+blocked issue, so the rest of the release and then the other issues still go, and without a
+dispatchable release issue the queue runs on the score as before. Each repository has its own next
+release; with release planning off nothing but a boost moves an issue forward. The same rule
+(<code translate="no">release::next_release_milestone</code>) picks the milestone the hygiene puts <code translate="no">release:next</code> issues and
+follow-ups on, so a sprint never gets them.</p>
+<p>The dispatcher does not read the milestones for every pick: each reconcile pass leaves the next
+release milestone it read with the writer, and a pick reuses it for up to the default sync interval
+(<code translate="no">NEXT_RELEASE_TTL</code>, 60 s) before it reads the list again. A pass that creates a milestone drops the
+kept value; a milestone changed in the app shows after the poll the app triggers. The app&#39;s queue, the
+dispatcher&#39;s pick and the chat&#39;s item list (<code translate="no">next_release</code> per issue) use the same order. The
+release view lists the same issues (milestone members since #1141).</p>
+<h2 id="release-focus-1442">Release focus (#1442)<a class="docs-anchor" href="#release-focus-1442" aria-label="Release focus (#1442)" data-testid="docs-md-anchor-release-focus-1442">#</a></h2>
+<p>Per repository the autopilot works on one release: the queue order above says what goes first,
+the focus says what starts at all. It is a setting per repository (<code translate="no">release_focus</code> in the
+repository&#39;s orchestration config, set with the Tauri command <code translate="no">set_release_focus(account, repo, focus)</code>):</p>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col">choice</th><th scope="col">the autopilot starts new workers on</th></tr></thead><tbody><tr><td><code translate="no">{&quot;kind&quot;:&quot;next&quot;}</code> (default)</td><td>the next release as in &quot;Queue order&quot; (milestone members, <code translate="no">release:next</code> issues) and the issues in no release they depend on; without any release, on every issue</td></tr><tr><td><code translate="no">{&quot;kind&quot;:&quot;release&quot;,&quot;id&quot;:7,&quot;title&quot;:&quot;v1.5.0&quot;}</code></td><td>the open issues of that milestone and the issues in no release they depend on (the <code translate="no">release:next</code> issues too when it is the next one)</td></tr><tr><td><code translate="no">{&quot;kind&quot;:&quot;all&quot;}</code></td><td>every ready issue in queue order, as before #1442</td></tr></tbody></table></div>
+<ul><li>Only new worker starts are limited. Triage, the resolver of stuck issues, reviews and running
+workers go on; an issue outside the focus keeps its labels and simply waits.</li><li><strong>A restart is a new start</strong> (whispaste #1843: a worker outside the focus ended with code 143
+and was started again). A worker running outside the focus may finish its current run, but
+every start after that run ended passes the focus like a claim: the restart after an end
+without a result (a crash, a hang, a host that went away, a review round, failed checks), the
+restart that waited for a host or a slot, the run a new dispatcher takes over after an update
+of the app, and the resume after a worker machine&#39;s update, after its sign-in screen and with
+this computer&#39;s account at another account&#39;s limit. An issue the focus leaves out is not
+started again: its restart waits among the deferred restarts without a slot, its lease, branch,
+worktree and pull request stay as they are and its labels unchanged, until the focus lets it in
+(the release is closed, the person chooses &quot;All issues&quot;, the issue joins the release, or the
+option below lets it in); then it starts again as a counted restart. A worker paused at a limit
+is not ended for the resume with another account; it stays where it is. The dispatcher reads
+this from <code translate="no">outside_focus</code> of each round&#39;s read model (before the first round, from the model
+the classifier kept) and logs <code translate="no">dispatch.restart_held</code> (<code translate="no">issue</code>, <code translate="no">reason = outside_focus</code>) once
+per hold and <code translate="no">dispatch.restart_admitted</code> when the focus lets the issue in. The resolver of
+stuck issues runs in a system slot and stays exempt, as does a run moved to another machine
+for its desktop tests (the same run going on there).</li><li><strong>Never an issue of another release</strong> (the user&#39;s rule): an issue another open release holds
+(its open release milestone is another one, or, without one, it carries a legacy &quot;later&quot; label
+such as <code translate="no">release:später</code>, or <code translate="no">release:next</code> while a later release is chosen) never starts while
+the focus is active, not as a dependency and not while the focus holds
+(<code translate="no">Focus::other_release</code>). The milestone decides before the label. A milestone that is no release
+(a sprint) or a closed one puts an issue in no release.</li><li><strong>Every focus holds fully</strong> (the user&#39;s rule, 2026-11-24): the next release
+(<code translate="no">{&quot;kind&quot;:&quot;next&quot;}</code>, the default) is as strict as a release the person chose
+(<code translate="no">{&quot;kind&quot;:&quot;release&quot;,…}</code>) and as a chosen release that fell back to the next one. Only its
+issues and the issues in no release it waits for start; nothing outside it starts, not even
+while nothing in it can. Only &quot;All issues&quot; (<code translate="no">{&quot;kind&quot;:&quot;all&quot;}</code>) lifts the limit; the option
+below lets a held focus take the issues in no release, and only when the person allows it.</li><li>Dependencies in no release belong to the focus: an issue the release waits for starts even when
+it has no milestone. A dependency in another release does not; the hygiene pulls it into the
+release that needs it (&quot;Dependencies join the release&quot;), and then it starts as a member. What
+only such a dependency leads to stays out too. The claim reads the dependency lines and the open
+split parts itself and takes those from comments and the forge from the last read model
+(<code translate="no">Writer::note_focus</code>, valid for a few polls); an issue noted there that another release holds
+now still stays out (<code translate="no">Focus::admits_noted</code>).</li><li>A chosen release that is closed or deleted falls back to the next release (<code translate="no">fallback</code>); a rename
+keeps the choice, it holds the milestone id. When nothing is open any more, the autopilot works
+on every issue again.</li><li>Unreadable milestones with a focus other than <code translate="no">all</code> start nothing new in that repository until
+they read again (<code translate="no">unknown</code>), rather than work outside the release.</li><li><strong>Nothing to start: the focus holds.</strong> When none of its open issues can start (all done, held
+by <code translate="no">extern</code>, blocked, in progress or waiting for a person) while ready issues wait outside it,
+the focus is <code translate="no">held</code> and the autopilot starts nothing new in that repository until an issue of
+the release is ready again, or the person closes the release (then the next one is the focus)
+or chooses &quot;All issues&quot;. The read model decides this from the readiness
+(<code translate="no">read_model::settle_focus</code>); the claim follows the focus through <code translate="no">Writer::note_focus</code>, so a
+stale or missing read model keeps the strict focus too. Unreadable milestones never hold. This
+replaced the idle fallback of #1691, which let the automatic focus take the ready issues in no
+release meanwhile: a release that looked done while a worker ran outside it read as a
+contradiction (whispaste 1.5.5 at 209/209 with a worker on #1988).</li><li><strong>Going on with the issues in no release is the person&#39;s explicit permission</strong> (the user&#39;s
+decision, 2026-11-24: &quot;normally, when I say it should work on a release, only the issues of
+that release belong in; when nothing is left, the autopilot stops&quot;). The default is strict, as
+above. Per repository the option &quot;When nothing in the release can start: go on with ready
+issues in no release&quot; (<code translate="no">release_focus_overflow</code> in the repository&#39;s orchestration config,
+<code translate="no">serde</code> default <code translate="no">false</code>, so older configs stay strict; set with the Tauri command
+<code translate="no">set_release_focus_overflow(account, repo, allowed)</code>) lets a held focus take the ready issues
+in no release meanwhile (<code translate="no">overflow</code>). It never lets in an issue of another open release, which
+stays absolute, and it means nothing with &quot;All issues&quot; (the app hides it there). <code translate="no">held</code> keeps
+saying that nothing in the release can start; <code translate="no">overflow</code> is set beside it only while the
+option is on and an issue in no release is ready. As soon as an issue of the release is ready
+again, the next read model clears <code translate="no">overflow</code> and only the release starts; running workers go
+on. While it holds, an issue in no release that is already in progress counts as let in for
+its restart too, even when none in no release is ready (<code translate="no">Focus::admits_restart</code>). Until then
+a claim puts every issue of the focus before the issues let in this way
+(<code translate="no">Noted::overflow</code> in <code translate="no">Writer::note_focus</code>), so one of the release that can start by then goes
+first. Unreadable milestones never overflow.</li></ul>
+<p>The read model and <code translate="no">release_status</code> carry the focus as <code translate="no">release.focus</code> (<code translate="no">choice</code>, <code translate="no">active</code>,
+<code translate="no">release_id</code>, <code translate="no">title</code>, <code translate="no">fallback</code>, <code translate="no">unknown</code>, <code translate="no">held</code>, <code translate="no">overflow_allowed</code>, <code translate="no">overflow</code>) and mark
+each issue outside it with <code translate="no">outside_focus: true</code>. Where the app shows it:</p>
+<ul><li>The queue on &quot;Sitzungen&quot; leaves those issues out and says in one line how many wait (&quot;Only
+v1.5.0 – 3 other issues wait&quot;). A held focus gets a card of its own (test id
+<code translate="no">repo-queue-focus-held</code>): one line that nothing can start (&quot;0.1.0: nothing can start&quot;), one
+sentence on what the autopilot does now (&quot;The autopilot stops until an issue of the release is
+ready.&quot;, or with the option &quot;Meanwhile the autopilot takes ready issues in no release (allowed
+in the release settings).&quot;) and, under &quot;What holds it up&quot;, at most three of the issues that
+hold the release up, not every dependency edge. Those are its root blockers: open issues of the
+release that others wait on, directly or through others, and that wait on no other open issue
+of the release themselves (issues waiting on each other in a circle count as one, by their
+lowest number), plus one that waits on an issue outside the release. Each row shows the number
+and the title on one line (the full title on hover; a click opens the issue as in the queue),
+what it waits for itself in the board&#39;s readiness words (&quot;In progress&quot;, &quot;Needs clarification&quot;,
+&quot;waits on #9 outside the release&quot;, &quot;waits in a circle on #3&quot;) and how many it holds up (&quot;holds
+up 21 more&quot;); more roots are counted (&quot;+2 more&quot;). The most holding come first.</li><li>The node of the release the focus holds says it under itself, wrapped at every width
+(test id <code translate="no">release-focus-line-&lt;repo&gt;-&lt;release&gt;</code>): a release whose members are all done &quot;v1.5.5 is done –
+close the release, then work goes on with v1.6.0&quot; (&quot;… with all issues&quot; without a later
+release), beside &quot;Release abschließen&quot;; a held one the queue&#39;s state line, which says
+whether the autopilot stops or takes the issues in no release, and the issues that hold it up
+(&quot;held up by #66, #67, #33 +2 more&quot;). &quot;Take all issues&quot; at its end switches the focus to &quot;All
+issues&quot; (<code translate="no">release-focus-all-&lt;repo&gt;-&lt;release&gt;</code>).</li><li>A worker whose issue the focus leaves out (it started before the focus took effect, or a
+person started it) carries &quot;outside the focus&quot; on its tile on &quot;Sitzungen&quot;, and its issue the
+same tag in the repository&#39;s issue list, with the reason on hover and in the accessible name:
+the worker runs to its end and does not start again; the issue waits until the focus takes it
+in.</li></ul>
+<p>The classifier logs <code translate="no">classifier.focus</code> when a repository&#39;s focus changes (fields <code translate="no">fallback</code>,
+<code translate="no">unknown</code>, <code translate="no">held</code>, <code translate="no">overflow</code>), the app <code translate="no">release_focus_set</code> when one is chosen and
+<code translate="no">release_focus_overflow_set</code> (<code translate="no">repo</code>, <code translate="no">allowed</code>) when the option changes.</p>
+<h2 id="states">States<a class="docs-anchor" href="#states" aria-label="States" data-testid="docs-md-anchor-states">#</a></h2>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col">state</th><th scope="col">meaning</th></tr></thead><tbody><tr><td><code translate="no">open</code></td><td>open, nobody works on it</td></tr><tr><td><code translate="no">in-progress</code></td><td>open with <code translate="no">in-progress</code>/<code translate="no">in-review</code> or a lease holder</td></tr><tr><td><code translate="no">merged</code></td><td>closed and the ledger holds a completed lease by the worker account (worker result merged)</td></tr><tr><td><code translate="no">closed</code></td><td>closed without a completed lease (by hand, won&#39;t do)</td></tr></tbody></table></div>
+<p>Items are ordered open, in-progress, merged, closed, then by number.</p>
+<p>An item that waits for open dependencies shows &quot;wartet auf #n&quot; (<code translate="no">blockers</code> in the report).</p>
+<h2 id="surfaces">Surfaces<a class="docs-anchor" href="#surfaces" aria-label="Surfaces" data-testid="docs-md-anchor-surfaces">#</a></h2>
+<ul><li>CLI: <code translate="no">gitoodo release [--repo owner/name] [--json]</code>.</li><li>MCP tool <code translate="no">ledger_release_status</code> (optional <code translate="no">repo</code>).</li><li>Tauri command <code translate="no">release_status(repo?: string)</code>, all three return the same report:</li></ul>
+<div class="docs-code"><pre dir="ltr" translate="no" tabindex="0" data-lang="json"><code>{
+  &quot;polled_at&quot;: &quot;rfc3339 or null&quot;,
+  &quot;repos&quot;: [
+    {
+      &quot;account_id&quot;: &quot;...&quot;,
+      &quot;full_name&quot;: &quot;owner/name&quot;,
+      &quot;release&quot;: {
+        &quot;enabled&quot;: true,
+        &quot;items&quot;: [
+          {
+            &quot;number&quot;: 1,
+            &quot;title&quot;: &quot;...&quot;,
+            &quot;html_url&quot;: &quot;...&quot;,
+            &quot;state&quot;: &quot;open | in-progress | merged | closed&quot;,
+            &quot;reason&quot;: &quot;milestone | label | dependency&quot;,
+            &quot;blockers&quot;: [12]
+          }
+        ]
+      }
+    }
+  ]
+}</code></pre><button type="button" class="docs-code__copy" data-copy hidden data-testid="docs-md-copy-4">Copy</button></div>
+<p>The read model (<code translate="no">orchestrator_read_model</code>) carries the same data per repository as <code translate="no">release</code>.</p>
+<h2 id="app">App<a class="docs-anchor" href="#app" aria-label="App" data-testid="docs-md-anchor-app">#</a></h2>
+<ul><li>Release view (board tab &quot;Release&quot;): the mental-model sentence, per repository the release name
+(milestone, or &quot;Benennen&quot; to give it one), a bar for done / in progress / open, the items with
+state, reason, blockers and &quot;Release ändern&quot;, a &quot;+&quot; per repository and &quot;Issues hinzufügen&quot; on
+top. The add dialog picks the repository and the release (#1683: the next one preselected,
+every later open release, &quot;Neues Release …&quot; opens the name dialog and comes back with the new
+release chosen; a later release&#39;s &quot;+&quot; starts at that release), searches open issues by title or
+number and adds several at once. It offers only issues in no release and without any milestone
+(#1807: a closed or other milestone counts as assigned too). Only its list scrolls: the sheet is
+as high as the window allows, head and buttons stay, and the rows&#39; hidden texts stay inside the
+list&#39;s scroll box (a div, since a fieldset&#39;s scrolling content would lengthen the sheet). Into the next release it writes as before; into a later one it
+sets that release&#39;s milestone (&quot;Release zuordnen&quot;, in chunks of 100). Moving an issue between
+releases or out of every release stays with &quot;Release ändern&quot; on its row. &quot;Release abschließen&quot; replaces the open count once everything is done. Without
+any planned issue a teaching empty state explains the idea and offers &quot;Issues hinzufügen&quot; and
+&quot;Neues Release&quot;.</li><li>Order (#1484): the release view takes its structure from the sidebar&#39;s own rows (same source,
+live): favourites on top, groups nested in their order, the sidebar&#39;s sort mode, loose
+repositories under their owner (flat when there is only one), the same names and icons. Every
+repository with planning on shows in its place, empty groups drop out, and a favourite stands
+only on top (not again in its group), so its release never shows twice. Repositories hidden from
+the sidebar still show. Planning confirmations name the repository and fade after a few seconds.</li><li>Release tree: one row per repository (name, &quot;2 releases · 4 open · 3 in progress&quot;, its buttons
+settings, &quot;Neues Release&quot; and &quot;Issues hinzufügen&quot;), below it the runs that are not done, then
+one node per open release, the next one first (also the one without a version while
+<code translate="no">release:next</code> gives it issues, &quot;Nächstes Release&quot;), then the later ones in planning order, and
+last &quot;Ohne Release&quot;: the repository&#39;s open issues on the board that no open release holds or
+lists. A repository without any release lists its issues directly below it, without a lone
+&quot;Ohne Release&quot;. A release node shows its version, due date and &quot;aktiv&quot; where the autopilot
+works, then in fixed columns what is open (or &quot;Release abschließen&quot; once everything is done),
+the bar, done/total and its buttons: the running session, &quot;▷&quot; (autopilot) and &quot;…&quot;; &quot;Ohne
+Release&quot; keeps the same places (&quot;…&quot;: &quot;Issues hinzufügen&quot;, &quot;Neues Release …&quot;). The repository&#39;s
+buttons take the same last column, so every row&#39;s buttons line up. The issues stand one level
+deeper below their node with their dependencies, &quot;wartet auf …&quot;, priority and &quot;Release ändern&quot;;
+done ones behind &quot;N erledigt&quot;, closed releases behind &quot;N geschlossen&quot;. Everything starts
+collapsed (repositories, releases, &quot;Ohne Release&quot;; groups and owners open); what is opened or
+closed is kept per node in <code translate="no">gitoodo.releaseTree</code> (never in the start snapshot). The tree is an
+ARIA tree (<code translate="no">treeitem</code> with level, position and size, one tab stop, arrow keys, Home/End,
+mirrored in RTL); a release chip on an issue opens the view at that release&#39;s node. Below about
+760 px of tree width rows go two-line (title and buttons on top, open work, count and bar
+below), never cut.</li><li>Board: a flag button per issue row (filled while the issue is in a release) and the fact
+&quot;Release&quot; with &quot;Ändern&quot; in the issue sheet; both open the release choice. An urgent issue that
+is in by rule shows why and offers no choice.</li><li>Release focus (#1442): &quot;▷&quot; on every release node and on &quot;Ohne Release&quot;, a menu (next release,
+&quot;Only v1.5.0&quot; per open release, &quot;All issues&quot;) saved at once; the node it works on carries
+&quot;aktiv&quot;. A line under the repository only when the choice means something else right now
+(closed release, unreadable milestones); a release that lets nothing start says why in its own
+line under its node (&quot;Release focus&quot; above). The queue on &quot;Sitzungen&quot; names the issues waiting outside it.</li><li>Settings: the per-repository switch beside the activation, with one line on what it does, the
+milestone line and, while planning is on, the release focus as a labelled field with the
+overflow option as a switch under it (off by default, one sentence on what &quot;off&quot; means,
+hidden for &quot;All issues&quot;).</li><li>Search and batch edits (#1707): above the tree a search field (title words, <code translate="no">#number</code> or a
+label) and the filters release (all, the next, the later ones, &quot;Ohne Release&quot;, or one release by
+its title across repositories, #1715), priority (as the dispatcher reads it: without a label P2, a bug P1)
+and type narrow the tree to the matching issues across every repository and release;
+repositories, releases and &quot;Ohne Release&quot; without a match drop out, the rest opens, and the
+match count is announced. The state filter (open issues, the default, in progress, done, or any state;
+#1715) applies with or without a search: by default done issues are hidden, and the choice is
+kept across visits (<code translate="no">gitoodo.release.stateFilter</code>). The filters are compact selects whose
+options name them; one that filters is marked, and &quot;Filter zurücksetzen&quot; restores the defaults.
+The repository filter (#1844) is a compact button like the selects (&quot;All repos&quot;, &quot;2 repos&quot; or
+the one repository&#39;s name) that opens the shared picker in a popover: type to search, one or
+several repositories as chips (the account named where two forges share an <code translate="no">owner/name</code>), all of them
+by default. It drops whole repositories rather than issues, so a chosen repository without
+plan stays; the group headers, the count, &quot;Zusammenfassung kopieren&quot;, the batch selection and
+&quot;Issues hinzufügen&quot; (which starts on the one chosen repository) follow it. It is kept across
+visits (<code translate="no">gitoodo.release.repoFilter</code>) and cleared by &quot;Filter zurücksetzen&quot;.
+The sort (#1716) beside them orders every list: by default in the dispatcher&#39;s order
+(&quot;Abarbeitungsreihenfolge&quot;: each item&#39;s <code translate="no">queue</code>, its place among the repository&#39;s open issues
+as the dispatcher picks them: first group, score, age, number), else priority first (the
+dispatcher&#39;s order inside a priority), by number or newest first; issues without a place (done,
+or from an older core) come last, done issues keep their own group, dependencies stay
+below the issue needing them. The sort is kept across visits (<code translate="no">gitoodo.release.sort</code>) and is not a filter
+the reset touches.
+Search, filters and sort stay on one line at every window width: the search takes the room the
+filters leave (down to a minimum), and filters that do not fit beside it move into
+&quot;Filter (n)&quot; (least important first: type, priority, release, state, repository, sort; <code translate="no">n</code>
+counts those in use), which also holds &quot;Filter zurücksetzen&quot; then.
+Every open issue shows its priority (<code translate="no">P0</code> … <code translate="no">P3</code>) with the steps &quot;+&quot; and &quot;-&quot; (buttons on hover,
+the keys on the focused row) and a box that selects it: a click or Space, Shift for a range,
+Cmd/Ctrl-click for one more, Cmd/Ctrl+A for every shown issue, Esc clears. With a selection a bar
+&quot;N ausgewählt&quot; sets the priority (each issue ends with exactly that priority label), changes
+labels (&quot;Labels …&quot;: every label of the repositories as a box that shows all, some or none of the
+selected issues; only the boxes you change are applied, priority and status labels are left to
+their own place, a label is only added where the repository has it) or moves the issues to a
+release (&quot;Release …&quot;: the releases every selected repository plans, the next one or none; p0
+stays in the next release). Above ten issues the bar asks first, naming what changes and where.
+Each change shows at once and is taken back for every issue the forge refuses; the note says
+what changed, what was so already and which issues failed. The core calls are
+<code translate="no">set_issues_priority</code> and <code translate="no">change_issues_labels</code> (one outcome per issue, one failure stops none
+of the others) and <code translate="no">release_assign</code>; the release report carries each item&#39;s <code translate="no">labels</code>.</li><li>Help: the help topic &quot;Releases&quot; (<code translate="no">src/views/help</code>) explains the same walk as &quot;Using releases&quot;.</li></ul>
+<p>The panel fetches <code translate="no">release_status</code> on open, every 30 seconds and via <code translate="no">release-refresh</code>; a failed
+fetch shows <code translate="no">release-error</code> and keeps the last picture. Test ids: <code translate="no">release-*</code> (<code translate="no">release-repo-&lt;repo&gt;</code>,
+<code translate="no">release-summary-&lt;repo&gt;</code>, <code translate="no">release-node-&lt;repo&gt;-&lt;id&gt;</code> (<code translate="no">&lt;id&gt;</code> <code translate="no">next</code> for the next release without a
+version), <code translate="no">release-loose-&lt;repo&gt;</code>, <code translate="no">release-progress-&lt;repo&gt;-&lt;id&gt;</code>, <code translate="no">release-item-&lt;repo&gt;-&lt;number&gt;</code>,
+<code translate="no">release-add-&lt;repo&gt;</code>, <code translate="no">release-settings-&lt;repo&gt;</code>, <code translate="no">release-cut-&lt;repo&gt;-&lt;id&gt;</code>,
+<code translate="no">release-focus-&lt;repo&gt;-&lt;id&gt;</code> (<code translate="no">none</code> for &quot;Ohne Release&quot;; its menu <code translate="no">-menu</code>, the choices <code translate="no">-next</code>,
+<code translate="no">-all</code>, <code translate="no">-release-&lt;id&gt;</code>), <code translate="no">release-menu-&lt;repo&gt;-&lt;id&gt;</code> (entries <code translate="no">-add</code>, <code translate="no">-complete</code>, <code translate="no">-session</code>,
+<code translate="no">-move</code>, <code translate="no">-edit</code>, <code translate="no">-close</code>, <code translate="no">-remove</code>), <code translate="no">release-active-&lt;repo&gt;-&lt;id&gt;</code>, <code translate="no">release-focus-note-&lt;repo&gt;</code>,
+<code translate="no">release-none-add</code>, <code translate="no">release-none-new</code>; <code translate="no">/</code> in the repo name becomes <code translate="no">-</code>), the queue line
+<code translate="no">repo-queue-focus</code>, board flags <code translate="no">dashboard-orchestrator-release-&lt;repo&gt;-&lt;number&gt;</code>,
+<code translate="no">release-new-&lt;repo&gt;</code>, <code translate="no">release-move-&lt;repo&gt;-&lt;number&gt;</code>, the dialogs
+<code translate="no">release-name-dialog</code> and <code translate="no">release-choice-dialog</code> (<code translate="no">release-choice-next</code>, <code translate="no">release-choice-none</code>,
+<code translate="no">release-choice-release-&lt;id&gt;</code>), the row tag <code translate="no">dashboard-orchestrator-release-title-&lt;repo&gt;-&lt;number&gt;</code>
+and <code translate="no">dashboard-orchestrator-sheet-release-change</code>. Search and batch edits: <code translate="no">release-search</code>,
+<code translate="no">release-filter-state</code>, <code translate="no">release-filter-release</code>, <code translate="no">release-filter-priority</code>,
+<code translate="no">release-filter-type</code>, <code translate="no">release-filter-sort</code>, <code translate="no">release-filter-reset</code>, <code translate="no">release-found</code>,
+<code translate="no">release-no-match</code>, <code translate="no">release-select-&lt;repo&gt;-&lt;number&gt;</code>, <code translate="no">release-priority-&lt;repo&gt;-&lt;number&gt;</code>,
+<code translate="no">release-priority-step-&lt;repo&gt;-&lt;number&gt;</code> (<code translate="no">-up</code>, <code translate="no">-down</code>), the bar <code translate="no">release-batch-bar</code>
+(<code translate="no">release-batch-count</code>, <code translate="no">release-batch-priority</code>, <code translate="no">release-batch-labels-open</code>,
+<code translate="no">release-batch-release-open</code>, <code translate="no">release-batch-clear</code>) and the dialogs <code translate="no">release-batch-labels</code>,
+<code translate="no">release-batch-release</code> and <code translate="no">release-batch-confirm</code>.</p>
+</div>
+<div class="docs-meta"><a class="docs-edit" href="https://github.com/silvio-l/gitoodo/edit/main/docs/orchestrator/release.md" data-testid="docs-edit">Edit on GitHub</a><span class="docs-meta__version">Docs version: <span dir="ltr">dev</span></span></div>
+</article>
+<nav class="docs-pager" aria-label="Previous / Next" data-testid="docs-pager"><a class="docs-pager__previous" href="../orchestrator-chat/" rel="prev" data-testid="docs-pager-previous"><span class="docs-pager__label">Previous</span><span class="docs-pager__title">Orchestrator chat</span></a><a class="docs-pager__next" href="../status-model/" rel="next" data-testid="docs-pager-next"><span class="docs-pager__label">Next</span><span class="docs-pager__title">Overview status model</span></a></nav>
+</main>
+<aside class="docs-toc" aria-labelledby="docs-toc-title" data-testid="docs-toc"><h2 id="docs-toc-title">On this page</h2><ol><li class="docs-toc__l2"><a href="#using-releases" data-testid="docs-toc-using-releases">Using releases</a></li><li class="docs-toc__l2"><a href="#scope" data-testid="docs-toc-scope">Scope</a></li><li class="docs-toc__l3"><a href="#dependencies-join-the-release-1824-before-pulled-in-issues-1530" data-testid="docs-toc-dependencies-join-the-release-1824-before-pulled-in-issues-1530">Dependencies join the release (#1824, before: pulled-in issues, #1530)</a></li><li class="docs-toc__l2"><a href="#labels-and-milestones" data-testid="docs-toc-labels-and-milestones">Labels and milestones</a></li><li class="docs-toc__l3"><a href="#forge-calls-core-only" data-testid="docs-toc-forge-calls-core-only">Forge calls (core only)</a></li><li class="docs-toc__l3"><a href="#version-logic-and-suggestion-1142" data-testid="docs-toc-version-logic-and-suggestion-1142">Version logic and suggestion (#1142)</a></li><li class="docs-toc__l2"><a href="#assignment-rules-1143" data-testid="docs-toc-assignment-rules-1143">Assignment rules (#1143)</a></li><li class="docs-toc__l2"><a href="#completing-a-release-and-its-automations-1145" data-testid="docs-toc-completing-a-release-and-its-automations-1145">Completing a release and its automations (#1145)</a></li><li class="docs-toc__l2"><a href="#closing-a-release" data-testid="docs-toc-closing-a-release">Closing a release</a></li><li class="docs-toc__l2"><a href="#releases-never-appear-by-themselves-1476" data-testid="docs-toc-releases-never-appear-by-themselves-1476">Releases never appear by themselves (#1476)</a></li><li class="docs-toc__l2"><a href="#removing-a-release-1476" data-testid="docs-toc-removing-a-release-1476">Removing a release (#1476)</a></li><li class="docs-toc__l2"><a href="#editing-a-release-1499" data-testid="docs-toc-editing-a-release-1499">Editing a release (#1499)</a></li><li class="docs-toc__l2"><a href="#releases-by-hand-1141" data-testid="docs-toc-releases-by-hand-1141">Releases by hand (#1141)</a></li><li class="docs-toc__l2"><a href="#release-view-completing-runs-settings-and-sessions-1146" data-testid="docs-toc-release-view-completing-runs-settings-and-sessions-1146">Release view: completing, runs, settings and sessions (#1146)</a></li><li class="docs-toc__l2"><a href="#release-settings-templates-and-suggestions-1147" data-testid="docs-toc-release-settings-templates-and-suggestions-1147">Release settings, templates and suggestions (#1147)</a></li><li class="docs-toc__l3"><a href="#what-each-step-needs" data-testid="docs-toc-what-each-step-needs">What each step needs</a></li><li class="docs-toc__l2"><a href="#queue-order" data-testid="docs-toc-queue-order">Queue order</a></li><li class="docs-toc__l2"><a href="#release-focus-1442" data-testid="docs-toc-release-focus-1442">Release focus (#1442)</a></li><li class="docs-toc__l2"><a href="#states" data-testid="docs-toc-states">States</a></li><li class="docs-toc__l2"><a href="#surfaces" data-testid="docs-toc-surfaces">Surfaces</a></li><li class="docs-toc__l2"><a href="#app" data-testid="docs-toc-app">App</a></li></ol></aside>
+</div>
+<footer class="docs-footer" data-testid="docs-footer"><div class="docs-footer__inner">
+<p class="docs-muted">The developer docs are in English only.</p>
+<ul class="docs-footer__links">
+<li><a href="../../../" data-testid="docs-footer-site">Website</a></li>
+<li><a href="../../../privacy/" data-testid="docs-footer-privacy">Privacy</a></li>
+<li><a href="https://github.com/silvio-l/gitoodo/blob/main/LICENSE" data-testid="docs-footer-license">MIT</a></li>
+</ul>
+</div></footer>
+</body>
+</html>

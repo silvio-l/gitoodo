@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self'; style-src 'self'; script-src 'self' 'sha256-zclDvgIbJxhMP3hLx0Pe9wEzIPlPNUNObuWsVD7xB/M='; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="color-scheme" content="light dark">
+<script>try{var t=localStorage.getItem("gitoodo-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<title>Phone access – Gitoodo</title>
+<meta name="description" content="&quot;Fragen an mich&quot; on the phone (#1687): the desktop app serves a small web app to phones in the same local network. A phone pairs once by scanning a QR code: the phone icon in the …">
+<meta name="docs-version" content="dev">
+<link rel="canonical" href="https://gitoodo.com/docs/dev/phone-access/">
+
+<meta property="og:title" content="Phone access – Gitoodo">
+<meta property="og:description" content="&quot;Fragen an mich&quot; on the phone (#1687): the desktop app serves a small web app to phones in the same local network. A phone pairs once by scanning a QR code: the phone icon in the …">
+<meta property="og:url" content="https://gitoodo.com/docs/dev/phone-access/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Gitoodo">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://gitoodo.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../../assets/docs.css">
+<script defer src="../../../assets/docs.js"></script>
+</head>
+<body class="docs" data-lang="en" data-docs-root="../../" data-search-index="../../search/en.json" data-copied="Copied">
+<a class="skip" href="#main" data-testid="docs-skip">Skip to content</a>
+<header class="docs-header" data-testid="docs-header"><div class="docs-header__inner">
+<a class="lockup" href="../../../" aria-label="Gitoodo" data-testid="docs-logo"><svg class="lockup__art" data-brand="wordmark" viewBox="9.3 9.4 767.3 182.9" focusable="false" aria-hidden="true"><path class="logo__tray" fill-rule="evenodd" d="M66.7 89.5C54.7 90.9 52.5 108.4 63.6 112.9C69.4 115.3 80 113.9 86.5 113.9L136.5 114C143.6 114 155.7 115.4 157 105.5C157.8 99.1 154.7 91.2 147.7 89.6C141.7 88.1 126.5 89.3 119.5 89.3L84.5 89.3C78.7 89.3 72.5 88.8 66.7 89.5ZM210.5 93.7C206.3 95.4 202.9 98.6 198.6 100.3C196.7 101 193.8 101.2 192.6 103.1C191.3 105.1 191.8 108.3 191.8 110.5C191.8 115.6 192.1 120.9 191.5 125.9C184.9 128.1 171 126.6 163.5 126.6C159.8 126.6 155.9 126.2 152.5 128C144.2 132.6 147.8 144.9 143.6 152.1C138.9 160 121.4 157.2 113.5 157.2C110.3 157.2 106.8 157.7 103.6 156.7C92.4 153.3 98.2 135 89.9 128.6C86.5 125.9 81.6 126.6 77.5 126.6C69.3 126.6 58.2 128 50.5 126.1C48.8 117.6 51.8 108.1 49.7 99.7C47.3 90.3 31.5 89.8 27 97.5C25.1 100.8 24 104.7 22.6 108.2C19.8 115.2 15.3 122.8 16.1 130.5C16.6 134.9 19.5 139.2 21.5 143L31.8 163.7C35.7 171.7 38.9 183.6 48.9 185.5C52.3 186.2 56 185.8 59.5 185.8L83.5 185.8L157.5 185.8L183.5 185.8C188.2 185.8 193.2 186.3 197.4 183.8C203.4 180.3 207.1 168.8 210.3 162.7L221.6 140.2C223.6 136.2 226.1 132.2 226 127.5C225.9 121.1 221.5 114.3 219.2 108.4C217.1 103 215.9 96.5 210.5 93.7Z"/><path class="logo__bars" fill-rule="evenodd" d="M156.8 26.5C155.2 15.4 142.9 17.7 134.5 17.6C114.8 17.4 95.2 17.5 75.5 17.7C65.3 17.7 55.7 18.3 56.4 31.5C57.2 45.7 76.1 42.3 85.5 42.3L126.5 42.3C130.4 42.3 141.2 43.2 144.4 41.9C146.3 41.1 147.2 38.3 148.2 36.7C150.7 33 154.3 30.1 156.8 26.5ZM139.5 55.3C134 52 124.8 53.6 118.5 53.6L83.5 53.7C77.8 53.7 71.1 52.8 65.5 54C59.3 55.3 55.6 61.8 56.5 67.9C58.2 79.3 69.7 78.2 78.5 78.2L123.5 78.2C128.6 78.2 137 79.9 140.6 75.2C142.4 72.9 141 70.6 140.5 68C139.7 63.8 141 59.3 139.5 55.3Z"/><path class="logo__check" fill-rule="evenodd" d="M177.7 26.4C142.8 32.5 139 82.7 173 93.5C177.7 95 182.6 95.5 187.5 94.9C224.6 90.3 228 37.8 192.5 27.2C187.7 25.8 182.6 25.6 177.7 26.4ZM177.5 65.1C172.9 61.8 171.9 57.4 165.5 58.3C160.3 63.5 167.1 67.9 170.8 71.7C172.5 73.5 174.3 76 176.8 76.5C180.5 77.3 183.2 73.1 185.3 70.8L200.1 55.6C203 52.6 204.8 49.9 201.5 46.5C200 46.2 199.2 45.8 197.6 46.2C195.1 46.9 192.6 50.5 190.9 52.4C187.1 56.5 182.5 62.6 177.5 65.1Z"/><path class="word__git" fill-rule="evenodd" d="M379.6 38.4C360.7 39.7 362.8 67.8 381.5 66.9C400 66.1 398.7 37.2 379.6 38.4ZM362.5 92.7C357.9 91.8 353.1 92.2 348.5 92.2L325.5 92.2C321.8 92.2 314.8 90.8 311.8 93.3C308.9 95.8 309.6 111.2 311 114.5C317.2 118.1 327.7 114.3 334.7 116.5C329.4 130.4 309.1 132.6 297.7 125.8C288.9 120.6 283.8 110.5 283.8 100.5C283.6 81.9 299.6 66.6 318.5 71.2C328.3 73.6 329.5 78.5 336.5 83C340.9 81.5 353.8 72.2 356.6 68.5C355.1 63.6 350.2 59.4 346.3 56.2C332 44.2 311 40.6 293.5 47C262.7 58.3 249 94.7 262.4 124.2C276 154 314 165.2 341.5 147C354.5 138.4 363.1 123 364.1 107.5C364.4 102.6 365.3 96.8 362.5 92.7ZM407.5 73.5L400.4 74.5C398 78.5 398.4 90 399.5 94.7C402 96 404.7 95.9 407.4 96.5C410 113.1 400.2 145.4 422.7 151.6C426.2 152.6 429.9 152.6 433.5 152.6C437.5 152.7 441.9 153.2 445.5 151.5C446.4 146.9 446.8 134.4 444.6 130.5C441.2 130.2 436.3 131.5 433.3 129.2C430.8 127.2 431.4 123.3 431.4 120.5C431.4 112.7 430.6 104.3 431.7 96.5C436.1 95.3 440.9 96.3 445.5 95.3C447.3 89.6 447.2 80.3 445.5 74.6L431.9 73.5C430.6 68.1 433.1 59.6 430.5 54.9C428.6 51.5 415.9 52 412.5 52.6C410.9 53 409.4 53.6 408.6 55.1C406.2 59.4 408.5 68.4 407.5 73.5ZM369.5 151.7C373.7 153.3 388.3 153.6 392.1 151.5C393.7 145.8 392.7 138.5 392.7 132.5L392.6 94.5C392.6 90.3 394.1 79 391.6 75.9C389.3 73.1 377.1 73.6 373.5 74C366.1 74.9 368.5 86.3 368.5 91.5L368.6 131.5C368.6 137.8 367.2 145.8 369.5 151.7Z"/><path class="word__oodo" fill-rule="evenodd" d="M658.6 77.5C652.6 75.1 647.4 72.8 640.7 73.4C600.7 77.2 595.6 136.7 633.5 148.3C639.6 150.1 646.5 150.5 652.6 148.3C655 147.4 657.1 146 659.5 145.4C660 146.5 660.6 148.1 661.7 148.7C665.5 150.7 678.5 149.6 682.5 148.5C684.6 142.8 683.3 126.4 683.4 119.5L683.3 71.5C683.2 65 684.5 55.7 683 49.5C681.4 42.8 664.3 43.5 661.3 46.8C659.2 49.1 659.7 52.6 659.7 55.5C659.6 61.4 661.1 72.7 658.6 77.5ZM482.5 73.4C442.6 77.6 435.8 134.6 473.5 147.9C478.2 149.6 483.5 150.4 488.5 150.1C494.4 149.7 499.9 148.2 505.1 145.6C509.6 143.3 513.4 139.9 516.5 136C537.9 109 517 69.8 482.5 73.4ZM560.7 73.4C547.4 75.2 535.8 83.3 530.4 95.7C521.3 116.5 532.4 142.7 554.8 148.6C560 149.9 565.1 150.5 570.5 149.8C597.8 146.3 613.1 114.6 598.4 91.1C593.4 83 585.5 77.6 576.6 74.7C571.5 73.1 566 72.7 560.7 73.4ZM723.5 73.4C712.2 74.9 701.4 80.8 695.3 90.7C682.1 112 692 141 716.3 148.4C721.5 150 727 150.6 732.5 150C755.6 147.5 770.6 124.8 765.8 102.5C762.8 89.1 752.1 79.1 739.5 74.9C734.4 73.2 728.9 72.7 723.5 73.4ZM483.7 96.4C464.6 99.7 469.4 131.1 490.4 126.7C509.1 122.7 503.7 93.1 483.7 96.4ZM562.7 96.4C543.1 99.7 548.6 131.4 569.3 126.6C587.9 122.4 582.5 93.1 562.7 96.4ZM644.6 96.4C625.3 97.8 626.9 127.6 646.5 126.8C665.9 126 664.2 95 644.6 96.4ZM724.7 96.4C705.3 99.9 711 131.7 732.3 126.6C750.4 122.3 744.3 92.9 724.7 96.4Z"/></svg></a>
+<a class="docs-header__title" href="../../" data-testid="docs-home">Documentation</a>
+<span class="docs-version" title="Pre-release: Gitoodo has not been released yet" data-version="dev"><span class="visually-hidden">Docs version: </span><span dir="ltr">dev</span><span class="visually-hidden"> (Pre-release: Gitoodo has not been released yet)</span></span>
+<div class="docs-header__tools">
+<div class="docs-search" role="search" data-testid="docs-search">
+<label class="visually-hidden" for="docs-search-input">Search the docs</label>
+<input id="docs-search-input" class="docs-search__input" type="search" placeholder="Search …" autocomplete="off" spellcheck="false" aria-describedby="docs-search-hint" aria-controls="docs-search-results" aria-expanded="false" role="combobox" aria-autocomplete="list" data-testid="docs-search-input">
+<p id="docs-search-hint" class="visually-hidden">Arrow keys choose, Enter opens, Escape closes.</p>
+<div id="docs-search-results" class="docs-search__results" role="listbox" aria-label="Search the docs" hidden data-empty="No page matches “{query}”." data-testid="docs-search-results"></div>
+<p id="docs-search-status" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true" data-count="Results: {count}" data-testid="docs-search-status"></p>
+</div>
+<div class="header__prefs"><details class="langs" name="header-popover" data-langs data-testid="docs-langs"><summary class="langs__toggle" data-testid="docs-langs-toggle"><svg class="langs__globe" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg><span class="visually-hidden">Language: </span><span class="langs__code" translate="no">EN</span></summary>
+<ul class="langs__list" aria-label="Language"><li><a href="../../de/" hreflang="de" lang="de" data-lang="de" data-track="language" data-track-name="de" data-testid="docs-langs-de"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Deutsch</span></a></li><li><a href="../../" hreflang="en" lang="en" data-lang="en" data-track="language" data-track-name="en" aria-current="page" data-testid="docs-langs-en"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>English</span></a></li><li><a href="../../zh-Hans/" hreflang="zh-Hans" lang="zh-Hans" data-lang="zh-Hans" data-track="language" data-track-name="zh-Hans" data-testid="docs-langs-zh-Hans"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>中文（简体）</span></a></li><li><a href="../../hi/" hreflang="hi" lang="hi" data-lang="hi" data-track="language" data-track-name="hi" data-testid="docs-langs-hi"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>हिन्दी</span></a></li><li><a href="../../es/" hreflang="es" lang="es" data-lang="es" data-track="language" data-track-name="es" data-testid="docs-langs-es"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Español</span></a></li><li><a href="../../ar/" hreflang="ar" lang="ar" data-lang="ar" data-track="language" data-track-name="ar" data-testid="docs-langs-ar"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>العربية</span></a></li></ul></details><button class="theme" type="button" hidden data-theme-toggle data-choice="system" data-label="Theme: {current}, switch to {next}" data-system="System" data-light="Light" data-dark="Dark" aria-label="Theme: System, switch to Light" title="Theme: System, switch to Light" data-testid="docs-theme"><svg class="theme__icon theme__icon--system" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg><svg class="theme__icon theme__icon--light" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg><svg class="theme__icon theme__icon--dark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></button></div>
+<button type="button" class="docs-menu" aria-controls="docs-nav" aria-expanded="false" hidden data-testid="docs-menu">Pages</button>
+</div>
+<a class="docs-header__link" href="https://github.com/silvio-l/gitoodo" data-testid="docs-github">GitHub</a>
+<a class="docs-install" href="../../../#download" data-testid="docs-install">Get notified</a>
+</div></header>
+<div class="docs-layout">
+<nav id="docs-nav" class="docs-nav" aria-label="Documentation" data-testid="docs-nav"><div class="docs-nav__section"><p class="docs-nav__title"><a href="../../" data-testid="docs-nav-section-user">For users</a></p><p class="docs-nav__group" id="docs-nav-user-0">Get started</p><ul aria-labelledby="docs-nav-user-0"><li><a href="../../introduction/" data-testid="docs-nav-docs-introduction">What is Gitoodo?</a></li><li><a href="../../getting-started/" data-testid="docs-nav-docs-getting-started">Getting started</a></li></ul><p class="docs-nav__group" id="docs-nav-user-1">Guides</p><ul aria-labelledby="docs-nav-user-1"><li><a href="../../self-hosted-forges/" data-testid="docs-nav-docs-self-hosted-forges">Forgejo and Gitea</a></li><li><a href="../../github-issues-to-pull-requests/" data-testid="docs-nav-docs-github-issues-to-pull-requests">GitHub issues to pull requests</a></li><li><a href="../../safe-auto-merge/" data-testid="docs-nav-docs-safe-auto-merge">Safe auto-merge</a></li><li><a href="../../parallel-coding-agents/" data-testid="docs-nav-docs-parallel-coding-agents">Parallel coding agents</a></li><li><a href="../../switch-from-another-agent-app/" data-testid="docs-nav-docs-switch-from-another-agent-app">Coming from another agent app</a></li></ul><p class="docs-nav__group" id="docs-nav-user-2">Daily use</p><ul aria-labelledby="docs-nav-user-2"><li><a href="../../daily-use/" data-testid="docs-nav-docs-daily-use">How to work with Gitoodo</a></li><li><a href="../../overview/" data-testid="docs-nav-docs-overview">Overview</a></li><li><a href="../../needs-you/" data-testid="docs-nav-docs-needs-you">Needs you</a></li><li><a href="../../questions/" data-testid="docs-nav-docs-questions">Asked of me</a></li><li><a href="../../board/" data-testid="docs-nav-docs-board">All repos</a></li><li><a href="../../chat/" data-testid="docs-nav-docs-chat">Chat</a></li><li><a href="../../repositories/" data-testid="docs-nav-docs-repositories">Repositories</a></li></ul><p class="docs-nav__group" id="docs-nav-user-3">Orchestrator</p><ul aria-labelledby="docs-nav-user-3"><li><a href="../../labels/" data-testid="docs-nav-docs-labels">Status labels and workflow</a></li><li><a href="../../merge-and-release/" data-testid="docs-nav-docs-merge-and-release">Merge control</a></li><li><a href="../../releases/" data-testid="docs-nav-docs-releases">Releases</a></li><li><a href="../../services/" data-testid="docs-nav-docs-services">Classifier, dispatcher and workers</a></li></ul><p class="docs-nav__group" id="docs-nav-user-4">Reference and help</p><ul aria-labelledby="docs-nav-user-4"><li><a href="../../settings/" data-testid="docs-nav-docs-settings">Settings</a></li><li><a href="../../status/" data-testid="docs-nav-docs-status">Status</a></li><li><a href="../../troubleshooting/" data-testid="docs-nav-docs-troubleshooting">Troubleshooting</a></li><li><a href="../../faq/" data-testid="docs-nav-docs-faq">FAQ</a></li><li><a href="../../privacy/" data-testid="docs-nav-docs-privacy">Privacy</a></li></ul></div><div class="docs-nav__section"><p class="docs-nav__title"><a href="../" data-testid="docs-nav-section-dev">For developers</a></p><p class="docs-nav__group" id="docs-nav-dev-0">Start here</p><ul aria-labelledby="docs-nav-dev-0"><li><a href="../architecture/" data-testid="docs-nav-docs-dev-architecture">Architecture</a></li><li><a href="../building/" data-testid="docs-nav-docs-dev-building">Building</a></li><li><a href="../releasing/" data-testid="docs-nav-docs-dev-releasing">Release</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-1">Interfaces</p><ul aria-labelledby="docs-nav-dev-1"><li><a href="../question-format/" data-testid="docs-nav-docs-dev-question-format">Gitoodo question format (version 2)</a></li><li><a href="../cli/" data-testid="docs-nav-docs-dev-cli">Command line reference</a></li><li><a href="../daemon/" data-testid="docs-nav-docs-dev-daemon">Classifier daemon and command line</a></li><li><a href="./" aria-current="page" data-testid="docs-nav-docs-dev-phone-access">Phone access</a></li><li><a href="../forge-tokens/" data-testid="docs-nav-docs-dev-forge-tokens">Token permissions per forge</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-2">Orchestrator</p><ul aria-labelledby="docs-nav-dev-2"><li><a href="../states/" data-testid="docs-nav-docs-dev-states">States: what Gitoodo shows and what you do about it</a></li><li><a href="../all-repos/" data-testid="docs-nav-docs-dev-all-repos">&quot;All repos&quot;: pages and where things went</a></li><li><a href="../orchestrator-spec/" data-testid="docs-nav-docs-dev-orchestrator-spec">Gitoodo Orchestrator – Specification (v1)</a></li><li><a href="../orchestrator-setup/" data-testid="docs-nav-docs-dev-orchestrator-setup">Orchestrator setup</a></li><li><a href="../dispatcher/" data-testid="docs-nav-docs-dev-dispatcher">Dispatcher</a></li><li><a href="../queue-order/" data-testid="docs-nav-docs-dev-queue-order">Queue order and slot share</a></li><li><a href="../branch-rules/" data-testid="docs-nav-docs-dev-branch-rules">Branch rules that work with the autopilot</a></li><li><a href="../security/" data-testid="docs-nav-docs-dev-security">Security model of the orchestrator</a></li><li><a href="../satellites/" data-testid="docs-nav-docs-dev-satellites">Satellites</a></li><li><a href="../keychains/" data-testid="docs-nav-docs-dev-keychains">Keychains, signing and dialogs</a></li><li><a href="../local-inputs/" data-testid="docs-nav-docs-dev-local-inputs">Local inputs</a></li><li><a href="../resolver/" data-testid="docs-nav-docs-dev-resolver">The resolver for stuck issues</a></li><li><a href="../triage/" data-testid="docs-nav-docs-dev-triage">Triage</a></li><li><a href="../repo-hygiene/" data-testid="docs-nav-docs-dev-repo-hygiene">Repo hygiene</a></li><li><a href="../storage-cleanup/" data-testid="docs-nav-docs-dev-storage-cleanup">Automatic disk cleanup</a></li><li><a href="../orchestrator-chat/" data-testid="docs-nav-docs-dev-orchestrator-chat">Orchestrator chat</a></li><li><a href="../release-planning/" data-testid="docs-nav-docs-dev-release-planning">Release planning</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-3">App internals</p><ul aria-labelledby="docs-nav-dev-3"><li><a href="../status-model/" data-testid="docs-nav-docs-dev-status-model">Overview status model</a></li><li><a href="../counters/" data-testid="docs-nav-docs-dev-counters">Counters</a></li><li><a href="../startup/" data-testid="docs-nav-docs-dev-startup">Start: first paint and loading state</a></li><li><a href="../logging/" data-testid="docs-nav-docs-dev-logging">Logging</a></li><li><a href="../localisation/" data-testid="docs-nav-docs-dev-localisation">Localisation</a></li><li><a href="../settings-backup/" data-testid="docs-nav-docs-dev-settings-backup">Settings export, import and backup</a></li><li><a href="../symlinks/" data-testid="docs-nav-docs-dev-symlinks">Symbolic links</a></li><li><a href="../window-frame/" data-testid="docs-nav-docs-dev-window-frame">Window frame</a></li><li><a href="../system-permissions/" data-testid="docs-nav-docs-dev-system-permissions">System permissions</a></li><li><a href="../test-access/" data-testid="docs-nav-docs-dev-test-access">Test access: driving the app without a human</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-4">Privacy and data</p><ul aria-labelledby="docs-nav-dev-4"><li><a href="../privacy-policy/" data-testid="docs-nav-docs-dev-privacy-policy">Privacy policy: feedback, usage statistics and the phone app</a></li><li><a href="../network-inventory/" data-testid="docs-nav-docs-dev-network-inventory">Network inventory of the desktop app and the phone app</a></li><li><a href="../chat-notification/" data-testid="docs-nav-docs-dev-chat-notification">Chat notification</a></li><li><a href="../support/" data-testid="docs-nav-docs-dev-support">Voluntary support</a></li></ul></div></nav>
+<main id="main" class="docs-main" tabindex="-1" data-testid="docs-main">
+<article class="docs-article">
+<p class="docs-eyebrow">For developers · Interfaces</p><h1>Phone access</h1>
+<details class="docs-toc-inline" data-testid="docs-toc-inline"><summary data-testid="docs-toc-inline-toggle">On this page</summary><ol><li class="docs-toc__l2"><a href="#answered-once" data-testid="docs-toc-inline-answered-once">Answered once</a></li><li class="docs-toc__l2"><a href="#protocol" data-testid="docs-toc-inline-protocol">Protocol</a></li><li class="docs-toc__l2"><a href="#compatibility" data-testid="docs-toc-inline-compatibility">Compatibility</a></li><li class="docs-toc__l2"><a href="#push" data-testid="docs-toc-inline-push">Push</a></li><li class="docs-toc__l2"><a href="#keys-and-files" data-testid="docs-toc-inline-keys-and-files">Keys and files</a></li><li class="docs-toc__l2"><a href="#security-notes" data-testid="docs-toc-inline-security-notes">Security notes</a></li><li class="docs-toc__l2"><a href="#mac-app-store-and-microsoft-store" data-testid="docs-toc-inline-mac-app-store-and-microsoft-store">Mac App Store and Microsoft Store</a></li><li class="docs-toc__l2"><a href="#native-app" data-testid="docs-toc-inline-native-app">Native app</a></li><li class="docs-toc__l3"><a href="#pairing" data-testid="docs-toc-inline-pairing">Pairing</a></li><li class="docs-toc__l3"><a href="#notifications" data-testid="docs-toc-inline-notifications">Notifications</a></li><li class="docs-toc__l3"><a href="#settings" data-testid="docs-toc-inline-settings">Settings</a></li><li class="docs-toc__l3"><a href="#stores" data-testid="docs-toc-inline-stores">Stores</a></li></ol></details>
+<div class="docs-body">
+<p>&quot;Fragen an mich&quot; on the phone (#1687): the desktop app serves a small web app to phones in the
+same local network. A phone pairs once by scanning a QR code: the phone icon in the top bar or
+&quot;Pair a phone&quot; in the status bar opens Settings → Notifications &amp; feedback → Phone with the code
+already shown (#1836); once a phone is paired, the status bar shows how many and both open that
+page without a new pairing. After that the phone lists the questions waiting for you and answers a question card
+(or comments on an item without one) through the same path as the desktop&#39;s card. It can be put
+on the home screen and then opens like an app.</p>
+<ul><li><strong>Home screen (#1855):</strong> below the list a card offers to put the page on the home screen. Where
+the browser offers its own install prompt (<code translate="no">beforeinstallprompt</code>, Chromium in a secure context)
+it shows an &quot;Install&quot; button; otherwise it names the steps for the phone&#39;s system (iPhone/iPad:
+Safari&#39;s Share menu, Android: the browser menu), chosen by <code translate="no">installWay</code> in
+<code translate="no">src/mobile/model.ts</code>. Over the plain-HTTP local address Android adds a shortcut that opens in
+the browser; iPhone/iPad open it full screen from the manifest (<code translate="no">/manifest.webmanifest</code>,
+<code translate="no">display: standalone</code>). The card disappears once the page runs from the home screen.</li></ul>
+<ul><li><strong>Where it runs:</strong> in the desktop app (<code translate="no">src-tauri/src/mobile.rs</code>), so only while the app runs.
+The server and the desktop&#39;s half of the protocol are in the core (<code translate="no">crates/core/src/mobile/</code>),
+the cryptography, the labels and the phone&#39;s client in <code translate="no">crates/mobile-protocol</code>, which the
+native app uses as well; the phone page is <code translate="no">mobile.html</code> with <code translate="no">src/mobile/</code>, built into the app
+with the main window.</li><li><strong>Off by default:</strong> no port is open until you press &quot;Pair a phone&quot;. The access listens while a
+pairing is open (10 minutes) or at least one phone is paired; unpairing the last phone, or a
+pairing nobody completed, closes the port again.</li><li><strong>Local network only:</strong> it listens on all IPv4 interfaces, on port 47823 when free (otherwise
+another free port, which it keeps), and drops connections from addresses outside the private
+ranges (<code translate="no">10/8</code>, <code translate="no">172.16/12</code>, <code translate="no">192.168/16</code>), link-local and loopback. Access on the go follows
+later through an end-to-end encrypted relay, with the same encryption.</li><li><strong>What the phone can do:</strong> read the questions of every account and repository the desktop
+shows under &quot;Fragen an mich&quot;, answer a card (choices, yes/no, text, &quot;explain better&quot;, a note),
+and post a comment on an item without a card. Like the desktop&#39;s cards (#1876) it can also close
+the issue (an optional reason is posted first, after a short confirmation), put an item off until
+later (1 hour, tomorrow morning, 1 week; the desktop&#39;s &quot;Later&quot;) and, on a task, tick its checklist
+and mark it done (optionally closing the issue) or hand it back to the orchestrator with a note.
+A closed or finished item leaves the desktop list at once and the phone list with its next check;
+the window says &quot;Closed on &lt;phone&gt;&quot;, &quot;Done on &lt;phone&gt;&quot; or &quot;Handed back … on &lt;phone&gt;&quot;. A refused
+close names the reason (no right to close, open prerequisites on the forge). The comment that
+finishes a task uses the desktop&#39;s words in the phone&#39;s language. Since #1895 it can also list
+the repositories with their autopilot, switch the autopilot of one on or to paused, and look at
+its running and latest sessions (see &quot;Orchestrator&quot; under &quot;Protocol&quot;). Nothing else: no
+settings, no tokens, no transcripts.</li><li><strong>Desktop only, on purpose:</strong> forwarding a question to someone else (it picks people from the
+forge and lets the local AI draft the note), trusting a contribution&#39;s author (an app-wide
+security setting), the AI answer assist and bringing back a snoozed item (the phone does not
+list snoozed items).</li><li><strong>Same list as the desktop (#1839):</strong> the core leaves out what the desktop list leaves out
+(switched-off repos, snoozed items, items answered in the app) and gives every item its <code translate="no">place</code>
+(<code translate="no">ListPlace</code> in <code translate="no">crates/core/src/sync/counts.rs</code>): <code translate="no">question</code> for the list, <code translate="no">approval</code> for the
+approvals&#39; bundle, <code translate="no">other</code> for repos without the autopilot, which the phone folds away and does
+not count, like the desktop&#39;s &quot;N more&quot;. The page&#39;s title carries the same count as the tray.</li><li><strong>No notifications yet:</strong> the page is served over plain HTTP on a local address, which is no
+secure context. Phone browsers offer notifications, push, service workers and the home-screen
+badge only in a secure context: Android (Chrome and others) needs HTTPS for all of them, and
+iPhone/iPad (iOS 16.4 and later) needs HTTPS and the page added to the home screen. So the phone
+only refreshes while it is open (see &quot;Answered once&quot; below) and when it comes to the front.
+Notifications arrive with the encrypted relay, which serves the page over HTTPS and can send Web
+Push.</li></ul>
+<h2 id="answered-once">Answered once<a class="docs-anchor" href="#answered-once" aria-label="Answered once" data-testid="docs-md-anchor-answered-once">#</a></h2>
+<p>A question is answered once, whichever client answers it (#1873). The phone&#39;s answer is posted
+by the desktop app through the same path as the window&#39;s card (<code translate="no">answer_card</code> in
+<code translate="no">src-tauri/src/answer.rs</code>), so the core sees every answer:</p>
+<ul><li><strong>Desktop at once:</strong> every step of an answer from any client (sending, answered, failed) goes to
+every window as the <code translate="no">answered</code> event with the item, the core&#39;s mark after the step and where the
+answer came from (<code translate="no">AnsweredBy</code>: <code translate="no">computer</code>, <code translate="no">phone</code> with the phone&#39;s name, <code translate="no">forge</code>). The window&#39;s
+answer marks (<code translate="no">src/state/answered.tsx</code>, <code translate="no">answerMarks.ts</code>) follow it, so a phone&#39;s answer hides
+the question in the desktop list the moment it is sent, the window says &quot;Answered on &lt;phone&gt;&quot;,
+and a failed post brings it back with &quot;The answer from &lt;phone&gt; was not sent&quot;. A window that opens
+later reads the marks with <code translate="no">get_answer_marks</code>.</li><li><strong>Phone within seconds:</strong> the open page asks every 3 seconds with the <code translate="no">sync</code> call whether the
+list changed. The reply carries the list&#39;s version, a fingerprint of exactly the list the phone
+would get (<code translate="no">list_version</code> in <code translate="no">crates/core/src/mobile/mod.rs</code>), and the list itself only when the
+phone&#39;s version differs; an unchanged check is a few bytes. Every change counts without
+bookkeeping: a poll, an answer from any client, a failed post, a snooze running out, a repo
+switched off. An answer on the desktop therefore leaves the phone&#39;s list within about 3 seconds.
+An open question the desktop no longer lists says &quot;This question is no longer open&quot; and offers no
+sending. Checks only run while the page is in the front; no new port, service or relay.</li><li><strong>No second answer:</strong> one answer per item runs at a time (<code translate="no">ItemLocks</code> in
+<code translate="no">crates/core/src/answer_lock.rs</code>); a second one waits, then is refused while the first one&#39;s mark
+covers the question. Right before posting, the core reads the issue&#39;s comments once and refuses
+when the account already answered this block in the marker format (another computer, the
+browser). The refused client is told <code translate="no">already_answered</code> and where: the window says &quot;Already
+answered on &lt;phone&gt;&quot; (or &quot;in Gitoodo on this computer&quot;, or &quot;the answer is already in the issue&quot;),
+the phone &quot;Already answered on &lt;computer&gt;&quot; and so on, and its card goes away. A post that fails
+takes the mark back on every client, so the question can be answered again.</li></ul>
+<h2 id="protocol">Protocol<a class="docs-anchor" href="#protocol" aria-label="Protocol" data-testid="docs-md-anchor-protocol">#</a></h2>
+<p>A browser on a local address gets no trusted HTTPS, so every request is encrypted end to end
+instead. Base64url without padding throughout; labels are ASCII.</p>
+<p><strong>Pairing offer (QR code).</strong> <code translate="no">http://&lt;ip&gt;:&lt;port&gt;/#pair=&lt;base64url(json)&gt;</code> with
+<code translate="no">{&quot;v&quot;:3,&quot;m&quot;:1,&quot;k&quot;:&lt;desktop public key&gt;,&quot;t&quot;:&lt;token&gt;,&quot;x&quot;:&lt;expiry, unix seconds&gt;}</code> (<code translate="no">v</code> the desktop&#39;s
+protocol version, <code translate="no">m</code> the oldest phone version it serves; see &quot;Compatibility&quot;). <code translate="no">k</code> is a fresh X25519
+key for this one pairing, <code translate="no">t</code> 16 random bytes. The part after <code translate="no">#</code> never reaches a server; the
+page removes it from the address and the history at once.</p>
+<p><strong>Pairing request.</strong> The phone makes its own X25519 key <code translate="no">p</code> and computes</p>
+<ul><li><code translate="no">proof = HMAC-SHA256(t, &quot;gitoodo-mobile-v1 pair proof&quot; || p)</code></li><li><code translate="no">key = HKDF-SHA256(ikm = X25519(phone, k), salt = t, info = &quot;gitoodo-mobile-v1 device key&quot; || p || k)</code>, 32 bytes</li></ul>
+<p>and sends <code translate="no">POST /api/pair</code> <code translate="no">{&quot;v&quot;:&lt;agreed version&gt;,&quot;m&quot;:&lt;its oldest&gt;,&quot;p&quot;:…,&quot;h&quot;:proof,&quot;c&quot;:seal(key, &quot;gitoodo-mobile-v1 pair&quot;, {&quot;name&quot;,&quot;ts&quot;})}</code>.
+The desktop checks the proof first (a request without the token leaves the pairing open), then
+derives the same key (the pairing&#39;s private key is used up by this), opens the hello, checks its
+time, stores the device and answers <code translate="no">{&quot;c&quot;:seal(key, &quot;gitoodo-mobile-v1 paired&quot;, {&quot;device&quot;,&quot;host&quot;})}</code>.</p>
+<p><strong>Calls.</strong> <code translate="no">POST /api/call</code> <code translate="no">{&quot;v&quot;:&lt;agreed version&gt;,&quot;m&quot;:&lt;its oldest&gt;,&quot;d&quot;:&lt;device id&gt;,&quot;c&quot;:seal(key, &quot;gitoodo-mobile-v1 call &lt;id&gt;&quot;, call)}</code>
+with <code translate="no">call = {&quot;id&quot;:&lt;16 random bytes&gt;,&quot;ts&quot;:&lt;unix ms&gt;,&quot;op&quot;:…,&quot;args&quot;:…}</code>; ops are <code translate="no">sync</code>
+(<code translate="no">since</code>: the list version the phone shows, or <code translate="no">null</code>; replies <code translate="no">{&quot;version&quot;,&quot;items&quot;,&quot;protocol&quot;,&quot;caps&quot;}</code>,
+<code translate="no">items</code> left out when the version is <code translate="no">since</code>, <code translate="no">protocol</code> the desktop&#39;s <code translate="no">{&quot;version&quot;,&quot;min&quot;}</code> and
+<code translate="no">caps</code> its capabilities, see &quot;Compatibility&quot;), <code translate="no">questions</code> (the plain list without a
+version), <code translate="no">answer</code> (<code translate="no">account</code>, <code translate="no">repo</code>, <code translate="no">number</code>, <code translate="no">kind</code>, <code translate="no">block</code>, <code translate="no">answers</code>, <code translate="no">note</code>), <code translate="no">comment</code>
+(<code translate="no">account</code>, <code translate="no">repo</code>, <code translate="no">number</code>, <code translate="no">kind</code>, <code translate="no">body</code>), and since #1876 <code translate="no">close</code> (the item and <code translate="no">reason</code>),
+<code translate="no">finish</code> (the item, <code translate="no">finish</code>: <code translate="no">{&quot;done&quot;:{&quot;close&quot;:…}}</code> or <code translate="no">&quot;hand_back&quot;</code>, <code translate="no">lead</code>, <code translate="no">note</code>, <code translate="no">label</code>),
+<code translate="no">tick</code> (the item, <code translate="no">index</code>, <code translate="no">text</code>, <code translate="no">checked</code>; replies the new checklist) and <code translate="no">snooze</code> (<code translate="no">account</code>,
+<code translate="no">repo</code>, <code translate="no">number</code>, <code translate="no">until</code> in unix seconds). Each one runs through the same path as the desktop&#39;s
+command (<code translate="no">close_card</code>, <code translate="no">finish_card</code>, <code translate="no">tick_card</code> in <code translate="no">src-tauri/src/answer.rs</code>, the hub&#39;s snooze),
+under the same per-item lock as answers. The reply is
+<code translate="no">{&quot;c&quot;:seal(key, &quot;gitoodo-mobile-v1 reply &lt;id&gt;&quot;, {&quot;re&quot;:&lt;call id&gt;,&quot;ok&quot;,…})}</code>; the phone accepts
+only a reply that names its call. A refused call carries <code translate="no">&quot;ok&quot;:false</code> and the category in <code translate="no">error</code>;
+<code translate="no">already_answered</code> adds <code translate="no">&quot;data&quot;:{&quot;by&quot;:{&quot;via&quot;:&quot;computer&quot;|&quot;phone&quot;|&quot;forge&quot;,&quot;name&quot;:…}}</code> (<code translate="no">name</code> only
+for a phone). An op the desktop does not know is refused for that call alone with <code translate="no">unsupported</code>.</p>
+<p><strong>Orchestrator (#1895).</strong> Three ops let a paired phone see the orchestrator and steer it per
+repository, built from the same sources as the window&#39;s sidebar and worker list
+(<code translate="no">crates/core/src/mobile/orchestrator.rs</code>, the app side in <code translate="no">src-tauri/src/mobile.rs</code>):</p>
+<ul><li><code translate="no">repos</code> (no args) replies <code translate="no">{&quot;orchestrator&quot;,&quot;dispatcher&quot;,&quot;repos&quot;:[…]}</code>: <code translate="no">orchestrator</code> is <code translate="no">false</code>
+in direct mode (then <code translate="no">repos</code> is empty), <code translate="no">dispatcher</code> whether the dispatcher answered. Each repo
+is <code translate="no">{&quot;account&quot;,&quot;repo&quot;,&quot;state&quot;,&quot;autopilot&quot;,&quot;running&quot;,&quot;waiting&quot;,&quot;stalled&quot;,&quot;poll_failed&quot;}</code> with
+<code translate="no">state</code> <code translate="no">active</code>, <code translate="no">paused</code> or <code translate="no">observed</code> (the stored state of <code translate="no">orchestration.json</code> first, as the
+window&#39;s switch); a repo switched off in the settings is not listed.</li><li><code translate="no">sessions</code> (<code translate="no">account</code>, <code translate="no">repo</code>) replies <code translate="no">{&quot;account&quot;,&quot;repo&quot;,&quot;state&quot;,&quot;running&quot;:[…],&quot;recent&quot;:[…]}</code>.
+A session is <code translate="no">{&quot;number&quot;,&quot;title&quot;,&quot;state&quot;,&quot;since&quot;,&quot;secs&quot;,&quot;host&quot;,&quot;hint&quot;}</code>: <code translate="no">state</code> is <code translate="no">working</code>,
+<code translate="no">needs_you</code>, <code translate="no">at_prompt</code>, <code translate="no">held</code>, <code translate="no">limited</code> or <code translate="no">disk_paused</code> for a running worker and
+<code translate="no">in_review</code>, <code translate="no">needs_human</code> or <code translate="no">stalled</code> for the latest ones (at most 10); <code translate="no">since</code> and <code translate="no">secs</code> are
+unix seconds and the running time, <code translate="no">hint</code> a code (<code translate="no">{&quot;kind&quot;:&quot;stall&quot;,&quot;cause&quot;,&quot;runs&quot;}</code>,
+<code translate="no">{&quot;kind&quot;:&quot;pull&quot;,&quot;number&quot;}</code>, <code translate="no">{&quot;kind&quot;:&quot;limit&quot;,&quot;until&quot;}</code>). No transcript, no comment text, no
+token.</li><li><code translate="no">autopilot</code> (<code translate="no">account</code>, <code translate="no">repo</code>, <code translate="no">on</code>) takes the window&#39;s step: <code translate="no">active</code> → <code translate="no">paused</code>
+(<code translate="no">on: false</code>), <code translate="no">paused</code> → <code translate="no">active</code>, <code translate="no">observed</code> → <code translate="no">active</code> with backlog <code translate="no">ask</code> as the switch adopts
+a repo, anything else unchanged. It writes through the same store paths as <code translate="no">set_repo_state</code> and
+<code translate="no">adopt_repo</code> (<code translate="no">src-tauri/src/labels.rs</code>), sets an activated repo up on the forge in the
+background like the window (<code translate="no">prepare_repo</code>), and replies <code translate="no">{&quot;state&quot;,&quot;autopilot&quot;}</code>. The window gets
+the <code translate="no">repo-steered</code> event with the phone&#39;s name, reads the states again and says &quot;Autopilot paused
+for &lt;repo&gt; on &lt;phone&gt;&quot; (or &quot;switched on&quot;).</li></ul>
+<p>Refusals of these ops: <code translate="no">unknown_repo</code> (an account that is not connected or a repository the desktop
+does not list), <code translate="no">no_right</code> (a repository switched off in the settings, which the phone may neither
+see nor change), <code translate="no">direct_mode</code> (no orchestrator); a failed write carries the desktop command&#39;s
+category (<code translate="no">store</code>). <code translate="no">sync</code> adds <code translate="no">&quot;orchestrator&quot;:&lt;version&gt;</code> in orchestrator mode, a fingerprint of
+what <code translate="no">repos</code> and every repo&#39;s <code translate="no">sessions</code> show without the running times
+(<code translate="no">orchestrator_version</code>): when it changes the phone asks those again. The model is read without
+starting the classifier and without waiting more than 2 seconds, so a busy classifier never delays
+the questions.</p>
+<p><strong>Versions.</strong> The protocol version is <code translate="no">3</code> since #1895 (the orchestrator ops), <code translate="no">2</code> since #1876 (the
+item actions); #1873&#39;s <code translate="no">sync</code> op was added within <code translate="no">1</code>. The version sits in the QR code and in every
+request. The keys, the labels and the pairing stay valid across versions, so a paired phone does
+not pair again. Which versions meet is &quot;Compatibility&quot; below.</p>
+<p><strong>Sealing.</strong> ChaCha20-Poly1305 with a random 12-byte nonce: <code translate="no">seal = base64url(nonce || ciphertext || tag)</code>,
+the label as associated data. Both sides check the same test vector
+(<code translate="no">crates/mobile-protocol/src/crypto.rs</code>, <code translate="no">src/mobile/crypto.test.ts</code>), and a sealed reply both
+the page and the native app&#39;s client open (<code translate="no">crates/mobile-protocol/src/phone/tests.rs</code>).</p>
+<p><strong>Refusals</strong> carry a category only, never forge text: <code translate="no">401 unpaired</code> (unknown device or a
+message that does not open), <code translate="no">401 clock</code> (more than 2 minutes off), <code translate="no">401 replay</code> (a call id seen
+within the window), <code translate="no">410 pairing</code> (no open pairing), <code translate="no">409 full</code> (10 phones), <code translate="no">400 malformed</code>,
+<code translate="no">400 outdated</code> (a phone below the desktop&#39;s oldest version: update the app, or reload the page)
+and <code translate="no">400 desktop_outdated</code> (a phone that speaks only versions newer than the desktop&#39;s: update
+Gitoodo on the computer). Both version refusals add <code translate="no">&quot;protocol&quot;:{&quot;version&quot;,&quot;min&quot;}</code>, the desktop&#39;s
+range.</p>
+<h2 id="compatibility">Compatibility<a class="docs-anchor" href="#compatibility" aria-label="Compatibility" data-testid="docs-md-anchor-compatibility">#</a></h2>
+<p>A phone from the App Store or Google Play cannot reload like the page, and the stores take days to
+review a release, so for a while after every release the phone and the desktop are different
+builds. The rules live in <code translate="no">crates/mobile-protocol/src/compat.rs</code> (both Rust ends) and
+<code translate="no">src/mobile/protocol.ts</code> (the page).</p>
+<ul><li><strong>A window, not one version.</strong> Each end has <code translate="no">VERSION</code> (the newest it speaks) and <code translate="no">MIN_PEER</code> (the
+oldest of the other end it still talks to), today <code translate="no">3</code> and <code translate="no">1</code>. Both send them: <code translate="no">v</code> and <code translate="no">m</code> in the
+QR code and in every request. They talk in the lower <code translate="no">v</code> when that lies in the other end&#39;s
+window, or in the desktop&#39;s <code translate="no">VERSION</code> for a newer phone whose <code translate="no">m</code> reaches down to it
+(<code translate="no">negotiate</code>). The desktop answers every phone in <code translate="no">MIN_PEER..=VERSION</code> in that version&#39;s own
+shape (<code translate="no">shape_reply</code> in <code translate="no">crates/core/src/mobile/mod.rs</code>; <code translate="no">orchestrator</code> in <code translate="no">sync</code> only from
+<code translate="no">3</code>). A phone below the window gets <code translate="no">outdated</code>, a phone above it <code translate="no">desktop_outdated</code>.</li><li><strong>Capabilities.</strong> <code translate="no">sync</code> lists what the desktop offers beyond <code translate="no">sync</code>, <code translate="no">questions</code>, <code translate="no">answer</code> and
+<code translate="no">comment</code>: <code translate="no">item_actions</code> (<code translate="no">close</code>, <code translate="no">finish</code>, <code translate="no">tick</code>, <code translate="no">snooze</code>) and <code translate="no">orchestrator</code> (<code translate="no">repos</code>,
+<code translate="no">sessions</code>, <code translate="no">autopilot</code>) and <code translate="no">push</code> (the <code translate="no">push</code> op, #1897). The phone shows only what is
+listed; for a desktop before the window, which lists nothing, the version implies them
+(<code translate="no">implied</code>), and the native app&#39;s client fills them in. <code translate="no">push</code> came with the window, so a
+desktop that lists nothing never has it (<code translate="no">Capability::LISTED_ONLY</code>): the app hands its push
+address only to a desktop that lists <code translate="no">push</code>. An op the desktop does not know fails alone with <code translate="no">unsupported</code>, never the session.</li><li><strong>Tolerant reading.</strong> Both ends ignore fields they do not know (no <code translate="no">deny_unknown_fields</code>), and an
+unknown enum value falls back instead of failing: an unknown capability is left out, an item of
+an unknown place is shown among the other repos.</li><li><strong>On the phone.</strong> A phone inside the window works normally; when <code translate="no">sync</code> names a newer desktop
+version, the list shows a dismissible banner &quot;A newer version of the app is available&quot; (&quot;… of
+this page&quot;, with &quot;Reload&quot;, in the browser). <code translate="no">outdated</code> in the app replaces the list with a
+screen that says the computer no longer supports this version and to update the app from its
+store; <code translate="no">desktop_outdated</code> with one that says to update Gitoodo on the computer, and &quot;Try again&quot;.
+The page in a browser offers &quot;Reload&quot; for <code translate="no">outdated</code>, which loads the desktop&#39;s own page.</li><li><strong>Desktops before the window</strong> answer another version with a bare <code translate="no">outdated</code> (no <code translate="no">protocol</code>).
+The native app then tries one version lower, down to its <code translate="no">MIN_PEER</code>, and says
+<code translate="no">desktop_outdated</code> once none is left (<code translate="no">step_down</code> in <code translate="no">crates/mobile-protocol/src/phone.rs</code>).
+Store builds from before the window read only a QR code of their own version, so they cannot
+pair with a newer desktop; once paired they keep working with it, because it serves their
+version.</li></ul>
+<p><strong>Changing the protocol.</strong> An additive change (a new field in a reply, a new optional argument, a
+new value of an enum the phone reads tolerantly) keeps <code translate="no">VERSION</code>. A new op is a new capability:
+add it to <code translate="no">Capability</code> and to <code translate="no">OPS</code>, list it in <code translate="no">sync</code>, and gate the phone&#39;s UI on it. Removing or
+retyping a field, a new required argument or a new envelope raises <code translate="no">VERSION</code> in <code translate="no">compat.rs</code> and
+<code translate="no">src/mobile/protocol.ts</code> together; the desktop keeps serving the old shape (<code translate="no">shape_reply</code>) and
+<code translate="no">MIN_PEER</code> stays, so the window covers at least the two versions before the current one, and
+always every version a store build still in review or in use speaks.</p>
+<p><strong>Retiring a version.</strong> Raise <code translate="no">MIN_PEER</code> only once the store builds that speak the version are
+replaced (the App Store and Google Play report the share per build) and at least two releases
+after the version was superseded. Remove its <code translate="no">shape_reply</code> branch and its fixture in the same
+change; such a phone then sees the screen that asks it to update.</p>
+<p><strong>The test that guards it.</strong> <code translate="no">crates/mobile-protocol/compat/v&lt;N&gt;.json</code> records every call and
+reply of each served version, written when the version was current. The core&#39;s
+<code translate="no">crates/core/src/mobile/compat_tests.rs</code> opens every recorded call in its version and checks that
+the replies the desktop builds today still carry every recorded field with the same type;
+<code translate="no">crates/mobile-protocol/src/compat/tests.rs</code> and <code translate="no">src/mobile/compat.test.ts</code> read the recorded
+replies as the current phone would and check that both sides name the same window. A fixture
+must exist for exactly <code translate="no">MIN_PEER..=VERSION</code>: raising <code translate="no">VERSION</code> records a new one, retiring
+removes one.</p>
+<h2 id="push">Push<a class="docs-anchor" href="#push" aria-label="Push" data-testid="docs-md-anchor-push">#</a></h2>
+<p>Push notifications to the phone&#39;s app (#1897): when the desktop shows a system notification for a
+new question or approval, it also tells every paired phone whose app registered for pushes. A
+push to an iPhone goes through Apple&#39;s push service (APNs), to an Android phone through Firebase
+Cloud Messaging (FCM). Both need keys of the publisher&#39;s accounts, which must not ship inside an
+app anyone can unpack. A small push relay holds them instead (<code translate="no">crates/push-relay</code>, the program
+<code translate="no">gitoodo-push-relay</code>); the desktop and the phone app speak only to the relay.</p>
+<p><strong>Data flow.</strong></p>
+<ol><li>The phone&#39;s app gets its push token from the system and registers it at the relay:
+<code translate="no">POST /v1/register</code> <code translate="no">{&quot;v&quot;:1,&quot;platform&quot;:&quot;apns&quot;|&quot;fcm&quot;,&quot;env&quot;:&quot;production&quot;|&quot;sandbox&quot;,&quot;token&quot;:…}</code>.
+The relay answers <code translate="no">{&quot;v&quot;:1,&quot;grant&quot;:…}</code>: base64url of <code translate="no">HMAC-SHA256(secret, &quot;gitoodo-push-relay grant v1\n&lt;platform&gt;\n&lt;env&gt;\n&lt;token&gt;&quot;)</code>. It stores nothing.</li><li>The app hands <code translate="no">{&quot;platform&quot;,&quot;env&quot;,&quot;token&quot;,&quot;grant&quot;}</code> to the desktop: as <code translate="no">push</code> in the hello of
+the pairing request, or later (a renewed token, another relay) with the call op <code translate="no">push</code>
+(<code translate="no">args</code> the same object, <code translate="no">null</code> stops pushes to this phone; replies <code translate="no">{&quot;relay&quot;:&lt;address&gt;}</code>, so an
+app registered at another relay registers again). The pairing offer names the relay in <code translate="no">r</code>.
+The desktop keeps the push address only in <code translate="no">mobile.json</code>.</li><li>On a new question or approval the desktop sends <code translate="no">POST /v1/push</code>
+<code translate="no">{&quot;v&quot;:1,&quot;platform&quot;,&quot;env&quot;,&quot;token&quot;,&quot;grant&quot;,&quot;kind&quot;:&quot;question&quot;|&quot;approval&quot;,&quot;c&quot;:…}</code> per phone.
+<code translate="no">c</code> is <code translate="no">seal(device key, &quot;gitoodo-mobile-v1 push &lt;device id&gt;&quot;, content)</code> with
+<code translate="no">content = {&quot;v&quot;:1,&quot;kind&quot;,&quot;account&quot;,&quot;repo&quot;,&quot;number&quot;,&quot;title&quot;,&quot;count&quot;,&quot;ts&quot;}</code> (title at most 120
+characters; a summary of several new questions has <code translate="no">count</code> and no item). With &quot;Show the
+question in the notification&quot; off, <code translate="no">c</code> is left out and the push only says &quot;new question&quot; or
+&quot;new approval&quot;.</li><li>The relay checks the grant and its limits and passes the push on. APNs gets an alert the app
+localizes (<code translate="no">loc-key</code> <code translate="no">GITOODO_PUSH_QUESTION</code>/<code translate="no">GITOODO_PUSH_APPROVAL</code>, <code translate="no">title-loc-key</code>
+<code translate="no">GITOODO_PUSH_TITLE</code>) and <code translate="no">{&quot;gitoodo&quot;:{&quot;v&quot;:1,&quot;k&quot;:kind,&quot;c&quot;:…}}</code>, with <code translate="no">mutable-content</code> when <code translate="no">c</code>
+is there, so the app&#39;s notification extension opens it. FCM gets a data message
+<code translate="no">{&quot;gitoodo&quot;:&quot;1&quot;,&quot;k&quot;:kind,&quot;c&quot;:…}</code> with high priority; the app opens it and shows the notification.
+A push not delivered within a day expires.</li></ol>
+<p><strong>What the relay sees:</strong> the push token, the grant, the platform, the kind, whether content is
+there, and the ciphertext. Never a repository, a question, an account, a name or a key of the
+pairing: the device key never leaves the desktop&#39;s keychain and the phone. Apple and Google see
+the same, plus what they always see of a push (the app and the device). The relay keeps no file
+and logs one JSON line per request with event, platform, kind and outcome, never a token, a grant
+or content.</p>
+<p><strong>Abuse protection.</strong> The relay sends only to a token with its grant, so whoever pushes must hold
+what the phone&#39;s app handed to its paired desktop. Limits per window of ten minutes: 30 pushes
+per phone (grant), 600 pushes and 30 registrations per sender address. Bodies are capped at
+16 KB, ciphertext at 3 KB, tokens have to look like tokens of their platform.</p>
+<p><strong>Answers to the desktop.</strong> <code translate="no">202</code> sent; <code translate="no">403 grant</code> (a grant of another relay or of an old
+secret) and <code translate="no">410 gone</code> (the push service no longer knows the token) make the desktop forget that
+phone&#39;s push address until the app sends a new one; <code translate="no">429 rate</code>, <code translate="no">502 upstream</code>,
+<code translate="no">503 unavailable</code> (the relay has no key for that platform) and <code translate="no">400 malformed</code> leave it. The
+desktop logs <code translate="no">mobile_push</code> with device id, kind and outcome category.</p>
+<p><strong>Settings.</strong> Settings → Notifications &amp; feedback → Phone shows per phone with the app a switch
+for push notifications and one for showing the question in them; both are on after pairing. The
+relay&#39;s address is a setting there too: empty means the Gitoodo relay
+(<code translate="no">https://push.gitoodo.com</code>, <code translate="no">DEFAULT_RELAY</code> in <code translate="no">crates/core/src/mobile/push.rs</code>), any other
+<code translate="no">https://</code> address a relay of your own (<code translate="no">http://</code> only for <code translate="no">127.0.0.1</code>/<code translate="no">localhost</code>, for trials).</p>
+<p><strong>Running a relay.</strong> The relay is one program without state. It listens on plain HTTP; put a
+reverse proxy with TLS in front of it and set <code translate="no">GITOODO_RELAY_TRUST_PROXY=1</code>, so the limits count
+the real sender. Configuration comes from the environment, keys from files (see
+<code translate="no">crates/push-relay/src/config.rs</code>):</p>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col">Variable</th><th scope="col">Meaning</th></tr></thead><tbody><tr><td><code translate="no">GITOODO_RELAY_LISTEN</code></td><td>listen address, default <code translate="no">127.0.0.1:8787</code></td></tr><tr><td><code translate="no">GITOODO_RELAY_SECRET_FILE</code></td><td>at least 32 bytes of random secret for the grants; changing it makes every phone register again</td></tr><tr><td><code translate="no">GITOODO_RELAY_TRUST_PROXY</code></td><td><code translate="no">1</code> behind a reverse proxy</td></tr><tr><td><code translate="no">GITOODO_RELAY_APNS_KEY_FILE</code>, <code translate="no">…_APNS_KEY_ID</code>, <code translate="no">…_APNS_TEAM_ID</code>, <code translate="no">…_APNS_TOPIC</code></td><td>the APNs auth key (<code translate="no">.p8</code>), its key id, the developer team id and the app&#39;s bundle id</td></tr><tr><td><code translate="no">GITOODO_RELAY_FCM_ACCOUNT_FILE</code></td><td>the Firebase service account JSON file (role &quot;Firebase Cloud Messaging API Admin&quot;)</td></tr><tr><td><code translate="no">GITOODO_RELAY_APNS_URL</code>, <code translate="no">…_APNS_SANDBOX_URL</code>, <code translate="no">…_FCM_URL</code></td><td>other push service addresses, for local trials</td></tr></tbody></table></div>
+<p>At least one of APNs and FCM is needed; <code translate="no">GET /health</code> answers which are configured. Build it with
+<code translate="no">cargo build --release -p gitoodo-push-relay</code>. A relay of your own only reaches an app built
+with your own keys (the bundle id and Firebase project the keys belong to).</p>
+<p><strong>Gitoodo service rollout (decision for #1897).</strong> The GbR&#39;s service will use
+<code translate="no">https://push.gitoodo.com</code> on its own small server or container, with DNS and a TLS reverse proxy.
+This is the intended default address, not a promise that the service is already operating.
+The server and desktop code can be merged before the phone apps: provisioning the APNs key,
+Firebase project and service account, installing their keys on the server, and enabling real
+delivery are deferred until the phone apps are ready. At that stage the setup is to be performed
+through browser automation, with the account owner signing in interactively when needed.
+Provider keys stay on the server. Until rollout, integration tests use a local relay with mocked
+push services; users can configure their own compatible relay as described above.</p>
+<p><strong>Tests.</strong> <code translate="no">crates/push-relay/src/tests.rs</code> checks grants, limits and the requests to mocked APNs
+and FCM; <code translate="no">crates/push-relay/tests/e2e.rs</code> runs a relay on a local port, lets the desktop&#39;s code
+(<code translate="no">gitoodo_core::mobile::push::deliver</code>) send through it and opens the content the mocked APNs got
+with the device key. The FCM tests sign with a throwaway RSA key they make at
+run time, so no private key sits in the tree.</p>
+<h2 id="keys-and-files">Keys and files<a class="docs-anchor" href="#keys-and-files" aria-label="Keys and files" data-testid="docs-md-anchor-keys-and-files">#</a></h2>
+<ul><li>The device key lives in the system keychain under <code translate="no">mobile-device-&lt;id&gt;</code> (<code translate="no">gitoodo.testaccess</code>
+in the test build, <code translate="no">src-tauri/src/keychain.rs</code>), cached in memory while the app runs.</li><li><code translate="no">mobile.json</code> in the config folder holds the port and per phone its id, name, pairing time and
+last activity, since #1897 also the phone app&#39;s push address (token and grant), the two push
+switches and the relay address. Never exported with the settings backup; the push address goes
+only to the relay.</li><li>On the phone, the device id, key and the desktop&#39;s name stay in the browser&#39;s storage for that
+address. A new address (another IP from the router) means pairing again; &quot;Unpair on this phone&quot;
+forgets them there, &quot;Unpair&quot; in the settings removes the key on the desktop.</li><li>The native app keeps them, with the desktop&#39;s address, as one entry in the system&#39;s secure
+store instead (<code translate="no">src-mobile/src/secure.rs</code>): the iOS keychain (this app&#39;s access group, not
+synced) or the Android Keystore (a Keystore key encrypts the entry in the app&#39;s private
+preferences). The page in the app never sees the key.</li></ul>
+<h2 id="security-notes">Security notes<a class="docs-anchor" href="#security-notes" aria-label="Security notes" data-testid="docs-md-anchor-security-notes">#</a></h2>
+<ul><li>Without the QR code nobody can pair, read or answer; a recorded request cannot be replayed, and
+a passive listener in the network sees only ciphertext.</li><li>The page itself loads over plain HTTP. Someone who can change traffic in your network at the
+moment the phone loads the page could serve it altered and read what it stores. The phone page
+is therefore meant for your own Wi-Fi; unpair phones you no longer use. The relay over HTTPS
+removes this for the page.</li><li>The native app has no such gap: its page is part of the installed app, never loaded from the
+network, and the key stays in Rust and the system&#39;s secure store. Only the sealed requests go
+over plain HTTP, the same ciphertext as from the page. It accepts only a pairing code that names
+an address of the local network or the phone itself.</li><li>Answers sent from the phone are the same comments the desktop writes, under your account.</li><li>Logs name the device id, the operation and the outcome category (<code translate="no">mobile_paired</code>,
+<code translate="no">mobile_call</code>, <code translate="no">mobile_call_refused</code>, <code translate="no">mobile_unpaired</code>, <code translate="no">mobile_push</code>), never a key, a push
+token, a question, an answer or a repository. The frequent <code translate="no">sync</code> checks and the <code translate="no">repos</code> and
+<code translate="no">sessions</code> reads log at debug level when they succeed.</li></ul>
+<h2 id="mac-app-store-and-microsoft-store">Mac App Store and Microsoft Store<a class="docs-anchor" href="#mac-app-store-and-microsoft-store" aria-label="Mac App Store and Microsoft Store" data-testid="docs-md-anchor-mac-app-store-and-microsoft-store">#</a></h2>
+<p>The sandboxed Mac build needs <code translate="no">com.apple.security.network.server</code> for the listening socket
+(<code translate="no">Entitlements.appstore.plist</code>, <code translate="no">Entitlements.appstore.keychain.plist</code>); the MSIX package already
+has <code translate="no">privateNetworkClientServer</code>. The first listen may bring up the system firewall&#39;s question
+whether Gitoodo may accept incoming connections; allow it for private networks.</p>
+<h2 id="native-app">Native app<a class="docs-anchor" href="#native-app" aria-label="Native app" data-testid="docs-md-anchor-native-app">#</a></h2>
+<p>The same phone page also comes as an installed app for iOS and Android (#1885, groundwork in
+#1893), built with Tauri 2&#39;s mobile targets. It does everything the page does (#1894): it lists
+and answers the questions, comments, closes, puts items off and finishes tasks, with the same
+refusals and &quot;Already answered on …&quot;, and it notifies new questions with sound (see
+&quot;Notifications&quot; below).</p>
+<ul><li><strong>Pairing by camera:</strong> &quot;Scan QR code&quot; opens the camera (Tauri&#39;s barcode scanner plugin) behind
+the page, which shows a frame and &quot;Cancel&quot; on top; the scanned code is the same address the page
+would open. The first scan asks for the camera, with the texts of <code translate="no">cameraUsage</code> and, for the
+calls in the Wi-Fi, <code translate="no">localNetworkUsage</code> in <code translate="no">src/i18n/mobile.ts</code> (iOS:
+<code translate="no">src-mobile/gen/apple/gitoodo-mobile_iOS/&lt;lang&gt;.lproj/InfoPlist.strings</code>, kept equal by
+<code translate="no">src/i18n/mobilePermissions.test.ts</code>; Android&#39;s camera question is the system&#39;s own). A refused
+camera points to the system settings; without a camera (a simulator) or its permission,
+&quot;Enter the address instead&quot; takes the address shown below the QR code.</li><li><strong>One page, two platforms:</strong> the screens stay <code translate="no">src/mobile/</code> for both. <code translate="no">src/mobile/platform.ts</code>
+tells them apart (Tauri&#39;s bridge in the window) and gives them a <code translate="no">Platform</code> with a <code translate="no">Session</code>:
+the page pairs from the address and calls with <code translate="no">src/mobile/crypto.ts</code>; the app&#39;s
+(<code translate="no">src/mobile/appPlatform.ts</code>, loaded only in the app) calls four commands of <code translate="no">src-mobile</code>:
+<code translate="no">paired</code>, <code translate="no">pair</code> (the scanned address and the phone&#39;s name, &quot;iPhone · App&quot;), <code translate="no">call</code> (op and
+arguments) and <code translate="no">forget</code>. Rust reads the code (<code translate="no">crates/mobile-protocol/src/phone.rs</code>), pairs,
+seals every call and opens its reply (<code translate="no">crates/mobile-protocol/src/client.rs</code>), so the page
+never holds the key. The app shows no &quot;Add to home screen&quot; card; a desktop outside the app&#39;s
+protocol window asks to update the app or the computer&#39;s Gitoodo rather than reload
+(&quot;Compatibility&quot;).</li><li><strong>Layout:</strong> <code translate="no">src-mobile/</code> is its own Tauri crate (<code translate="no">gitoodo-mobile</code>) next to the desktop&#39;s
+<code translate="no">src-tauri/</code>, a workspace member so the usual Rust gates lint and test it. It holds the webview,
+the protocol client and the secure store: no server, tray, sidecar, autostart or <code translate="no">gitoodo-core</code>.
+Only its commands (<code translate="no">capabilities/default.json</code> and <code translate="no">capabilities/notify.json</code>, listed in
+<code translate="no">build.rs</code>) and, on iOS and Android, the scanner&#39;s scan, cancel, permission and settings calls
+(<code translate="no">capabilities/scanner.json</code>), the notification permission, haptics and the app event
+<code translate="no">open-item</code> (<code translate="no">capabilities/notify.json</code>), the app&#39;s version and opening exactly the privacy
+policy and legal notice in the browser (<code translate="no">capabilities/links.json</code>) are reachable from the page. <code translate="no">tauri.conf.json</code> embeds <code translate="no">dist-mobile/</code>, which
+<code translate="no">npm run build:mobile</code> (Vite <code translate="no">--mode mobile-app</code>, part of <code translate="no">npm run build</code>) fills with the phone
+page alone, and opens <code translate="no">mobile.html</code>.</li><li><strong>Generated projects:</strong> <code translate="no">src-mobile/gen/apple</code> (Xcode project and its <code translate="no">project.yml</code>) and
+<code translate="no">src-mobile/gen/android</code> (Gradle project) come from <code translate="no">tauri ios init</code> and <code translate="no">tauri android init</code>
+and are checked in; their own <code translate="no">.gitignore</code> files keep build output out. Their build steps call
+back through <code translate="no">npm run tauri:mobile</code> (one line in <code translate="no">project.yml</code>/<code translate="no">project.pbxproj</code> and in
+<code translate="no">buildSrc/…/BuildTask.kt</code>), so the Tauri CLI uses <code translate="no">src-mobile</code> instead of <code translate="no">src-tauri</code>; after a
+new <code translate="no">init</code>, set that again. <code translate="no">project.yml</code> is the source of the Xcode project and its
+<code translate="no">Info.plist</code> (localisations, camera and local network texts): after a change run
+<code translate="no">xcodegen generate --spec project.yml</code> in <code translate="no">src-mobile/gen/apple</code> (with empty <code translate="no">Externals/</code> and
+<code translate="no">assets/</code> folders if no build made them yet). The unsigned simulator build has no signature
+to carry entitlements, so the keychain would refuse it; <code translate="no">project.yml</code> links
+<code translate="no">gitoodo-mobile_iOS/simulator.entitlements</code> (the application identifier) into the simulator
+binary instead, as Xcode does for its own simulator builds. Device builds take theirs from the
+signature. The app icons come from <code translate="no">assets/brand/gitoodo-app-icon.png</code>
+(<code translate="no">npm run tauri:mobile -- icon assets/brand/gitoodo-app-icon.png --ios-color &quot;#ffffff&quot;</code>; keep
+only the four PNG files <code translate="no">tauri.conf.json</code> names in <code translate="no">src-mobile/icons</code>). The App Store refuses
+an icon with an alpha channel (ITMS-90717), so after generating, flatten the iOS ones:
+<code translate="no">for f in src-mobile/gen/apple/Assets.xcassets/AppIcon.appiconset/*.png; do magick &quot;$f&quot; -background white -alpha remove -alpha off &quot;PNG24:$f&quot;; done</code>.</li><li><strong>Identifier:</strong> <code translate="no">de.gitoodo.app.mobile</code>, derived from the desktop&#39;s <code translate="no">de.gitoodo.app</code>; the
+Android package is the same. <code translate="no">scripts/check-identifier.py</code> compares the Tauri config, the
+Xcode project and the Gradle file with <code translate="no">crates/core/src/paths.rs</code>.</li><li><strong>Build and start</strong> (<code translate="no">scripts/mobile.ts</code>; unsigned for the simulator, the Android debug key for
+the emulator, no signing identity needed):<ul><li><code translate="no">npm run mobile:ios</code>: macOS with Xcode and the Rust target <code translate="no">aarch64-apple-ios-sim</code>
+(<code translate="no">x86_64-apple-ios</code> on Intel). Builds, boots a simulator (<code translate="no">GITOODO_IOS_SIMULATOR</code>, name or
+UDID; otherwise a booted iPhone or the newest one), shows it (Simulator.app, or Device Hub
+from Xcode 27), installs and starts the app.</li><li><code translate="no">npm run mobile:android</code>: Android SDK with platform tools, an NDK, the emulator and a system
+image, an emulator image (<code translate="no">avdmanager create avd …</code>), a JDK 17 or later and the Rust target
+<code translate="no">aarch64-linux-android</code> (<code translate="no">x86_64-linux-android</code> on Intel). <code translate="no">ANDROID_HOME</code> and <code translate="no">NDK_HOME</code>
+default to Android Studio&#39;s places and the newest NDK. Builds a debug APK for one ABI,
+starts the emulator (<code translate="no">GITOODO_ANDROID_AVD</code>, otherwise a running one or the first image),
+installs and starts the app.</li><li>Anything else goes to the Tauri CLI: <code translate="no">npm run tauri:mobile -- ios dev</code>,
+<code translate="no">npm run tauri:mobile -- android build</code>, …</li></ul></li></ul>
+<h3 id="pairing">Pairing<a class="docs-anchor" href="#pairing" aria-label="Pairing" data-testid="docs-md-anchor-pairing">#</a></h3>
+<ul><li><strong>One scan:</strong> iOS asks for the local network only when the app first connects into it, and
+that first connection fails while its question shows. The client
+(<code translate="no">crates/mobile-protocol/src/client.rs</code>, <code translate="no">pair</code>) therefore tries the same offer again every
+second for up to 60 s (<code translate="no">PAIR_PATIENCE</code>) as long as the desktop is unreachable and the offer is
+valid; a refusal of the desktop ends it at once. After 2.5 s the page explains the system&#39;s
+question (<code translate="no">pairingNetwork</code>).</li><li><strong>Android 17:</strong> with target SDK 37 Android blocks the local network without the runtime
+permission <code translate="no">ACCESS_LOCAL_NETWORK</code>. <code translate="no">pair</code> asks for it first (<code translate="no">WatchPlugin.kt</code>,
+<code translate="no">localNetwork</code>; older versions answer yes); refused, pairing stops with <code translate="no">local_network</code>, and
+the page explains it with a button to the settings. Google Play wants a declaration for the
+permission in the Play Console.</li><li><strong>Feedback:</strong> paired, the app shows a check that draws itself with the desktop&#39;s name for two
+seconds, plays the Gitoodo chime (<code translate="no">src/mobile/chime.m4a</code>, <code translate="no">scripts/mobile-chime.py</code>) and gives
+the system&#39;s success haptic; a sent answer gives it too. A pull on the list refreshes it with a
+tick when it is far enough.</li></ul>
+<h3 id="notifications">Notifications<a class="docs-anchor" href="#notifications" aria-label="Notifications" data-testid="docs-md-anchor-notifications">#</a></h3>
+<p>New questions and approvals arrive as local notifications with sound; there is no push service
+and no server in between (<code translate="no">src-mobile/src/watch.rs</code> decides, <code translate="no">src-mobile/src/notify.rs</code> shows).</p>
+<ul><li><strong>Turning on:</strong> a card under the list offers them once (&quot;Never miss a question&quot;); &quot;Turn on&quot;
+asks the system, &quot;Later&quot; puts the card away (the settings sheet offers them again). The choice
+stays on the phone (<code translate="no">localStorage</code>); the page sends the words in the phone&#39;s language with
+<code translate="no">watch_switch</code>. Unpairing turns them off.</li><li><strong>Watching:</strong> while the app is not in the front (the system&#39;s suspend and resume events), Rust
+asks the paired desktop every 15 s (<code translate="no">CHECK_SECS</code>) with <code translate="no">sync</code> and the last version, so an
+unchanged list costs one small reply. A waiting item (question, approval) whose key (account,
+repository, number, start of the wait) the phone has not shown yet is notified, at most four
+at a time; one that leaves the list takes its notification back. The very first check of a
+phone only learns the list. What the page shows in the front counts as seen
+(<code translate="no">seen.json</code> in the app&#39;s data folder: keys only, never a title), and coming to the front
+clears the notifications.</li><li><strong>Tap:</strong> opens the app on the item (<code translate="no">take_open</code>, the event <code translate="no">open-item</code>).</li><li><strong>Android:</strong> the channel &quot;Questions for me&quot; (high importance, <code translate="no">res/raw/gitoodo_chime.wav</code>,
+vibration, private on the lock screen) and the small icon <code translate="no">ic_stat_gitoodo</code>. While
+notifications are on, a foreground service of type <code translate="no">connectedDevice</code> (<code translate="no">WatchService.kt</code>,
+started by <code translate="no">WatchPlugin.kt</code>) keeps the process and its checks alive with a silent, minimal
+notification; Play asks for a declaration with a short video of turning it on. Checked on
+Android 11 (Mi A3): the checks go on every 15 s with the app in the background, with the
+screen off and in forced Doze (<code translate="no">dumpsys deviceidle force-idle</code>). Notifications
+are not grouped: Android hides a grouped notification without a summary. &quot;Do not disturb&quot;
+holds them back like any app&#39;s unless the user makes Gitoodo an exception.</li><li><strong>iOS:</strong> the sound is <code translate="no">gitoodo_chime.caf</code> in the bundle (iOS plays none without a named
+file). iOS suspends an app soon after it leaves the front, so it notifies only until then;
+notifications for a closed app need push (#1897, #1898).</li></ul>
+<h3 id="settings">Settings<a class="docs-anchor" href="#settings" aria-label="Settings" data-testid="docs-md-anchor-settings">#</a></h3>
+<p>The &quot;…&quot; button in the header opens a sheet: notifications on or off (or the way to the system
+settings when they are refused), the privacy policy (the website&#39;s section <code translate="no">#phone-app</code> in the
+phone&#39;s language) and the legal notice in the browser, the open-source licences, the app&#39;s
+version, and unpairing with a second step. The header shows the connection in one line: &quot;Connected to …&quot; with a green dot, or
+&quot;No connection to …&quot; with a grey one, never both. Android&#39;s back button and a browser&#39;s back
+close an open item or the sheet (each is a history step).</p>
+<h3 id="stores">Stores<a class="docs-anchor" href="#stores" aria-label="Stores" data-testid="docs-md-anchor-stores">#</a></h3>
+<ul><li><strong>Privacy manifest:</strong> <code translate="no">gitoodo-mobile_iOS/PrivacyInfo.xcprivacy</code>: no tracking, no collected
+data, file timestamps (<code translate="no">C617.1</code>) as the only API with a required reason (the Rust standard
+library&#39;s <code translate="no">stat</code> on the app&#39;s own files). After adding a crate or plugin, check the binary
+again: <code translate="no">nm -u &lt;app binary&gt; | grep -E &#39;_(f?stat|statfs|getattrlist|mach_absolute_time)&#39;</code> and
+<code translate="no">NSUserDefaults</code>.</li><li><strong>Android manifest:</strong> no TV launcher, no file provider, <code translate="no">allowBackup=&quot;false&quot;</code> (the pairing
+lives in the keystore and cannot move to another phone anyway).</li><li><strong>Data safety / privacy labels:</strong> questions and answers go end-to-end encrypted to the user&#39;s
+own computer only, which the stores do not count as collected. On Android the barcode
+scanner&#39;s library sends diagnostics to its vendor (device or installation identifiers, app
+information and performance), which the Data safety form has to name.</li><li><strong>Licences:</strong> the third-party code the app ships and its licences, under &quot;Open-source
+licences&quot; in the settings (<code translate="no">Licences.tsx</code>, loaded as a separate chunk only when opened). The
+list <code translate="no">src/mobile/licenses.json</code> comes from <code translate="no">node scripts/mobile-licenses.mjs</code> (its header names
+what it needs): the Rust crates of <code translate="no">src-mobile</code> on Android and iOS (normal dependencies, with
+the licence files they ship; a crate without one gets the standard text of a licence it offers
+from <code translate="no">scripts/licenses/</code>, its authors as the copyright holders), the npm packages of the
+page&#39;s bundle (from a build&#39;s source maps) and the Maven libraries of the Android release
+build (the licence their POM names, Apache 2.0 text once). <code translate="no">src/mobile/licenses.test.ts</code> fails
+once a listed crate or npm version is no longer locked: run the script again.</li></ul>
+</div>
+<div class="docs-meta"><a class="docs-edit" href="https://github.com/silvio-l/gitoodo/edit/main/docs/mobile.md" data-testid="docs-edit">Edit on GitHub</a><span class="docs-meta__version">Docs version: <span dir="ltr">dev</span></span></div>
+</article>
+<nav class="docs-pager" aria-label="Previous / Next" data-testid="docs-pager"><a class="docs-pager__previous" href="../daemon/" rel="prev" data-testid="docs-pager-previous"><span class="docs-pager__label">Previous</span><span class="docs-pager__title">Classifier daemon and command line</span></a><a class="docs-pager__next" href="../forge-tokens/" rel="next" data-testid="docs-pager-next"><span class="docs-pager__label">Next</span><span class="docs-pager__title">Token permissions per forge</span></a></nav>
+</main>
+<aside class="docs-toc" aria-labelledby="docs-toc-title" data-testid="docs-toc"><h2 id="docs-toc-title">On this page</h2><ol><li class="docs-toc__l2"><a href="#answered-once" data-testid="docs-toc-answered-once">Answered once</a></li><li class="docs-toc__l2"><a href="#protocol" data-testid="docs-toc-protocol">Protocol</a></li><li class="docs-toc__l2"><a href="#compatibility" data-testid="docs-toc-compatibility">Compatibility</a></li><li class="docs-toc__l2"><a href="#push" data-testid="docs-toc-push">Push</a></li><li class="docs-toc__l2"><a href="#keys-and-files" data-testid="docs-toc-keys-and-files">Keys and files</a></li><li class="docs-toc__l2"><a href="#security-notes" data-testid="docs-toc-security-notes">Security notes</a></li><li class="docs-toc__l2"><a href="#mac-app-store-and-microsoft-store" data-testid="docs-toc-mac-app-store-and-microsoft-store">Mac App Store and Microsoft Store</a></li><li class="docs-toc__l2"><a href="#native-app" data-testid="docs-toc-native-app">Native app</a></li><li class="docs-toc__l3"><a href="#pairing" data-testid="docs-toc-pairing">Pairing</a></li><li class="docs-toc__l3"><a href="#notifications" data-testid="docs-toc-notifications">Notifications</a></li><li class="docs-toc__l3"><a href="#settings" data-testid="docs-toc-settings">Settings</a></li><li class="docs-toc__l3"><a href="#stores" data-testid="docs-toc-stores">Stores</a></li></ol></aside>
+</div>
+<footer class="docs-footer" data-testid="docs-footer"><div class="docs-footer__inner">
+<p class="docs-muted">The developer docs are in English only.</p>
+<ul class="docs-footer__links">
+<li><a href="../../../" data-testid="docs-footer-site">Website</a></li>
+<li><a href="../../../privacy/" data-testid="docs-footer-privacy">Privacy</a></li>
+<li><a href="https://github.com/silvio-l/gitoodo/blob/main/LICENSE" data-testid="docs-footer-license">MIT</a></li>
+</ul>
+</div></footer>
+</body>
+</html>

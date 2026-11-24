@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self'; style-src 'self'; script-src 'self' 'sha256-zclDvgIbJxhMP3hLx0Pe9wEzIPlPNUNObuWsVD7xB/M='; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="color-scheme" content="light dark">
+<script>try{var t=localStorage.getItem("gitoodo-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<title>Test access: driving the app without a human – Gitoodo</title>
+<meta name="description" content="The normal app drops its Dock icon while its window is closed to the tray (then it is hidden from the accessibility tree) and, docked to the tray icon, opens only on a tray click …">
+<meta name="docs-version" content="dev">
+<link rel="canonical" href="https://gitoodo.com/docs/dev/test-access/">
+
+<meta property="og:title" content="Test access: driving the app without a human – Gitoodo">
+<meta property="og:description" content="The normal app drops its Dock icon while its window is closed to the tray (then it is hidden from the accessibility tree) and, docked to the tray icon, opens only on a tray click …">
+<meta property="og:url" content="https://gitoodo.com/docs/dev/test-access/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Gitoodo">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://gitoodo.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../../assets/docs.css">
+<script defer src="../../../assets/docs.js"></script>
+</head>
+<body class="docs" data-lang="en" data-docs-root="../../" data-search-index="../../search/en.json" data-copied="Copied">
+<a class="skip" href="#main" data-testid="docs-skip">Skip to content</a>
+<header class="docs-header" data-testid="docs-header"><div class="docs-header__inner">
+<a class="lockup" href="../../../" aria-label="Gitoodo" data-testid="docs-logo"><svg class="lockup__art" data-brand="wordmark" viewBox="9.3 9.4 767.3 182.9" focusable="false" aria-hidden="true"><path class="logo__tray" fill-rule="evenodd" d="M66.7 89.5C54.7 90.9 52.5 108.4 63.6 112.9C69.4 115.3 80 113.9 86.5 113.9L136.5 114C143.6 114 155.7 115.4 157 105.5C157.8 99.1 154.7 91.2 147.7 89.6C141.7 88.1 126.5 89.3 119.5 89.3L84.5 89.3C78.7 89.3 72.5 88.8 66.7 89.5ZM210.5 93.7C206.3 95.4 202.9 98.6 198.6 100.3C196.7 101 193.8 101.2 192.6 103.1C191.3 105.1 191.8 108.3 191.8 110.5C191.8 115.6 192.1 120.9 191.5 125.9C184.9 128.1 171 126.6 163.5 126.6C159.8 126.6 155.9 126.2 152.5 128C144.2 132.6 147.8 144.9 143.6 152.1C138.9 160 121.4 157.2 113.5 157.2C110.3 157.2 106.8 157.7 103.6 156.7C92.4 153.3 98.2 135 89.9 128.6C86.5 125.9 81.6 126.6 77.5 126.6C69.3 126.6 58.2 128 50.5 126.1C48.8 117.6 51.8 108.1 49.7 99.7C47.3 90.3 31.5 89.8 27 97.5C25.1 100.8 24 104.7 22.6 108.2C19.8 115.2 15.3 122.8 16.1 130.5C16.6 134.9 19.5 139.2 21.5 143L31.8 163.7C35.7 171.7 38.9 183.6 48.9 185.5C52.3 186.2 56 185.8 59.5 185.8L83.5 185.8L157.5 185.8L183.5 185.8C188.2 185.8 193.2 186.3 197.4 183.8C203.4 180.3 207.1 168.8 210.3 162.7L221.6 140.2C223.6 136.2 226.1 132.2 226 127.5C225.9 121.1 221.5 114.3 219.2 108.4C217.1 103 215.9 96.5 210.5 93.7Z"/><path class="logo__bars" fill-rule="evenodd" d="M156.8 26.5C155.2 15.4 142.9 17.7 134.5 17.6C114.8 17.4 95.2 17.5 75.5 17.7C65.3 17.7 55.7 18.3 56.4 31.5C57.2 45.7 76.1 42.3 85.5 42.3L126.5 42.3C130.4 42.3 141.2 43.2 144.4 41.9C146.3 41.1 147.2 38.3 148.2 36.7C150.7 33 154.3 30.1 156.8 26.5ZM139.5 55.3C134 52 124.8 53.6 118.5 53.6L83.5 53.7C77.8 53.7 71.1 52.8 65.5 54C59.3 55.3 55.6 61.8 56.5 67.9C58.2 79.3 69.7 78.2 78.5 78.2L123.5 78.2C128.6 78.2 137 79.9 140.6 75.2C142.4 72.9 141 70.6 140.5 68C139.7 63.8 141 59.3 139.5 55.3Z"/><path class="logo__check" fill-rule="evenodd" d="M177.7 26.4C142.8 32.5 139 82.7 173 93.5C177.7 95 182.6 95.5 187.5 94.9C224.6 90.3 228 37.8 192.5 27.2C187.7 25.8 182.6 25.6 177.7 26.4ZM177.5 65.1C172.9 61.8 171.9 57.4 165.5 58.3C160.3 63.5 167.1 67.9 170.8 71.7C172.5 73.5 174.3 76 176.8 76.5C180.5 77.3 183.2 73.1 185.3 70.8L200.1 55.6C203 52.6 204.8 49.9 201.5 46.5C200 46.2 199.2 45.8 197.6 46.2C195.1 46.9 192.6 50.5 190.9 52.4C187.1 56.5 182.5 62.6 177.5 65.1Z"/><path class="word__git" fill-rule="evenodd" d="M379.6 38.4C360.7 39.7 362.8 67.8 381.5 66.9C400 66.1 398.7 37.2 379.6 38.4ZM362.5 92.7C357.9 91.8 353.1 92.2 348.5 92.2L325.5 92.2C321.8 92.2 314.8 90.8 311.8 93.3C308.9 95.8 309.6 111.2 311 114.5C317.2 118.1 327.7 114.3 334.7 116.5C329.4 130.4 309.1 132.6 297.7 125.8C288.9 120.6 283.8 110.5 283.8 100.5C283.6 81.9 299.6 66.6 318.5 71.2C328.3 73.6 329.5 78.5 336.5 83C340.9 81.5 353.8 72.2 356.6 68.5C355.1 63.6 350.2 59.4 346.3 56.2C332 44.2 311 40.6 293.5 47C262.7 58.3 249 94.7 262.4 124.2C276 154 314 165.2 341.5 147C354.5 138.4 363.1 123 364.1 107.5C364.4 102.6 365.3 96.8 362.5 92.7ZM407.5 73.5L400.4 74.5C398 78.5 398.4 90 399.5 94.7C402 96 404.7 95.9 407.4 96.5C410 113.1 400.2 145.4 422.7 151.6C426.2 152.6 429.9 152.6 433.5 152.6C437.5 152.7 441.9 153.2 445.5 151.5C446.4 146.9 446.8 134.4 444.6 130.5C441.2 130.2 436.3 131.5 433.3 129.2C430.8 127.2 431.4 123.3 431.4 120.5C431.4 112.7 430.6 104.3 431.7 96.5C436.1 95.3 440.9 96.3 445.5 95.3C447.3 89.6 447.2 80.3 445.5 74.6L431.9 73.5C430.6 68.1 433.1 59.6 430.5 54.9C428.6 51.5 415.9 52 412.5 52.6C410.9 53 409.4 53.6 408.6 55.1C406.2 59.4 408.5 68.4 407.5 73.5ZM369.5 151.7C373.7 153.3 388.3 153.6 392.1 151.5C393.7 145.8 392.7 138.5 392.7 132.5L392.6 94.5C392.6 90.3 394.1 79 391.6 75.9C389.3 73.1 377.1 73.6 373.5 74C366.1 74.9 368.5 86.3 368.5 91.5L368.6 131.5C368.6 137.8 367.2 145.8 369.5 151.7Z"/><path class="word__oodo" fill-rule="evenodd" d="M658.6 77.5C652.6 75.1 647.4 72.8 640.7 73.4C600.7 77.2 595.6 136.7 633.5 148.3C639.6 150.1 646.5 150.5 652.6 148.3C655 147.4 657.1 146 659.5 145.4C660 146.5 660.6 148.1 661.7 148.7C665.5 150.7 678.5 149.6 682.5 148.5C684.6 142.8 683.3 126.4 683.4 119.5L683.3 71.5C683.2 65 684.5 55.7 683 49.5C681.4 42.8 664.3 43.5 661.3 46.8C659.2 49.1 659.7 52.6 659.7 55.5C659.6 61.4 661.1 72.7 658.6 77.5ZM482.5 73.4C442.6 77.6 435.8 134.6 473.5 147.9C478.2 149.6 483.5 150.4 488.5 150.1C494.4 149.7 499.9 148.2 505.1 145.6C509.6 143.3 513.4 139.9 516.5 136C537.9 109 517 69.8 482.5 73.4ZM560.7 73.4C547.4 75.2 535.8 83.3 530.4 95.7C521.3 116.5 532.4 142.7 554.8 148.6C560 149.9 565.1 150.5 570.5 149.8C597.8 146.3 613.1 114.6 598.4 91.1C593.4 83 585.5 77.6 576.6 74.7C571.5 73.1 566 72.7 560.7 73.4ZM723.5 73.4C712.2 74.9 701.4 80.8 695.3 90.7C682.1 112 692 141 716.3 148.4C721.5 150 727 150.6 732.5 150C755.6 147.5 770.6 124.8 765.8 102.5C762.8 89.1 752.1 79.1 739.5 74.9C734.4 73.2 728.9 72.7 723.5 73.4ZM483.7 96.4C464.6 99.7 469.4 131.1 490.4 126.7C509.1 122.7 503.7 93.1 483.7 96.4ZM562.7 96.4C543.1 99.7 548.6 131.4 569.3 126.6C587.9 122.4 582.5 93.1 562.7 96.4ZM644.6 96.4C625.3 97.8 626.9 127.6 646.5 126.8C665.9 126 664.2 95 644.6 96.4ZM724.7 96.4C705.3 99.9 711 131.7 732.3 126.6C750.4 122.3 744.3 92.9 724.7 96.4Z"/></svg></a>
+<a class="docs-header__title" href="../../" data-testid="docs-home">Documentation</a>
+<span class="docs-version" title="Pre-release: Gitoodo has not been released yet" data-version="dev"><span class="visually-hidden">Docs version: </span><span dir="ltr">dev</span><span class="visually-hidden"> (Pre-release: Gitoodo has not been released yet)</span></span>
+<div class="docs-header__tools">
+<div class="docs-search" role="search" data-testid="docs-search">
+<label class="visually-hidden" for="docs-search-input">Search the docs</label>
+<input id="docs-search-input" class="docs-search__input" type="search" placeholder="Search …" autocomplete="off" spellcheck="false" aria-describedby="docs-search-hint" aria-controls="docs-search-results" aria-expanded="false" role="combobox" aria-autocomplete="list" data-testid="docs-search-input">
+<p id="docs-search-hint" class="visually-hidden">Arrow keys choose, Enter opens, Escape closes.</p>
+<div id="docs-search-results" class="docs-search__results" role="listbox" aria-label="Search the docs" hidden data-empty="No page matches “{query}”." data-testid="docs-search-results"></div>
+<p id="docs-search-status" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true" data-count="Results: {count}" data-testid="docs-search-status"></p>
+</div>
+<div class="header__prefs"><details class="langs" name="header-popover" data-langs data-testid="docs-langs"><summary class="langs__toggle" data-testid="docs-langs-toggle"><svg class="langs__globe" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg><span class="visually-hidden">Language: </span><span class="langs__code" translate="no">EN</span></summary>
+<ul class="langs__list" aria-label="Language"><li><a href="../../de/" hreflang="de" lang="de" data-lang="de" data-track="language" data-track-name="de" data-testid="docs-langs-de"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Deutsch</span></a></li><li><a href="../../" hreflang="en" lang="en" data-lang="en" data-track="language" data-track-name="en" aria-current="page" data-testid="docs-langs-en"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>English</span></a></li><li><a href="../../zh-Hans/" hreflang="zh-Hans" lang="zh-Hans" data-lang="zh-Hans" data-track="language" data-track-name="zh-Hans" data-testid="docs-langs-zh-Hans"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>中文（简体）</span></a></li><li><a href="../../hi/" hreflang="hi" lang="hi" data-lang="hi" data-track="language" data-track-name="hi" data-testid="docs-langs-hi"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>हिन्दी</span></a></li><li><a href="../../es/" hreflang="es" lang="es" data-lang="es" data-track="language" data-track-name="es" data-testid="docs-langs-es"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Español</span></a></li><li><a href="../../ar/" hreflang="ar" lang="ar" data-lang="ar" data-track="language" data-track-name="ar" data-testid="docs-langs-ar"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>العربية</span></a></li></ul></details><button class="theme" type="button" hidden data-theme-toggle data-choice="system" data-label="Theme: {current}, switch to {next}" data-system="System" data-light="Light" data-dark="Dark" aria-label="Theme: System, switch to Light" title="Theme: System, switch to Light" data-testid="docs-theme"><svg class="theme__icon theme__icon--system" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg><svg class="theme__icon theme__icon--light" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg><svg class="theme__icon theme__icon--dark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></button></div>
+<button type="button" class="docs-menu" aria-controls="docs-nav" aria-expanded="false" hidden data-testid="docs-menu">Pages</button>
+</div>
+<a class="docs-header__link" href="https://github.com/silvio-l/gitoodo" data-testid="docs-github">GitHub</a>
+<a class="docs-install" href="../../../#download" data-testid="docs-install">Get notified</a>
+</div></header>
+<div class="docs-layout">
+<nav id="docs-nav" class="docs-nav" aria-label="Documentation" data-testid="docs-nav"><div class="docs-nav__section"><p class="docs-nav__title"><a href="../../" data-testid="docs-nav-section-user">For users</a></p><p class="docs-nav__group" id="docs-nav-user-0">Get started</p><ul aria-labelledby="docs-nav-user-0"><li><a href="../../introduction/" data-testid="docs-nav-docs-introduction">What is Gitoodo?</a></li><li><a href="../../getting-started/" data-testid="docs-nav-docs-getting-started">Getting started</a></li></ul><p class="docs-nav__group" id="docs-nav-user-1">Guides</p><ul aria-labelledby="docs-nav-user-1"><li><a href="../../self-hosted-forges/" data-testid="docs-nav-docs-self-hosted-forges">Forgejo and Gitea</a></li><li><a href="../../github-issues-to-pull-requests/" data-testid="docs-nav-docs-github-issues-to-pull-requests">GitHub issues to pull requests</a></li><li><a href="../../safe-auto-merge/" data-testid="docs-nav-docs-safe-auto-merge">Safe auto-merge</a></li><li><a href="../../parallel-coding-agents/" data-testid="docs-nav-docs-parallel-coding-agents">Parallel coding agents</a></li><li><a href="../../switch-from-another-agent-app/" data-testid="docs-nav-docs-switch-from-another-agent-app">Coming from another agent app</a></li></ul><p class="docs-nav__group" id="docs-nav-user-2">Daily use</p><ul aria-labelledby="docs-nav-user-2"><li><a href="../../daily-use/" data-testid="docs-nav-docs-daily-use">How to work with Gitoodo</a></li><li><a href="../../overview/" data-testid="docs-nav-docs-overview">Overview</a></li><li><a href="../../needs-you/" data-testid="docs-nav-docs-needs-you">Needs you</a></li><li><a href="../../questions/" data-testid="docs-nav-docs-questions">Asked of me</a></li><li><a href="../../board/" data-testid="docs-nav-docs-board">All repos</a></li><li><a href="../../chat/" data-testid="docs-nav-docs-chat">Chat</a></li><li><a href="../../repositories/" data-testid="docs-nav-docs-repositories">Repositories</a></li></ul><p class="docs-nav__group" id="docs-nav-user-3">Orchestrator</p><ul aria-labelledby="docs-nav-user-3"><li><a href="../../labels/" data-testid="docs-nav-docs-labels">Status labels and workflow</a></li><li><a href="../../merge-and-release/" data-testid="docs-nav-docs-merge-and-release">Merge control</a></li><li><a href="../../releases/" data-testid="docs-nav-docs-releases">Releases</a></li><li><a href="../../services/" data-testid="docs-nav-docs-services">Classifier, dispatcher and workers</a></li></ul><p class="docs-nav__group" id="docs-nav-user-4">Reference and help</p><ul aria-labelledby="docs-nav-user-4"><li><a href="../../settings/" data-testid="docs-nav-docs-settings">Settings</a></li><li><a href="../../status/" data-testid="docs-nav-docs-status">Status</a></li><li><a href="../../troubleshooting/" data-testid="docs-nav-docs-troubleshooting">Troubleshooting</a></li><li><a href="../../faq/" data-testid="docs-nav-docs-faq">FAQ</a></li><li><a href="../../privacy/" data-testid="docs-nav-docs-privacy">Privacy</a></li></ul></div><div class="docs-nav__section"><p class="docs-nav__title"><a href="../" data-testid="docs-nav-section-dev">For developers</a></p><p class="docs-nav__group" id="docs-nav-dev-0">Start here</p><ul aria-labelledby="docs-nav-dev-0"><li><a href="../architecture/" data-testid="docs-nav-docs-dev-architecture">Architecture</a></li><li><a href="../building/" data-testid="docs-nav-docs-dev-building">Building</a></li><li><a href="../releasing/" data-testid="docs-nav-docs-dev-releasing">Release</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-1">Interfaces</p><ul aria-labelledby="docs-nav-dev-1"><li><a href="../question-format/" data-testid="docs-nav-docs-dev-question-format">Gitoodo question format (version 2)</a></li><li><a href="../cli/" data-testid="docs-nav-docs-dev-cli">Command line reference</a></li><li><a href="../daemon/" data-testid="docs-nav-docs-dev-daemon">Classifier daemon and command line</a></li><li><a href="../phone-access/" data-testid="docs-nav-docs-dev-phone-access">Phone access</a></li><li><a href="../forge-tokens/" data-testid="docs-nav-docs-dev-forge-tokens">Token permissions per forge</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-2">Orchestrator</p><ul aria-labelledby="docs-nav-dev-2"><li><a href="../states/" data-testid="docs-nav-docs-dev-states">States: what Gitoodo shows and what you do about it</a></li><li><a href="../all-repos/" data-testid="docs-nav-docs-dev-all-repos">&quot;All repos&quot;: pages and where things went</a></li><li><a href="../orchestrator-spec/" data-testid="docs-nav-docs-dev-orchestrator-spec">Gitoodo Orchestrator – Specification (v1)</a></li><li><a href="../orchestrator-setup/" data-testid="docs-nav-docs-dev-orchestrator-setup">Orchestrator setup</a></li><li><a href="../dispatcher/" data-testid="docs-nav-docs-dev-dispatcher">Dispatcher</a></li><li><a href="../queue-order/" data-testid="docs-nav-docs-dev-queue-order">Queue order and slot share</a></li><li><a href="../branch-rules/" data-testid="docs-nav-docs-dev-branch-rules">Branch rules that work with the autopilot</a></li><li><a href="../security/" data-testid="docs-nav-docs-dev-security">Security model of the orchestrator</a></li><li><a href="../satellites/" data-testid="docs-nav-docs-dev-satellites">Satellites</a></li><li><a href="../keychains/" data-testid="docs-nav-docs-dev-keychains">Keychains, signing and dialogs</a></li><li><a href="../local-inputs/" data-testid="docs-nav-docs-dev-local-inputs">Local inputs</a></li><li><a href="../resolver/" data-testid="docs-nav-docs-dev-resolver">The resolver for stuck issues</a></li><li><a href="../triage/" data-testid="docs-nav-docs-dev-triage">Triage</a></li><li><a href="../repo-hygiene/" data-testid="docs-nav-docs-dev-repo-hygiene">Repo hygiene</a></li><li><a href="../storage-cleanup/" data-testid="docs-nav-docs-dev-storage-cleanup">Automatic disk cleanup</a></li><li><a href="../orchestrator-chat/" data-testid="docs-nav-docs-dev-orchestrator-chat">Orchestrator chat</a></li><li><a href="../release-planning/" data-testid="docs-nav-docs-dev-release-planning">Release planning</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-3">App internals</p><ul aria-labelledby="docs-nav-dev-3"><li><a href="../status-model/" data-testid="docs-nav-docs-dev-status-model">Overview status model</a></li><li><a href="../counters/" data-testid="docs-nav-docs-dev-counters">Counters</a></li><li><a href="../startup/" data-testid="docs-nav-docs-dev-startup">Start: first paint and loading state</a></li><li><a href="../logging/" data-testid="docs-nav-docs-dev-logging">Logging</a></li><li><a href="../localisation/" data-testid="docs-nav-docs-dev-localisation">Localisation</a></li><li><a href="../settings-backup/" data-testid="docs-nav-docs-dev-settings-backup">Settings export, import and backup</a></li><li><a href="../symlinks/" data-testid="docs-nav-docs-dev-symlinks">Symbolic links</a></li><li><a href="../window-frame/" data-testid="docs-nav-docs-dev-window-frame">Window frame</a></li><li><a href="../system-permissions/" data-testid="docs-nav-docs-dev-system-permissions">System permissions</a></li><li><a href="./" aria-current="page" data-testid="docs-nav-docs-dev-test-access">Test access: driving the app without a human</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-4">Privacy and data</p><ul aria-labelledby="docs-nav-dev-4"><li><a href="../privacy-policy/" data-testid="docs-nav-docs-dev-privacy-policy">Privacy policy: feedback, usage statistics and the phone app</a></li><li><a href="../network-inventory/" data-testid="docs-nav-docs-dev-network-inventory">Network inventory of the desktop app and the phone app</a></li><li><a href="../chat-notification/" data-testid="docs-nav-docs-dev-chat-notification">Chat notification</a></li><li><a href="../support/" data-testid="docs-nav-docs-dev-support">Voluntary support</a></li></ul></div></nav>
+<main id="main" class="docs-main" tabindex="-1" data-testid="docs-main">
+<article class="docs-article">
+<p class="docs-eyebrow">For developers · App internals</p><h1>Test access: driving the app without a human</h1>
+<details class="docs-toc-inline" data-testid="docs-toc-inline"><summary data-testid="docs-toc-inline-toggle">On this page</summary><ol><li class="docs-toc__l2"><a href="#build-and-start" data-testid="docs-toc-inline-build-and-start">Build and start</a></li><li class="docs-toc__l2"><a href="#address-elements-by-test-id" data-testid="docs-toc-inline-address-elements-by-test-id">Address elements by test ID</a></li><li class="docs-toc__l3"><a href="#showcase-data-for-screenshots" data-testid="docs-toc-inline-showcase-data-for-screenshots">Showcase data for screenshots</a></li><li class="docs-toc__l3"><a href="#folders-and-parallel-instances-1191" data-testid="docs-toc-inline-folders-and-parallel-instances-1191">Folders and parallel instances (#1191)</a></li><li class="docs-toc__l3"><a href="#a-real-test-repository-beside-the-fixture" data-testid="docs-toc-inline-a-real-test-repository-beside-the-fixture">A real test repository beside the fixture</a></li><li class="docs-toc__l2"><a href="#optional-native-navigation-measurements-337" data-testid="docs-toc-inline-optional-native-navigation-measurements-337">Optional native navigation measurements (#337)</a></li><li class="docs-toc__l2"><a href="#the-installed-store-preview-235" data-testid="docs-toc-inline-the-installed-store-preview-235">The installed store preview (#235)</a></li><li class="docs-toc__l2"><a href="#check-that-every-element-has-a-test-id" data-testid="docs-toc-inline-check-that-every-element-has-a-test-id">Check that every element has a test ID</a></li><li class="docs-toc__l2"><a href="#flows" data-testid="docs-toc-inline-flows">Flows</a></li><li class="docs-toc__l2"><a href="#known-gap-the-global-shortcut" data-testid="docs-toc-inline-known-gap-the-global-shortcut">Known gap: the global shortcut</a></li><li class="docs-toc__l2"><a href="#restore-the-desktop-after-a-test" data-testid="docs-toc-inline-restore-the-desktop-after-a-test">Restore the desktop after a test</a></li><li class="docs-toc__l2"><a href="#agent-skill-lifecycle-verification-545" data-testid="docs-toc-inline-agent-skill-lifecycle-verification-545">Agent skill lifecycle verification (#545)</a></li></ol></details>
+<div class="docs-body">
+<p>The normal app drops its Dock icon while its window is closed to the tray (then it is hidden from
+the accessibility tree) and, docked to the tray icon, opens only on a tray click and hides on blur. The <strong>test access build</strong> removes those obstacles so a worker can operate it
+with <a href="../system-permissions/#agent-desktop-desktop-control" data-testid="docs-md-link-1">Agent Desktop</a> (<code translate="no">agent-desktop</code>, see below). It
+is a separate Cargo feature (<code translate="no">test-access</code>); release and store builds contain none of it.</p>
+<p>What the test build changes:</p>
+<ul><li><strong>Window mode</strong>: a regular, decorated window, visible at start, never dismissed on blur. The app
+is a Dock app, so <code translate="no">agent-desktop list-windows</code> lists it as <code translate="no">Gitoodo Test</code>.
+It opens in the detached window&#39;s frame (remembered, else 900 x 700 centred, clamped to the screen;
+#363), not in the popover size (<code translate="no">docs/window-frame.md</code>, &quot;Test build&quot;).</li><li><strong>Own identity</strong>: bundle ID <code translate="no">de.gitoodo.app.testaccess</code>, own config and log directory.
+It runs next to the installed app and never touches it (single instance, keychain, settings).
+Several test instances run side by side with their own folders (see &quot;Folders and parallel
+instances&quot;).</li><li><strong>Test account</strong>: a fixture forge (<code translate="no">fixture/demo</code>, user <code translate="no">tester</code>) and an in-memory token store.
+No real token, no network, no keychain. The account keeps the fixed id <code translate="no">acc-fixture</code> across
+restarts, so per-account state such as folded groups persists; other accounts are removed.</li><li><strong>Own keychain service</strong>: the secrets the test build does keep in the keychain (chat webhook,
+remote machine passwords) live under the service <code translate="no">gitoodo.testaccess</code>, never under the
+production service <code translate="no">gitoodo</code> (<code translate="no">src-tauri/src/keychain.rs</code>, #1192). Saving, testing or clearing
+them leaves the entries of an installed Gitoodo unchanged.</li><li><strong>Test IDs in the accessibility tree</strong>: each <code translate="no">data-testid</code> is mirrored into the DOM id (Agent
+Desktop&#39;s <code translate="no">native_id</code> of kind <code translate="no">ax_dom_identifier</code>, searchable with <code translate="no">find --native-id</code>) and into
+<code translate="no">aria-roledescription</code>. An element that already has its own id (label association) keeps it.
+A screen reader speaks that role description in place of the role (&quot;shell-settings&quot; instead of
+&quot;button&quot;); for a screen-reader check start the test app with <code translate="no">GITOODO_TEST_REAL_ROLES=1</code>, which
+keeps the page&#39;s own roles and leaves out the mirror (#1163). Address controls by name then.</li><li><strong>Notifications</strong>: the permission reads as granted; posts are logged as <code translate="no">test_notification</code>.</li><li><strong>Usage statistics</strong>: hard stop. The test build, like any run with <code translate="no">GITOODO_UI_AUTOMATION=1</code>,
+records, writes and sends nothing, whatever the onboarding switch says (<code translate="no">docs/privacy.md</code>).</li></ul>
+<h2 id="build-and-start">Build and start<a class="docs-anchor" href="#build-and-start" aria-label="Build and start" data-testid="docs-md-anchor-build-and-start">#</a></h2>
+<div class="docs-code"><pre dir="ltr" translate="no" tabindex="0" data-lang="sh"><code>VITE_TEST_ACCESS=1 npx tauri build --debug --bundles app \
+  --features test-access --config src-tauri/tauri.test-access.conf.json
+open -n &quot;target/debug/bundle/macos/Gitoodo Test.app&quot;</code></pre><button type="button" class="docs-code__copy" data-copy hidden data-testid="docs-md-copy-1">Copy</button></div>
+<p>The panel is open right away. Nothing needs a tray click.</p>
+<h2 id="address-elements-by-test-id">Address elements by test ID<a class="docs-anchor" href="#address-elements-by-test-id" aria-label="Address elements by test ID" data-testid="docs-md-anchor-address-elements-by-test-id">#</a></h2>
+<p>Scripts use Agent Desktop. Point <code translate="no">GITOODO_AGENT_DESKTOP</code> at it (default: <code translate="no">agent-desktop</code> on PATH,
+which Gitoodo installs as <code translate="no">~/.local/bin/agent-desktop</code>); the scripts in this repo never hardcode its
+location. Workers go through <code translate="no">gitoodo desktop [--on NAME] &lt;command&gt;</code> instead, which waits for their
+turn at that machine&#39;s desktop and reaches another machine&#39;s desktop over SSH
+(<a href="../dispatcher/#test-desktop-for-desktop-checks-986-995" data-testid="docs-md-link-2">dispatcher</a>).</p>
+<div class="docs-code"><pre dir="ltr" translate="no" tabindex="0" data-lang="sh"><code>agent-desktop find --app &quot;Gitoodo Test&quot; --native-id shell-settings --first   # exact test ID
+agent-desktop click @&lt;snapshot&gt;:e&lt;n&gt;                                         # ref from the line above</code></pre><button type="button" class="docs-code__copy" data-copy hidden data-testid="docs-md-copy-2">Copy</button></div>
+<p>Every command prints one JSON envelope; matches carry <code translate="no">ref_id</code> (<code translate="no">@&lt;snapshot&gt;:e&lt;n&gt;</code>), <code translate="no">role</code>, <code translate="no">name</code>
+and <code translate="no">native_id</code>. Refs belong to one snapshot; the test ID does not change. <code translate="no">snapshot --app &quot;Gitoodo Test&quot;</code> prints the whole tree (<code translate="no">--max-depth 50</code> for deep screens). Ref actions are
+headless: they neither move the pointer nor take the focus. Look again after each action.</p>
+<p>One session at a time uses a desktop. Workers take turns through <code translate="no">gitoodo desktop-turn</code>; a script
+is run while nobody else uses this desktop.</p>
+<p>Fixture content: three questions in <code translate="no">fixture/demo</code>. #1 has a question block with a deadline
+(tomorrow), #2 is free text, #3 has a deadline two days in the past (the overdue label of the
+list, #73). <code translate="no">GITOODO_TEST_EXTRA_QUESTIONS=&lt;n&gt;</code> at start adds <code translate="no">n</code> free-form questions
+(#4 on, at most 200) to check many open questions (#237). Rows are <code translate="no">questions-row-…</code>, copy and share buttons are
+<code translate="no">questions-copy-…</code> and <code translate="no">questions-share-…</code>, the detail screen uses <code translate="no">detail-…</code>.</p>
+<p>For long-string layout checks (#337), set <code translate="no">GITOODO_TEST_LONG_TEXT=1</code>. Every fixture title
+(default, scale and showcase mode; in the showcase also the board, session and release titles of the
+orchestrator&#39;s read model, #1161) gains a long sentence and one long word without break opportunities,
+so wrapping, clipping and ellipses show at the minimum window size. Bodies, numbers and labels stay
+unchanged.</p>
+<p>For large-list navigation (#337), set <strong>both</strong> <code translate="no">GITOODO_TEST_REPOS=300</code> and
+<code translate="no">GITOODO_TEST_ISSUES_PER_REPO=5</code> in the test app&#39;s launch environment. This replaces
+the default fixture with 300 repositories (<code translate="no">fixture/scale-001</code> through <code translate="no">fixture/scale-300</code>)
+and 1,500 distinct issues. Each issue is assigned to <code translate="no">tester</code>, has <code translate="no">needs-human</code> and a
+cycling <code translate="no">ready</code>, <code translate="no">in-progress</code>, <code translate="no">in-review</code> or <code translate="no">blocked</code> status label. Question bodies
+reuse the three default question types. Each repo also has two fixture pulls, with the
+green pull linked to that repo&#39;s first issue. Dashboard groups and counts come through
+the normal Rust adapter and sync path.</p>
+<p>Both values must be positive integers; missing, invalid or zero input keeps the default
+fixture and its existing extra-question behavior. Valid scale inputs are capped at 300
+repos and 20 issues per repo (6,000 issues total); <code translate="no">GITOODO_TEST_EXTRA_QUESTIONS</code> is
+ignored in scale mode. The scale dataset is seeded once at startup. Repo names, forge
+IDs and issue URLs are unique; issue numbers are globally unique within this fixture.
+Comments and closures are scoped to their repository and remain in memory until exit.
+Other unsupported adapter mutations stay unsupported. This creates test data, not a
+performance result; navigation and responsiveness still need an explicit runtime check.</p>
+<p>For clarity checks with many repositories (#1165), add <code translate="no">GITOODO_TEST_SIMILAR_NAMES=1</code> to a scale
+launch. Repo <code translate="no">i</code> becomes <code translate="no">&lt;owner&gt;/&lt;stem&gt;-&lt;nnn&gt;</code>: the owner cycles through <code translate="no">fixture</code>,
+<code translate="no">fixture-platform-engineering</code> and <code translate="no">fixture-archive</code>, the stem through four long names that share
+their start (<code translate="no">customer-portal-backend-service</code>, <code translate="no">…-integration-tests</code>, <code translate="no">customer-portal-frontend</code>,
+<code translate="no">…-legacy</code>). Every short name exists under all three owners and names differ only at their end,
+so a cut name or a missing owner shows. Issues keep their numbers and follow their repo.
+<code translate="no">GITOODO_TEST_VARIED=1</code> (repo <code translate="no">n</code> keeps <code translate="no">per_repo - n</code> issues, at least one, and only its first
+waits for a human) combines with it.</p>
+<h3 id="showcase-data-for-screenshots">Showcase data for screenshots<a class="docs-anchor" href="#showcase-data-for-screenshots" aria-label="Showcase data for screenshots" data-testid="docs-md-anchor-showcase-data-for-screenshots">#</a></h3>
+<p><code translate="no">GITOODO_TEST_FIXTURE_LANG=de</code> or <code translate="no">=en</code> replaces the fixture with an invented open-source team in
+that language (<code translate="no">src-tauri/src/test_showcase.rs</code>): three repositories (<code translate="no">kiezwerk/pegelstand</code>,
+<code translate="no">kiezwerk/radkeller</code> and <code translate="no">kiezwerk/hofladen</code>, in English <code translate="no">harborlight/tidewatch</code>,
+<code translate="no">harborlight/trailkit</code> and <code translate="no">harborlight/driftlog</code>), four
+questions to the user (one with a deadline tomorrow, one free text, one overdue, one approval),
+the board with three running workers, pull requests (one with a failing <code translate="no">ci/test</code>), a week of
+closed issues and merged pulls for the weekly review, eight weeks of throughput, the readiness
+checklist of a well kept repo and a scripted orchestrator chat that proposes one comment. Workers,
+usage, setup checks and the chat are answered by the fixture, never by a running classifier,
+dispatcher or agent. A simulated dispatcher (<code translate="no">src-tauri/src/test_showcase_dispatcher.rs</code>, #915)
+gives each session a live terminal over the real attach protocol (backlog, a step line every few
+seconds, typed keys echo back) and applies steering: Hold and Resume mark the worker held, an
+instruction appears in its terminal, Cancel, Stop and Park end it, Restart counts a restart. Any
+other value keeps the plain fixture above.</p>
+<p>The first two repositories plan two releases each (#1552, #1540), all with due dates. The first
+one: <code translate="no">1.4</code>, the next one, with open, running and three merged issues plus the sub-issues <code translate="no">#221</code> and
+<code translate="no">#226</code>, which their parent <code translate="no">#224</code> depends on and pulls in (#1530), and <code translate="no">1.5</code> with one. The second
+one: <code translate="no">2.0</code>, the next one, with a running, an open and two merged issues, and <code translate="no">2.1</code> with one. The
+third repository plans no release; the extra sessions&#39; issues are in none either. Each planning
+repository holds the tag of an earlier release (<code translate="no">1.3</code>, <code translate="no">1.9</code>): naming a release like it in
+&quot;Bearbeiten …&quot; shows the warning about an existing tag. The fixture forge keeps the milestones in
+memory, so the release dialogs work on them until the app exits: issues are added, moved and taken
+out, releases are created, edited, closed and removed (no forge releases exist), and the release
+view, the board&#39;s release chips and the autopilot&#39;s release focus follow at once.</p>
+<p><code translate="no">GITOODO_TEST_SHOWCASE_SESSIONS=N</code> (with the showcase) runs N sessions in total instead of three,
+at most 24: the extra ones are in-progress issues numbered from 300 in both repositories, for
+checks of a crowded session grid.</p>
+<p><code translate="no">GITOODO_TEST_SHOWCASE_BACKLOG=N</code> (with the showcase) adds N ready issues in no release to the
+first repository, at most 300, numbered from 1000: a long list in &quot;Issues hinzufügen&quot; for checks of
+the release dialogs, e.g. adding more issues than one membership change takes (100, #1685).</p>
+<p>Three switches drive the failure and slow paths of the showcase for real-app checks (#1218):
+<code translate="no">GITOODO_TEST_CHAT_PAUSE_MS=&lt;ms&gt;</code> pauses that long between the events of a scripted chat turn
+(default 250, at most 60000), so a long turn can be watched; <code translate="no">GITOODO_TEST_CHAT_SEND_FAIL=1</code> makes
+the first chat message fail to reach the session; <code translate="no">GITOODO_TEST_WRITE_FAIL=1</code> makes the first
+fixture write (a comment, closing a milestone) fail with a server error (502). Each failure comes
+once, so the retry goes through and shows whether the first attempt wrote anything. The first
+repository&#39;s findings follow its milestones as the classifier&#39;s do: two releases with the same
+version and due date (set in the release dialogs) show the &quot;several open milestones&quot; card.</p>
+<p><code translate="no">GITOODO_TEST_HOST_WAIT=offline</code>, <code translate="no">machine_paused</code>, <code translate="no">disk_low</code> or <code translate="no">build_budget</code> (with the showcase) makes the
+simulated dispatcher report one ready issue held back by the worker machine <code translate="no">werkbank</code> for that
+reason (#1643), so the status line and the status page name it.</p>
+<p><code translate="no">GITOODO_TEST_SERVICES_DOWN=&lt;file&gt;</code> (with the showcase) takes the board&#39;s services down while that
+file exists (#1649): the classifier&#39;s read model fails as a failed start (&quot;start_failed&quot;) and the
+dispatcher reads as offline. Create the file during a run to watch the services fail, remove it to
+watch them come back; without the variable, or while the file is missing, the showcase answers.</p>
+<p><code translate="no">GITOODO_TEST_SHOWCASE_IDLE=1</code> (with the showcase) makes the simulated dispatcher run without a
+worker (#1649), so the setup assistant&#39;s last step shows its waiting marker; the repos then hold
+the whole label catalogue, so the steps before it are done. The board keeps its sessions.</p>
+<p><code translate="no">GITOODO_TEST_WEEKLY_REVIEW=1</code> (with the showcase) makes the weekly review due at start. The status
+bar shows the version only in every build; commit and build time are on the About page.</p>
+<p>The landing page&#39;s shots in <code translate="no">site/shots/</code> come from the browser demo (<code translate="no">scripts/site-shots.mjs</code>).</p>
+<h3 id="folders-and-parallel-instances-1191">Folders and parallel instances (#1191)<a class="docs-anchor" href="#folders-and-parallel-instances-1191" aria-label="Folders and parallel instances (#1191)" data-testid="docs-md-anchor-folders-and-parallel-instances-1191">#</a></h3>
+<p>Without any variable, every test instance uses the folders of its identifier
+<code translate="no">de.gitoodo.app.testaccess</code> (config and logs) and the default state and CLI folders of Gitoodo, and
+the single-instance lock keeps a second start from running beside the first. Which variable moves
+which folder of the test app:</p>
+<ul><li><code translate="no">GITOODO_CONFIG_DIR</code>: the config folder (<code translate="no">settings.json</code>, window size and mode, accounts, every
+store of the app, the fixture home <code translate="no">fixture-home</code>). With it set the instance also skips the
+single-instance lock and opens its own page storage (<code translate="no">localStorage</code>: language, drafts, last view,
+folded groups). Without it: Tauri&#39;s config folder of the test identifier and its shared page
+storage.</li><li><code translate="no">GITOODO_STATE_DIR</code>: the state folder (SQLite, daemon socket, release runs, activity, …) and the
+logs, as <code translate="no">&lt;dir&gt;/logs</code>. Without it: Gitoodo&#39;s state folder (<code translate="no">docs/daemon.md</code>).</li><li><code translate="no">GITOODO_LOG_DIR</code>: the app log; wins over <code translate="no">GITOODO_STATE_DIR</code>. Without both: Tauri&#39;s log folder of
+the test identifier.</li><li><code translate="no">GITOODO_BIN_DIR</code>: the folder of the stable CLI copy. Without it: Gitoodo&#39;s CLI folder.</li><li><code translate="no">GITOODO_TEST_PROFILE</code>: all four at once, below one folder (<code translate="no">config</code>, <code translate="no">state</code>, <code translate="no">logs</code>, <code translate="no">bin</code>); it
+wins over the four variables above.</li></ul>
+<p>So two instances started with different <code translate="no">GITOODO_CONFIG_DIR</code> values (or different
+<code translate="no">GITOODO_TEST_PROFILE</code> folders) run side by side and share no settings, window state or page
+storage; changing one leaves the other&#39;s files unchanged. With the same folder (or none) they share
+it, and the second start only brings the first one&#39;s window up. Page storage per folder needs macOS
+14 or later; Windows and Linux keep it in <code translate="no">&lt;config dir&gt;/webview</code>. The test profile is read only by
+the test app itself, and only the test build reads it at all: release and store builds keep their
+folders and ignore it. Processes you start yourself (<code translate="no">gitoodo classifier</code>, <code translate="no">gitoodo dispatcher</code>)
+need the four folder variables, not the profile.</p>
+<p>The test build still reads services and files outside its config dir (the classifier socket, the
+dispatcher, <code translate="no">state_dir</code>). For recordings, set <code translate="no">GITOODO_TEST_PROFILE</code> (or <code translate="no">GITOODO_STATE_DIR</code>,
+<code translate="no">GITOODO_CONFIG_DIR</code> and <code translate="no">GITOODO_BIN_DIR</code>) to an empty temporary folder so nothing of an installed
+Gitoodo or another test instance shows up or is touched:</p>
+<div class="docs-code"><pre dir="ltr" translate="no" tabindex="0" data-lang="sh"><code>GITOODO_TEST_PROFILE=&quot;$(mktemp -d)&quot; \
+  &quot;target/debug/bundle/macos/Gitoodo Test.app/Contents/MacOS/gitoodo-app&quot; &amp;</code></pre><button type="button" class="docs-code__copy" data-copy hidden data-testid="docs-md-copy-3">Copy</button></div>
+<h3 id="a-real-test-repository-beside-the-fixture">A real test repository beside the fixture<a class="docs-anchor" href="#a-real-test-repository-beside-the-fixture" aria-label="A real test repository beside the fixture" data-testid="docs-md-anchor-a-real-test-repository-beside-the-fixture">#</a></h3>
+<p>For flows the fixture cannot show (a real clone, worktree and agent session, e.g. &quot;Solve with an
+agent&quot;, #919), an account of the test config may reach its real forge: add it to <code translate="no">settings.json</code>
+of the test config dir and hand its token to the test app in the launch environment as
+<code translate="no">GITOODO_TOKEN_&lt;ID&gt;</code> (the id in upper case, other characters as <code translate="no">_</code>, as for a headless service;
+<code translate="no">docs/daemon.md</code>). Start the binary directly (not <code translate="no">open --env</code>), so the token is not in an
+argument list. Such an account stays across starts and uses the real forge adapter; an account
+without the variable is removed as before, and the showcase never keeps one. The keychain is
+never read or written. Point <code translate="no">GITOODO_STATE_DIR</code>, <code translate="no">GITOODO_LOG_DIR</code> and <code translate="no">GITOODO_BIN_DIR</code> at a
+temporary folder, set the repository&#39;s <code translate="no">local_path</code> and <code translate="no">dispatch.worktree_root</code> in the test
+config&#39;s <code translate="no">orchestration.json</code> to that folder too, and run your own <code translate="no">gitoodo classifier</code> (and
+<code translate="no">gitoodo dispatcher</code>, with a stub agent first on <code translate="no">PATH</code>) with the same variables and
+<code translate="no">GITOODO_CONFIG_DIR</code> set to the test config dir before the app starts: the test build shares the
+service labels with an installed release, so it would otherwise ask the release&#39;s services.
+Use a dedicated test repository only.</p>
+<h2 id="optional-native-navigation-measurements-337">Optional native navigation measurements (#337)<a class="docs-anchor" href="#optional-native-navigation-measurements-337" aria-label="Optional native navigation measurements (#337)" data-testid="docs-md-anchor-optional-native-navigation-measurements-337">#</a></h2>
+<p>Add <code translate="no">VITE_TEST_PERFORMANCE=1</code> alongside <code translate="no">VITE_TEST_ACCESS=1</code> to the build command.
+Both build flags are required; the dynamically imported probe is excluded from normal
+builds. Runtime automation alone does not enable it. Launch the scale fixture as above.</p>
+<p>Before the actual run, calibrate accessibility visibility in the real test app: use
+<code translate="no">agent-desktop snapshot --app &quot;Gitoodo Test&quot; --max-depth 50</code> and reconstruct the readonly report fields
+as described below, then perform one native input and read them after a quiet pause. If the platform omits this offscreen field or its value, the measurement is not
+validated. Restart the test process after calibration; only a fresh process resets it.</p>
+<p>The probe counts trusted <code translate="no">keydown</code>, <code translate="no">pointerdown</code>, <code translate="no">wheel</code> and actual <code translate="no">scroll</code> events.
+Scroll includes browser-generated scroll events, including programmatic scrolling;
+trust alone does not prove a human caused a scroll. Non-trusted events and non-finite,
+zero, negative or future timestamps are rejected. Timestamps must share the
+<code translate="no">performance.now()</code> time origin. It records event timestamp to next animation callback
+<strong>scheduling latency</strong>, and gaps between animation callbacks during an input/scroll
+burst and its 250 ms quiet tail. These are neither pixel-paint/full-response latency
+nor displayed FPS. A delayed callback can extend that tail; no idle loop runs afterward.
+Use a foreground, visible window and record the native actions, dataset and environment
+with the result. No pass/fail threshold is inferred from these numbers.</p>
+<p>Read the fields only after the burst is quiet: reporting updates values and creates any
+additional fragment fields after sampling stops, without live announcements, focus
+changes or page layout changes. The JSON contains accepted counts by event type, rejected counts, pending queue
+overflow, burst count, elapsed process window and accumulated active window in milliseconds.
+<code translate="no">eventToNextRafSchedulingMs</code> and <code translate="no">frameGapMs</code> each include observed/retained/dropped
+counts and nearest-rank p50/p95/max of the first 4,096 retained samples (zero when empty).
+<code translate="no">recentBursts</code> keeps the latest 48 bursts as <code translate="no">[first, last]</code> pairs (#1165): the burst&#39;s first
+event to the next animation callback, and its last event to the callback after it, in
+milliseconds rounded to 0.1. Read the report after each action, quietly, to get one value per
+action; a burst that takes several inputs counts once.
+Pending event timestamps also cap at 4,096; overflow events are counted but not measured.
+Results are cumulative until process exit. No targets, key values, content, account data,
+network requests or logs are collected. The probe adds measurement overhead; corroborate
+the numbers with native navigation observations, rather than treating them as paint proof.</p>
+<p>The accessibility helper caps individual values at 120 characters. Read the header
+<code translate="no">test-performance</code> and <code translate="no">test-performance-part-0</code> through <code translate="no">parts - 1</code> using a full
+snapshot (without <code translate="no">-i</code>). Each part is <code translate="no">sequence:index:fragment</code> with at most 96 characters
+of JSON. Require every sequence to match the header, join fragments by index and
+check the header character count before parsing. Discard mixed or incomplete reads;
+do not focus the fields to read them. The report is published only after a quiet burst.</p>
+<h2 id="the-installed-store-preview-235">The installed store preview (#235)<a class="docs-anchor" href="#the-installed-store-preview-235" aria-label="The installed store preview (#235)" data-testid="docs-md-anchor-the-installed-store-preview-235">#</a></h2>
+<p>The signed, sandboxed store preview has no test build features, but it has one runtime switch: start
+it with <code translate="no">GITOODO_UI_AUTOMATION=1</code> in its environment. Without the variable nothing differs from a
+normal start (no visible change, no permission prompt).</p>
+<div class="docs-code"><pre dir="ltr" translate="no" tabindex="0" data-lang="sh"><code>osascript -e &#39;quit app &quot;Gitoodo&quot;&#39;   # single instance: a running app ignores the variable
+open -n --env GITOODO_UI_AUTOMATION=1 /Applications/Gitoodo.app
+&quot;${GITOODO_AGENT_DESKTOP:-agent-desktop}&quot; find --app Gitoodo --native-id shell-root --first</code></pre><button type="button" class="docs-code__copy" data-copy hidden data-testid="docs-md-copy-4">Copy</button></div>
+<p>With the switch on, the app is a regular (Dock) app so the accessibility API lists it, the real
+borderless popover opens at start (no tray click) and stays open on blur or the shortcut, and
+every <code translate="no">data-testid</code> is mirrored into the accessibility tree as in the test build. Accounts, keychain,
+settings and the skill folder are the real ones (no fixture): use it for what the fixture cannot
+show (#222). Snapshot, find and click work as above; <code translate="no">python3 -I scripts/check-test-ids.py Gitoodo</code>
+lists elements without a test ID.</p>
+<p>The ids the #222 checks need are fixed by <code translate="no">tests/popover-test-ids.test.ts</code> (it fails if one
+disappears): <code translate="no">shell-root</code>, <code translate="no">shell-tab-home</code>, <code translate="no">shell-tab-questions</code>, <code translate="no">shell-tab-dashboard</code>, <code translate="no">shell-settings</code>,
+<code translate="no">shell-sync</code>, <code translate="no">questions-row-…</code>, <code translate="no">questions-share-…</code>, <code translate="no">questions-copy-…</code> (#71),
+<code translate="no">…-repos-&lt;repo&gt;</code> repo switches and <code translate="no">…-toggle</code> filter (#135, multi-select), <code translate="no">dashboard-quiet-toggle</code>,
+<code translate="no">dashboard-row-…</code> (#85), <code translate="no">settings-shortcut-recorder</code> (#83), <code translate="no">settings-skill-refresh</code>,
+<code translate="no">settings-skill-&lt;name&gt;-status</code>, <code translate="no">settings-agents-copy</code> (#160), <code translate="no">settings-desktop-action</code> and the
+&quot;Request permissions&quot; buttons <code translate="no">…-request-button</code> (#995), and in store builds
+<code translate="no">settings-rating-switch</code>, <code translate="no">settings-rating-decline</code>, <code translate="no">settings-rating-confirm-yes</code>,
+<code translate="no">settings-rating-cancel</code>, <code translate="no">settings-rating-declined</code> (#76).</p>
+<p>The dashboard opens grouped by status (#193): <code translate="no">dashboard-groupby-{status,repo,account,counts}</code>
+switch the grouping, <code translate="no">dashboard-groups</code> is the grouped list, headers are
+<code translate="no">dashboard-group-&lt;kind&gt;-&lt;key&gt;</code> (repo keys read <code translate="no">&lt;account&gt;-&lt;owner&gt;/&lt;repo&gt;</code>) and items
+<code translate="no">dashboard-item-&lt;account&gt;-&lt;owner&gt;/&lt;repo&gt;-&lt;number&gt;</code>. The table with <code translate="no">dashboard-row-…</code> and
+<code translate="no">dashboard-quiet-toggle</code> is the &quot;Numbers&quot; view: click <code translate="no">dashboard-groupby-counts</code> first. The
+choice is remembered, so a later run may start in any grouping.</p>
+<p>&quot;Braucht dich&quot; (#194): <code translate="no">dashboard-signals</code> is the counter area at the top with one
+<code translate="no">dashboard-signal-{question,blocked,ci,stale}</code> toggle per signal (pressed = list filtered to it),
+<code translate="no">dashboard-signal-clear</code> removes the filter and <code translate="no">dashboard-signals-quiet</code> replaces the toggles when
+nothing needs the user. <code translate="no">dashboard-groupby-signal</code> groups by signal (<code translate="no">dashboard-group-signal-&lt;kind&gt;</code>,
+<code translate="no">dashboard-no-signals</code> when empty). Row markers read <code translate="no">dashboard-item-signal-&lt;kind&gt;-&lt;item&gt;</code>.</p>
+<h2 id="check-that-every-element-has-a-test-id">Check that every element has a test ID<a class="docs-anchor" href="#check-that-every-element-has-a-test-id" aria-label="Check that every element has a test ID" data-testid="docs-md-anchor-check-that-every-element-has-a-test-id">#</a></h2>
+<div class="docs-code"><pre dir="ltr" translate="no" tabindex="0" data-lang="sh"><code>python3 -I scripts/check-test-ids.py     # optional first argument: app name</code></pre><button type="button" class="docs-code__copy" data-copy hidden data-testid="docs-md-copy-5">Copy</button></div>
+<p>It reads the live tree of the app&#39;s focused window through Agent Desktop (<code translate="no">GITOODO_AGENT_DESKTOP</code>)
+for the screen that is open and lists every button, link, tab, field, toggle and heading in the web
+view that has no test ID as its DOM id. Exit code 1 if any is missing
+(2 if the tree cannot be read). Run it once per screen: main, settings, detail, onboarding.</p>
+<h2 id="flows">Flows<a class="docs-anchor" href="#flows" aria-label="Flows" data-testid="docs-md-anchor-flows">#</a></h2>
+<ul><li><strong>Mark as read</strong>: click a <code translate="no">questions-row-…</code> element. The question lands in <code translate="no">seen.json</code> of the
+test config dir (<code translate="no">~/Library/Application Support/de.gitoodo.app.testaccess/</code>).</li><li><strong>Share</strong>: click <code translate="no">questions-share-…</code> (the system share sheet) or <code translate="no">questions-copy-…</code>.</li><li><strong>Deadline reminder</strong>: the first sync arms it (<code translate="no">reminders.json</code>, <code translate="no">&quot;fired&quot;: false</code>). With
+<code translate="no">GITOODO_TEST_CLOCK_HOURS=40</code> set at start, the clock runs 40 h ahead from the second check on, so
+clicking <code translate="no">shell-sync</code> makes it fall due. The log then has a <code translate="no">test_notification</code> event
+(<code translate="no">~/Library/Logs/de.gitoodo.app.testaccess/gitoodo.log</code>).</li><li><strong>Notification permission</strong>: always <code translate="no">Granted</code> in this build; no system dialog appears.</li><li><strong>Skills</strong> (#160, #995): the &quot;home folder&quot; of this build is <code translate="no">fixture-home/</code> in the test config
+dir, recreated empty at every start, so the assistants&#39; skill folders (<code translate="no">.claude/skills</code>,
+<code translate="no">.agents/skills</code>, <code translate="no">.gemini/skills</code>) are fixture folders. The automatic rollout and the status per
+folder work against them; the real folders in the home folder are untouched. Agent Desktop is
+neither installed nor updated in this build. The folder
+bookmark exists only in the store build: build with <code translate="no">--features test-access,store</code> to drive it
+(not verified in the sandbox).</li><li><strong>Shortcut recording</strong> (#83): synthetic key events do not reliably reach the recorder, so
+the test build adds two buttons below it, <code translate="no">settings-shortcut-test-press-alt-meta-j</code> and
+<code translate="no">settings-shortcut-test-press-escape</code>. Click <code translate="no">settings-shortcut-recorder</code> (recording starts, the
+global shortcut is released), then click a test key button: it goes through the same handler as
+a real key press (save, or cancel and resume the shortcut). They are enabled only while recording.</li><li><strong>Mark as read on the forge</strong> (#159): obsolete. The Eingang and forge notifications were removed
+(#189), so there is nothing left to mark and no <code translate="no">write:notification</code> scope to check.</li><li><strong>Detached window</strong> (#197): only with docking on (<code translate="no">settings-docked-switch</code>, #1614); without it
+the header has no window button and the window is the regular one. Click <code translate="no">shell-detach</code>. The window gets its title bar and the button turns
+into <code translate="no">shell-attach</code>; clicking it (or closing the window) returns to the popover. The frame is stored
+in <code translate="no">detached-window.json</code> of the test config dir. The test build is always decorated and never hides,
+so the visible change is the button and, after attaching, a hidden window that the tray icon reopens.</li><li><strong>Reply</strong>: <code translate="no">detail-send</code> posts a comment to the fixture forge; it shows up in the thread until the
+app exits.</li><li><strong>Answer leaves at once</strong> (#941): after <code translate="no">detail-send</code> the sheet closes (or the next card opens)
+and the question leaves the list and the counts before the forge answered; a failed post brings
+it back with its draft and the <code translate="no">answered-toast</code> reads &quot;Antwort nicht gesendet …&quot;.</li><li><strong>Open the next question</strong> (#245): tick <code translate="no">detail-next-toggle</code> (kept across cards and restarts),
+then <code translate="no">detail-send</code>: the card of the next open question of the list opens; after the last one the
+list returns with the &quot;all answered&quot; toast.</li></ul>
+<h2 id="known-gap-the-global-shortcut">Known gap: the global shortcut<a class="docs-anchor" href="#known-gap-the-global-shortcut" aria-label="Known gap: the global shortcut" data-testid="docs-md-anchor-known-gap-the-global-shortcut">#</a></h2>
+<p>Recording a new shortcut is covered by the test key buttons (see Flows). Triggering the registered shortcut <strong>system-wide</strong> (outside
+the app) cannot be done reliably with UI automation and is not covered. In the test build the
+panel never hides, so the shortcut has nothing to toggle anyway.</p>
+<h2 id="restore-the-desktop-after-a-test">Restore the desktop after a test<a class="docs-anchor" href="#restore-the-desktop-after-a-test" aria-label="Restore the desktop after a test" data-testid="docs-md-anchor-restore-the-desktop-after-a-test">#</a></h2>
+<p>Record the installed app’s running and visible state before using the separate test app.
+Afterward, quit the test app and restore its isolated Application Support and WebKit
+stores. Do not open or activate an already-running normal Gitoodo app: macOS sends
+a reopen event and Gitoodo intentionally shows its main window. Preserve the user&#39;s
+previous visibility instead. Only restart a production instance when the test actually
+started that instance with automation enabled, and restore its previous visibility.</p>
+<h2 id="agent-skill-lifecycle-verification-545">Agent skill lifecycle verification (#545)<a class="docs-anchor" href="#agent-skill-lifecycle-verification-545" aria-label="Agent skill lifecycle verification (#545)" data-testid="docs-md-anchor-agent-skill-lifecycle-verification-545">#</a></h2>
+<p>Historical: this run predates the automatic rollout to every assistant&#39;s folder (#995), which
+replaced the per-assistant choice and the install and remove buttons.</p>
+<p>The macOS test app at code revision <code translate="no">70cd885</code> was exercised with isolated skill
+folders on 2026-11-14. Explicit Codex/shared radio selections produced matching
+confirmation destinations; selection survived transitions between split and compact
+settings layouts. Installation, a simulated older managed package update, removal,
+local-change protection and recovery after a folder write error passed. Updated skill
+content and the package manifest matched the current bundled bytes. Use fresh
+accessibility refs after target changes, because the package rows rerender.</p>
+<p>Test Application Support and WebKit data were restored byte-for-byte. The normal
+production instance remained running and hidden. Store permission/bookmark runtime,
+Windows runtime and VoiceOver were not verified by this test; store compilation alone
+does not establish those results.</p>
+</div>
+<div class="docs-meta"><a class="docs-edit" href="https://github.com/silvio-l/gitoodo/edit/main/docs/test-access.md" data-testid="docs-edit">Edit on GitHub</a><span class="docs-meta__version">Docs version: <span dir="ltr">dev</span></span></div>
+</article>
+<nav class="docs-pager" aria-label="Previous / Next" data-testid="docs-pager"><a class="docs-pager__previous" href="../system-permissions/" rel="prev" data-testid="docs-pager-previous"><span class="docs-pager__label">Previous</span><span class="docs-pager__title">System permissions</span></a><a class="docs-pager__next" href="../privacy-policy/" rel="next" data-testid="docs-pager-next"><span class="docs-pager__label">Next</span><span class="docs-pager__title">Privacy policy: feedback, usage statistics and the phone app</span></a></nav>
+</main>
+<aside class="docs-toc" aria-labelledby="docs-toc-title" data-testid="docs-toc"><h2 id="docs-toc-title">On this page</h2><ol><li class="docs-toc__l2"><a href="#build-and-start" data-testid="docs-toc-build-and-start">Build and start</a></li><li class="docs-toc__l2"><a href="#address-elements-by-test-id" data-testid="docs-toc-address-elements-by-test-id">Address elements by test ID</a></li><li class="docs-toc__l3"><a href="#showcase-data-for-screenshots" data-testid="docs-toc-showcase-data-for-screenshots">Showcase data for screenshots</a></li><li class="docs-toc__l3"><a href="#folders-and-parallel-instances-1191" data-testid="docs-toc-folders-and-parallel-instances-1191">Folders and parallel instances (#1191)</a></li><li class="docs-toc__l3"><a href="#a-real-test-repository-beside-the-fixture" data-testid="docs-toc-a-real-test-repository-beside-the-fixture">A real test repository beside the fixture</a></li><li class="docs-toc__l2"><a href="#optional-native-navigation-measurements-337" data-testid="docs-toc-optional-native-navigation-measurements-337">Optional native navigation measurements (#337)</a></li><li class="docs-toc__l2"><a href="#the-installed-store-preview-235" data-testid="docs-toc-the-installed-store-preview-235">The installed store preview (#235)</a></li><li class="docs-toc__l2"><a href="#check-that-every-element-has-a-test-id" data-testid="docs-toc-check-that-every-element-has-a-test-id">Check that every element has a test ID</a></li><li class="docs-toc__l2"><a href="#flows" data-testid="docs-toc-flows">Flows</a></li><li class="docs-toc__l2"><a href="#known-gap-the-global-shortcut" data-testid="docs-toc-known-gap-the-global-shortcut">Known gap: the global shortcut</a></li><li class="docs-toc__l2"><a href="#restore-the-desktop-after-a-test" data-testid="docs-toc-restore-the-desktop-after-a-test">Restore the desktop after a test</a></li><li class="docs-toc__l2"><a href="#agent-skill-lifecycle-verification-545" data-testid="docs-toc-agent-skill-lifecycle-verification-545">Agent skill lifecycle verification (#545)</a></li></ol></aside>
+</div>
+<footer class="docs-footer" data-testid="docs-footer"><div class="docs-footer__inner">
+<p class="docs-muted">The developer docs are in English only.</p>
+<ul class="docs-footer__links">
+<li><a href="../../../" data-testid="docs-footer-site">Website</a></li>
+<li><a href="../../../privacy/" data-testid="docs-footer-privacy">Privacy</a></li>
+<li><a href="https://github.com/silvio-l/gitoodo/blob/main/LICENSE" data-testid="docs-footer-license">MIT</a></li>
+</ul>
+</div></footer>
+</body>
+</html>

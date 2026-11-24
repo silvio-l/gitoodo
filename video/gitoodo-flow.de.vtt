@@ -1,0 +1,41 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:04.200
+Vom Vorhaben zum gemergten Pull Request.
+So läuft ein Issue durch Gitoodo.
+
+2
+00:00:04.200 --> 00:00:10.400
+Im Orchestrator-Chat besprichst du, was entstehen soll.
+Gitoodo schlägt die Issues vor. Angelegt werden sie erst, wenn du auf „Übernehmen“ klickst.
+
+3
+00:00:10.400 --> 00:00:15.400
+Ist ein Issue geklärt, steht es auf „Bereit“.
+„Alle Repos“ zeigt für jedes Issue den Stand und den Grund.
+
+4
+00:00:15.400 --> 00:00:20.600
+Für jedes bereite Issue startet ein Agent.
+Von „In Arbeit“ bis „Im Review“ siehst du jeden Schritt.
+
+5
+00:00:20.600 --> 00:00:25.400
+Fehlt eine Entscheidung, fragt der Agent dich.
+Die Empfehlung ist schon markiert.
+
+6
+00:00:25.400 --> 00:00:30.400
+Ein Klick, und der Agent arbeitet weiter.
+Deine Antwort landet als Kommentar im Issue.
+
+7
+00:00:30.400 --> 00:00:35.000
+Der Überblick zeigt deine Woche in Zahlen.
+Merges, Antworten, Auslastung. Was auf dich wartet, steht unter „Fragen an mich“.
+
+8
+00:00:35.000 --> 00:00:38.400
+Gitoodo
+Kostenlos · Open Source · macOS und Windows

@@ -1,0 +1,1017 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self'; style-src 'self'; script-src 'self' 'sha256-zclDvgIbJxhMP3hLx0Pe9wEzIPlPNUNObuWsVD7xB/M='; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="color-scheme" content="light dark">
+<script>try{var t=localStorage.getItem("gitoodo-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<title>Satellites – Gitoodo</title>
+<meta name="description" content="A satellite is another machine that runs workers for the main host&#39;s dispatcher (spec 7.9). Network and SSH live only in crates/core ; no port is opened. Forge credentials stay on …">
+<meta name="docs-version" content="dev">
+<link rel="canonical" href="https://gitoodo.com/docs/dev/satellites/">
+
+<meta property="og:title" content="Satellites – Gitoodo">
+<meta property="og:description" content="A satellite is another machine that runs workers for the main host&#39;s dispatcher (spec 7.9). Network and SSH live only in crates/core ; no port is opened. Forge credentials stay on …">
+<meta property="og:url" content="https://gitoodo.com/docs/dev/satellites/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Gitoodo">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://gitoodo.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../../assets/docs.css">
+<script defer src="../../../assets/docs.js"></script>
+</head>
+<body class="docs" data-lang="en" data-docs-root="../../" data-search-index="../../search/en.json" data-copied="Copied">
+<a class="skip" href="#main" data-testid="docs-skip">Skip to content</a>
+<header class="docs-header" data-testid="docs-header"><div class="docs-header__inner">
+<a class="lockup" href="../../../" aria-label="Gitoodo" data-testid="docs-logo"><svg class="lockup__art" data-brand="wordmark" viewBox="9.3 9.4 767.3 182.9" focusable="false" aria-hidden="true"><path class="logo__tray" fill-rule="evenodd" d="M66.7 89.5C54.7 90.9 52.5 108.4 63.6 112.9C69.4 115.3 80 113.9 86.5 113.9L136.5 114C143.6 114 155.7 115.4 157 105.5C157.8 99.1 154.7 91.2 147.7 89.6C141.7 88.1 126.5 89.3 119.5 89.3L84.5 89.3C78.7 89.3 72.5 88.8 66.7 89.5ZM210.5 93.7C206.3 95.4 202.9 98.6 198.6 100.3C196.7 101 193.8 101.2 192.6 103.1C191.3 105.1 191.8 108.3 191.8 110.5C191.8 115.6 192.1 120.9 191.5 125.9C184.9 128.1 171 126.6 163.5 126.6C159.8 126.6 155.9 126.2 152.5 128C144.2 132.6 147.8 144.9 143.6 152.1C138.9 160 121.4 157.2 113.5 157.2C110.3 157.2 106.8 157.7 103.6 156.7C92.4 153.3 98.2 135 89.9 128.6C86.5 125.9 81.6 126.6 77.5 126.6C69.3 126.6 58.2 128 50.5 126.1C48.8 117.6 51.8 108.1 49.7 99.7C47.3 90.3 31.5 89.8 27 97.5C25.1 100.8 24 104.7 22.6 108.2C19.8 115.2 15.3 122.8 16.1 130.5C16.6 134.9 19.5 139.2 21.5 143L31.8 163.7C35.7 171.7 38.9 183.6 48.9 185.5C52.3 186.2 56 185.8 59.5 185.8L83.5 185.8L157.5 185.8L183.5 185.8C188.2 185.8 193.2 186.3 197.4 183.8C203.4 180.3 207.1 168.8 210.3 162.7L221.6 140.2C223.6 136.2 226.1 132.2 226 127.5C225.9 121.1 221.5 114.3 219.2 108.4C217.1 103 215.9 96.5 210.5 93.7Z"/><path class="logo__bars" fill-rule="evenodd" d="M156.8 26.5C155.2 15.4 142.9 17.7 134.5 17.6C114.8 17.4 95.2 17.5 75.5 17.7C65.3 17.7 55.7 18.3 56.4 31.5C57.2 45.7 76.1 42.3 85.5 42.3L126.5 42.3C130.4 42.3 141.2 43.2 144.4 41.9C146.3 41.1 147.2 38.3 148.2 36.7C150.7 33 154.3 30.1 156.8 26.5ZM139.5 55.3C134 52 124.8 53.6 118.5 53.6L83.5 53.7C77.8 53.7 71.1 52.8 65.5 54C59.3 55.3 55.6 61.8 56.5 67.9C58.2 79.3 69.7 78.2 78.5 78.2L123.5 78.2C128.6 78.2 137 79.9 140.6 75.2C142.4 72.9 141 70.6 140.5 68C139.7 63.8 141 59.3 139.5 55.3Z"/><path class="logo__check" fill-rule="evenodd" d="M177.7 26.4C142.8 32.5 139 82.7 173 93.5C177.7 95 182.6 95.5 187.5 94.9C224.6 90.3 228 37.8 192.5 27.2C187.7 25.8 182.6 25.6 177.7 26.4ZM177.5 65.1C172.9 61.8 171.9 57.4 165.5 58.3C160.3 63.5 167.1 67.9 170.8 71.7C172.5 73.5 174.3 76 176.8 76.5C180.5 77.3 183.2 73.1 185.3 70.8L200.1 55.6C203 52.6 204.8 49.9 201.5 46.5C200 46.2 199.2 45.8 197.6 46.2C195.1 46.9 192.6 50.5 190.9 52.4C187.1 56.5 182.5 62.6 177.5 65.1Z"/><path class="word__git" fill-rule="evenodd" d="M379.6 38.4C360.7 39.7 362.8 67.8 381.5 66.9C400 66.1 398.7 37.2 379.6 38.4ZM362.5 92.7C357.9 91.8 353.1 92.2 348.5 92.2L325.5 92.2C321.8 92.2 314.8 90.8 311.8 93.3C308.9 95.8 309.6 111.2 311 114.5C317.2 118.1 327.7 114.3 334.7 116.5C329.4 130.4 309.1 132.6 297.7 125.8C288.9 120.6 283.8 110.5 283.8 100.5C283.6 81.9 299.6 66.6 318.5 71.2C328.3 73.6 329.5 78.5 336.5 83C340.9 81.5 353.8 72.2 356.6 68.5C355.1 63.6 350.2 59.4 346.3 56.2C332 44.2 311 40.6 293.5 47C262.7 58.3 249 94.7 262.4 124.2C276 154 314 165.2 341.5 147C354.5 138.4 363.1 123 364.1 107.5C364.4 102.6 365.3 96.8 362.5 92.7ZM407.5 73.5L400.4 74.5C398 78.5 398.4 90 399.5 94.7C402 96 404.7 95.9 407.4 96.5C410 113.1 400.2 145.4 422.7 151.6C426.2 152.6 429.9 152.6 433.5 152.6C437.5 152.7 441.9 153.2 445.5 151.5C446.4 146.9 446.8 134.4 444.6 130.5C441.2 130.2 436.3 131.5 433.3 129.2C430.8 127.2 431.4 123.3 431.4 120.5C431.4 112.7 430.6 104.3 431.7 96.5C436.1 95.3 440.9 96.3 445.5 95.3C447.3 89.6 447.2 80.3 445.5 74.6L431.9 73.5C430.6 68.1 433.1 59.6 430.5 54.9C428.6 51.5 415.9 52 412.5 52.6C410.9 53 409.4 53.6 408.6 55.1C406.2 59.4 408.5 68.4 407.5 73.5ZM369.5 151.7C373.7 153.3 388.3 153.6 392.1 151.5C393.7 145.8 392.7 138.5 392.7 132.5L392.6 94.5C392.6 90.3 394.1 79 391.6 75.9C389.3 73.1 377.1 73.6 373.5 74C366.1 74.9 368.5 86.3 368.5 91.5L368.6 131.5C368.6 137.8 367.2 145.8 369.5 151.7Z"/><path class="word__oodo" fill-rule="evenodd" d="M658.6 77.5C652.6 75.1 647.4 72.8 640.7 73.4C600.7 77.2 595.6 136.7 633.5 148.3C639.6 150.1 646.5 150.5 652.6 148.3C655 147.4 657.1 146 659.5 145.4C660 146.5 660.6 148.1 661.7 148.7C665.5 150.7 678.5 149.6 682.5 148.5C684.6 142.8 683.3 126.4 683.4 119.5L683.3 71.5C683.2 65 684.5 55.7 683 49.5C681.4 42.8 664.3 43.5 661.3 46.8C659.2 49.1 659.7 52.6 659.7 55.5C659.6 61.4 661.1 72.7 658.6 77.5ZM482.5 73.4C442.6 77.6 435.8 134.6 473.5 147.9C478.2 149.6 483.5 150.4 488.5 150.1C494.4 149.7 499.9 148.2 505.1 145.6C509.6 143.3 513.4 139.9 516.5 136C537.9 109 517 69.8 482.5 73.4ZM560.7 73.4C547.4 75.2 535.8 83.3 530.4 95.7C521.3 116.5 532.4 142.7 554.8 148.6C560 149.9 565.1 150.5 570.5 149.8C597.8 146.3 613.1 114.6 598.4 91.1C593.4 83 585.5 77.6 576.6 74.7C571.5 73.1 566 72.7 560.7 73.4ZM723.5 73.4C712.2 74.9 701.4 80.8 695.3 90.7C682.1 112 692 141 716.3 148.4C721.5 150 727 150.6 732.5 150C755.6 147.5 770.6 124.8 765.8 102.5C762.8 89.1 752.1 79.1 739.5 74.9C734.4 73.2 728.9 72.7 723.5 73.4ZM483.7 96.4C464.6 99.7 469.4 131.1 490.4 126.7C509.1 122.7 503.7 93.1 483.7 96.4ZM562.7 96.4C543.1 99.7 548.6 131.4 569.3 126.6C587.9 122.4 582.5 93.1 562.7 96.4ZM644.6 96.4C625.3 97.8 626.9 127.6 646.5 126.8C665.9 126 664.2 95 644.6 96.4ZM724.7 96.4C705.3 99.9 711 131.7 732.3 126.6C750.4 122.3 744.3 92.9 724.7 96.4Z"/></svg></a>
+<a class="docs-header__title" href="../../" data-testid="docs-home">Documentation</a>
+<span class="docs-version" title="Pre-release: Gitoodo has not been released yet" data-version="dev"><span class="visually-hidden">Docs version: </span><span dir="ltr">dev</span><span class="visually-hidden"> (Pre-release: Gitoodo has not been released yet)</span></span>
+<div class="docs-header__tools">
+<div class="docs-search" role="search" data-testid="docs-search">
+<label class="visually-hidden" for="docs-search-input">Search the docs</label>
+<input id="docs-search-input" class="docs-search__input" type="search" placeholder="Search …" autocomplete="off" spellcheck="false" aria-describedby="docs-search-hint" aria-controls="docs-search-results" aria-expanded="false" role="combobox" aria-autocomplete="list" data-testid="docs-search-input">
+<p id="docs-search-hint" class="visually-hidden">Arrow keys choose, Enter opens, Escape closes.</p>
+<div id="docs-search-results" class="docs-search__results" role="listbox" aria-label="Search the docs" hidden data-empty="No page matches “{query}”." data-testid="docs-search-results"></div>
+<p id="docs-search-status" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true" data-count="Results: {count}" data-testid="docs-search-status"></p>
+</div>
+<div class="header__prefs"><details class="langs" name="header-popover" data-langs data-testid="docs-langs"><summary class="langs__toggle" data-testid="docs-langs-toggle"><svg class="langs__globe" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg><span class="visually-hidden">Language: </span><span class="langs__code" translate="no">EN</span></summary>
+<ul class="langs__list" aria-label="Language"><li><a href="../../de/" hreflang="de" lang="de" data-lang="de" data-track="language" data-track-name="de" data-testid="docs-langs-de"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Deutsch</span></a></li><li><a href="../../" hreflang="en" lang="en" data-lang="en" data-track="language" data-track-name="en" aria-current="page" data-testid="docs-langs-en"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>English</span></a></li><li><a href="../../zh-Hans/" hreflang="zh-Hans" lang="zh-Hans" data-lang="zh-Hans" data-track="language" data-track-name="zh-Hans" data-testid="docs-langs-zh-Hans"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>中文（简体）</span></a></li><li><a href="../../hi/" hreflang="hi" lang="hi" data-lang="hi" data-track="language" data-track-name="hi" data-testid="docs-langs-hi"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>हिन्दी</span></a></li><li><a href="../../es/" hreflang="es" lang="es" data-lang="es" data-track="language" data-track-name="es" data-testid="docs-langs-es"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Español</span></a></li><li><a href="../../ar/" hreflang="ar" lang="ar" data-lang="ar" data-track="language" data-track-name="ar" data-testid="docs-langs-ar"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>العربية</span></a></li></ul></details><button class="theme" type="button" hidden data-theme-toggle data-choice="system" data-label="Theme: {current}, switch to {next}" data-system="System" data-light="Light" data-dark="Dark" aria-label="Theme: System, switch to Light" title="Theme: System, switch to Light" data-testid="docs-theme"><svg class="theme__icon theme__icon--system" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg><svg class="theme__icon theme__icon--light" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg><svg class="theme__icon theme__icon--dark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></button></div>
+<button type="button" class="docs-menu" aria-controls="docs-nav" aria-expanded="false" hidden data-testid="docs-menu">Pages</button>
+</div>
+<a class="docs-header__link" href="https://github.com/silvio-l/gitoodo" data-testid="docs-github">GitHub</a>
+<a class="docs-install" href="../../../#download" data-testid="docs-install">Get notified</a>
+</div></header>
+<div class="docs-layout">
+<nav id="docs-nav" class="docs-nav" aria-label="Documentation" data-testid="docs-nav"><div class="docs-nav__section"><p class="docs-nav__title"><a href="../../" data-testid="docs-nav-section-user">For users</a></p><p class="docs-nav__group" id="docs-nav-user-0">Get started</p><ul aria-labelledby="docs-nav-user-0"><li><a href="../../introduction/" data-testid="docs-nav-docs-introduction">What is Gitoodo?</a></li><li><a href="../../getting-started/" data-testid="docs-nav-docs-getting-started">Getting started</a></li></ul><p class="docs-nav__group" id="docs-nav-user-1">Guides</p><ul aria-labelledby="docs-nav-user-1"><li><a href="../../self-hosted-forges/" data-testid="docs-nav-docs-self-hosted-forges">Forgejo and Gitea</a></li><li><a href="../../github-issues-to-pull-requests/" data-testid="docs-nav-docs-github-issues-to-pull-requests">GitHub issues to pull requests</a></li><li><a href="../../safe-auto-merge/" data-testid="docs-nav-docs-safe-auto-merge">Safe auto-merge</a></li><li><a href="../../parallel-coding-agents/" data-testid="docs-nav-docs-parallel-coding-agents">Parallel coding agents</a></li><li><a href="../../switch-from-another-agent-app/" data-testid="docs-nav-docs-switch-from-another-agent-app">Coming from another agent app</a></li></ul><p class="docs-nav__group" id="docs-nav-user-2">Daily use</p><ul aria-labelledby="docs-nav-user-2"><li><a href="../../daily-use/" data-testid="docs-nav-docs-daily-use">How to work with Gitoodo</a></li><li><a href="../../overview/" data-testid="docs-nav-docs-overview">Overview</a></li><li><a href="../../needs-you/" data-testid="docs-nav-docs-needs-you">Needs you</a></li><li><a href="../../questions/" data-testid="docs-nav-docs-questions">Asked of me</a></li><li><a href="../../board/" data-testid="docs-nav-docs-board">All repos</a></li><li><a href="../../chat/" data-testid="docs-nav-docs-chat">Chat</a></li><li><a href="../../repositories/" data-testid="docs-nav-docs-repositories">Repositories</a></li></ul><p class="docs-nav__group" id="docs-nav-user-3">Orchestrator</p><ul aria-labelledby="docs-nav-user-3"><li><a href="../../labels/" data-testid="docs-nav-docs-labels">Status labels and workflow</a></li><li><a href="../../merge-and-release/" data-testid="docs-nav-docs-merge-and-release">Merge control</a></li><li><a href="../../releases/" data-testid="docs-nav-docs-releases">Releases</a></li><li><a href="../../services/" data-testid="docs-nav-docs-services">Classifier, dispatcher and workers</a></li></ul><p class="docs-nav__group" id="docs-nav-user-4">Reference and help</p><ul aria-labelledby="docs-nav-user-4"><li><a href="../../settings/" data-testid="docs-nav-docs-settings">Settings</a></li><li><a href="../../status/" data-testid="docs-nav-docs-status">Status</a></li><li><a href="../../troubleshooting/" data-testid="docs-nav-docs-troubleshooting">Troubleshooting</a></li><li><a href="../../faq/" data-testid="docs-nav-docs-faq">FAQ</a></li><li><a href="../../privacy/" data-testid="docs-nav-docs-privacy">Privacy</a></li></ul></div><div class="docs-nav__section"><p class="docs-nav__title"><a href="../" data-testid="docs-nav-section-dev">For developers</a></p><p class="docs-nav__group" id="docs-nav-dev-0">Start here</p><ul aria-labelledby="docs-nav-dev-0"><li><a href="../architecture/" data-testid="docs-nav-docs-dev-architecture">Architecture</a></li><li><a href="../building/" data-testid="docs-nav-docs-dev-building">Building</a></li><li><a href="../releasing/" data-testid="docs-nav-docs-dev-releasing">Release</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-1">Interfaces</p><ul aria-labelledby="docs-nav-dev-1"><li><a href="../question-format/" data-testid="docs-nav-docs-dev-question-format">Gitoodo question format (version 2)</a></li><li><a href="../cli/" data-testid="docs-nav-docs-dev-cli">Command line reference</a></li><li><a href="../daemon/" data-testid="docs-nav-docs-dev-daemon">Classifier daemon and command line</a></li><li><a href="../phone-access/" data-testid="docs-nav-docs-dev-phone-access">Phone access</a></li><li><a href="../forge-tokens/" data-testid="docs-nav-docs-dev-forge-tokens">Token permissions per forge</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-2">Orchestrator</p><ul aria-labelledby="docs-nav-dev-2"><li><a href="../states/" data-testid="docs-nav-docs-dev-states">States: what Gitoodo shows and what you do about it</a></li><li><a href="../all-repos/" data-testid="docs-nav-docs-dev-all-repos">&quot;All repos&quot;: pages and where things went</a></li><li><a href="../orchestrator-spec/" data-testid="docs-nav-docs-dev-orchestrator-spec">Gitoodo Orchestrator – Specification (v1)</a></li><li><a href="../orchestrator-setup/" data-testid="docs-nav-docs-dev-orchestrator-setup">Orchestrator setup</a></li><li><a href="../dispatcher/" data-testid="docs-nav-docs-dev-dispatcher">Dispatcher</a></li><li><a href="../queue-order/" data-testid="docs-nav-docs-dev-queue-order">Queue order and slot share</a></li><li><a href="../branch-rules/" data-testid="docs-nav-docs-dev-branch-rules">Branch rules that work with the autopilot</a></li><li><a href="../security/" data-testid="docs-nav-docs-dev-security">Security model of the orchestrator</a></li><li><a href="./" aria-current="page" data-testid="docs-nav-docs-dev-satellites">Satellites</a></li><li><a href="../keychains/" data-testid="docs-nav-docs-dev-keychains">Keychains, signing and dialogs</a></li><li><a href="../local-inputs/" data-testid="docs-nav-docs-dev-local-inputs">Local inputs</a></li><li><a href="../resolver/" data-testid="docs-nav-docs-dev-resolver">The resolver for stuck issues</a></li><li><a href="../triage/" data-testid="docs-nav-docs-dev-triage">Triage</a></li><li><a href="../repo-hygiene/" data-testid="docs-nav-docs-dev-repo-hygiene">Repo hygiene</a></li><li><a href="../storage-cleanup/" data-testid="docs-nav-docs-dev-storage-cleanup">Automatic disk cleanup</a></li><li><a href="../orchestrator-chat/" data-testid="docs-nav-docs-dev-orchestrator-chat">Orchestrator chat</a></li><li><a href="../release-planning/" data-testid="docs-nav-docs-dev-release-planning">Release planning</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-3">App internals</p><ul aria-labelledby="docs-nav-dev-3"><li><a href="../status-model/" data-testid="docs-nav-docs-dev-status-model">Overview status model</a></li><li><a href="../counters/" data-testid="docs-nav-docs-dev-counters">Counters</a></li><li><a href="../startup/" data-testid="docs-nav-docs-dev-startup">Start: first paint and loading state</a></li><li><a href="../logging/" data-testid="docs-nav-docs-dev-logging">Logging</a></li><li><a href="../localisation/" data-testid="docs-nav-docs-dev-localisation">Localisation</a></li><li><a href="../settings-backup/" data-testid="docs-nav-docs-dev-settings-backup">Settings export, import and backup</a></li><li><a href="../symlinks/" data-testid="docs-nav-docs-dev-symlinks">Symbolic links</a></li><li><a href="../window-frame/" data-testid="docs-nav-docs-dev-window-frame">Window frame</a></li><li><a href="../system-permissions/" data-testid="docs-nav-docs-dev-system-permissions">System permissions</a></li><li><a href="../test-access/" data-testid="docs-nav-docs-dev-test-access">Test access: driving the app without a human</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-4">Privacy and data</p><ul aria-labelledby="docs-nav-dev-4"><li><a href="../privacy-policy/" data-testid="docs-nav-docs-dev-privacy-policy">Privacy policy: feedback, usage statistics and the phone app</a></li><li><a href="../network-inventory/" data-testid="docs-nav-docs-dev-network-inventory">Network inventory of the desktop app and the phone app</a></li><li><a href="../chat-notification/" data-testid="docs-nav-docs-dev-chat-notification">Chat notification</a></li><li><a href="../support/" data-testid="docs-nav-docs-dev-support">Voluntary support</a></li></ul></div></nav>
+<main id="main" class="docs-main" tabindex="-1" data-testid="docs-main">
+<article class="docs-article">
+<p class="docs-eyebrow">For developers · Orchestrator</p><h1>Satellites</h1>
+<details class="docs-toc-inline" data-testid="docs-toc-inline"><summary data-testid="docs-toc-inline-toggle">On this page</summary><ol><li class="docs-toc__l2"><a href="#pieces" data-testid="docs-toc-inline-pieces">Pieces</a></li><li class="docs-toc__l2"><a href="#remote-worker-lifecycle" data-testid="docs-toc-inline-remote-worker-lifecycle">Remote worker lifecycle</a></li><li class="docs-toc__l3"><a href="#memory-entries" data-testid="docs-toc-inline-memory-entries">Memory entries</a></li><li class="docs-toc__l3"><a href="#hook-events" data-testid="docs-toc-inline-hook-events">Hook events</a></li><li class="docs-toc__l3"><a href="#workers-no-main-host-owns" data-testid="docs-toc-inline-workers-no-main-host-owns">Workers no main host owns</a></li><li class="docs-toc__l3"><a href="#updating-a-satellite-965" data-testid="docs-toc-inline-updating-a-satellite-965">Updating a satellite (#965)</a></li><li class="docs-toc__l3"><a href="#build-identity-and-outdated-builds" data-testid="docs-toc-inline-build-identity-and-outdated-builds">Build identity and outdated builds</a></li><li class="docs-toc__l3"><a href="#automatic-update-1181" data-testid="docs-toc-inline-automatic-update-1181">Automatic update (#1181)</a></li><li class="docs-toc__l2"><a href="#install-and-upgrade-gitoodo-host-install-name" data-testid="docs-toc-inline-install-and-upgrade-gitoodo-host-install-name">Install and upgrade: gitoodo host install &lt;name&gt;</a></li><li class="docs-toc__l3"><a href="#version-check-and-other-systems-in-the-app-441" data-testid="docs-toc-inline-version-check-and-other-systems-in-the-app-441">Version check and other systems in the app (#441)</a></li><li class="docs-toc__l3"><a href="#machine-suggestions-and-network-search-440" data-testid="docs-toc-inline-machine-suggestions-and-network-search-440">Machine suggestions and network search (#440)</a></li><li class="docs-toc__l2"><a href="#forge-access-and-assistant-subscriptions" data-testid="docs-toc-inline-forge-access-and-assistant-subscriptions">Forge access and assistant subscriptions</a></li><li class="docs-toc__l3"><a href="#this-computers-sign-ins-on-worker-machines-1259" data-testid="docs-toc-inline-this-computers-sign-ins-on-worker-machines-1259">This computer&#39;s sign-ins on worker machines (#1259)</a></li><li class="docs-toc__l2"><a href="#app-settings--satellite-hosts-357" data-testid="docs-toc-inline-app-settings--satellite-hosts-357">App: Settings → Satellite hosts (#357)</a></li><li class="docs-toc__l3"><a href="#workers-per-machine-967" data-testid="docs-toc-inline-workers-per-machine-967">Workers per machine (#967)</a></li><li class="docs-toc__l3"><a href="#desktop-tests-per-machine-995" data-testid="docs-toc-inline-desktop-tests-per-machine-995">Desktop tests per machine (#995)</a></li><li class="docs-toc__l2"><a href="#windows-machines-and-the-remote-shell-958" data-testid="docs-toc-inline-windows-machines-and-the-remote-shell-958">Windows machines and the remote shell (#958)</a></li><li class="docs-toc__l2"><a href="#commands-a-worker-machine-lacks" data-testid="docs-toc-inline-commands-a-worker-machine-lacks">Commands a worker machine lacks</a></li><li class="docs-toc__l3"><a href="#taking-this-computers-setup-along" data-testid="docs-toc-inline-taking-this-computers-setup-along">Taking this computer&#39;s setup along</a></li><li class="docs-toc__l2"><a href="#coding-agents-per-machine-957" data-testid="docs-toc-inline-coding-agents-per-machine-957">Coding agents per machine (#957)</a></li></ol></details>
+<div class="docs-body">
+<p>A satellite is another machine that runs workers for the main host&#39;s dispatcher (spec 7.9).
+Network and SSH live only in <code translate="no">crates/core</code>; no port is opened. Forge credentials stay on the
+main host; assistant subscriptions are provisioned separately as described below.</p>
+<h2 id="pieces">Pieces<a class="docs-anchor" href="#pieces" aria-label="Pieces" data-testid="docs-md-anchor-pieces">#</a></h2>
+<ul><li><code translate="no">gitoodo satellite</code>: persistent service on <code translate="no">satellite.sock</code> (0600) holding worker PTYs; on
+Windows on the named pipe <code translate="no">\\.\pipe\gitoodo-satellite-&lt;user&gt;</code> that only this user may open.
+<code translate="no">gitoodo satellite --stdio</code> is a pipe to it (it starts the service when missing, on Windows
+detached from the SSH session), so workers survive SSH drops. Only a missing service is started:
+a busy pipe has one behind it, and a second service would only end at once. The bridge ends when its stdin
+closes, the SSH session hangs up (SIGHUP), the service closes the connection, or nothing moved
+either way for 15 minutes; a subscription sends a sign of life every minute so it never idles
+out. Bridges of gone sessions used to stay forever (#965).</li><li>Protocol: JSON lines, the same <code translate="no">cmd</code>/<code translate="no">reply</code>/<code translate="no">frame</code> vocabulary as the dispatcher socket
+(<code translate="no">dispatcher_rpc.rs</code>), plus <code translate="no">hello</code>, <code translate="no">spawn</code>, <code translate="no">kill</code>, <code translate="no">subscribe</code>, <code translate="no">ask</code>, <code translate="no">ask_done</code>, <code translate="no">copy_state</code>, <code translate="no">copy_receive</code>, <code translate="no">inputs_receive</code> (the local files an issue names,
+see <a href="../local-inputs/" data-testid="docs-md-link-1">local inputs</a>), <code translate="no">input</code> and <code translate="no">input_done</code> (a worker fetching one more). A bridge
+session runs requests in a row; <code translate="no">subscribe</code> and <code translate="no">attach</code> turn it into a stream.</li><li>Bridge: system <code translate="no">ssh -o BatchMode=yes ... -- &lt;target&gt; gitoodo satellite --stdio</code>
+(<code translate="no">GITOODO_SSH</code> replaces the program, used by tests); on Windows
+<code translate="no">.local\bin\gitoodo.exe satellite --stdio</code>, relative to the home folder the SSH session starts in.</li><li><code translate="no">gitoodo host add &lt;name&gt; &lt;ssh-target&gt;</code>: detects the remote shell, connects, compares versions,
+saves <code translate="no">{name, ssh, shell, platform}</code> only. <code translate="no">platform</code> (<code translate="no">macos</code>, <code translate="no">windows</code>, <code translate="no">linux</code>) is the system
+the machine reported; the app saves it too when it adds, installs, checks or probes a machine and the
+system differs from the stored one. A machine set up before the system was stored gets it in the
+background: 30 seconds after the app starts it checks each machine without one, and again every
+10 minutes while one is still unknown (offline). The dispatcher starts every machine with it, so an issue for
+that system waits as <code translate="no">offline</code> while the machine is away, not as <code translate="no">no_platform</code>.
+A version mismatch is a clear error with the check command (<code translate="no">ssh &lt;target&gt; gitoodo --version</code>).
+The handshake also compares builds, see &quot;Build identity&quot; below.</li><li>Dispatcher: polls every host (20 s), offers satellites as host candidates, starts workers with
+<code translate="no">spawn</code> (the satellite creates the worktree in its own clone). Unreachable host: no new work,
+leases wait for the grace and are then released (<code translate="no">lease_action</code>).</li><li>Own copies (#965): a satellite keeps its clones under <code translate="no">~/gitoodo/repos/&lt;owner&gt;/&lt;repo&gt;</code> in its
+own home; the main host never sends one of its own paths. <code translate="no">spawn</code>&#39;s <code translate="no">prepare</code> carries the
+repository&#39;s credential-free forge address (<code translate="no">origin</code>). The main host makes and updates the copy
+itself before each <code translate="no">spawn</code> (<code translate="no">satellite_copy.rs</code>), so the machine needs no forge access and no
+network permission for its own git: it fetches the base (and the worker branch, when the forge
+has it) with the connected account into its own copy, filling in whatever a partial copy lacks,
+asks the satellite what it holds (<code translate="no">copy_state</code>: tracking refs, partial or not) and sends a git
+bundle of the rest (<code translate="no">copy_receive</code>: a header with refs, size and SHA-256, then base64 chunks of
+512 KiB; at most 4 GiB). The first copy gets the full history, later starts only what is new
+(the satellite&#39;s heads are the bundle&#39;s prerequisites); a copy left partial by an older build
+gets the full history once and then stops being partial, so no lazy fetch is ever needed
+there. The satellite checks size and checksum, unbundles, moves <code translate="no">origin/&lt;base&gt;</code> (and
+<code translate="no">origin/&lt;branch&gt;</code>, or drops it when the forge no longer has the branch), sets <code translate="no">origin</code> to the
+forge address and starts the worktree from it (<code translate="no">prepare.synced</code>); a restarted worker so gets
+its pushed branch back. The forge&#39;s branch wins over what an earlier run left on the machine:
+a local branch behind it is fast-forwarded, one apart from it (the branch was updated onto the
+base, or someone pushed) is set to it, and commits of its own the forge lacks stay under
+<code translate="no">refs/gitoodo/kept/&lt;branch&gt;/&lt;sha&gt;</code> (log <code translate="no">satellite.branch_kept</code>); a kept worktree that is clean
+and only behind is fast-forwarded, one with uncommitted work or own commits stays as it is.
+The token stays on the main host: it is in no bundle, frame, error or log.</li><li>Satellite paths (#965): the main host sends none of its own paths. The worker&#39;s cwd is
+<code translate="no">~/gitoodo/worktrees/&lt;repo&gt;/&lt;number&gt;</code> (or below a <code translate="no">~</code>-relative worktree root), the hygiene
+requests name the satellite&#39;s own roots, a configured absolute agent path that does not exist
+there falls back to the agent&#39;s name, and the hook and status-line commands in <code translate="no">--settings</code>
+(Claude Code) and in <code translate="no">-c hooks.*</code> (Codex) carry a placeholder the satellite replaces with its
+own <code translate="no">gitoodo</code>, quoted as one shell word (for Codex on Windows as a command PowerShell runs:
+the bare path, or <code translate="no">&amp; &#39;&lt;path&gt;&#39;</code>, see <code translate="no">dispatcher.md</code>, &quot;Worker launch per agent&quot;).</li><li>Delivery speed (#1491): the delivery&#39;s scratch repository borrows the objects of the main
+host&#39;s own copy of the repository (<code translate="no">objects/info/alternates</code>) and starts from its
+<code translate="no">origin/&lt;base&gt;</code>, so the base fetch brings only what the copy lacks instead of the whole history
+(about 300 MB for a large repository). Without a full copy it fetches as before. The main host
+allows 180 s and the satellite waits 200 s; a forge that did not answer (a timeout, a broken-off connection, 502/503/504) is tried again after 5 and then 15 s within that time; a delivery that fails is recorded with its own cause
+<code translate="no">delivery</code> and the machine&#39;s name, and the next success (<code translate="no">delivered</code>) ends it, so a single timeout
+shows nowhere. <code translate="no">satellite.delivered</code> and <code translate="no">satellite.delivery_failed</code> log the bundle size, whether
+the copy was reused, the phase and the time of each phase.</li><li>Delivery when the forge moved on: the main host fetches the forge&#39;s worker branch into the
+delivery&#39;s scratch repository; a bundle that lacks its commits is not pushed. The one exception
+is a branch the worker rebased itself (#1565): the delivery carries the satellite&#39;s
+<code translate="no">origin/&lt;branch&gt;</code>, and when that is still the forge&#39;s head and the bundle contains the base&#39;s
+current head, the main host replaces the branch with a push leased on that head; so does a
+<code translate="no">gitoodo worker pr --replace</code> that a person approved on the issue (#1644, see
+<code translate="no">dispatcher.md</code>, &quot;Worker delivery&quot;), while that head is still the forge&#39;s. Otherwise the
+main host sends them to the satellite&#39;s copy as <code translate="no">origin/&lt;branch&gt;</code>, and the worker gets a reason
+that says to rebase or merge <code translate="no">origin/&lt;branch&gt;</code> and deliver again. A satellite whose build lacks <code translate="no">copy_state</code> is the machine fault <code translate="no">outdated</code> (see below)
+and gets no start; any other failure of the transfer falls back to the machine&#39;s own git
+clone, and its reason is added to the <code translate="no">checkout:</code> error.</li><li>Copy failed here (#2068): when git on this computer cannot reach the forge at all (&quot;No route
+to host&quot;, <code translate="no">EHOSTUNREACH</code>, &quot;Network is unreachable&quot;, or a failed connection &quot;after 0 ms&quot;,
+<code translate="no">fault::local_network_failure</code>) and the machine&#39;s own git access fails after it, the fault is
+still a <code translate="no">no_checkout</code> of that machine, but its reason starts with &quot;this computer cannot reach
+the forge with git&quot; and carries the cause <code translate="no">local_git_network</code> (<code translate="no">fault::cause_of</code>). Like any
+copy fault it is retried quietly three times; then the status and the notification name this
+computer (macOS: the &quot;Local Network&quot; permission, or services still running a replaced program,
+see <code translate="no">dispatcher.md</code>, &quot;Replaced program&quot;) with a restart of the dispatcher as the fix, never the
+worker machine&#39;s forge access. Logged as <code translate="no">dispatch.copy_local_network</code>.</li><li>The machine&#39;s own git access (the fallback above, and its first clone) never asks anyone: it
+keeps the machine&#39;s configured credential helper, its only way to the forge, but runs with
+<code translate="no">credential.interactive=false</code>, an empty <code translate="no">core.askPass</code>, <code translate="no">GIT_TERMINAL_PROMPT=0</code>,
+<code translate="no">GCM_INTERACTIVE=never</code> and without <code translate="no">GIT_ASKPASS</code>/<code translate="no">SSH_ASKPASS</code>
+(<code translate="no">worktree::own_access_git</code>). In a service without a terminal it fails at once, and its reason
+is git&#39;s last <code translate="no">fatal:</code> line (<code translate="no">worktree::short_reason</code>), not every line a credential manager
+wrote before it.</li><li>Branch updates (#383) on a satellite go the same way: the main host sends the base first,
+<code translate="no">update_branch</code> with <code translate="no">via_host</code> rebases or merges offline and answers with a bundle of the new
+head, which the main host pushes with the account (<code translate="no">--force-with-lease</code> on the old head).</li><li>Worker <code translate="no">PATH</code> (#965): a satellite service started by ssh or launchd has a short <code translate="no">PATH</code>; its
+workers get the agent&#39;s folder, the service&#39;s <code translate="no">PATH</code>, the login shell&#39;s folders and the known
+install folders that exist (<code translate="no">~/.local/bin</code>, <code translate="no">~/.cargo/bin</code>, Homebrew, ...), so the agent and the
+tools it calls are found as in a terminal.</li><li>Failed remote starts are sorted by who answered (#965): a satellite that answered with a
+reason was reached, its fault is the reason&#39;s class (<code translate="no">agent_missing</code>, <code translate="no">agent_login</code>,
+<code translate="no">no_checkout</code>, <code translate="no">start_failed</code>, <code translate="no">outdated</code>); only no answer at all is <code translate="no">unreachable</code>. Each class pauses new
+workers on that machine once (one notice per machine, not per issue) and names the machine,
+the agent, the repository and one action there (&quot;update Gitoodo there&quot; for an outdated build);
+&quot;restart the service&quot; is offered only for this computer. An unreachable
+machine gives no notice: nobody can fix it from here, it is retried by itself, the work goes
+to the other machines, and Settings → Worker machines shows it offline.</li><li><code translate="no">gitoodo attach [&lt;host&gt;] &lt;issue&gt;</code>: raw terminal, detach with Ctrl-], the worker keeps running.</li><li>Questions: <code translate="no">gitoodo ask</code> on a satellite (<code translate="no">GITOODO_SATELLITE=1</code>) asks the service, which forwards
+it on the main host&#39;s subscription; the main host posts and confirms, then the worker is parked.</li><li>Context: <code translate="no">gitoodo worker context</code> on a satellite asks the service, which forwards it on the same
+subscription (<code translate="no">ContextForward</code>); the main host reads the issue with its own token, only while
+its lease says the worker runs on that machine, and sends the JSON back (<code translate="no">ContextDone</code>, at most
+1 MB). The satellite never sees a token.</li><li>Umbrella close (#1816): <code translate="no">gitoodo worker close --summary &lt;text&gt;</code> on a satellite asks the service,
+which forwards it on the same subscription (<code translate="no">CloseForward</code>); the main host checks and closes the
+umbrella issue with its own token, only while a live lease says the worker runs on that machine,
+and confirms (<code translate="no">CloseDone</code>). The service then ends the worker without an exit record, and the
+main host ends the run as <code translate="no">closed</code>. See <code translate="no">docs/orchestrator/dispatcher.md</code>, &quot;Umbrella issues&quot;.</li><li>Hooks: <code translate="no">gitoodo hook stop|stop-failure|status-line|activity|tool-start|tool-end|needs-you</code> on a satellite (<code translate="no">GITOODO_SATELLITE=1</code>)
+sends <code translate="no">hook</code> to the service instead of a dispatcher socket (see &quot;Hook events&quot; below); the
+live state (<code translate="no">docs/orchestrator/dispatcher.md</code>, &quot;Live state of a session&quot;) goes to the host in
+the worker&#39;s facts.</li></ul>
+<h2 id="remote-worker-lifecycle">Remote worker lifecycle<a class="docs-anchor" href="#remote-worker-lifecycle" aria-label="Remote worker lifecycle" data-testid="docs-md-anchor-remote-worker-lifecycle">#</a></h2>
+<ul><li>The satellite records workers that end on their own and measures output silence. The main host
+polls with <code translate="no">report</code> (exits are drained, so each is delivered once) and applies the same hang
+policy as for local workers: silence for the timeout restarts the worker (a <code translate="no">spawn</code> without
+<code translate="no">prepare</code>, in the worktree that already exists there), after the maximum it is <code translate="no">stalled</code>.</li><li><code translate="no">report</code> also carries the satellite&#39;s own subscription usage. The satellite starts reading it
+(keychain, usage endpoint, <code translate="no">codex app-server</code>) with the first <code translate="no">report</code>, not at service start, so
+a satellite no main host talks to stays idle and small (#769).</li><li>A login that no longer works is reported apart from a reached limit (#994): the agent&#39;s
+<code translate="no">usage.problem</code> is <code translate="no">not_signed_in</code> and no old values stand for it. The satellite says so only on
+the agent&#39;s own word: Codex&#39;s <code translate="no">account/rateLimits/read</code> answers with an auth error, or Codex
+says so in a notification or on its stderr while the query fails (&quot;could not be refreshed&quot;,
+&quot;sign in again&quot;, a rejected refresh token, HTTP 401, &quot;authentication required&quot;); Claude&#39;s usage
+endpoint refuses a token that has not expired yet (401/403). A query that only times out or
+fails otherwise stays unknown. Such a login typically still passes <code translate="no">codex login status</code>
+(&quot;Logged in&quot;) after its refresh token was revoked. The main host then waits with
+<code translate="no">login_expired</code> (&quot;the agent&#39;s login there no longer works; sign in again on that machine&quot;)
+instead of <code translate="no">usage_gate</code> for that agent there; with the worker pool it names this reason over a
+usage limit of the other agent, because only a person ends it. After signing in again the next
+query (at most five minutes later) clears it.</li><li>A worker that exits on its own is handled like a local one (finish/merge flow). A worker killed
+by the main host leaves no exit record.</li><li><code translate="no">report</code> carries what the workers there used (#1859, <code translate="no">crates/cli/src/satellite_spend.rs</code>): the
+satellite reads a run&#39;s tokens from the agent&#39;s session log in its worktree with the same
+readers as the dispatcher (<code translate="no">docs/agents.md</code>), at every run end (own exit, idle exit, close,
+kill) and every ten minutes for runs still going, plus Claude Code&#39;s status-line cost that the
+worker&#39;s hook hands over. Each reading goes out as <code translate="no">spend</code> (run, agent, from, at, tokens, cost,
+the billing read there, and <code translate="no">owner</code>, the main host that started the run) and is repeated in
+every report for 15 minutes after the run ended, so a lost reply loses nothing; a restarted run
+keeps its first start and its cost for two days. <code translate="no">billing</code> names, per agent, what the login
+files there say (cached for five minutes). The main host takes only readings of its own runs,
+stores them in its <code translate="no">agent-spend.json</code> with the machine&#39;s name (a newer reading replaces an
+older one of the same run, so repeats count once) and the machines&#39; billing with them. Both
+fields are optional and they did not raise the protocol version: a satellite of an older build sends
+neither, and the app says its spend is not reported until Gitoodo is updated there.</li></ul>
+<h3 id="memory-entries">Memory entries<a class="docs-anchor" href="#memory-entries" aria-label="Memory entries" data-testid="docs-md-anchor-memory-entries">#</a></h3>
+<p>A worker on a satellite that proposes or disputes a memory entry (<code translate="no">gitoodo worker remember|dispute</code>,
+#2073) sends the <code translate="no">memory</code> request to the satellite service; the memory file is the main host&#39;s, so
+the service forwards it on its subscription (<code translate="no">memory_forward</code>) and the main host answers with
+<code translate="no">memory_done</code>. These requests raised the protocol to 5: a satellite of an older build cannot serve
+them and counts as outdated until it is updated.</p>
+<h3 id="hook-events">Hook events<a class="docs-anchor" href="#hook-events" aria-label="Hook events" data-testid="docs-md-anchor-hook-events">#</a></h3>
+<p>A satellite has no dispatcher, so a worker&#39;s <code translate="no">gitoodo hook &lt;event&gt;</code> there talks to the satellite
+service (<code translate="no">satellite.sock</code>, on Windows its named pipe) with the dispatcher&#39;s <code translate="no">hook</code> request
+(<code translate="no">issue</code>, <code translate="no">event</code>, <code translate="no">usage</code>). The service holds the worker&#39;s terminal, knows its delivery and reads
+its own agent login, so it applies the event itself, exactly as the dispatcher does for a local
+worker (<code translate="no">crates/cli/src/satellite_turns.rs</code>; locally <code translate="no">Hub::hook</code> and <code translate="no">Hub::check</code>):</p>
+<ul><li>Every hook is a sign of life: <code translate="no">report.silent</code> counts from the later of the last output and the
+last hook, which the main host&#39;s hang policy reads.</li><li><code translate="no">stop</code> without a result (no pull request yet) is looked at after the same 30 s grace: a worker
+stopped at its usage limit (this machine&#39;s lock or a blocked Codex report; a window at 100 %
+alone is no stop) whose reset is at most 30 minutes away or unknown keeps its slot
+(<code translate="no">satellite.worker_limit_wait</code>; Claude Code&#39;s login is locked and <code translate="no">continue</code> follows at the
+lock&#39;s end, Codex gets <code translate="no">continue</code> once its login is no longer stopped); one a person typed into
+lately (attached from the main host) is marked <code translate="no">idle</code>; one at a limit whose reset is further off
+ends (<code translate="no">satellite.worker_limit_idle</code>); the others get the reminder once
+(<code translate="no">satellite.worker_nudged</code>; it names <code translate="no">gitoodo worker pr</code> and <code translate="no">gitoodo ask</code>, the ways a
+satellite worker has) and end at the next such turn end (<code translate="no">satellite.worker_idle</code>). 5 minutes
+without output and hook from Claude Code or Codex get the reminder too, once, but never the end:
+the main host&#39;s hang policy decides then. A worker being ended gets nothing typed any more.</li><li>Such an end goes in this order: the process is killed and its end awaited, so nothing writes to
+the worktree any more; then what was not committed becomes one <code translate="no">WIP:</code> commit on the assigned
+branch (with the same rules for new files and the same branch and rebase checks as on the main
+host) and the branch is delivered through the main host as with <code translate="no">gitoodo worker push</code>
+(<code translate="no">satellite.idle_save_failed</code>, <code translate="no">satellite.idle_push_failed</code> when that fails; the work then stays
+in the worktree there). A worker that changed nothing beyond the base has nothing to deliver;
+that counts as saved. While this runs the worker is reported as not silent, so the main host&#39;s
+hang policy does not restart it in the middle. Only then the worker&#39;s entry goes and its exit
+record says why (<code translate="no">ended</code>: <code translate="no">limited</code>, or <code translate="no">idle</code> after the reminder and whenever the delivery
+failed or a new file named like a secret stayed behind): the main
+host neither restarts nor kills the worker; at the limit it frees the slot, holds that agent off
+the issue until the reset and sends the issue back into the queue, otherwise the issue stalls
+with <code translate="no">no_result</code>. <code translate="no">activity</code> and <code translate="no">stop-failure</code> cancel a pending look.</li><li>Mixed builds: an older main host ignores <code translate="no">ended</code> and takes such an exit as one without a pull
+request (a restart, the work already on the branch); an older satellite never ends an idle
+worker this way, so the main host&#39;s hang policy watches it as before. The automatic update
+(#1181) brings both to the same build.</li><li><code translate="no">stop</code> after the pull request (<code translate="no">gitoodo worker pr</code> confirmed by the main host) ends the worker
+(Claude Code, Codex; <code translate="no">satellite.worker_finished</code>), and its exit record says code <code translate="no">0</code>, so the main
+host merges at once as for a local worker. A Codex <code translate="no">stop</code> asks this machine&#39;s Codex limits again
+(at most every 30 s).</li><li><code translate="no">stop-failure</code> marks the worker <code translate="no">limited</code> and locks this machine&#39;s Claude login
+(<code translate="no">Tracker::limit_reached</code>); <code translate="no">status-line</code> brings the status line&#39;s usage windows. Both go into the
+next usage round, so they show in <code translate="no">report.providers</code>; the lock outlives the next usage query
+until a report shows room or its end passes. At the end the worker gets <code translate="no">continue</code>
+(<code translate="no">satellite.worker_continued</code>).</li><li><code translate="no">list</code> carries the satellite&#39;s <code translate="no">idle</code>, <code translate="no">limited</code> and <code translate="no">limited_until</code> (this machine&#39;s lock end).
+The main host shows them on the worker&#39;s tile and does not take a <code translate="no">limited</code> worker&#39;s silence for
+a hang (<code translate="no">login_locked</code>), as for a local worker. The main host&#39;s own usage figures stay its own:
+a satellite&#39;s status line describes the satellite&#39;s login.</li></ul>
+<p>Robustness: the state lives on the satellite, so nothing is lost while the main host is away; it
+reads the result with its next <code translate="no">list</code> and <code translate="no">report</code>. The hook waits at most 3 s for the service and
+never fails or prints; no service, a busy one or an older one that refuses <code translate="no">hook</code> (<code translate="no">bad request</code> or
+&quot;does not handle&quot;) is silent, as a missing dispatcher is locally. An older satellite sends nothing
+and lists no states, so the main host behaves as before; an older main host ignores the states.
+The events carry an issue key, the event&#39;s name and usage percentages, never a token or a path.</p>
+<ul><li>A run the main host tracks is not released as vanished for 45 s after start, so a slow poll
+cannot drop a fresh worker. Unreachable satellites keep the lease grace rules above.</li><li>Run state of remote workers is kept in <code translate="no">&lt;state&gt;/remote-runs.json</code> on the main host (no
+environment, so no token), written right after each start and restart and after every poll.
+Updating the main host&#39;s app or dispatcher does not touch a satellite&#39;s workers: they run on the
+satellite, and the new dispatcher takes them over from that file before its first poll
+(<code translate="no">dispatch.remote_reattached</code>), with their lease, start time, start command and restarts, so
+their exits, hangs, idle and limit ends, delivery and cleanup are handled as before, and they
+show in the overview (see
+<a href="../dispatcher/#workers-survive-an-update-965" data-testid="docs-md-link-2">dispatcher</a>). Before this file existed a restart
+left them running unseen: their lease was renewed forever, their slot stayed taken, the
+automatic update waited for them and unknown usage there held the machine back.</li></ul>
+<h3 id="workers-no-main-host-owns">Workers no main host owns<a class="docs-anchor" href="#workers-no-main-host-owns" aria-label="Workers no main host owns" data-testid="docs-md-anchor-workers-no-main-host-owns">#</a></h3>
+<p>Each main host has a stable id for its satellites (<code translate="no">dispatcher_rpc::main_host_id</code>: its machine
+name and a short hash of its state folder, so a restart keeps it and a second instance on the same
+machine differs). It starts every worker under that id (<code translate="no">spawn</code> field <code translate="no">owner</code>) and, after every
+<code translate="no">report</code>, sends <code translate="no">claim</code> with its id and the issues of the workers it supervises on that machine
+(its tracked runs; none before it took over its predecessor&#39;s). The satellite keeps the presence
+of each main host apart and notes per worker its owner and when that owner last named it.</p>
+<p>A worker is an orphan (<code translate="no">satellite.worker_orphaned</code>) only when its own main host keeps polling
+(its last claim at most 2 minutes old, <code translate="no">CLAIM_PRESENT_SECS</code>) and has not named it for 15 minutes
+(<code translate="no">CLAIM_ORPHAN_SECS</code>; counted from the later of the worker&#39;s start or last claim and the start of
+that polling, so a main host back from a sleep has the full time). The claims of another main host
+never touch it: two main hosts sharing a satellite, or an old and a new install during a rollout,
+cannot end each other&#39;s workers. The satellite ends an orphan like an idle worker: the process
+first, then a commit of what was not committed (<code translate="no">WIP: unfinished work, saved when no main host supervised the run any more</code>; main hosts only read the <code translate="no">WIP:</code> prefix) and the delivery through the
+main host (which accepts it while the worker&#39;s lease is still there), then the slot frees, so an
+update waiting for the workers can go on. Its exit says <code translate="no">idle</code>, which every main host understands.</p>
+<p>Nothing ends:</p>
+<ul><li>while no main host claims at all, or while the owner is asleep or offline (not polling);</li><li>for a worker without an owner: one started by an older main host, which never sends <code translate="no">claim</code> (an
+older satellite answers it with an error, after the poll&#39;s other requests). A <code translate="no">claim</code> without an
+id changes nothing either;</li><li>when a main host&#39;s id changes (renamed machine, moved state folder): its next claim names its
+workers under the new id, and the satellite moves them over;</li><li>when a satellite is renamed in the settings: the main host claims the workers it recorded under a
+name no longer configured on every satellite. Until the next dispatcher start their runs keep the
+old name, so their exits and hangs are not seen; after a restart the takeover drops them (the
+lease names the old machine) and the satellite&#39;s claims run out, so they end as orphans with
+their work saved.</li></ul>
+<ul><li>Worktrees on the satellite carry the ownership marker; <code translate="no">hygiene_scan</code> and <code translate="no">hygiene_apply</code> let the
+main host clean them up, and the satellite runs its own safe round (see <a href="../repo-hygiene/" data-testid="docs-md-link-3">repo hygiene</a>).</li><li>The satellite frees its disk by itself like the main host (#1675): build output of ended and
+waiting runs in its worktrees, then caches and old temp files, scheduled and at once when its
+disk runs low, under the main host&#39;s cleanup settings (<code translate="no">HygieneScope.cleanup</code>) and with the
+worktrees the main host holds (<code translate="no">HygieneScope.held</code>); both fields are optional, so older main
+hosts and satellites keep working (see <a href="../repo-hygiene/" data-testid="docs-md-link-4">repo hygiene</a>, &quot;On a satellite&quot;).</li><li>What only the user may remove there (build output of other projects, also ad-hoc checkouts
+right in the home folder) comes with the satellite&#39;s disk report as suggestions (#1680); the
+Storage page lists them per machine, and a confirmed one goes with <code translate="no">suggestion_remove</code> after
+the satellite checked it once more. The satellite also removes the scratch folders
+(<code translate="no">~/.gitoodo-scratch/&lt;run&gt;</code>) of ended runs that workers of other machines checked there over
+ssh, and first ends what such a check left running after its run ended (#1931; see
+<a href="../storage-cleanup/" data-testid="docs-md-link-5">automatic disk cleanup</a>).</li></ul>
+<h3 id="updating-a-satellite-965">Updating a satellite (#965)<a class="docs-anchor" href="#updating-a-satellite-965" aria-label="Updating a satellite (#965)" data-testid="docs-md-anchor-updating-a-satellite-965">#</a></h3>
+<p>A satellite keeps its run state in memory, and its workers are children of the satellite process
+(not hosted like the main host&#39;s). An update therefore never ends the service while a worker runs
+there: installing replaces only the file, and the long-running service takes up the new build
+once it is idle (see &quot;Build identity&quot; below). A service that ends anyway (a reboot) loses nothing
+and runs nothing twice: the worktrees stay on the satellite, the main host no longer finds the
+runs in the satellite&#39;s list and releases their leases (after the 45 s start grace and the
+unreachable grace while the satellite is away), and the issues go back into the queue with their
+worktrees and commits kept on the satellite.</p>
+<h4 id="waiting-workers-never-hold-an-update-back">Waiting workers never hold an update back<a class="docs-anchor" href="#waiting-workers-never-hold-an-update-back" aria-label="Waiting workers never hold an update back" data-testid="docs-md-anchor-waiting-workers-never-hold-an-update-back">#</a></h4>
+<p>&quot;Once it is idle&quot; must not mean &quot;never&quot;: a worker paused at its usage limit (a weekly limit can
+last days), idle at a turn end or waiting for a person runs no work, yet it kept the service
+on the old build, and with it the sign-in only the new build takes (a deadlock: the old build
+closes the connection on <code translate="no">Request::Logins</code>, so the paused worker never got the sign-in that would
+end its pause). The dispatcher (<code translate="no">crates/cli/src/dispatcher_resume.rs</code>) therefore:</p>
+<ul><li><strong>Drains.</strong> When a satellite reports <code translate="no">updating</code> (the installed build waits) and every worker it
+lists is this dispatcher&#39;s, has a start command and is parked there (<code translate="no">limited</code>, <code translate="no">idle</code> or
+<code translate="no">held</code>), it ends them with <code translate="no">Request::Kill</code> (<code translate="no">dispatch.update_drained</code>). The runs stay tracked
+(marked ended before the kill, so their exit is not taken for the end of their work) and
+their leases are renewed while the machine answers. With no worker left, the service takes up
+the new build within a minute (<code translate="no">watch_binary</code>), also on an older build.</li><li><strong>Upper bound (#1464).</strong> An installed update waits at most 10 minutes (<code translate="no">FORCE_SECS</code>) for the
+workers there. Then every worker of this dispatcher there is drained the same way, also one
+that still works and whatever state the machine reports (an older build reports none):
+<code translate="no">dispatch.wait_stuck</code> (<code translate="no">wait = machine_update</code>). Each resumes its own session on the new build
+right after the switch (below), so its step goes on where it stopped. A worker of another
+dispatcher is never ended; nobody here could resume it. The wait is counted across restarts
+of the dispatcher (<code translate="no">update-waits.json</code> in its state folder; one older than 6 hours counts
+anew), so app updates in a row never start the 10 minutes over.</li><li><strong>Resumes.</strong> Once the machine runs the new build (not <code translate="no">outdated</code> any more), each drained run
+starts again in its worktree with <code translate="no">Request::Spawn</code>&#39;s <code translate="no">resume</code> (<code translate="no">dispatch.update_resumed</code>),
+after this computer&#39;s sign-ins were pushed: Claude Code continues its session with
+<code translate="no">--resume &lt;id&gt;</code> (the id preset at the start with <code translate="no">--session-id</code>; for a worker started without
+one, its newest session in the worktree), Codex with <code translate="no">codex resume &lt;id&gt;</code> (its newest session
+log in the worktree since the run&#39;s start), each with the resume prompt instead of the brief.
+Where no session is found, the worker starts afresh in the same worktree, with its commits and
+files kept (<code translate="no">satellite.resume_missing</code>). A machine that does not come back on the new build
+within 30 minutes gets its workers back anyway on the build it runs. The restart is not counted
+as one after a hang.</li><li><strong>Resolver runs</strong> are drained the same way but not resumed in place: the attempt goes back into
+the resolver&#39;s queue without costing one of its starts and starts again like any waiting one,
+in a system slot within the limits, on any machine with room (<code translate="no">resolver.requeued</code>,
+<code translate="no">cause = machine_update</code>; <code translate="no">docs/orchestrator/resolver.md</code>).</li></ul>
+<p>A process cannot be handed from the old service to the new one (the PTY master closes with the
+service), so resuming the agent&#39;s own session is how the conversation is kept. The same restart
+also picks up an agent CLI that updated itself on disk meanwhile. A drained run that a restart of
+this dispatcher interrupts is not taken over (its record says it ended); its lease runs out and
+the issue goes back into the queue with its worktree kept.</p>
+<h3 id="build-identity-and-outdated-builds">Build identity and outdated builds<a class="docs-anchor" href="#build-identity-and-outdated-builds" aria-label="Build identity and outdated builds" data-testid="docs-md-anchor-build-identity-and-outdated-builds">#</a></h3>
+<p>Every development build reports the same version (<code translate="no">0.1.0</code>), so a version string cannot tell an
+old build from a new one. A machine that kept an older CLI then failed starts with errors from
+code it lacked (<code translate="no">git fetch origin dev failed: fatal: cannot change to &#39;~/gitoodo/repos/...&#39;</code>).
+Builds are therefore compared by their identity, the SHA-256 of the executable
+(<code translate="no">crates/core/src/build_id.rs</code>):</p>
+<ul><li>Each long-running process (satellite service, dispatcher) measures its own build once at start,
+before an update could replace the file. The app compares with the CLI it installs on machines
+(the <code translate="no">gitoodo</code> next to it), not with its own binary.</li><li><code translate="no">hello</code> replies carry <code translate="no">build</code> (the satellite&#39;s running build), <code translate="no">arch</code> (its processor) and, while
+an installed update waits for the workers, <code translate="no">installed</code> (that build). All three are optional;
+older satellites omit them.</li><li>Comparison (<code translate="no">satellite::compare_builds</code>): another version string fails the handshake as before.
+With the same version on the same system and processor, the builds must match; a satellite that
+names no build is too old to and counts as outdated. On another system the release build of the
+version is installed, so the version alone decides there.</li><li>An outdated satellite stays connected: lists, reports, kills and branch updates of the workers
+running there go on, but <code translate="no">spawn</code> is refused before it is sent, with an <code translate="no">outdated build: ...</code>
+reason. A request an older satellite does not understand (<code translate="no">bad request: ...</code>) is reported the
+same way, never as a git or copy error.</li><li>The update window is not a fault (#1463). A new start refused for it ends its run
+<code translate="no">update_pending</code> and the issue goes back into the queue for another machine; nothing is paused.
+A restart or resume refused for it waits (<code translate="no">dispatch.update_hold</code>) and is retried with every
+dispatcher round; after 30 minutes it gives up the machine and starts again where there is
+room, unless the update provably goes on (#1466): a build there that reported within the last
+two minutes and compiled a new crate within 20, or an installed build waiting less than 15
+minutes for its switch. Hard bound: 2 hours 15 minutes (the longest build and the switch). Past
+it the issue starts elsewhere or on the build the machine runs; the machine&#39;s row keeps saying
+that it builds, and is never shown as a fault for it. The machine&#39;s own update is the fleet watcher&#39;s (below). A fault an older dispatcher
+left with an <code translate="no">outdated build</code> reason ends as soon as the machine runs this build.</li><li>The handshake also carries <code translate="no">commit</code> (the Git commit the build was made from, embedded by
+<code translate="no">crates/core/build.rs</code>; <code translate="no">GITOODO_COMMIT</code> overrides it for builds from an archive) and
+<code translate="no">protocol</code> (<code translate="no">dispatcher_rpc::PROTOCOL</code>, raised with every change of the requests and replies; a
+test pins their source to the number). On another system the hashes never match, so there the
+commit and the protocol decide: another commit (or none, from an older satellite) or another
+protocol is outdated as well (#1435), since every dev build has the same version. Such a
+machine gets no new worker until it was updated by itself (built from this commit there, see
+below); workers running there go on. The machine list shows the commit, short, as
+&quot;Build&quot;.</li><li>An outdated machine whose protocol matches still restarts its workers in place: a <code translate="no">spawn</code>
+without a fresh checkout (<code translate="no">prepare: None</code>, the restart of a parked or ended worker) is sent to
+the old service, only a new checkout is refused (#1463).</li><li><code translate="no">host_version</code> hashes the installed file too (<code translate="no">sha256sum</code>/<code translate="no">shasum -a 256</code>,
+<code translate="no">Get-FileHash</code> on Windows) and reports <code translate="no">other</code> with <code translate="no">other_build: true</code> for the same version
+with another build on this system; the assistant then says &quot;an older build&quot; instead of naming
+two equal versions.</li></ul>
+<p>Taking up an update without stopping workers:</p>
+<ul><li>After an install the app runs <code translate="no">gitoodo satellite --restart-idle</code> there. It prints one
+<code translate="no">restart=&lt;word&gt;</code> line: <code translate="no">none</code> (no service ran), <code translate="no">current</code> (it already runs the installed
+build), <code translate="no">done</code> (the idle service ended, the next connection starts the new one), <code translate="no">busy</code>
+(workers run; the service takes it up after them) or <code translate="no">unsupported</code> (an older service on
+Windows that cannot be ended from outside; it takes the update up when it ends).</li><li><code translate="no">restart_service</code> asks the service to end; it answers <code translate="no">ok</code> only while no worker runs and then
+ends, otherwise a <code translate="no">busy:</code> error. An older service that does not know the request is ended with
+<code translate="no">SIGTERM</code> (its peer process id from the socket) after a second <code translate="no">hello</code> showed no workers.</li><li>The service also checks its own file every 60 seconds; once another build is installed it
+reports it as <code translate="no">installed</code> and ends as soon as no worker runs, so a machine updated while busy
+needs no further step.</li><li>The machine list shows &quot;Updating automatically …&quot; for such a machine and for every outdated
+machine the dispatcher updates by itself (no button), &quot;Needs update&quot; with &quot;Update&quot; only where
+that failed or no dispatcher runs, and &quot;Up to date&quot; otherwise; the version is the chip&#39;s
+tooltip.</li></ul>
+<h3 id="automatic-update-1181">Automatic update (#1181)<a class="docs-anchor" href="#automatic-update-1181" aria-label="Automatic update (#1181)" data-testid="docs-md-anchor-automatic-update-1181">#</a></h3>
+<p>Worker machines are kept on the shipped build without a click. The dispatcher&#39;s fleet watcher
+(<code translate="no">crates/cli/src/fleet.rs</code>) shakes hands with each satellite every 20 seconds anyway; the
+decision and its memory live in <code translate="no">crates/core/src/satellite_update.rs</code> (pure, tested with a fake
+<code translate="no">ssh</code>/<code translate="no">scp</code> and a mocked release download):</p>
+<ul><li>Trigger: a <code translate="no">hello</code> that fails with another build or version (<code translate="no">need_of</code> → <code translate="no">Update</code>). A machine
+that already runs this build, or whose service already holds the installed update and waits for
+its workers (<code translate="no">updating</code>), is left alone. A machine that runs a newer version than the app is
+never downgraded (<code translate="no">Newer</code>); &quot;Update&quot; in Settings still lets the user do it by hand.</li><li>Install: the same verified path as the app (<code translate="no">remote_version::update</code>). On the same system the
+dispatcher copies its own CLI (<code translate="no">build_id::own_cli</code>, only while the file still is the build that
+runs; after an app update the app restarts the dispatcher with the new one); on another system
+it downloads the release build in Rust and checks its SHA-256 first. Either way the upload goes
+to <code translate="no">gitoodo.upload</code>, is checked by hash on the machine and only then moved over the old file,
+which keeps serving until then; a failure leaves the installed build untouched.</li><li>Switch: <code translate="no">gitoodo satellite --restart-idle</code>. Working workers are not ended at once; a busy machine
+takes the installed build up after them (phase <code translate="no">waiting</code>), at the latest after 10 minutes (the
+upper bound above: they are ended and resume their sessions on the new build).
+Workers that only wait (usage limit, turn end, a person) are ended and resume after the
+switch (&quot;Waiting workers never hold an update back&quot; above).</li><li>The CLI copied is always the file whose hash is the reference build: on macOS the app
+bundle&#39;s <code translate="no">Contents/MacOS/gitoodo</code>, not the service helper&#39;s own copy, which is signed apart
+and has another hash. An install that reports success but is followed by another build at the
+next poll counts as a failure (<code translate="no">still_outdated</code>), so it is never repeated in a loop.</li><li>One install per machine at a time. A failure retries after 1, 2, 5, 10 and then every 15
+minutes. The first two failures stay quiet; the third brings one notice that says in plain
+words what failed (copy, checksum, download, …) and keeps &quot;Update&quot; in Settings → Worker machines
+as the manual retry. No further notice follows until it works.</li><li>Another system (#1435): a release build downloads the release asset. Any other build is made on
+the machine from this build&#39;s source (<code translate="no">crates/core/src/remote_build.rs</code>): <code translate="no">git archive</code> of the
+commit (workspace manifest, lock file, <code translate="no">crates/</code>, <code translate="no">src-tauri/</code>) is copied to
+<code translate="no">~/.cache/gitoodo-build/</code>, built there with <code translate="no">cargo build --profile satellite --locked -p gitoodo-cli</code> and
+<code translate="no">GITOODO_COMMIT</code> set (#1927: <code translate="no">[profile.satellite]</code> is release code without fat LTO and with
+parallel, incremental code generation, so an update recompiles in minutes what changed instead
+of linking the whole program on one core for 20 minutes and more), and installed through the same checked <code translate="no">gitoodo.upload</code> path. A marker
+(<code translate="no">installed-commit</code>) keeps a built commit from being built twice. While it builds the machine
+list says so (<code translate="no">building</code> in <code translate="no">machine_updates</code>, with <code translate="no">build_step</code>, the crates compiled so far:
+&quot;builds the update (step 212)&quot;), and running workers go on.
+One build at a time uses that folder, whichever computer started it (#1466): a <code translate="no">lock</code> folder
+there, made with one atomic <code translate="no">mkdir</code>, names its holder and carries a beat (<code translate="no">&lt;unix seconds&gt; &lt;steps&gt;</code>) that the build renews every 5 seconds while <code translate="no">cargo</code> runs; the controller reads it
+every 30 seconds. A second computer waits for it calmly (<code translate="no">satellite.build_lock_wait</code>) and
+builds nothing when the first one installed the same commit. A lock without a beat for 5
+minutes was left behind (a crash, a cut connection) and is taken over
+(<code translate="no">satellite.build_lock_stale</code>); a build whose lock was taken over stops. Windows keeps a build
+running after its connection was cut, and its open files keep the folder from being unpacked:
+with the lock held, a build there first ends the builds that still work in the folder (their
+program or command line names it) with their process tree (<code translate="no">satellite.build_foreign_ended</code>). A build that takes
+longer than 2 hours, the wait for the folder included, counts as failed. Without <code translate="no">cargo</code>
+there (<code translate="no">no_toolchain</code>), with a failing build (<code translate="no">build_failed</code>, with the last lines of its log)
+or without the source (<code translate="no">no_source</code>, an app not built from a checkout) it is one notice with
+what to do; &quot;Install Rust there once&quot; for a missing toolchain.</li><li>No build for the machine (an Intel Mac, a system without a release asset, a missing asset):
+one notice, and no automatic attempt again until the dispatcher restarts.</li><li>Switch point: a service that holds an installed build checks every 2 seconds whether its last
+worker ended and then ends (instead of every 60 seconds), and the fleet watcher asks it with
+<code translate="no">--restart-idle</code> once a minute while it waits (<code translate="no">satellite.switch_asked</code>). A machine offline
+meanwhile is asked again once it answers; an install is never repeated for a waiting machine.</li><li>The dispatcher status (<code translate="no">machine_updates</code>) lists each machine&#39;s phase (<code translate="no">updating</code>, <code translate="no">waiting</code>,
+<code translate="no">retrying</code>, <code translate="no">failed</code>, <code translate="no">no_build</code>, <code translate="no">newer</code>), reason and next attempt; the app reads it for the
+machine list. While the update is automatic, the <code translate="no">outdated</code> fault is left out of the status
+page and its notice.</li><li>Fault texts (#1466): the app words every machine fault itself, by its kind and <code translate="no">cause</code>
+(<code translate="no">fault::cause_of</code>, e.g. <code translate="no">start_confirmation</code>); the English reason shows only as the tooltip of
+the fault line in the machine list. A status notice and a notification come only where the
+user has something to do: a missing or signed-out agent, an update that is stuck, or a start
+or copy that failed three times in a row (<code translate="no">NOTICED_FAILURES</code>); a first failure is retried
+quietly. A start confirmation also counts only from its third time in a row, never by age
+alone (#1703): Gitoodo marks every worktree trusted before the start, so a single prompt is a
+passing race on the agent&#39;s config file.</li></ul>
+<h2 id="install-and-upgrade-gitoodo-host-install-name">Install and upgrade: <code translate="no">gitoodo host install &lt;name&gt;</code><a class="docs-anchor" href="#install-and-upgrade-gitoodo-host-install-name" aria-label="Install and upgrade: gitoodo host install &lt;name&gt;" data-testid="docs-md-anchor-install-and-upgrade-gitoodo-host-install-name">#</a></h2>
+<p>Uses the system <code translate="no">ssh</code>/<code translate="no">scp</code> only (<code translate="no">BatchMode</code>, no stored secrets). On a Windows machine every step
+is the PowerShell equivalent (see &quot;Windows machines&quot; below). Steps: <code translate="no">uname -sm</code> must match
+this build&#39;s OS and CPU, upload to <code translate="no">.local/bin/gitoodo.upload</code>, compare the SHA-256 computed on the
+satellite with the local one, only then move it over <code translate="no">.local/bin/gitoodo</code>, and finish with a
+handshake. A mismatch deletes the upload and leaves the installed binary untouched. On a version
+mismatch <code translate="no">host add</code> points to this command as the upgrade.</p>
+<h3 id="version-check-and-other-systems-in-the-app-441">Version check and other systems in the app (#441)<a class="docs-anchor" href="#version-check-and-other-systems-in-the-app-441" aria-label="Version check and other systems in the app (#441)" data-testid="docs-md-anchor-version-check-and-other-systems-in-the-app-441">#</a></h3>
+<p><code translate="no">host_version</code> runs one command on the machine (<code translate="no">uname -sm</code> and <code translate="no">gitoodo --version</code>, from <code translate="no">PATH</code>
+or <code translate="no">~/.local/bin</code>) and reports <code translate="no">same</code>, <code translate="no">missing</code> or <code translate="no">other</code> plus where an install comes from
+(<code translate="no">crates/core/src/remote_version.rs</code>):</p>
+<ul><li><code translate="no">this_build</code>: same system and processor, the app copies its own CLI as above.</li><li><code translate="no">release</code>: another supported system (macOS on Apple silicon, Linux x86_64/aarch64, Windows
+x86_64). The app
+downloads <code translate="no">{base}/v{version}/gitoodo-{triple}</code> and <code translate="no">gitoodo-{triple}.sha256</code> in Rust (size
+capped, no tokens), compares the SHA-256 before anything is copied and then uses the same
+verified upload. <code translate="no">base</code> is <code translate="no">GITOODO_RELEASE_URL</code> at build time, by default the GitHub releases
+download URL. The release pipeline must publish both assets per target triple.</li><li><code translate="no">intel_mac</code>: a Mac with an Intel processor. Gitoodo for macOS runs on Apple silicon only
+(<code translate="no">docs/release.md</code>), so the assistant explains that and offers no install; <code translate="no">update</code> refuses
+with <code translate="no">no_build</code> without downloading. The system is <code translate="no">uname -sm</code>, corrected to <code translate="no">Darwin arm64</code> via
+<code translate="no">sysctl hw.optional.arm64</code> when the login shell runs under Rosetta.</li><li><code translate="no">none</code>: no build for that system; the error <code translate="no">no_build</code> names the system and asks to build
+Gitoodo there and place it at <code translate="no">~/.local/bin/gitoodo</code>. A missing asset (404) is also <code translate="no">no_build</code>,
+any other download failure <code translate="no">download_failed</code>.</li></ul>
+<p>The &quot;Add remote machine&quot; assistant runs the check after connecting and offers install or update
+as its own step, which the user can skip; the machine list offers &quot;Update all&quot; for every machine
+whose probe reports another version or an outdated build and that the dispatcher does not update
+by itself (it failed, or no dispatcher runs). On the same
+system the check also compares the installed file&#39;s hash with this build (&quot;Build identity&quot;
+above), so another build of the same version is offered as an update too.</p>
+<h3 id="machine-suggestions-and-network-search-440">Machine suggestions and network search (#440)<a class="docs-anchor" href="#machine-suggestions-and-network-search-440" aria-label="Machine suggestions and network search (#440)" data-testid="docs-md-anchor-machine-suggestions-and-network-search-440">#</a></h3>
+<p>The address step of the assistant lists machines the user probably means
+(<code translate="no">crates/core/src/discovery</code>, Tauri commands <code translate="no">discovery_known</code>, <code translate="no">discovery_search</code>,
+<code translate="no">discovery_cancel</code> in <code translate="no">src-tauri/src/discovery.rs</code>):</p>
+<ul><li>Right away, without network: hosts from <code translate="no">~/.ssh/config</code> (with <code translate="no">Include</code>, globs and paths
+relative to <code translate="no">~/.ssh</code>; <code translate="no">HostName</code>, <code translate="no">Port</code>, <code translate="no">User</code>, <code translate="no">IdentityFile</code>; wildcard patterns skipped) and
+plain entries from <code translate="no">known_hosts</code>. Hashed <code translate="no">known_hosts</code> entries only mark a suggestion as
+&quot;connected before&quot;, they never add one.</li><li>Only after &quot;Search network&quot;: TCP port 22 on every address of the local subnets, derived from
+the interfaces and capped at /24 (at most 254 addresses per interface; loopback, link-local and
+public addresses skipped), with at most 64 probes at once, 500 ms connect and 1.5 s banner
+timeout; a hit must answer with an <code translate="no">SSH-</code> banner. In parallel the search listens 3 s for mDNS
+<code translate="no">_ssh._tcp</code> and <code translate="no">_sftp-ssh._tcp</code> announcements. Progress reaches the page through a channel;
+&quot;Stop search&quot; sets a cancel flag, no new probe starts and the result so far is kept.</li><li>Suggestions are merged by address and port, keep every source (SSH config, network, connected
+before) and are marked &quot;already added&quot; when a saved machine uses that host. Picking one fills
+name, address, port and user of the manual entry; nothing is saved before the usual steps.</li></ul>
+<h2 id="forge-access-and-assistant-subscriptions">Forge access and assistant subscriptions<a class="docs-anchor" href="#forge-access-and-assistant-subscriptions" aria-label="Forge access and assistant subscriptions" data-testid="docs-md-anchor-forge-access-and-assistant-subscriptions">#</a></h2>
+<p>The satellite has no forge account configuration. Questions reach the forge only through the
+main host (<code translate="no">ask</code> forwarding), tested in <code translate="no">crates/cli/tests/satellite_bridge.rs</code>.</p>
+<p>“Install” also provisions enabled coding assistants, the bundled question skill and Agent Desktop
+with its version-matched skills (desktop control, <a href="../system-permissions/#agent-desktop-desktop-control" data-testid="docs-md-link-6">permissions</a>).
+The app keeps Agent Desktop there current by itself (at start and daily); a failure shows on the
+computer&#39;s card, and on a Mac the person there approves its permissions once. Install copies no
+sign-in (#1259): a copied refresh token works on one machine only, so the next renewal on either
+side would end the other&#39;s sign-in. Worker machines use this computer&#39;s sign-in at run time
+instead (next section). A setup request from an older app that still carries sign-ins is
+accepted and its sign-ins are dropped unread. Install needs access to the official Node.js
+download service and package registry. The destination does not need GitHub access when the app
+carries a matching satellite executable.</p>
+<h3 id="this-computers-sign-ins-on-worker-machines-1259">This computer&#39;s sign-ins on worker machines (#1259)<a class="docs-anchor" href="#this-computers-sign-ins-on-worker-machines-1259" aria-label="This computer&#39;s sign-ins on worker machines (#1259)" data-testid="docs-md-anchor-this-computers-sign-ins-on-worker-machines-1259">#</a></h3>
+<p>Worker machines use the subscriptions of the main computer; nobody has to sign in on each
+machine. For Claude Code and Codex this computer owns every renewal, the worker machines never
+renew; Gemini CLI there renews its own copy (#1408):</p>
+<ul><li><strong>Claude Code</strong>: the current access token of this computer&#39;s own Claude Code login, read from
+Claude Code&#39;s own credential store (macOS: the keychain item <code translate="no">Claude Code-credentials</code>, read
+with the system&#39;s <code translate="no">security</code> tool, which Claude Code itself uses to keep it, so there is no
+approval prompt; Linux and Windows: <code translate="no">~/.claude/.credentials.json</code>). Only the access token, when
+it ends and the fingerprint of its account (from the account and organisation ids in the same
+item) are taken; the refresh token and everything else in the store are never read into the
+grant and never leave this computer. Nothing needs setting up. Claude Code&#39;s access token lasts
+a few hours: every usage round (30 seconds) the dispatcher reads the store again, and when
+Claude Code here renewed its login (a new token), the machines that use it get the new one in
+their next poll. Claude Code renews only in the last five minutes and only while it runs; when
+less than 4.5 minutes are left the dispatcher runs <code translate="no">claude auth status --json</code> here once a
+minute. That command calls no model, and Claude Code renews its own login before it answers
+(checked against Claude Code 2.1.328 with fake credentials behind a local proxy: with less than
+five minutes left it asks Claude&#39;s token endpoint and waits for it; with more it does not). Gitoodo
+never writes Claude Code&#39;s store and never renews with the refresh token itself; Claude Code on
+this computer stays the only one that renews. When the token ends anyway (Claude Code here
+signed out, offline, or the renewal refused), the settings say &quot;Claude Code&#39;s sign-in here ran
+out and Claude Code did not renew it. Meanwhile worker machines signed in with the same
+account use their own sign-in; the others start no Claude Code workers. Start Claude Code here
+once.&quot; Machines signed in with the same account keep their own sign-in; machines signed in
+with another account start no Claude Code worker until the renewed token arrives (#1634). The long-lived tokens of the
+former setup (<code translate="no">claude setup-token</code>, keychain entries <code translate="no">worker-login-claude…</code>) are removed from
+the keychain at the next app start; Claude Code&#39;s tokens themselves stay valid until they end
+and can be ended in the Claude account settings.<p>Terms: Claude Code stays the only program that uses the login, on the person&#39;s own machines,
+with the person&#39;s own subscription; Gitoodo only hands Claude Code its own access token, in
+Claude Code&#39;s own credential format; on the worker machines nothing else uses it.</p></li></ul>
+<ul><li><strong>Codex</strong>: this computer&#39;s own <code translate="no">auth.json</code> (ChatGPT sign-in only, never an API key), with the
+refresh token emptied and <code translate="no">last_refresh</code> set to now. Before it goes out the dispatcher asks
+Codex here to renew its access token when less than a day is left (<code translate="no">account/read</code> with
+<code translate="no">refreshToken: true</code> on its app server); a copy with less than a day left is not sent. Codex
+keeping its sign-in in the system keychain here (<code translate="no">cli_auth_credentials_store = &quot;keyring&quot;</code>)
+cannot be handed on; the settings say so.</li><li><strong>Gemini CLI</strong> (#1408): this computer&#39;s Google sign-in from Gemini CLI&#39;s own login file
+<code translate="no">oauth_creds.json</code> in its home (<code translate="no">$GEMINI_CLI_HOME/.gemini</code>, else <code translate="no">~/.gemini</code>; the same path on
+macOS, Linux and Windows, checked against Gemini CLI 0.70.0). Taken are the access token, when
+it ends (<code translate="no">expiry_date</code>), the refresh token, scope and token type; the identity token (it names
+the person) and everything else stay here. Unlike Claude Code and Codex the refresh token
+travels: Gemini CLI renews its access token about every hour, and Google&#39;s refresh tokens are
+not used up by a renewal, so this computer and the worker machine both renew with the same one
+and neither ends the other&#39;s sign-in. The person chose this in #1408 against the decision of
+#1259, knowing that Google&#39;s terms may not cover it and that a machine that leaks the file
+holds a renewable sign-in until it is ended in the Google account (Security → third-party
+access) or taken back here. The grant&#39;s stamp is that of the refresh token alone, so an access
+token Gemini CLI renewed here or there is nothing new to send; another sign-in here is. Nothing
+is handed on while Gemini CLI keeps its login encrypted here
+(<code translate="no">GEMINI_FORCE_ENCRYPTED_FILE_STORAGE=true</code>), while another sign-in method than the Google
+sign-in is chosen here (<code translate="no">security.auth.selectedType</code>: an API key, Vertex AI, a gateway), or
+while Gemini CLI itself shows its sign-in screen here (signed out, expired or revoked): then
+every machine drops what it holds.</li></ul>
+<p>The dispatcher reads what it can hand on every five minutes (Claude Code: every usage round) and
+at once after a change in the settings, and sends it over the authenticated satellite connection (<code translate="no">Request::Logins</code>, after
+<code translate="no">Claim</code> in each poll) to a machine only when that machine reports the agent signed out, already
+uses the transferred one, reports another account (#1274), or a start there was just refused for a sign-in; before each start on a
+machine it sends what that machine needs first. A machine holds at most one per agent and reports
+which (<code translate="no">Held</code>: agent, a 12-digit SHA-256 stamp, whether its workers use it), never the value; the
+same stamp is not sent twice.
+A machine that does not take it (an older satellite does not know <code translate="no">Request::Logins</code> and ends the
+session; its update waits until its workers are done) is not asked every poll: the dispatcher
+leaves it alone for 5, then 15, then 60 minutes after each refusal in a row, logs the first
+refusal as a warning (<code translate="no">dispatch.login_failed</code>) and the repeats only at debug level, and asks again
+at once when the machine&#39;s handshake reports another build or a sign-in was taken. The user sees
+nothing for this; the machine&#39;s update brings the request along.</p>
+<p>On the worker machine the sign-in is used while the machine&#39;s own does not work or belongs to
+another account (see &quot;Following this computer&#39;s account&quot; below):</p>
+<ul><li>Claude Code: the token goes into a credential store of the service&#39;s own, and the worker gets
+only that store&#39;s folder as <code translate="no">CLAUDE_SECURESTORAGE_CONFIG_DIR</code> (<code translate="no">agent::claude_store</code>). Claude
+Code reads its login from the store that variable names (on macOS a keychain item named after
+the folder, <code translate="no">Claude Code-credentials-</code> and the first eight hex digits of the folder&#39;s SHA-256,
+else <code translate="no">.credentials.json</code> in it), and before each request it compares that file&#39;s modification
+time with the last one it saw and reads its store again when it changed. So each renewed token
+the main computer sends replaces the one in the store at once, and a running worker uses it
+from its next request on: a worker outlives the token it started with, without a restart.
+Settings, history and the machine&#39;s own login stay where they are; the variable moves only the
+credentials. The store holds the access token, when it ends and the scope <code translate="no">user:inference</code>,
+never a refresh token, so Claude Code there never renews or rewrites it and fetches no
+profile with it (the machine&#39;s own <code translate="no">oauthAccount</code> stays). On macOS the token is in the
+keychain item, written through <code translate="no">/usr/bin/security</code> (the program Claude Code reads it with, so
+no approval prompt; the value goes over its standard input, never into a process list), and
+the file holds <code translate="no">{}</code> only, as the signal of a change. Linux and Windows have no system store
+Claude Code reads; there the file holds the token, readable only by the user, in the service&#39;s
+state folder (<code translate="no">claude-sign-in</code>), like Claude Code&#39;s own login file there: mode 0600 in a 0700
+folder on Linux, on Windows a protected DACL with one entry for the user (no inherited SYSTEM or
+administrator entries), set on the staged file before the token is written (#1406). &quot;Stop
+transferring&quot;, removing the machine and <code translate="no">gitoodo satellite --drop-carried</code> empty the store; the
+service also empties it at its start (a store left by an ended or crashed run has no grant
+behind it, the main host sends the sign-in again) and at its end, after stopping the workers.
+Checked against Claude Code 2.1.328 offline, with a local fake API and
+fake tokens: a token replaced during a 25-second tool call was the one the next request
+carried, in the file form and in the keychain form; a token only in the keychain without the
+file signal was not picked up, which is why the file is always rewritten too.<p>The store is filled when a worker needs the token (<code translate="no">claude auth status</code> says signed out
+there, or another account, #1274). Its usage report then carries this computer&#39;s login
+fingerprint, so its workers count against the same limits. A worker starts with it while at
+least two minutes are left (<code translate="no">Grant.expires_at</code>): the renewed token replaces it in the store
+before it ends, and the running worker takes it up. With less, the machine&#39;s own sign-in
+stands in only when it is this computer&#39;s account (or the grant names none) and works; a
+login of another account never stands in (#1634): a worker started with it stayed with that
+account and its limit for its whole run, although this computer&#39;s renewed token arrived
+seconds later. The start is then refused (&quot;Claude Code is not signed in on this machine with
+the main computer&#39;s account: the sign-in handed on from there runs out and the renewed one has
+not arrived yet …&quot;). The dispatcher takes that refusal by its mark (<code translate="no">SIGN_IN_RENEWING</code>) as no
+machine fault and no failed attempt (#1673): the issue goes back into the queue (a restart into
+the deferred restarts, not counted), the usage round runs at once so Claude Code here is asked
+to renew, and the machine takes no Claude Code start until it holds another sign-in than the one
+it refused with (<code translate="no">fleet::RenewalWait</code>; the issue goes to another machine meanwhile). Only a
+refusal after 15 minutes of waiting for the same sign-in (<code translate="no">RENEWAL_WAIT_SECS</code>) counts as a
+fault and is told. On 2026-11-21 that gap took about eleven minutes, and every start in it was
+a failed attempt that paused the machine beyond the renewal. A renewed Claude Code sign-in goes
+to the machines that use it as soon as the usage round reads it, not with their next poll. The
+report goes on naming this
+computer&#39;s account, so the renewed token is sent and no other account&#39;s figures count.
+Only when the store cannot be written (no state folder, the keychain or the file refused) the
+worker gets the token as <code translate="no">CLAUDE_CODE_OAUTH_TOKEN</code>, which Claude Code reads once at its start,
+and only while at least ten minutes are left; such a worker loses its sign-in when it runs past
+the token&#39;s end. A worker also loses it when
+no
+renewed token comes in time (this computer asleep or offline at the end); the next start uses
+the renewed one.</p></li></ul>
+<ul><li>Codex: when Codex says it is signed out there, the copy is written to Codex&#39;s own login file
+<code translate="no">~/.codex/auth.json</code> (its documented file store; readable only by the user, written through a
+temporary file). An existing file is kept once as <code translate="no">auth.json.before-gitoodo</code>, and
+<code translate="no">auth.json.gitoodo</code> notes the stamp of the copy. A newer copy replaces it in place. Without a
+refresh token Codex there cannot renew; this computer sends a fresh copy before it runs out.</li></ul>
+<ul><li>Gemini CLI (#1408): when Gemini CLI shows its sign-in screen there (none, expired or revoked;
+the check before a start and in the usage report, see &quot;Start confirmations and sign-in&quot; in
+<code translate="no">docs/agents.md</code>) or its active Google account (<code translate="no">google_accounts.json</code>) is another than this
+computer&#39;s, the copy is written to Gemini CLI&#39;s own login file <code translate="no">oauth_creds.json</code> the same
+way as Codex&#39;s: owner-only through a temporary file, an existing file kept once as
+<code translate="no">oauth_creds.json.before-gitoodo</code>, the stamp in <code translate="no">oauth_creds.json.gitoodo</code>, and Gemini CLI is
+asked once more with it. A machine that chose another sign-in method than the Google sign-in
+keeps its own. Where no method was ever chosen there, the Google sign-in is chosen in Gemini
+CLI&#39;s <code translate="no">settings.json</code> (<code translate="no">security.auth.selectedType: &quot;oauth-personal&quot;</code>, what its own sign-in
+writes; the other settings stay, a file with comments is left alone), noted in
+<code translate="no">settings.json.gitoodo</code> and taken back on revoke: without it Gemini CLI 0.70.0 shows its method
+chooser in a worker and never reads the file, and its agent mode ends at once without checking
+any sign-in. Neither <code translate="no">GOOGLE_GENAI_USE_GCA</code> (read only in its one-shot mode) nor a defaults
+file through <code translate="no">GEMINI_CLI_SYSTEM_DEFAULTS_PATH</code> (skipped unless its folder belongs to root)
+works for that. Gemini CLI there renews the access token in
+the file itself when it ends (about every hour) and writes it back; the same grant sent again
+leaves that file alone. Expired: the next request renews it, nothing to do. Revoked at Google
+or signed out for good: Gemini CLI shows its sign-in screen with it, the machine refuses the
+start as a sign-in fault, and once Gemini CLI here finds the same, the dispatcher withdraws it
+everywhere and the own file comes back; a new sign-in here goes on as a new grant. Signed out
+here (<code translate="no">/auth</code> sign-out removes <code translate="no">oauth_creds.json</code>): nothing to hand on, every machine drops its
+copy. <strong>Stop transferring</strong> removes the copy and puts the kept file back.</li></ul>
+<h4 id="following-this-computers-account-1274">Following this computer&#39;s account (#1274)<a class="docs-anchor" href="#following-this-computers-account-1274" aria-label="Following this computer&#39;s account (#1274)" data-testid="docs-md-anchor-following-this-computers-account-1274">#</a></h4>
+<p>Worker machines work with the account this computer is signed in with, per agent, also after a
+switch here (for example from one subscription to another). Accounts are compared only by
+fingerprint (<code translate="no">agent::login</code>: the first 12 hex digits of a SHA-256 over Claude Code&#39;s account and
+organisation ids in <code translate="no">.claude.json</code>, Codex&#39;s workspace and user id in <code translate="no">auth.json</code>, Gemini CLI&#39;s
+active account in <code translate="no">~/.gemini/google_accounts.json</code>); no id, address or token leaves a machine or
+reaches a log, and the settings show only the first four digits (<code translate="no">·b7c1</code>).</p>
+<ul><li>Every usage round (30 seconds) the dispatcher reads this computer&#39;s fingerprints. When one
+changed it logs <code translate="no">dispatch.login_switched</code> (agent only), drops the old account&#39;s figures, limit
+and limit holds, asks the new account&#39;s usage at once and reads the sign-ins again, which go
+to the machines in the same round.</li><li>Each machine reports per agent the account its workers use (<code translate="no">ProviderUsage.login</code>): the
+transferred one while its workers use it, else its own. A report that names another account
+than the one this computer hands on gets this computer&#39;s sign-in, as a signed-out agent does.
+On the machine, Claude Code then uses the token instead of its own sign-in (its own files stay
+untouched) and reports no figures of its own (the dispatcher uses this computer&#39;s, same
+fingerprint); Codex gets the copy written into its login file (its own file kept, back on
+revoke). When the account there changed, the machine drops the old account&#39;s figures and
+limit (<code translate="no">satellite.login_switched</code>).</li><li>Right after the dispatcher&#39;s start, a machine that reports another account than this
+computer&#39;s takes no worker of that agent while this computer&#39;s sign-in is not read yet or is
+being renewed (<code translate="no">Unavailable::ExpiresSoon</code>), for at most five minutes (<code translate="no">SIGN_IN_WAIT</code>): a worker
+started then ran with the machine&#39;s own account, hit its limit and stayed paused until that
+limit&#39;s reset, although this computer&#39;s sign-in arrived a minute later. Once the sign-in is
+offered the start sends it first; with none to hand on the machine works with its own.</li><li>After a switch here the next round hands on the new account&#39;s sign-in by itself (Claude Code:
+the new account&#39;s live access token; nothing to set up per account). When this computer has
+nothing to hand on (an agent signed out or on an API key here), every machine drops what it
+holds of that agent, so none goes on with the old account.</li><li>Workers paused at the old account&#39;s limit go on with the new one: here, once the switch is
+read and the new account is not at its limit, they are restarted in their worktree; on a
+machine, once it reports this computer&#39;s account and that is not at its limit. A machine
+restart resumes the agent&#39;s session (<code translate="no">Request::Spawn</code>&#39;s <code translate="no">resume</code>, see &quot;Waiting workers never
+hold an update back&quot;), so the conversation goes on instead of starting over with the brief.
+The trigger is the state, not only the switch: a machine that works with this computer&#39;s free
+account while a worker there is paused at a limit resumes it also when no switch was seen
+(this dispatcher or the machine&#39;s build started after it). Each issue is restarted this way at
+most once per 15 minutes, so a worker that hits a limit again waits for its reset. If the new
+account is at its limit too, they wait for its reset as before.</li><li>Gemini CLI follows the same way (#1408): a machine whose Gemini CLI is signed in with another
+Google account gets this computer&#39;s copy in its login file (its own kept, back on revoke) and
+reports this computer&#39;s account while it uses it.</li></ul>
+<p>The dispatcher status carries <code translate="no">accounts</code> (this computer&#39;s tags per agent) and <code translate="no">other_account</code>
+(per machine the agents with another account and its tag); a machine row shows &quot;Other account
+(·b7c1); switches to this computer&#39;s sign-in before its next start.&quot; until it follows.</p>
+<p>The settings show per machine and agent &quot;Uses this computer&#39;s sign-in.&quot; with **Stop
+transferring<strong>, and where an agent is signed out </strong>Transfer sign-in** (sends it now; for Claude
+Code without a token it starts the setup) or why this computer has nothing to hand on; the
+agent&#39;s own line keeps the command to sign in on that machine instead. <strong>Stop transferring</strong>
+stores the agent in <code translate="no">login_transfer_off</code> of the machine (<code translate="no">host_login_transfer_set</code>); with its
+next poll the machine drops the token, or removes Codex&#39;s or Gemini CLI&#39;s copy and puts the kept
+file back. A
+machine that answers but whose every enabled agent is signed out with nothing to stand in is
+listed as <code translate="no">stranded</code> in the dispatcher status; the status shows it at once (&quot;No coding agent is
+signed in on &lt;machine&gt; any more …&quot;) with the way to Settings → Worker machines.</p>
+<p>Before a worker starts, each machine checks the sign-in of the agent it is asked to start (at
+most once a minute per agent), and the dispatcher does the same
+for this computer. A start refused for a sign-in sends this computer&#39;s sign-in right away, so the
+next try works.</p>
+<p>Codex&#39;s own <code translate="no">codex login status</code> says &quot;signed in&quot; for a ChatGPT login whose access token has
+ended, as long as a refresh token is there. A copy of this computer&#39;s login made earlier (by hand
+or by an old install) carries a refresh token that this computer has rotated since, so Codex
+cannot renew it and waits at its sign-in screen (&quot;Provide your own API key … Press enter to
+continue&quot;, #1045). A machine therefore counts Codex as signed out when its <code translate="no">auth.json</code> holds an
+ended access token (<code translate="no">login_transfer::codex_access_ended</code>), before a start and in its usage
+round: no worker starts into that screen, and this computer&#39;s sign-in replaces the file at once,
+also when it is the same account. A worker that sits at a sign-in screen there anyway (the
+screen and the output tail are both read) gets this computer&#39;s sign-in pushed and starts once
+more in place, resuming its session (<code translate="no">dispatch.sign_in_retry</code>); only when the machine does not
+take the sign-in, or the retry within 15 minutes fails again, does the issue go to another
+machine or agent.</p>
+<p>The terms of both subscriptions apply as they are: the Claude Code token is made by Claude Code
+itself for one person&#39;s use; the Codex copy carries no refresh token, so no second machine takes
+part in renewing the sign-in. The Gemini CLI copy carries its refresh token by the person&#39;s
+choice (#1408, see above).</p>
+<p>New hosts and hosts undergoing setup remain excluded from worker dispatch until setup succeeds.
+A failed setup can be retried using “Install”. Existing assistant launchers are backed up before
+replacement; modified skills are protected rather than overwritten.</p>
+<h2 id="app-settings--satellite-hosts-357">App: Settings → Satellite hosts (#357)<a class="docs-anchor" href="#app-settings--satellite-hosts-357" aria-label="App: Settings → Satellite hosts (#357)" data-testid="docs-md-anchor-app-settings--satellite-hosts-357">#</a></h2>
+<p>The page calls the same core functions as the CLI (<code translate="no">crates/core/src/satellite_host.rs</code>: <code translate="no">probe</code>,
+<code translate="no">install</code>) through the Tauri commands <code translate="no">hosts_list</code>, <code translate="no">host_probe</code>, <code translate="no">host_add</code>, <code translate="no">host_install</code> and
+<code translate="no">host_remove</code> (<code translate="no">src-tauri/src/hosts.rs</code>); the frontend never runs <code translate="no">ssh</code> itself.</p>
+<ul><li>Every host is checked when the page opens, per row or all at once. A probe always returns a
+state (<code translate="no">online</code>, <code translate="no">version_mismatch</code>, <code translate="no">unreachable</code>, <code translate="no">protocol</code>); an offline host is not an error.</li><li>Adding saves the host only when it answers online with this version, optionally after a first
+install. Remove only drops the entry; nothing changes on the host.</li><li>Failures carry a stable <code translate="no">reason</code> (<code translate="no">CmdError::Host</code>), e.g. <code translate="no">invalid_name</code>, <code translate="no">duplicate</code>,
+<code translate="no">unreachable</code>, <code translate="no">platform_mismatch</code>, <code translate="no">checksum_mismatch</code>; the page shows a translated title and
+the technical text under details.</li><li>The store build cannot run <code translate="no">ssh</code>: <code translate="no">hosts_list</code> reports <code translate="no">supported: false</code> and the page shows a
+hint to the direct build.</li></ul>
+<h3 id="workers-per-machine-967">Workers per machine (#967)<a class="docs-anchor" href="#workers-per-machine-967" aria-label="Workers per machine (#967)" data-testid="docs-md-anchor-workers-per-machine-967">#</a></h3>
+<p>Every machine, this one and each satellite, has its own &quot;Workers at once&quot; field in its row:
+&quot;Automatic (N)&quot; (default, one worker per <code translate="no">dispatch.cores_per_worker</code> cores; for a satellite N
+shows once a check reported its cores) or a smaller number for a less powerful machine. A number
+at or above the automatic value would change nothing, so the field offers only smaller ones, and
+a machine that runs one worker automatically shows no field. The choice saves at once through
+<code translate="no">host_max_workers_set(name, max)</code> (<code translate="no">name</code> = a satellite or <code translate="no">local</code>, <code translate="no">max</code> = <code translate="no">null</code> for automatic),
+also in the store build, and the dispatcher uses it from its next round.</p>
+<ul><li>Stored as <code translate="no">max_workers</code> on the satellite&#39;s entry in <code translate="no">hosts</code> and on <code translate="no">local_host</code> in
+<code translate="no">orchestration.json</code>; absent means automatic, <code translate="no">0</code> is refused (<code translate="no">invalid_max</code>; <code translate="no">validate</code> refuses
+a hand-written <code translate="no">0</code> too). Adding the same machine again keeps its value.</li><li>The machine&#39;s capacity is the smaller of the automatic value and the maximum
+(<code translate="no">dispatch::host::capped_capacity</code>); the dispatcher&#39;s host choice, the load order and the fair
+share use it (<code translate="no">docs/orchestrator/dispatcher.md</code>).</li></ul>
+<h3 id="desktop-tests-per-machine-995">Desktop tests per machine (#995)<a class="docs-anchor" href="#desktop-tests-per-machine-995" aria-label="Desktop tests per machine (#995)" data-testid="docs-md-anchor-desktop-tests-per-machine-995">#</a></h3>
+<p>Next to &quot;Workers at once&quot;, each machine has &quot;Desktop tests&quot;: not allowed, when nobody worked
+there for 1/2/5/10/30 minutes (default 2), or any time. It shows on this machine&#39;s row when Agent
+Desktop can run here (not in the store build) and on a satellite&#39;s row once its setup reported
+Agent Desktop. The choice saves at once through <code translate="no">host_desktop_use_set(name, desktop)</code> (<code translate="no">name</code> = a
+satellite or <code translate="no">local</code>; refused with <code translate="no">unknown_host</code> or <code translate="no">invalid_desktop</code>) as <code translate="no">desktop</code> on the
+machine&#39;s entry; adding the same machine again keeps it. A satellite worker reaches only its own
+desktop, because the satellite has no SSH sign-in for the other machines; it learns the other
+test desktops as unreachable and hands an issue that needs one over to this machine with
+<code translate="no">gitoodo worker needs --desktop NAME</code> (<code translate="no">docs/orchestrator/dispatcher.md</code>, &quot;Test desktop for
+desktop checks&quot;). A worker on this machine
+that waits 3 minutes for a desktop moves once to a satellite of the same system whose desktop is
+free under that satellite&#39;s own setting; its work is committed and pushed first (&quot;Moving to a
+free desktop elsewhere&quot; there).</p>
+<h2 id="windows-machines-and-the-remote-shell-958">Windows machines and the remote shell (#958)<a class="docs-anchor" href="#windows-machines-and-the-remote-shell-958" aria-label="Windows machines and the remote shell (#958)" data-testid="docs-md-anchor-windows-machines-and-the-remote-shell-958">#</a></h2>
+<p>Windows OpenSSH runs commands in PowerShell (usual <code translate="no">DefaultShell</code>) or <code translate="no">cmd.exe</code>, not <code translate="no">sh</code>. So the
+first command on every machine is a probe that runs in all three, <code translate="no">echo gitoodo-shell %OS% $PSEdition</code> (<code translate="no">remote_machine::SHELL_PROBE</code>): <code translate="no">sh</code> prints <code translate="no">%OS%</code> as it is, <code translate="no">cmd</code> expands it to
+<code translate="no">Windows_NT</code>, PowerShell prints each word on its own line and its edition. The result is stored
+with the machine (<code translate="no">shell</code> in <code translate="no">hosts[]</code>: absent = POSIX, <code translate="no">powershell</code> or <code translate="no">cmd</code>), and every later
+command is written for it:</p>
+<ul><li>Windows commands go out as <code translate="no">powershell -NoProfile -NonInteractive -ExecutionPolicy Bypass -EncodedCommand &lt;base64 UTF-16LE&gt;</code>, which needs no quoting in PowerShell or <code translate="no">cmd</code> (the check is
+about 4 KB, below <code translate="no">cmd</code>&#39;s 8191-character limit). Progress output is off, and a stopping error
+leaves as one plain line on stderr with status 1.</li><li>Check (assistant): <code translate="no">os=Windows x86_64</code>, cores, <code translate="no">git</code>, and per agent the program (<code translate="no">Get-Command</code>,
+then <code translate="no">~\.local\bin</code>, <code translate="no">~\.claude\local</code>, <code translate="no">%APPDATA%\npm</code>, <code translate="no">~\.npm-global</code>, <code translate="no">~\.bun\bin</code>,
+<code translate="no">~\.volta\bin</code>), the first line of its <code translate="no">--version</code> and whether its credential file exists.</li><li>Install: <code translate="no">New-Item</code> for <code translate="no">~\.local\bin</code>, <code translate="no">scp</code> to <code translate="no">.local/bin/gitoodo.exe.upload</code>, <code translate="no">Get-FileHash</code>,
+then the running <code translate="no">gitoodo.exe</code> (a service may hold it) is renamed to <code translate="no">gitoodo.exe.old-&lt;id&gt;</code> and
+the upload moved in; old copies are removed once their service has ended. The release asset is
+<code translate="no">gitoodo-x86_64-pc-windows-msvc</code> (<code translate="no">docs/release.md</code>); Windows on arm64 has no build (<code translate="no">none</code>).</li><li>Version check: the same lines from PowerShell for <code translate="no">~\.local\bin\gitoodo.exe</code>.</li><li>Service: the named pipe above, created with a descriptor for the current user only; the bridge
+starts it with <code translate="no">DETACHED_PROCESS | CREATE_NEW_PROCESS_GROUP</code> and, where allowed, out of the SSH
+session&#39;s job, so it outlives the connection. The state folder is <code translate="no">%LOCALAPPDATA%</code>&#39;s app folder.</li></ul>
+<p><code translate="no">ssh</code> itself fails with status 255 (no route, refused, host key, sign-in). Any other failing
+status means the machine was reached and a command failed there: the assistant reports
+<code translate="no">command_failed</code> (&quot;The check failed on the machine&quot;) with the last lines of the command&#39;s
+stderr, the install steps do the same, and a bridge that does not start on a reached machine is a
+<code translate="no">protocol</code> state (&quot;was reached, but <code translate="no">gitoodo satellite</code> did not start there&quot;), never
+&quot;unreachable&quot;.</p>
+<h2 id="commands-a-worker-machine-lacks">Commands a worker machine lacks<a class="docs-anchor" href="#commands-a-worker-machine-lacks" aria-label="Commands a worker machine lacks" data-testid="docs-md-anchor-commands-a-worker-machine-lacks">#</a></h2>
+<p>A worker runs under the setup of the machine it is on. Helper commands, global git hooks, agent
+hooks, skills and MCP servers a person keeps on one computer are often missing on another, and
+that is no fault of the repository. Without a word on it, workers used to open follow-up issues or
+ask questions about such gaps (&quot;the global hooks and <code translate="no">labctl</code> are missing&quot;), or work around them
+without saying so.</p>
+<p><strong>The brief names the machine.</strong> Every worker&#39;s brief says which machine it runs on (name, system,
+this computer or a worker machine) and that personal tools may be missing there
+(<code translate="no">brief::machine_rule</code>). The worker never files an issue or a question about such a gap and does
+not stop for it. A global git hook that the git configuration names but that is absent on the
+machine runs nothing: the worker leaves out only that hook with a one-off <code translate="no">git -c</code> override, keeps
+every hook that exists (never <code translate="no">--no-verify</code>) and runs the repository&#39;s checks itself.</p>
+<p><strong>Handing an issue back.</strong> When the issue cannot be done without a missing command, the worker
+runs <code translate="no">gitoodo worker needs --tool NAME[,NAME…] --reason &quot;why&quot;</code> (after <code translate="no">gitoodo worker push</code> if it
+committed work) and stops. On this computer the request goes to the dispatcher&#39;s broker, on a
+worker machine to its satellite, which reports it with the worker&#39;s exit (<code translate="no">ExitInfo.needs</code>). The
+dispatcher then ends the run as <code translate="no">needs_tools</code> (no failed attempt, the lease is released and the
+issue is queued again) and</p>
+<ul><li>puts a <code translate="no">tool:&lt;name&gt;</code> label on the issue, so it only goes to a machine that has the command;</li><li>checks the claim: it probes the machine for the command right away (this computer) or takes its
+latest probe (a worker machine). A command the probe does not find marks the machine as lacking
+it, until a probe there says otherwise, at most 24 hours. A command the probe finds is no
+missing command: the machine gets no mark but a hint, and the next worker&#39;s brief there names
+the command with its folder, tells it to use it and, if it fails, to read and fix the error
+output. Only when a worker that had the hint hands it back again is the command marked as
+installed but unusable on that machine, with the worker&#39;s reason (its command and error output);</li><li>remembers that the repository&#39;s workers needed it (<code translate="no">machine-tools.json</code> in the state folder),
+so its other issues prefer machines that have it.</li></ul>
+<p>A hand-back from a worker machine for a command that no machine is known to have goes to this
+computer instead (<code translate="no">host:</code> label, no <code translate="no">tool:</code> label), and so does <code translate="no">gitoodo worker needs --data</code> for
+local files only this computer has (<a href="../local-inputs/#data-is-never-a-missing-command" data-testid="docs-md-link-7">local inputs</a>).
+Only a worker here that hands the issue back for the same command makes the <code translate="no">tool:</code> label.</p>
+<p>Nothing names a particular tool: the names come from <code translate="no">tool:</code> labels (a person may set them too)
+and from hand-backs. Names are letters, digits and <code translate="no">_ - . +</code>, at most 64 characters, at most 8 per
+hand-back.</p>
+<p><strong>Probing.</strong> The dispatcher looks for each needed command on this computer every minute and on
+each worker machine at every poll (<code translate="no">Request::Tools</code>, answered with <code translate="no">Reply::Tools</code>), with <code translate="no">PATHEXT</code>
+on Windows. It searches exactly the folders a worker gets as its <code translate="no">PATH</code> (<code translate="no">detect::worker_dirs</code>):
+the agent&#39;s own folder, the process <code translate="no">PATH</code>, the login shell&#39;s <code translate="no">PATH</code> (on Windows the machine and
+user <code translate="no">Path</code> from the registry, which a service started at logon does not see updated) and the
+usual package-manager folders that exist (<code translate="no">/opt/homebrew/bin</code>, <code translate="no">/usr/local/bin</code>,
+<code translate="no">/home/linuxbrew/.linuxbrew/bin</code>). A service starts with a bare <code translate="no">PATH</code>, so every worker, on this
+computer and on worker machines, gets this one instead; probe and worker cannot disagree about
+what is installed. A command that is installed but not in these folders counts as missing, as it
+would for the worker. A probe that finds a command a hand-back marked turns the mark into a hint;
+only a mark of a command that failed despite the hint stays. A worker machine on an older build answers nothing; for it only the 24-hour marks of
+hand-backs count.</p>
+<p><strong>Placement.</strong> A machine that lacks a command of the issue&#39;s <code translate="no">tool:</code> labels does not take it
+(<code translate="no">HostCandidate::lacks</code>). Among the machines that fit, one with the commands its repository
+needed before comes first. When no machine fits for that reason alone, the issue waits as
+<code translate="no">tool_missing</code>, and &quot;Asked of me&quot; shows one line: &quot;None of the machines that can take this issue
+has labctl. Install it on one of them and the issue starts by itself.&quot; Its &quot;Solve&quot; opens the ways
+out (<code translate="no">docs/states.md</code>): &quot;Check the machines again&quot; (<code translate="no">Request::RecheckTools</code>: the dispatcher
+forgets every hand-back mark and probes this computer at its next round, the worker machines with
+their next polls), &quot;Run on &lt;machine&gt;&quot; for the machines that would take it but for the commands
+(<code translate="no">host::tool_hosts</code>; sets <code translate="no">host:</code> and drops the <code translate="no">tool:</code> labels), &quot;Remove label tool:&lt;command&gt;&quot;
+for each, &quot;Run without …&quot; when there are several, then looking at the issue, &quot;Solve with an
+agent&quot; and pausing. The wait names only what the closest fitting machine lacks, not every <code translate="no">tool:</code>
+label. A command marked as installed but unusable is said as such (&quot;pod is installed but did not
+work for the worker; installing it will not help&quot;), and &quot;Solve with an agent&quot; comes first.
+Nothing shows while every issue finds a machine.</p>
+<p><strong>Solving a wait with an agent.</strong> &quot;Solve with an agent&quot; among the ways of a machine wait opens the
+same session as for a stuck issue (<code translate="no">stall_solve</code>), in the issue&#39;s folder and branch, but its
+opening message says why the autopilot cannot start the issue: the wait&#39;s reason, the machines
+that could take it, and for commands what the workers said about them. While the session runs,
+the dispatcher does not start the issue. An expired sign-in on this computer offers no session:
+its agent would hit the same sign-in.</p>
+<h3 id="taking-this-computers-setup-along">Taking this computer&#39;s setup along<a class="docs-anchor" href="#taking-this-computers-setup-along" aria-label="Taking this computer&#39;s setup along" data-testid="docs-md-anchor-taking-this-computers-setup-along">#</a></h3>
+<p>Many gaps never need a hand-back: the setup a person keeps in the home folder of this computer
+(git hooks, agent instructions and hooks, the scripts they call, and the credentials those use)
+goes along to the worker machines (<code translate="no">gitoodo_core::carry</code>) and applies there to Gitoodo&#39;s workers
+only. The machine&#39;s own configuration is never written.</p>
+<p><strong>What is found.</strong> Discovery reads only what this computer&#39;s setup names, never a list of known
+tools, so it fits any person&#39;s setup, including none at all:</p>
+<ul><li>git: <code translate="no">core.hooksPath</code>, the hooks of <code translate="no">init.templateDir</code> and the config hooks (<code translate="no">hook.&lt;name&gt;</code>),
+from <code translate="no">git config --global</code>;</li><li>per agent the user instructions (<code translate="no">~/.claude/CLAUDE.md</code>, <code translate="no">~/.codex/AGENTS.md</code>) and Claude Code&#39;s
+hooks in <code translate="no">~/.claude/settings.json</code> (command hooks; http hooks need nothing);</li><li>the scripts and files these texts reference below the home folder (<code translate="no">~/…</code>, <code translate="no">$HOME/…</code>, the
+absolute home path), and the scripts they in turn source or run, at most 4 levels deep;</li><li>script folders on <code translate="no">PATH</code> below the home folder whose commands those texts call.</li></ul>
+<p>A program found on <code translate="no">PATH</code> outside the home folder (or a binary inside it) is never copied; the list
+names it as needed there, with how it came onto this computer where that can be read from its place
+(<code translate="no">brew install x</code>, <code translate="no">npm install -g x</code>, <code translate="no">pipx install x</code>). Skills, slash commands, plugins and
+Codex&#39;s own hooks are not carried: workers do not load them on this computer either (&quot;What a worker
+loads&quot;). Gemini CLI has no way to take instructions per session and gets nothing.</p>
+<p><strong>Safety.</strong> A file is skipped when it lies outside the home folder (also through a link), is over
+256 KiB, is not text, looks like a credential by name or holds one (key blocks, token prefixes,
+<code translate="no">NAME=value</code> with a secret-like name), is a state file (caches, backups, logs, locks) or is a
+private ssh key. At most 400 files and 8 MiB go along.</p>
+<p><strong>Which machines.</strong> &quot;Take my setup along&quot; in the machine&#39;s card is on by default for the same
+person&#39;s machines and off for others. Same person means: the machine&#39;s user name or the git
+<code translate="no">user.email</code> there is the same as here (case-insensitive); the machine sends only short SHA-256
+fingerprints of both (<code translate="no">carry::identity</code>). The switch overrides the default in both directions.</p>
+<p><strong>On the worker machine.</strong> Everything lives in the state folder, in <code translate="no">carried/&lt;source&gt;/</code> per main
+host (<code translate="no">main_host_id</code>), as content-addressed blobs and a <code translate="no">home/</code> tree built from them. It reaches
+the workers only through their environment and arguments:</p>
+<ul><li>git gets a generated <code translate="no">GIT_CONFIG_GLOBAL</code> that first includes the machine&#39;s own global
+configuration, then sets the carried <code translate="no">core.hooksPath</code> only when the machine has none of its own,
+and the carried config hooks with the paths rewritten; a worker whose environment already sets
+<code translate="no">GIT_CONFIG_GLOBAL</code> keeps it;</li><li>Claude Code gets the carried hooks merged into its per-session <code translate="no">--settings</code> and the instructions
+with <code translate="no">--append-system-prompt-file</code>; Codex gets them as <code translate="no">-c developer_instructions=…</code>;</li><li>carried script folders come first on the worker&#39;s <code translate="no">PATH</code>.</li></ul>
+<p>The machine&#39;s own setup wins where both cover the same thing (its own hooks folder, a hook of the
+same name); &quot;Carried setup takes precedence&quot; turns that around for one machine. Paths are rewritten
+for the machine&#39;s home (<code translate="no">~/</code>, <code translate="no">$HOME/</code>, the source&#39;s absolute home, with <code translate="no">/</code> on Windows as well).
+A script whose shebang names an interpreter the machine lacks (Windows: also looked up in Git for
+Windows&#39; <code translate="no">usr/bin</code> and <code translate="no">bin</code>) is not run there: its hook is left out and the card names what is
+missing. Everything else that cannot go along stays with the hand-back above.</p>
+<p><strong>Updates.</strong> The dispatcher discovers again every 5 minutes and when a choice changes. Each poll
+ends with <code translate="no">SetupState</code>; only the blobs the machine lacks travel (in 32 KiB parts, <code translate="no">SetupBlob</code>),
+then the manifest and <code translate="no">SetupCommit</code>. A file removed here is gone there with the next commit; unused
+blobs are removed. Switching the machine off, or removing it from the list, sends <code translate="no">SetupDrop</code>,
+which removes the folder and the credentials. An older satellite refuses <code translate="no">SetupState</code>, and nothing
+is carried to it.</p>
+<p><strong>Dropping it from a machine that is away (#1416).</strong> Nothing carried stays on a machine that left,
+also when it was unreachable at that moment:</p>
+<ul><li><em>Switched off while unreachable:</em> the dispatcher keeps the choice and drops the setup at the
+machine&#39;s next poll (<code translate="no">SetupDrop</code>, or <code translate="no">SetupCredentials</code> with a revoke for one credential). Until
+the machine confirms it, its card says &quot;Will be removed at the next contact.&quot; (the status
+reports <code translate="no">held</code> per machine).</li><li><em>Removed from the list:</em> the app records the drop in the state folder
+(<code translate="no">carry-revocations.json</code>, <code translate="no">carry::revoke</code>: the name, how to reach it, never a password) and tries
+it at once. The dispatcher tries every open drop every minute until the machine answers; the
+drop takes back the handed-on sign-ins (<code translate="no">Logins</code> with a revoke for Claude Code and Codex) and
+sends <code translate="no">SetupDrop</code>, and only the machine&#39;s confirmation settles it. Until then Settings → Worker
+machines lists it under &quot;Removed machines&quot; with &quot;Will be removed at the next contact.&quot; A machine
+added again under its name or address needs no drop: its own poll follows the switch.</li><li><em>Without any message:</em> every contact of a main host (<code translate="no">SetupState</code>, any setup request, each poll&#39;s
+<code translate="no">Claim</code>) is noted in <code translate="no">carried/&lt;source&gt;/contact</code> (at most once an hour). The satellite service
+checks at its start and every hour: a main host that has not been in touch for <strong>7 days</strong>
+(<code translate="no">carry::lifetime::EXPIRY_DAYS</code>) loses its carried folder and its credentials there (log
+<code translate="no">satellite.setup_expired</code>), and a credential file in <code translate="no">carried-sign-in/</code> whose folder is gone goes
+too. A main host that still uses the machine simply carries everything again with its next poll.
+The check runs while the service runs; a machine that is switched off checks when its service
+starts again.</li><li><em>By hand on the machine:</em> <code translate="no">gitoodo satellite --drop-carried</code> removes what every main host
+carried there, credentials and the stored Claude Code sign-in (<code translate="no">claude-sign-in</code>) included, and
+prints <code translate="no">dropped=&lt;count&gt;</code>.</li></ul>
+<p><strong>Credentials.</strong> Only those the carried texts reference go along: variables of an env file they
+source, variables they read that are set in this computer&#39;s environment, and CLI logins they call
+whose CLI takes a token variable (<code translate="no">gh</code> → <code translate="no">GH_TOKEN</code> from <code translate="no">gh auth token</code>). CLIs that cannot take
+one (<code translate="no">tea</code>, <code translate="no">az</code>, <code translate="no">aws</code>, …) and ssh are listed as &quot;sign in there&quot;; ssh keys never leave this
+computer. Values travel only in <code translate="no">SetupCredentials</code> over the satellite connection, are kept in the
+machine&#39;s system store (a user-only file beside the transferred sign-ins where it cannot be
+written) and are sent again when their stamp changes. A worker gets them in its environment under
+their own names, which every language reads. An env file a carried shell script names becomes a
+temporary file of the worker&#39;s own (<code translate="no">${GITOODO_CARRIED_SECRETS}/&lt;path&gt;</code>), deleted when the worker
+ends; only shell texts are rewritten to that placeholder. A Python, Node, PowerShell or other
+script that reads an env file finds it at its place in the carried folder instead (the reference
+points there like any other carried file): a user-only file of plain <code translate="no">NAME=value</code> lines, written
+when the first worker of that main host starts and deleted when the last one ends. The card lists
+credentials by name only, each with its own switch; switching one off revokes it there.</p>
+<p>A dispatcher running as a service (LaunchAgent, systemd unit, Windows service) lacks what only the
+shell profile exports (#1413). A credential variable a carried text reads that the service&#39;s
+environment lacks is looked up where a fresh sign-in sets it, never in another process
+(<code translate="no">carry::login_env</code>): on macOS and Linux the person&#39;s login shell is asked once per discovery, as
+<code translate="no">$SHELL -lic</code>, for exactly those names, within 5 s (a hanging profile is stopped and gives
+nothing); on Windows the user&#39;s and the system&#39;s environment in the registry. A name set nowhere
+is listed as &quot;set nowhere on this computer&quot; (<code translate="no">SkipReason::NotSet</code>) and named in the card&#39;s line
+(<code translate="no">HostStatus::unset</code>) instead of being left out silently.</p>
+<p><strong>In the app.</strong> The card shows only the switch while all is fine; one line with one action when
+something blocks (&quot;The setup did not reach “mini”.&quot; with &quot;Send again&quot;, or the programs the machine
+lacks with &quot;What goes along&quot;, or the credentials set nowhere here with &quot;Look again&quot;, which
+discovers the setup again at once); and the full list (files, credentials, programs needed there, what
+stays here and why, the precedence switch) on demand.</p>
+<h2 id="coding-agents-per-machine-957">Coding agents per machine (#957)<a class="docs-anchor" href="#coding-agents-per-machine-957" aria-label="Coding agents per machine (#957)" data-testid="docs-md-anchor-coding-agents-per-machine-957">#</a></h2>
+<p>The assistant&#39;s check reports every supported agent (Claude Code, Codex, Gemini CLI) with
+<code translate="no">installed</code>, <code translate="no">login</code> (<code translate="no">yes</code>, <code translate="no">no</code>, <code translate="no">unknown</code> where it cannot be seen from outside, e.g. Claude
+Code&#39;s macOS keychain, or <code translate="no">expired</code>) and <code translate="no">version</code>; an agent is <code translate="no">ready</code> when it is installed and
+not known to be signed out or expired. <code translate="no">expired</code> (#994) comes from <code translate="no">gitoodo worker-check</code> on the
+machine: Codex&#39;s status reads &quot;Logged in&quot;, but its usage query (the same as above) says the
+login no longer works. The row then reads &quot;Sign in again on this machine: the login no longer
+works. Run <code translate="no">codex login</code> there.&quot;; a query that only fails or times out leaves the login <code translate="no">yes</code>. The only missing piece about agents is <code translate="no">no_agent</code> (not one is ready).</p>
+<p>The check at setup is not the last word: a login can end later. Each satellite reports in its
+usage report whether Claude Code, Codex and Gemini CLI are signed out (<code translate="no">problem: not_signed_in</code>,
+read from the agent itself, see <code translate="no">docs/agents.md</code>, &quot;Start confirmations and sign-in&quot;); the
+dispatcher then starts no worker of that agent there (<code translate="no">login_expired</code> wait) and lists the agents
+per machine in its status (<code translate="no">signed_out</code>), which the machine&#39;s row shows at the agent instead of
+the stored check. A satellite also reports a silent worker whose screen shows a start
+confirmation or a sign-in (<code translate="no">prompt</code> in its report); the dispatcher stops that worker, pauses the
+machine with the reason (<code translate="no">agent_login</code> or <code translate="no">start_failed</code>) and puts the issue back into the queue
+for another machine or agent.</p>
+<p>Each satellite also reports which models its own agent offers (<code translate="no">report.agents</code>: per agent the
+version, the model ids and the recommendation; today Codex). It reads them with the same reader as
+the main host once the main host first asks it for usage and every 10 minutes after, and logs
+<code translate="no">satellite.agent_models</code> when they change. The main host then starts a worker there only with a
+model that machine offers, and falls back once on the machine when the agent refuses its model
+anyway (<code translate="no">dispatcher.md</code>, &quot;Worker model per machine&quot;). An older satellite reports no <code translate="no">agents</code>; its
+workers run the agent&#39;s own default unless its CLI is at least as new as the main host&#39;s list.
+The field is optional, so the protocol number stays.</p>
+<p>A satellite on an older build that is being updated (see &quot;Automatic update&quot;) takes no new worker:
+the host choice skips it up front with the wait reason <code translate="no">update_pending</code> (&quot;being updated, goes on
+by itself&quot;) instead of trying a start the old build would refuse.</p>
+<p>The last step lists the agents with a switch each. An assistant can be selected before it is
+installed on the satellite. The install action installs selected assistants; Claude Code and
+Codex and Gemini CLI then use this computer&#39;s sign-in there (see &quot;This computer&#39;s sign-ins on
+worker machines&quot;).
+Switching saves at once through
+<code translate="no">host_agents_set(name, off)</code> as <code translate="no">agents_off</code> on the machine in <code translate="no">hosts[]</code> (a deny list: an agent
+installed later is used without a new setup; absent = all on); adding the same machine again
+keeps it. The dispatcher treats a switched-off agent like a missing one on that machine
+(<code translate="no">Config::host_allows_agent</code>): with the worker pool the rotation picks among the agents each
+machine still offers, as it does locally, and a fixed agent waits for a machine that allows it.</p>
+<p>The same step sets &quot;Workers at once&quot; for the new machine (<code translate="no">host_max_workers_set</code>, above), with
+&quot;Automatic (N)&quot; from the cores the check reported.</p>
+<p>The machine list shows the same switches in every satellite&#39;s row, with each agent&#39;s state from
+the last check and when it ran. The check&#39;s agents are kept in <code translate="no">host-checks.json</code> in the app&#39;s
+data folder (<code translate="no">gitoodo_core::host_checks</code>, an observation and no setting, so not in
+<code translate="no">orchestration.json</code>; no secrets) and reach the page as <code translate="no">checked</code> on each entry of <code translate="no">hosts_list</code>
+(<code translate="no">null</code> before the first check, e.g. for a machine added with <code translate="no">gitoodo host add</code>: its switches
+then show the stored choice only). There is no check button: while the page is open it probes
+every machine&#39;s reachability and version on opening and every three minutes. For a machine that
+is online it then runs the agent check through <code translate="no">host_agents_check(name)</code>
+(<code translate="no">satellite_host::machine_check</code>: shell probe, then the check for that shell) once the last check
+is older than ten minutes, stores the result and saves a shell that changed since. On macOS and
+Windows machines with Agent Desktop it also reads the permissions there
+(<code translate="no">host_desktop_permissions</code>), so a grant or a revocation shows up on its own; missing ones are
+named in the UI language. A row shows &quot;Install&quot; only while something is missing there (offline
+or failed probe aside: no Gitoodo, an older or no Agent Desktop, or a desktop error that is not a
+permission); otherwise it shows &quot;Set up&quot;. Removing a machine drops its check.</p>
+</div>
+<div class="docs-meta"><a class="docs-edit" href="https://github.com/silvio-l/gitoodo/edit/main/docs/orchestrator/satellites.md" data-testid="docs-edit">Edit on GitHub</a><span class="docs-meta__version">Docs version: <span dir="ltr">dev</span></span></div>
+</article>
+<nav class="docs-pager" aria-label="Previous / Next" data-testid="docs-pager"><a class="docs-pager__previous" href="../security/" rel="prev" data-testid="docs-pager-previous"><span class="docs-pager__label">Previous</span><span class="docs-pager__title">Security model of the orchestrator</span></a><a class="docs-pager__next" href="../keychains/" rel="next" data-testid="docs-pager-next"><span class="docs-pager__label">Next</span><span class="docs-pager__title">Keychains, signing and dialogs</span></a></nav>
+</main>
+<aside class="docs-toc" aria-labelledby="docs-toc-title" data-testid="docs-toc"><h2 id="docs-toc-title">On this page</h2><ol><li class="docs-toc__l2"><a href="#pieces" data-testid="docs-toc-pieces">Pieces</a></li><li class="docs-toc__l2"><a href="#remote-worker-lifecycle" data-testid="docs-toc-remote-worker-lifecycle">Remote worker lifecycle</a></li><li class="docs-toc__l3"><a href="#memory-entries" data-testid="docs-toc-memory-entries">Memory entries</a></li><li class="docs-toc__l3"><a href="#hook-events" data-testid="docs-toc-hook-events">Hook events</a></li><li class="docs-toc__l3"><a href="#workers-no-main-host-owns" data-testid="docs-toc-workers-no-main-host-owns">Workers no main host owns</a></li><li class="docs-toc__l3"><a href="#updating-a-satellite-965" data-testid="docs-toc-updating-a-satellite-965">Updating a satellite (#965)</a></li><li class="docs-toc__l3"><a href="#build-identity-and-outdated-builds" data-testid="docs-toc-build-identity-and-outdated-builds">Build identity and outdated builds</a></li><li class="docs-toc__l3"><a href="#automatic-update-1181" data-testid="docs-toc-automatic-update-1181">Automatic update (#1181)</a></li><li class="docs-toc__l2"><a href="#install-and-upgrade-gitoodo-host-install-name" data-testid="docs-toc-install-and-upgrade-gitoodo-host-install-name">Install and upgrade: gitoodo host install &lt;name&gt;</a></li><li class="docs-toc__l3"><a href="#version-check-and-other-systems-in-the-app-441" data-testid="docs-toc-version-check-and-other-systems-in-the-app-441">Version check and other systems in the app (#441)</a></li><li class="docs-toc__l3"><a href="#machine-suggestions-and-network-search-440" data-testid="docs-toc-machine-suggestions-and-network-search-440">Machine suggestions and network search (#440)</a></li><li class="docs-toc__l2"><a href="#forge-access-and-assistant-subscriptions" data-testid="docs-toc-forge-access-and-assistant-subscriptions">Forge access and assistant subscriptions</a></li><li class="docs-toc__l3"><a href="#this-computers-sign-ins-on-worker-machines-1259" data-testid="docs-toc-this-computers-sign-ins-on-worker-machines-1259">This computer&#39;s sign-ins on worker machines (#1259)</a></li><li class="docs-toc__l2"><a href="#app-settings--satellite-hosts-357" data-testid="docs-toc-app-settings--satellite-hosts-357">App: Settings → Satellite hosts (#357)</a></li><li class="docs-toc__l3"><a href="#workers-per-machine-967" data-testid="docs-toc-workers-per-machine-967">Workers per machine (#967)</a></li><li class="docs-toc__l3"><a href="#desktop-tests-per-machine-995" data-testid="docs-toc-desktop-tests-per-machine-995">Desktop tests per machine (#995)</a></li><li class="docs-toc__l2"><a href="#windows-machines-and-the-remote-shell-958" data-testid="docs-toc-windows-machines-and-the-remote-shell-958">Windows machines and the remote shell (#958)</a></li><li class="docs-toc__l2"><a href="#commands-a-worker-machine-lacks" data-testid="docs-toc-commands-a-worker-machine-lacks">Commands a worker machine lacks</a></li><li class="docs-toc__l3"><a href="#taking-this-computers-setup-along" data-testid="docs-toc-taking-this-computers-setup-along">Taking this computer&#39;s setup along</a></li><li class="docs-toc__l2"><a href="#coding-agents-per-machine-957" data-testid="docs-toc-coding-agents-per-machine-957">Coding agents per machine (#957)</a></li></ol></aside>
+</div>
+<footer class="docs-footer" data-testid="docs-footer"><div class="docs-footer__inner">
+<p class="docs-muted">The developer docs are in English only.</p>
+<ul class="docs-footer__links">
+<li><a href="../../../" data-testid="docs-footer-site">Website</a></li>
+<li><a href="../../../privacy/" data-testid="docs-footer-privacy">Privacy</a></li>
+<li><a href="https://github.com/silvio-l/gitoodo/blob/main/LICENSE" data-testid="docs-footer-license">MIT</a></li>
+</ul>
+</div></footer>
+</body>
+</html>

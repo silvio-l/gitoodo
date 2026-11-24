@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self'; style-src 'self'; script-src 'self' 'sha256-zclDvgIbJxhMP3hLx0Pe9wEzIPlPNUNObuWsVD7xB/M='; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="color-scheme" content="light dark">
+<script>try{var t=localStorage.getItem("gitoodo-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<title>System permissions – Gitoodo</title>
+<meta name="description" content="Which permissions Gitoodo needs on macOS and Windows, per build type, when the system asks, what the app does when the user declines, and where the decision comes from. Principle …">
+<meta name="docs-version" content="dev">
+<link rel="canonical" href="https://gitoodo.com/docs/dev/system-permissions/">
+
+<meta property="og:title" content="System permissions – Gitoodo">
+<meta property="og:description" content="Which permissions Gitoodo needs on macOS and Windows, per build type, when the system asks, what the app does when the user declines, and where the decision comes from. Principle …">
+<meta property="og:url" content="https://gitoodo.com/docs/dev/system-permissions/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Gitoodo">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://gitoodo.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../../assets/docs.css">
+<script defer src="../../../assets/docs.js"></script>
+</head>
+<body class="docs" data-lang="en" data-docs-root="../../" data-search-index="../../search/en.json" data-copied="Copied">
+<a class="skip" href="#main" data-testid="docs-skip">Skip to content</a>
+<header class="docs-header" data-testid="docs-header"><div class="docs-header__inner">
+<a class="lockup" href="../../../" aria-label="Gitoodo" data-testid="docs-logo"><svg class="lockup__art" data-brand="wordmark" viewBox="9.3 9.4 767.3 182.9" focusable="false" aria-hidden="true"><path class="logo__tray" fill-rule="evenodd" d="M66.7 89.5C54.7 90.9 52.5 108.4 63.6 112.9C69.4 115.3 80 113.9 86.5 113.9L136.5 114C143.6 114 155.7 115.4 157 105.5C157.8 99.1 154.7 91.2 147.7 89.6C141.7 88.1 126.5 89.3 119.5 89.3L84.5 89.3C78.7 89.3 72.5 88.8 66.7 89.5ZM210.5 93.7C206.3 95.4 202.9 98.6 198.6 100.3C196.7 101 193.8 101.2 192.6 103.1C191.3 105.1 191.8 108.3 191.8 110.5C191.8 115.6 192.1 120.9 191.5 125.9C184.9 128.1 171 126.6 163.5 126.6C159.8 126.6 155.9 126.2 152.5 128C144.2 132.6 147.8 144.9 143.6 152.1C138.9 160 121.4 157.2 113.5 157.2C110.3 157.2 106.8 157.7 103.6 156.7C92.4 153.3 98.2 135 89.9 128.6C86.5 125.9 81.6 126.6 77.5 126.6C69.3 126.6 58.2 128 50.5 126.1C48.8 117.6 51.8 108.1 49.7 99.7C47.3 90.3 31.5 89.8 27 97.5C25.1 100.8 24 104.7 22.6 108.2C19.8 115.2 15.3 122.8 16.1 130.5C16.6 134.9 19.5 139.2 21.5 143L31.8 163.7C35.7 171.7 38.9 183.6 48.9 185.5C52.3 186.2 56 185.8 59.5 185.8L83.5 185.8L157.5 185.8L183.5 185.8C188.2 185.8 193.2 186.3 197.4 183.8C203.4 180.3 207.1 168.8 210.3 162.7L221.6 140.2C223.6 136.2 226.1 132.2 226 127.5C225.9 121.1 221.5 114.3 219.2 108.4C217.1 103 215.9 96.5 210.5 93.7Z"/><path class="logo__bars" fill-rule="evenodd" d="M156.8 26.5C155.2 15.4 142.9 17.7 134.5 17.6C114.8 17.4 95.2 17.5 75.5 17.7C65.3 17.7 55.7 18.3 56.4 31.5C57.2 45.7 76.1 42.3 85.5 42.3L126.5 42.3C130.4 42.3 141.2 43.2 144.4 41.9C146.3 41.1 147.2 38.3 148.2 36.7C150.7 33 154.3 30.1 156.8 26.5ZM139.5 55.3C134 52 124.8 53.6 118.5 53.6L83.5 53.7C77.8 53.7 71.1 52.8 65.5 54C59.3 55.3 55.6 61.8 56.5 67.9C58.2 79.3 69.7 78.2 78.5 78.2L123.5 78.2C128.6 78.2 137 79.9 140.6 75.2C142.4 72.9 141 70.6 140.5 68C139.7 63.8 141 59.3 139.5 55.3Z"/><path class="logo__check" fill-rule="evenodd" d="M177.7 26.4C142.8 32.5 139 82.7 173 93.5C177.7 95 182.6 95.5 187.5 94.9C224.6 90.3 228 37.8 192.5 27.2C187.7 25.8 182.6 25.6 177.7 26.4ZM177.5 65.1C172.9 61.8 171.9 57.4 165.5 58.3C160.3 63.5 167.1 67.9 170.8 71.7C172.5 73.5 174.3 76 176.8 76.5C180.5 77.3 183.2 73.1 185.3 70.8L200.1 55.6C203 52.6 204.8 49.9 201.5 46.5C200 46.2 199.2 45.8 197.6 46.2C195.1 46.9 192.6 50.5 190.9 52.4C187.1 56.5 182.5 62.6 177.5 65.1Z"/><path class="word__git" fill-rule="evenodd" d="M379.6 38.4C360.7 39.7 362.8 67.8 381.5 66.9C400 66.1 398.7 37.2 379.6 38.4ZM362.5 92.7C357.9 91.8 353.1 92.2 348.5 92.2L325.5 92.2C321.8 92.2 314.8 90.8 311.8 93.3C308.9 95.8 309.6 111.2 311 114.5C317.2 118.1 327.7 114.3 334.7 116.5C329.4 130.4 309.1 132.6 297.7 125.8C288.9 120.6 283.8 110.5 283.8 100.5C283.6 81.9 299.6 66.6 318.5 71.2C328.3 73.6 329.5 78.5 336.5 83C340.9 81.5 353.8 72.2 356.6 68.5C355.1 63.6 350.2 59.4 346.3 56.2C332 44.2 311 40.6 293.5 47C262.7 58.3 249 94.7 262.4 124.2C276 154 314 165.2 341.5 147C354.5 138.4 363.1 123 364.1 107.5C364.4 102.6 365.3 96.8 362.5 92.7ZM407.5 73.5L400.4 74.5C398 78.5 398.4 90 399.5 94.7C402 96 404.7 95.9 407.4 96.5C410 113.1 400.2 145.4 422.7 151.6C426.2 152.6 429.9 152.6 433.5 152.6C437.5 152.7 441.9 153.2 445.5 151.5C446.4 146.9 446.8 134.4 444.6 130.5C441.2 130.2 436.3 131.5 433.3 129.2C430.8 127.2 431.4 123.3 431.4 120.5C431.4 112.7 430.6 104.3 431.7 96.5C436.1 95.3 440.9 96.3 445.5 95.3C447.3 89.6 447.2 80.3 445.5 74.6L431.9 73.5C430.6 68.1 433.1 59.6 430.5 54.9C428.6 51.5 415.9 52 412.5 52.6C410.9 53 409.4 53.6 408.6 55.1C406.2 59.4 408.5 68.4 407.5 73.5ZM369.5 151.7C373.7 153.3 388.3 153.6 392.1 151.5C393.7 145.8 392.7 138.5 392.7 132.5L392.6 94.5C392.6 90.3 394.1 79 391.6 75.9C389.3 73.1 377.1 73.6 373.5 74C366.1 74.9 368.5 86.3 368.5 91.5L368.6 131.5C368.6 137.8 367.2 145.8 369.5 151.7Z"/><path class="word__oodo" fill-rule="evenodd" d="M658.6 77.5C652.6 75.1 647.4 72.8 640.7 73.4C600.7 77.2 595.6 136.7 633.5 148.3C639.6 150.1 646.5 150.5 652.6 148.3C655 147.4 657.1 146 659.5 145.4C660 146.5 660.6 148.1 661.7 148.7C665.5 150.7 678.5 149.6 682.5 148.5C684.6 142.8 683.3 126.4 683.4 119.5L683.3 71.5C683.2 65 684.5 55.7 683 49.5C681.4 42.8 664.3 43.5 661.3 46.8C659.2 49.1 659.7 52.6 659.7 55.5C659.6 61.4 661.1 72.7 658.6 77.5ZM482.5 73.4C442.6 77.6 435.8 134.6 473.5 147.9C478.2 149.6 483.5 150.4 488.5 150.1C494.4 149.7 499.9 148.2 505.1 145.6C509.6 143.3 513.4 139.9 516.5 136C537.9 109 517 69.8 482.5 73.4ZM560.7 73.4C547.4 75.2 535.8 83.3 530.4 95.7C521.3 116.5 532.4 142.7 554.8 148.6C560 149.9 565.1 150.5 570.5 149.8C597.8 146.3 613.1 114.6 598.4 91.1C593.4 83 585.5 77.6 576.6 74.7C571.5 73.1 566 72.7 560.7 73.4ZM723.5 73.4C712.2 74.9 701.4 80.8 695.3 90.7C682.1 112 692 141 716.3 148.4C721.5 150 727 150.6 732.5 150C755.6 147.5 770.6 124.8 765.8 102.5C762.8 89.1 752.1 79.1 739.5 74.9C734.4 73.2 728.9 72.7 723.5 73.4ZM483.7 96.4C464.6 99.7 469.4 131.1 490.4 126.7C509.1 122.7 503.7 93.1 483.7 96.4ZM562.7 96.4C543.1 99.7 548.6 131.4 569.3 126.6C587.9 122.4 582.5 93.1 562.7 96.4ZM644.6 96.4C625.3 97.8 626.9 127.6 646.5 126.8C665.9 126 664.2 95 644.6 96.4ZM724.7 96.4C705.3 99.9 711 131.7 732.3 126.6C750.4 122.3 744.3 92.9 724.7 96.4Z"/></svg></a>
+<a class="docs-header__title" href="../../" data-testid="docs-home">Documentation</a>
+<span class="docs-version" title="Pre-release: Gitoodo has not been released yet" data-version="dev"><span class="visually-hidden">Docs version: </span><span dir="ltr">dev</span><span class="visually-hidden"> (Pre-release: Gitoodo has not been released yet)</span></span>
+<div class="docs-header__tools">
+<div class="docs-search" role="search" data-testid="docs-search">
+<label class="visually-hidden" for="docs-search-input">Search the docs</label>
+<input id="docs-search-input" class="docs-search__input" type="search" placeholder="Search …" autocomplete="off" spellcheck="false" aria-describedby="docs-search-hint" aria-controls="docs-search-results" aria-expanded="false" role="combobox" aria-autocomplete="list" data-testid="docs-search-input">
+<p id="docs-search-hint" class="visually-hidden">Arrow keys choose, Enter opens, Escape closes.</p>
+<div id="docs-search-results" class="docs-search__results" role="listbox" aria-label="Search the docs" hidden data-empty="No page matches “{query}”." data-testid="docs-search-results"></div>
+<p id="docs-search-status" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true" data-count="Results: {count}" data-testid="docs-search-status"></p>
+</div>
+<div class="header__prefs"><details class="langs" name="header-popover" data-langs data-testid="docs-langs"><summary class="langs__toggle" data-testid="docs-langs-toggle"><svg class="langs__globe" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg><span class="visually-hidden">Language: </span><span class="langs__code" translate="no">EN</span></summary>
+<ul class="langs__list" aria-label="Language"><li><a href="../../de/" hreflang="de" lang="de" data-lang="de" data-track="language" data-track-name="de" data-testid="docs-langs-de"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Deutsch</span></a></li><li><a href="../../" hreflang="en" lang="en" data-lang="en" data-track="language" data-track-name="en" aria-current="page" data-testid="docs-langs-en"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>English</span></a></li><li><a href="../../zh-Hans/" hreflang="zh-Hans" lang="zh-Hans" data-lang="zh-Hans" data-track="language" data-track-name="zh-Hans" data-testid="docs-langs-zh-Hans"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>中文（简体）</span></a></li><li><a href="../../hi/" hreflang="hi" lang="hi" data-lang="hi" data-track="language" data-track-name="hi" data-testid="docs-langs-hi"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>हिन्दी</span></a></li><li><a href="../../es/" hreflang="es" lang="es" data-lang="es" data-track="language" data-track-name="es" data-testid="docs-langs-es"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Español</span></a></li><li><a href="../../ar/" hreflang="ar" lang="ar" data-lang="ar" data-track="language" data-track-name="ar" data-testid="docs-langs-ar"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>العربية</span></a></li></ul></details><button class="theme" type="button" hidden data-theme-toggle data-choice="system" data-label="Theme: {current}, switch to {next}" data-system="System" data-light="Light" data-dark="Dark" aria-label="Theme: System, switch to Light" title="Theme: System, switch to Light" data-testid="docs-theme"><svg class="theme__icon theme__icon--system" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg><svg class="theme__icon theme__icon--light" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg><svg class="theme__icon theme__icon--dark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></button></div>
+<button type="button" class="docs-menu" aria-controls="docs-nav" aria-expanded="false" hidden data-testid="docs-menu">Pages</button>
+</div>
+<a class="docs-header__link" href="https://github.com/silvio-l/gitoodo" data-testid="docs-github">GitHub</a>
+<a class="docs-install" href="../../../#download" data-testid="docs-install">Get notified</a>
+</div></header>
+<div class="docs-layout">
+<nav id="docs-nav" class="docs-nav" aria-label="Documentation" data-testid="docs-nav"><div class="docs-nav__section"><p class="docs-nav__title"><a href="../../" data-testid="docs-nav-section-user">For users</a></p><p class="docs-nav__group" id="docs-nav-user-0">Get started</p><ul aria-labelledby="docs-nav-user-0"><li><a href="../../introduction/" data-testid="docs-nav-docs-introduction">What is Gitoodo?</a></li><li><a href="../../getting-started/" data-testid="docs-nav-docs-getting-started">Getting started</a></li></ul><p class="docs-nav__group" id="docs-nav-user-1">Guides</p><ul aria-labelledby="docs-nav-user-1"><li><a href="../../self-hosted-forges/" data-testid="docs-nav-docs-self-hosted-forges">Forgejo and Gitea</a></li><li><a href="../../github-issues-to-pull-requests/" data-testid="docs-nav-docs-github-issues-to-pull-requests">GitHub issues to pull requests</a></li><li><a href="../../safe-auto-merge/" data-testid="docs-nav-docs-safe-auto-merge">Safe auto-merge</a></li><li><a href="../../parallel-coding-agents/" data-testid="docs-nav-docs-parallel-coding-agents">Parallel coding agents</a></li><li><a href="../../switch-from-another-agent-app/" data-testid="docs-nav-docs-switch-from-another-agent-app">Coming from another agent app</a></li></ul><p class="docs-nav__group" id="docs-nav-user-2">Daily use</p><ul aria-labelledby="docs-nav-user-2"><li><a href="../../daily-use/" data-testid="docs-nav-docs-daily-use">How to work with Gitoodo</a></li><li><a href="../../overview/" data-testid="docs-nav-docs-overview">Overview</a></li><li><a href="../../needs-you/" data-testid="docs-nav-docs-needs-you">Needs you</a></li><li><a href="../../questions/" data-testid="docs-nav-docs-questions">Asked of me</a></li><li><a href="../../board/" data-testid="docs-nav-docs-board">All repos</a></li><li><a href="../../chat/" data-testid="docs-nav-docs-chat">Chat</a></li><li><a href="../../repositories/" data-testid="docs-nav-docs-repositories">Repositories</a></li></ul><p class="docs-nav__group" id="docs-nav-user-3">Orchestrator</p><ul aria-labelledby="docs-nav-user-3"><li><a href="../../labels/" data-testid="docs-nav-docs-labels">Status labels and workflow</a></li><li><a href="../../merge-and-release/" data-testid="docs-nav-docs-merge-and-release">Merge control</a></li><li><a href="../../releases/" data-testid="docs-nav-docs-releases">Releases</a></li><li><a href="../../services/" data-testid="docs-nav-docs-services">Classifier, dispatcher and workers</a></li></ul><p class="docs-nav__group" id="docs-nav-user-4">Reference and help</p><ul aria-labelledby="docs-nav-user-4"><li><a href="../../settings/" data-testid="docs-nav-docs-settings">Settings</a></li><li><a href="../../status/" data-testid="docs-nav-docs-status">Status</a></li><li><a href="../../troubleshooting/" data-testid="docs-nav-docs-troubleshooting">Troubleshooting</a></li><li><a href="../../faq/" data-testid="docs-nav-docs-faq">FAQ</a></li><li><a href="../../privacy/" data-testid="docs-nav-docs-privacy">Privacy</a></li></ul></div><div class="docs-nav__section"><p class="docs-nav__title"><a href="../" data-testid="docs-nav-section-dev">For developers</a></p><p class="docs-nav__group" id="docs-nav-dev-0">Start here</p><ul aria-labelledby="docs-nav-dev-0"><li><a href="../architecture/" data-testid="docs-nav-docs-dev-architecture">Architecture</a></li><li><a href="../building/" data-testid="docs-nav-docs-dev-building">Building</a></li><li><a href="../releasing/" data-testid="docs-nav-docs-dev-releasing">Release</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-1">Interfaces</p><ul aria-labelledby="docs-nav-dev-1"><li><a href="../question-format/" data-testid="docs-nav-docs-dev-question-format">Gitoodo question format (version 2)</a></li><li><a href="../cli/" data-testid="docs-nav-docs-dev-cli">Command line reference</a></li><li><a href="../daemon/" data-testid="docs-nav-docs-dev-daemon">Classifier daemon and command line</a></li><li><a href="../phone-access/" data-testid="docs-nav-docs-dev-phone-access">Phone access</a></li><li><a href="../forge-tokens/" data-testid="docs-nav-docs-dev-forge-tokens">Token permissions per forge</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-2">Orchestrator</p><ul aria-labelledby="docs-nav-dev-2"><li><a href="../states/" data-testid="docs-nav-docs-dev-states">States: what Gitoodo shows and what you do about it</a></li><li><a href="../all-repos/" data-testid="docs-nav-docs-dev-all-repos">&quot;All repos&quot;: pages and where things went</a></li><li><a href="../orchestrator-spec/" data-testid="docs-nav-docs-dev-orchestrator-spec">Gitoodo Orchestrator – Specification (v1)</a></li><li><a href="../orchestrator-setup/" data-testid="docs-nav-docs-dev-orchestrator-setup">Orchestrator setup</a></li><li><a href="../dispatcher/" data-testid="docs-nav-docs-dev-dispatcher">Dispatcher</a></li><li><a href="../queue-order/" data-testid="docs-nav-docs-dev-queue-order">Queue order and slot share</a></li><li><a href="../branch-rules/" data-testid="docs-nav-docs-dev-branch-rules">Branch rules that work with the autopilot</a></li><li><a href="../security/" data-testid="docs-nav-docs-dev-security">Security model of the orchestrator</a></li><li><a href="../satellites/" data-testid="docs-nav-docs-dev-satellites">Satellites</a></li><li><a href="../keychains/" data-testid="docs-nav-docs-dev-keychains">Keychains, signing and dialogs</a></li><li><a href="../local-inputs/" data-testid="docs-nav-docs-dev-local-inputs">Local inputs</a></li><li><a href="../resolver/" data-testid="docs-nav-docs-dev-resolver">The resolver for stuck issues</a></li><li><a href="../triage/" data-testid="docs-nav-docs-dev-triage">Triage</a></li><li><a href="../repo-hygiene/" data-testid="docs-nav-docs-dev-repo-hygiene">Repo hygiene</a></li><li><a href="../storage-cleanup/" data-testid="docs-nav-docs-dev-storage-cleanup">Automatic disk cleanup</a></li><li><a href="../orchestrator-chat/" data-testid="docs-nav-docs-dev-orchestrator-chat">Orchestrator chat</a></li><li><a href="../release-planning/" data-testid="docs-nav-docs-dev-release-planning">Release planning</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-3">App internals</p><ul aria-labelledby="docs-nav-dev-3"><li><a href="../status-model/" data-testid="docs-nav-docs-dev-status-model">Overview status model</a></li><li><a href="../counters/" data-testid="docs-nav-docs-dev-counters">Counters</a></li><li><a href="../startup/" data-testid="docs-nav-docs-dev-startup">Start: first paint and loading state</a></li><li><a href="../logging/" data-testid="docs-nav-docs-dev-logging">Logging</a></li><li><a href="../localisation/" data-testid="docs-nav-docs-dev-localisation">Localisation</a></li><li><a href="../settings-backup/" data-testid="docs-nav-docs-dev-settings-backup">Settings export, import and backup</a></li><li><a href="../symlinks/" data-testid="docs-nav-docs-dev-symlinks">Symbolic links</a></li><li><a href="../window-frame/" data-testid="docs-nav-docs-dev-window-frame">Window frame</a></li><li><a href="./" aria-current="page" data-testid="docs-nav-docs-dev-system-permissions">System permissions</a></li><li><a href="../test-access/" data-testid="docs-nav-docs-dev-test-access">Test access: driving the app without a human</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-4">Privacy and data</p><ul aria-labelledby="docs-nav-dev-4"><li><a href="../privacy-policy/" data-testid="docs-nav-docs-dev-privacy-policy">Privacy policy: feedback, usage statistics and the phone app</a></li><li><a href="../network-inventory/" data-testid="docs-nav-docs-dev-network-inventory">Network inventory of the desktop app and the phone app</a></li><li><a href="../chat-notification/" data-testid="docs-nav-docs-dev-chat-notification">Chat notification</a></li><li><a href="../support/" data-testid="docs-nav-docs-dev-support">Voluntary support</a></li></ul></div></nav>
+<main id="main" class="docs-main" tabindex="-1" data-testid="docs-main">
+<article class="docs-article">
+<p class="docs-eyebrow">For developers · App internals</p><h1>System permissions</h1>
+<details class="docs-toc-inline" data-testid="docs-toc-inline"><summary data-testid="docs-toc-inline-toggle">On this page</summary><ol><li class="docs-toc__l2"><a href="#matrix" data-testid="docs-toc-inline-matrix">Matrix</a></li><li class="docs-toc__l2"><a href="#prompt-timing-and-behaviour-when-denied" data-testid="docs-toc-inline-prompt-timing-and-behaviour-when-denied">Prompt timing and behaviour when denied</a></li><li class="docs-toc__l2"><a href="#notifications-on-macos-131" data-testid="docs-toc-inline-notifications-on-macos-131">Notifications on macOS (#131)</a></li><li class="docs-toc__l2"><a href="#notifications-on-macos-prompt-shown-in-the-background-166" data-testid="docs-toc-inline-notifications-on-macos-prompt-shown-in-the-background-166">Notifications on macOS: prompt shown in the background (#166)</a></li><li class="docs-toc__l2"><a href="#folder-access-and-background-items-on-macos-1250" data-testid="docs-toc-inline-folder-access-and-background-items-on-macos-1250">Folder access and background items on macOS (#1250)</a></li><li class="docs-toc__l2"><a href="#keychain" data-testid="docs-toc-inline-keychain">Keychain</a></li><li class="docs-toc__l3"><a href="#background-services-read-the-token-without-a-prompt-369" data-testid="docs-toc-inline-background-services-read-the-token-without-a-prompt-369">Background services read the token without a prompt (#369)</a></li><li class="docs-toc__l2"><a href="#reduced-tauri-capabilities" data-testid="docs-toc-inline-reduced-tauri-capabilities">Reduced Tauri capabilities</a></li><li class="docs-toc__l2"><a href="#sources" data-testid="docs-toc-inline-sources">Sources</a></li><li class="docs-toc__l2"><a href="#verified-and-open" data-testid="docs-toc-inline-verified-and-open">Verified and open</a></li><li class="docs-toc__l2"><a href="#forge-token-scopes-189" data-testid="docs-toc-inline-forge-token-scopes-189">Forge token scopes (#189)</a></li><li class="docs-toc__l2"><a href="#agent-skills" data-testid="docs-toc-inline-agent-skills">Agent skills</a></li><li class="docs-toc__l2"><a href="#agent-desktop-desktop-control" data-testid="docs-toc-inline-agent-desktop-desktop-control">Agent Desktop (desktop control)</a></li></ol></details>
+<div class="docs-body">
+<p>Which permissions Gitoodo needs on macOS and Windows, per build type, when the system asks, what the app
+does when the user declines, and where the decision comes from. Principle (Apple HIG &quot;Privacy&quot;, Microsoft
+&quot;Windows app privacy guidance&quot;): ask in context, only when the feature needs it, explain calmly before
+the system prompt, and never block the app when a permission is denied; show a hint that leads to the
+system settings.</p>
+<p>Build types:</p>
+<ul><li>macOS direct: Developer ID, hardened runtime, notarized, not sandboxed (<code translate="no">Entitlements.direct.plist</code>).</li><li>macOS App Store: sandboxed (<code translate="no">Entitlements.appstore.plist</code>, Cargo feature <code translate="no">store</code>, config overlay
+<code translate="no">tauri.appstore.conf.json</code>).</li><li>Windows direct: unpackaged installer, full trust.</li><li>Windows MSIX: packaged for the Microsoft Store (<code translate="no">src-tauri/windows/AppxManifest.template.xml</code>).</li></ul>
+<h2 id="matrix">Matrix<a class="docs-anchor" href="#matrix" aria-label="Matrix" data-testid="docs-md-anchor-matrix">#</a></h2>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col">Purpose</th><th scope="col">macOS direct</th><th scope="col">macOS App Store</th><th scope="col">Windows direct</th><th scope="col">Windows MSIX</th></tr></thead><tbody><tr><td>Network to forges (HTTPS)</td><td>no entitlement needed</td><td><code translate="no">com.apple.security.network.client</code></td><td>none</td><td>capability <code translate="no">internetClient</code></td></tr><tr><td>Forge on the local network</td><td>Local Network prompt (<code translate="no">NSLocalNetworkUsageDescription</code>); ATS <code translate="no">NSAllowsLocalNetworking</code></td><td>same, plus <code translate="no">network.client</code></td><td>none (firewall prompt is the system)</td><td><code translate="no">privateNetworkClientServer</code></td></tr><tr><td>Skill install into agent skills folders</td><td>writes directly (not sandboxed)</td><td>folder dialog (<code translate="no">files.user-selected.read-write</code>), explanation first</td><td>writes directly</td><td>writes directly (<code translate="no">runFullTrust</code>)</td></tr><tr><td>Desktop control (Agent Desktop)</td><td>Accessibility and Screen Recording for Gitoodo Service, requested by the app; see <a href="#agent-desktop-desktop-control" data-testid="docs-md-link-1">Agent Desktop</a></td><td>not available (no npm, no SSH in the sandbox)</td><td>a signed-in, unlocked session</td><td>not available in the Store build</td></tr><tr><td>Screenshot from the app (#1857)</td><td>Screen Recording for Gitoodo, asked by macOS on the first &quot;Screenshot&quot;; without it the picture shows only the desktop and Gitoodo&#39;s own windows</td><td>same; <code translate="no">/usr/sbin/screencapture</code> runs inside the sandbox (not yet tried in a sandboxed run)</td><td>not offered (paste with Win+Shift+S, Ctrl+V)</td><td>not offered</td></tr><tr><td>Notifications</td><td><code translate="no">UNUserNotificationCenter</code>, authorization at start or first send; denial shown</td><td>same (sandbox needs no entitlement)</td><td>no prompt; hint to Notifications settings</td><td>same</td></tr><tr><td>Start at sign-in</td><td><code translate="no">SMAppService.mainApp</code> in the app bundle (macOS 13+, #1250); hint to Login Items. See <a href="#folder-access-and-background-items-on-macos-1250" data-testid="docs-md-link-2">Folder access and background items</a></td><td><code translate="no">SMAppService.mainApp</code> (macOS 13+)</td><td>autostart plugin (registry)</td><td><code translate="no">windows.startupTask</code>, see <a href="https://github.com/silvio-l/gitoodo/blob/main/docs/store.md" rel="noopener" data-testid="docs-md-link-3">store</a></td></tr><tr><td>Menu bar / tray only, no Dock icon</td><td><code translate="no">LSUIElement</code></td><td><code translate="no">LSUIElement</code></td><td>none</td><td>none</td></tr><tr><td>Tokens</td><td>Data protection keychain (group entitlement + profile), file-based fallback; see <a href="#keychain" data-testid="docs-md-link-4">Keychain</a></td><td>same group; see <a href="#keychain" data-testid="docs-md-link-5">Keychain</a></td><td>Credential Manager, no prompt</td><td>Credential Manager, no prompt</td></tr></tbody></table></div>
+<h2 id="prompt-timing-and-behaviour-when-denied">Prompt timing and behaviour when denied<a class="docs-anchor" href="#prompt-timing-and-behaviour-when-denied" aria-label="Prompt timing and behaviour when denied" data-testid="docs-md-anchor-prompt-timing-and-behaviour-when-denied">#</a></h2>
+<ul><li>Local network (macOS): the system asks on the first connection to a local host and holds the
+connection while its prompt is open; the prompt can sit behind the app window. The app does not
+pre-prompt. When a forge check (account wizard in settings, onboarding and worker accounts, and
+the token replacement dialog) of a local forge runs longer than 3 s, a calm note names the prompt
+and the way to System Settings › Privacy &amp; Security › Local Network (#1207). When the connection
+fails as unreachable, the error reads &quot;cannot reach the server on your local network&quot; instead of
+&quot;server unreachable&quot;, with a note on how to allow the access later or check the server; both
+notes carry &quot;Systemeinstellungen öffnen&quot; (<code translate="no">Privacy_LocalNetwork</code>). Only for local hosts on macOS
+(<code translate="no">local_network_hint_applies</code>: <code translate="no">.local</code>, <code translate="no">.lan</code>, <code translate="no">.home.arpa</code>, <code translate="no">.internal</code>, single-label names,
+private and link-local IPv4/IPv6, also typed without scheme); loopback never asks, so it gets no
+note.</li><li>Notifications (macOS): Gitoodo asks for alert and sound authorization at start once an account and
+a notification type are set up, and again before every send (the system only prompts while
+undecided). The settings page reads the state the same way: on a denial it says so (&quot;Mitteilungen
+sind ausgeschaltet&quot;), otherwise it keeps the general note; both lead to the Notifications pane.
+See <a href="#notifications-on-macos-131" data-testid="docs-md-link-6">Notifications on macOS</a>.</li><li>Notifications (Windows, Linux): the Tauri notification plugin reports the permission as granted, so
+a denial cannot be detected; the page keeps the general note with the action
+&quot;Systemeinstellungen öffnen&quot; (<code translate="no">ms-settings:notifications</code>). A failed send is logged.</li><li>Start at sign-in: toggled by the user on the autostart page. When it fails (denied or pending approval
+in Login Items), the page shows the error with the action &quot;Systemeinstellungen öffnen&quot;
+(<code translate="no">com.apple.LoginItems-Settings.extension</code>, <code translate="no">ms-settings:startupapps</code>).</li><li>First-run onboarding (#94, #617): shown on first launch, whenever no account exists, and from
+&quot;Hilfe &amp; Feedback → Erste Schritte&quot;. It runs in its own centred window (980 x 680, clamped to the
+screen; its frame is never stored as the window frame) with named phases on top: Willkommen,
+Konto, Repos, Arbeitsweise, Mitteilungen &amp; Start, Fertig. Enter runs the main action and Esc goes
+back, except in text fields. The repo step switches repos on or off with the same
+<code translate="no">disabled_repos</code> as Settings → Repos and leaves orchestration rules alone. Its notification step
+asks only on the button &quot;Mitteilungen erlauben&quot; and shows the denied hint with the Notifications
+pane; its autostart step (on by default) shows the same error and Login Items action as the
+autostart page. Progress is stored in the settings (<code translate="no">onboarding</code>), so every step can be skipped
+and an interrupted run resumes; closing the window pauses it and the next tray click reopens it.
+Finishing (&quot;Zum Überblick&quot;, or &quot;Orchestrator einrichten&quot; for the setup assistant) turns the window
+into the regular detached window (<code translate="no">finish_onboarding_window</code>, see <code translate="no">docs/window-frame.md</code>), where the
+overview and the introduction tour (or the setup assistant) follow.</li><li>Skill folder (App Store build only): the skill page explains why <code translate="no">~/.claude</code> is needed and what is
+written (only <code translate="no">gitoodo-questions</code>), then opens the folder dialog. A folder not named <code translate="no">.claude</code> is
+rejected with a hint; cancelling changes nothing. The direct build skips this step.</li></ul>
+<p>The system settings deep links are in <code translate="no">src-tauri/src/permissions.rs</code> (<code translate="no">settings_url</code>).</p>
+<h2 id="notifications-on-macos-131">Notifications on macOS (#131)<a class="docs-anchor" href="#notifications-on-macos-131" aria-label="Notifications on macOS (#131)" data-testid="docs-md-anchor-notifications-on-macos-131">#</a></h2>
+<p>Symptom: on macOS 27 no notification appeared and Gitoodo was missing from System Settings &gt;
+Notifications.</p>
+<p>Root cause: the Tauri notification plugin (2.x) posts through <code translate="no">notify-rust</code> and
+<code translate="no">mac-notification-sys</code>, which use the deprecated <code translate="no">NSUserNotificationCenter</code>. Before the first post,
+<code translate="no">mac-notification-sys</code> looks up a bundle id with an AppleScript (<code translate="no">get id of application ...</code>, blocked
+in the sandbox and failing anyway), falls back to <code translate="no">com.apple.Finder</code>/<code translate="no">com.apple.Terminal</code> and swaps
+the implementation of <code translate="no">NSBundle.bundleIdentifier</code>. Notifications were therefore posted under another
+app&#39;s identity; Gitoodo never registered with Notification Center and never asked for authorization.
+The plugin spawns the post and returns success, and its desktop permission check always answers
+&quot;granted&quot;, so nothing was logged.</p>
+<p>Fix: on macOS the plugin is not linked any more. <code translate="no">src-tauri/src/notify_macos.rs</code> uses
+<code translate="no">UNUserNotificationCenter</code> through the safe <code translate="no">objc2-user-notifications</code> bindings (no <code translate="no">unsafe</code>):
+<code translate="no">requestAuthorizationWithOptions</code> (alert, sound), then <code translate="no">addNotificationRequest</code> with a unique
+identifier. It only runs inside an <code translate="no">.app</code> bundle (an unbundled <code translate="no">cargo</code>/dev binary would make the
+center raise); outside, a warning is logged and nothing is posted. Failures are logged as
+<code translate="no">notification_error</code> with a reason (<code translate="no">authorization_failed</code>, <code translate="no">rejected</code>, <code translate="no">no_app_bundle</code>), never with
+the notification text. Windows and Linux keep the plugin and now log a failed send.</p>
+<p>Limits: the error object of a failed request is not read (that would need <code translate="no">unsafe</code>), so the log has
+the reason but not the system&#39;s error code.</p>
+<p>Only a click asks (#1215): the &quot;Allow notifications&quot; buttons of the onboarding and of Settings →
+Notifications request authorization and take the state from its answer. Nothing else asks: the app
+start no longer requests authorization (#166 did, for configured installs), and a post reads the
+decision from <code translate="no">UNNotificationSettings</code> without asking and is skipped while it is undecided
+(<code translate="no">notification_skipped</code>, reason <code translate="no">undecided</code>) or denied. The notifications page reads the same
+state (<code translate="no">notification_status</code>, <code translate="no">undecided</code> shows the button instead of the system settings hint);
+opening it used to request authorization and so showed the system prompt without a click. The read
+needs <code translate="no">unsafe</code> and lives in <code translate="no">crates/scoped-folder</code> (<code translate="no">authorization</code>). There is no
+notification-center delegate, so a banner may be held back while Gitoodo&#39;s own window is in front.</p>
+<h2 id="notifications-on-macos-prompt-shown-in-the-background-166">Notifications on macOS: prompt shown in the background (#166)<a class="docs-anchor" href="#notifications-on-macos-prompt-shown-in-the-background-166" aria-label="Notifications on macOS: prompt shown in the background (#166)" data-testid="docs-md-anchor-notifications-on-macos-prompt-shown-in-the-background-166">#</a></h2>
+<p>Symptom: after #131 the permission request did not appear and Gitoodo was missing from System
+Settings &gt; Notifications.</p>
+<p>Evidence (unified log of the installed, Developer ID signed, sandboxed <code translate="no">/Applications/Gitoodo.app</code>,
+macOS 27.2): <code translate="no">usernoted</code> registers the bundle at the first request (&quot;Sending request for permission
+for &lt;bundle id&gt;&quot;), but the prompt record is <code translate="no">alertStyle:&quot;none&quot;</code> with <code translate="no">response action: closed</code> and the settings read <code translate="no">authorizationStatus: Denied</code>; the authorization was only set to
+&quot;allow&quot; seven seconds later, by hand. Signing, bundle identity and sandbox are therefore fine: the
+center is reached (<code translate="no">Creating a user notification center</code>, <code translate="no">didGrant</code>) and later banners were
+delivered (<code translate="no">Presenting ... alertStyle:&quot;banner&quot;</code>). The app log has no <code translate="no">notification_*</code> event because
+nothing failed.</p>
+<p>Cause: the request is made at start from a menu-bar app (<code translate="no">LSUIElement</code>, accessory policy) that is
+not the active app, so the system shows the prompt as a quiet banner that closes by itself. It is
+counted as not allowed, and the user never saw a dialog.</p>
+<p>Fix then: the first authorization request at start activated the app first. Superseded by #1215:
+the app no longer asks at start at all; the request comes from a click on &quot;Allow notifications&quot;,
+when Gitoodo&#39;s window is the active one, so the prompt is shown as a dialog. A leftover
+<code translate="no">notification-prompted</code> marker file in the config dir is no longer read.</p>
+<p>Open: without a notification-center delegate a banner is still held back while Gitoodo&#39;s own window
+is in front (needs <code translate="no">unsafe</code>, which the crate forbids).</p>
+<h2 id="folder-access-and-background-items-on-macos-1250">Folder access and background items on macOS (#1250)<a class="docs-anchor" href="#folder-access-and-background-items-on-macos-1250" aria-label="Folder access and background items on macOS (#1250)" data-testid="docs-md-anchor-folder-access-and-background-items-on-macos-1250">#</a></h2>
+<p>macOS guards some folders of the home folder with a privacy prompt (&quot;Gitoodo would like to access
+files in your Desktop folder&quot;): Desktop, Documents and Downloads, iCloud Drive, other apps&#39; data
+and removable and network volumes. Listing such a folder is enough to ask, the answer belongs to the
+app identifier (an update keeps it; the change from <code translate="no">online.lindstedt.gitoodo</code> to <code translate="no">de.gitoodo.app</code>
+does not), and an unexplained prompt is a defect.</p>
+<ul><li>Gitoodo opens a guarded folder only where the user put something of Gitoodo&#39;s: a folder named
+under &quot;Do you already have checkouts?&quot; (<code translate="no">dispatch.projects_folders</code>), the clone folder, a working
+copy set for a repo, or the worktree folder. The app and the background services read those, and
+macOS asks once per identifier for each guarded folder among them (picking a folder in the folder
+dialog covers only the app process; a service asks on its own first access). That prompt follows
+the user&#39;s own choice. The defaults (<code translate="no">~/gitoodo/repos</code>, <code translate="no">~/gitoodo/worktrees</code>) are not guarded.</li><li>The suggestions of the onboarding&#39;s copies step come from a short scan of the home folder
+(<code translate="no">checkouts::scan_home</code>). On macOS it never opens Desktop, Documents and Downloads, as it never
+opens <code translate="no">Library</code> (iCloud Drive and other apps&#39; data live there), media and cloud-sync folders.
+Before this rule the scan caused the Desktop and Documents prompts on a first setup. The step
+never ends in silence (#1114): it says when the scan found nothing or failed, names the folders it
+left out with why, and offers &quot;Search these folders too&quot;. Only that button opens them
+(<code translate="no">checkouts::scan_guarded</code>), so macOS asks right after the user&#39;s own click; a folder macOS
+refuses is named with the way out (System Settings › Privacy &amp; Security › Files and Folders, then
+&quot;Search again&quot;, or &quot;Add folder&quot;, which names it for good).</li><li>Nothing else reads below the home folder unasked: the app, the classifier and the dispatcher read
+their own folders in <code translate="no">~/Library</code>, the agents&#39; folders (<code translate="no">~/.claude</code>, <code translate="no">~/.codex</code>, <code translate="no">~/.gemini</code>,
+<code translate="no">~/.claude.json</code>, for the clean-up and the sign-in checks), <code translate="no">~/.ssh</code> (worker machines),
+<code translate="no">~/.local</code> (installed tools) and the folders above. Processes start in <code translate="no">/</code> or in a repo folder.
+The login shell&#39;s <code translate="no">PATH</code> is read once (<code translate="no">$SHELL -l -c</code>, <code translate="no">agent::detect</code>): it runs the user&#39;s own
+profile files as a child of Gitoodo, so a profile that itself reads a guarded folder makes macOS
+ask on Gitoodo&#39;s behalf. Checked by reading every such path in <code translate="no">crates/core</code>, <code translate="no">crates/cli</code> and
+<code translate="no">src-tauri</code> (2026-11-19).</li></ul>
+<p>Background items. macOS announces each item an app adds to Login Items (&quot;Background items added&quot;)
+once, when it is added:</p>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col">Item</th><th scope="col">Kind</th><th scope="col">Announced</th></tr></thead><tbody><tr><td>Start at sign-in</td><td><code translate="no">SMAppService.mainApp</code>, listed as Gitoodo</td><td>when switched on (the onboarding&#39;s default)</td></tr><tr><td>Classifier, dispatcher</td><td>two <code translate="no">SMAppService</code> agents of the bundle (<a href="#keychain" data-testid="docs-md-link-7">Keychain</a>, &quot;Login items&quot;)</td><td>when the orchestrator is set up</td></tr><tr><td>Start at sign-in, before #1250</td><td><code translate="no">~/Library/LaunchAgents/Gitoodo.plist</code> (plugin), listed under the developer&#39;s name</td><td>replaced by the login item on the first start of a build with #1250: one announcement, this time as Gitoodo</td></tr></tbody></table></div>
+<p>An app start and an update register nothing that is already registered: the update restarts the
+running agents (<code translate="no">kickstart -k</code>) and registers anew only when launchd refuses the new program (an ad
+hoc rebuild). The identifier change registers both agents under their new labels once, so macOS
+announces them again (<code translate="no">CHANGELOG</code>, identifier entry). Two things the identifier change cannot
+carry over (#1248), which the move writes to the log as notes when the old build had registered
+login items (its <code translate="no">service-program.stamp</code>):</p>
+<ul><li>The old login items (<code translate="no">&lt;former identifier&gt;.daemon</code>, <code translate="no">….dispatcher</code>) stay in the background
+items list until macOS cleans it up or the old app bundle is deleted. Only the bundle that
+registered an item can unregister it (<code translate="no">SMAppService</code> looks the plist up in the calling bundle),
+and after an update in place that bundle is gone. The entries are inert: launchd no longer finds
+their plist, and the move booted the jobs out and removed any plist in <code translate="no">~/Library/LaunchAgents</code>.</li><li>A service that was set up but stopped in 0.1.x is not detected: it is neither loaded nor in
+<code translate="no">launchctl print-disabled</code>, the background items database is closed to the user (<code translate="no">sfltool dumpbtm</code> needs an administrator), and the old build left no file per service. It shows as &quot;Nicht
+eingerichtet&quot; after the move and is set up again in Settings. Guessing from leftover logs was
+rejected, since it could set up a service the user had removed.</li></ul>
+<p>The services stay two jobs: the dispatcher&#39;s
+workers outlive a restart of either service, and each can be switched off on its own.</p>
+<p>Verified on macOS 26 with a signed build (#1250): the copies step of the earlier build asked for
+the Desktop folder; the new build, as an update over it, asked for no protected folder, put
+start at sign-in in the list as Gitoodo (<code translate="no">sfltool dumpbtm</code>: type app) and deleted the old
+<code translate="no">Gitoodo.plist</code> on its first start. The record of the deleted plist stays in the background items
+list (inert, pointing to a missing file) until macOS cleans the list up itself; there is no
+per-item removal short of <code translate="no">sfltool resetbtm</code>, which resets every app, so Gitoodo leaves it.</p>
+<h2 id="keychain">Keychain<a class="docs-anchor" href="#keychain" aria-label="Keychain" data-testid="docs-md-anchor-keychain">#</a></h2>
+<p>Tokens and the chat webhook URL live in the OS credential store (<code translate="no">crates/core/src/secrets.rs</code>).
+On macOS the app uses the data protection keychain (#126): items belong to a keychain access group
+and carry no per-app access list, so the direct, App Store and dev builds that share the group read
+the same token without any prompt (TN3137, &quot;Sharing access to keychain items&quot;). The group is
+<code translate="no">Q7V3X27S2U.de.gitoodo.app</code> (team id plus bundle id), the first <code translate="no">keychain-access-groups</code>
+entry, hence the default group of new items; the code sets no group. The direct build lists the
+group of the former identifier <code translate="no">online.lindstedt.gitoodo</code> (Gitoodo 0.1.x, #595) second, only so the
+one-time move (<code translate="no">crates/core/src/identity_migration.rs</code>) can copy the tokens out of it without a
+prompt; its Developer ID profile allows <code translate="no">Q7V3X27S2U.*</code>. Remove that entry once no 0.1.x install
+is left (<code translate="no">scripts/check-identifier.py</code> allows exactly this line).
+Items of older versions live in the file-based keychain and are described below.</p>
+<p>Entitlements. <code translate="no">keychain-access-groups</code> is restricted: the data protection keychain needs
+<code translate="no">keychain-access-groups</code> or <code translate="no">com.apple.application-identifier</code>, and both must be authorized by an
+embedded provisioning profile (TN3125, TN3137). A signed app that claims them without a matching
+profile is killed at launch, so they are not in the default plists. The extra plists
+(<code translate="no">Entitlements.direct.keychain.plist</code>, <code translate="no">Entitlements.appstore.keychain.plist</code>) and the overlays
+<code translate="no">src-tauri/tauri.keychain.direct.conf.json</code> / <code translate="no">tauri.keychain.appstore.conf.json</code> (add
+<code translate="no">--config</code> after the usual config) set the entitlements and embed the profile from
+<code translate="no">src-tauri/profiles/{direct,appstore}.provisionprofile</code> (ignored by git, account specific). The
+sandbox of the store build needs no further keychain entitlement. Without the profile (plain
+build, dev, ad hoc) the app gets <code translate="no">errSecMissingEntitlement</code> (-34018) and uses only the
+file-based keychain; the prompt hint stays. Builds with the entitlement keep a shared copy there for
+exactly these builds (see &quot;Migration and mixed builds&quot;).</p>
+<p>Profiles (Apple Developer account). Created 2026-11-10 through the App Store Connect API (global key in <code translate="no">~/.config/appstoreconnect/api_key.json</code>, <code translate="no">POST /v1/bundleIds</code> and <code translate="no">POST /v1/profiles</code>, types <code translate="no">MAC_APP_DIRECT</code> with the Developer ID Application certificate and <code translate="no">MAC_APP_STORE</code> with the Apple Distribution certificate); the portal steps below are the manual equivalent. The App ID did not exist yet and was created with the same call. The App Store profile expires 2027-04-19 with its certificate and must be recreated then. Since #595 (2026-11-16) the App IDs are <code translate="no">de.gitoodo.app</code> and <code translate="no">de.gitoodo.app.service</code> with Developer ID profiles for both; an App Store profile for <code translate="no">de.gitoodo.app</code> does not exist yet:</p>
+<ol><li>Identifiers: App ID <code translate="no">de.gitoodo.app</code> exists; no extra capability is needed for
+keychain sharing on macOS (the group is derived from the team id and the profile&#39;s
+application identifier).</li><li>Profiles, &quot;Developer ID&quot; (macOS): create a Developer ID provisioning profile for the App ID
+with the Developer ID Application certificate; save as <code translate="no">src-tauri/profiles/direct.provisionprofile</code>.</li><li>Profiles, &quot;Mac App Store Connect&quot;: create a profile for the same App ID with the Apple
+Distribution certificate; save as <code translate="no">src-tauri/profiles/appstore.provisionprofile</code>.</li><li>Build with the overlay (direct: <code translate="no">tauri build --config src-tauri/tauri.keychain.direct.conf.json</code>;
+store: additionally <code translate="no">--features store</code> and the <code translate="no">appstore</code> configs, then the keychain overlay
+last). The profile&#39;s team and application identifier must equal the plist values.</li></ol>
+<p>Background services (#594). The classifier and dispatcher run as launchd agents in their own
+process, not in the app, so they need the token too, without any prompt: a background process
+cannot answer one. Apple&#39;s model for this is the data protection keychain with a keychain access
+group that every program of the team claims (TN3137; &quot;Sharing access to keychain items among a
+collection of apps&quot;). Access groups are restricted entitlements that must be authorized by an
+embedded provisioning profile, and a bare command-line executable cannot embed one; the documented
+way is to wrap the program in an app-like bundle (&quot;Signing a daemon with a restricted
+entitlement&quot;). Hence, in a Developer ID build with both profiles:</p>
+<ul><li><code translate="no">Gitoodo.app/Contents/Helpers/GitoodoService.app</code> is the service helper (Apple: &quot;Placing content
+in a bundle&quot;, helper tools go to <code translate="no">Contents/Helpers</code>): the <code translate="no">gitoodo</code> CLI, signed with identifier
+<code translate="no">de.gitoodo.app.service</code>, entitlements <code translate="no">src-tauri/Entitlements.service.plist</code> (App ID
+<code translate="no">Q7V3X27S2U.de.gitoodo.app.service</code>, keychain group
+<code translate="no">Q7V3X27S2U.de.gitoodo.app</code>, the app&#39;s group, listed first) and its own profile
+<code translate="no">src-tauri/profiles/service.provisionprofile</code>. <code translate="no">Info.plist</code> from
+<code translate="no">src-tauri/macos/GitoodoService.Info.plist</code> (background only). <code translate="no">scripts/mac-service-helper.sh</code>
+builds and signs it inside out and seals the app again; <code translate="no">scripts/build-local-mac.sh</code> (and so
+the release) runs it and the app&#39;s keychain overlay when both profiles exist. Without them the
+build stays as before.</li><li>macOS 13+: the agents are login items of the app, registered with
+<code translate="no">SMAppService.agent(plistName:)</code> (<code translate="no">crates/core/src/login_items.rs</code>). Their property lists ship
+sealed in the bundle, <code translate="no">Gitoodo.app/Contents/Library/LaunchAgents/de.gitoodo.app.{daemon,dispatcher}.plist</code>
+(source <code translate="no">src-tauri/macos/LaunchAgents/</code>, added by <code translate="no">src-tauri/tauri.sidecar.conf.json</code>), and name
+the program relative to the bundle (<code translate="no">BundleProgram</code>, which launchd supports only for plists
+installed with SMAppService, <code translate="no">man launchd.plist</code>). <code translate="no">mac-service-helper.sh</code> points
+<code translate="no">BundleProgram</code> at the helper before it seals the app; without the helper it stays
+<code translate="no">Contents/MacOS/gitoodo</code>. The agents run directly inside the bundle: nothing is copied, an app
+update is an agent update, signature, entitlements and profile stay as signed. Details below
+(&quot;Login items&quot;).</li><li>Older installs, macOS 11 and 12 (no SMAppService) and builds without the bundled plists (dev runs
+from a build folder; <code translate="no">GITOODO_SERVICE_MANAGER=launchd</code> forces it): installing the services
+(<code translate="no">cli_install::install_service</code>) copies the plain CLI and the whole helper bundle to
+<code translate="no">~/Library/Application Support/de.gitoodo.app/bin/</code> and writes plists to
+<code translate="no">~/Library/LaunchAgents</code> that run <code translate="no">bin/GitoodoService.app/Contents/MacOS/gitoodo</code>. A bundle copy
+keeps signature, entitlements and profile (checked with <code translate="no">codesign --verify --strict</code>; a failed
+check falls back to the plain CLI). An app update replaces the copy when the helper or its
+profile changed (<code translate="no">refresh_outdated_services</code>).</li><li>Reads: the helper is in the group, so <code translate="no">load_token</code> finds the token in the data protection
+keychain without a prompt; its check of the shared file-based copy is silent and ignored when
+refused. A token still only in the file-based keychain (older versions) moves on the app&#39;s own
+silent read: the app reads every account before it asks the services (<code translate="no">grant_where_needed</code>), so
+existing tokens migrate once without user action. <code translate="no">gitoodo token-access</code> then answers
+<code translate="no">readable</code>, the setup counts the services as ready, and no approval step, dialog or error appears.</li><li>The shared file-based copy stays (see &quot;Migration and mixed builds&quot;): the plain terminal CLI, dev
+and ad hoc builds have no group and read only that copy.</li><li>Fallback without the helper (unsigned, ad hoc, dev, forks, a build without the profiles): the
+services run the plain CLI and read the file-based item; the app grants them access once
+(<code translate="no">token-access --grant</code>, issue #594 step 1) and the setup shows the inline approval while a
+service still needs it.</li><li>Uninstall: <code translate="no">scripts/uninstall.sh</code> first unregisters the login items the documented way
+(<code translate="no">Gitoodo.app/Contents/MacOS/gitoodo service uninstall all</code>, i.e. <code translate="no">SMAppService.unregister()</code>;
+deleting the app ends them too) and boots out every label, then runs <code translate="no">gitoodo token-purge</code> through
+the installed or bundled helper (only a binary in the group can delete data protection items; <code translate="no">security</code> reaches only the
+file-based keychain), then removes the file-based items as before.</li><li>Store build: sandboxed, no services, nothing to do.</li></ul>
+<p>Profiles for the helper (Apple Developer account, once; same way as the app&#39;s profiles above):</p>
+<ol><li>Identifiers: register the App ID <code translate="no">de.gitoodo.app.service</code> (explicit, macOS). No
+capability needs to be switched on; Developer ID profiles grant <code translate="no">keychain-access-groups</code>
+<code translate="no">Q7V3X27S2U.*</code> (checked in the app&#39;s <code translate="no">direct.provisionprofile</code>).</li><li>Profiles, &quot;Developer ID&quot; (macOS): a profile for that App ID with the Developer ID Application
+certificate; save it as <code translate="no">src-tauri/profiles/service.provisionprofile</code> (ignored by git).</li><li>Build with <code translate="no">bash scripts/build-local-mac.sh</code>; it checks that the profile authorizes the claimed
+App ID and that helper and app claim the same group.</li></ol>
+<p>Verified on 2026-11-19 (#837, macOS, Developer-ID-signed dev builds, an existing user account
+with the new identifier cleared, not a new macOS account): after a fresh install and after an update
+to a second signed build (new cdhash), classifier and dispatcher read the account token in the
+background without a keychain dialog. Not verified: the local network prompt of the helper for a
+forge in the LAN, and a run in a newly created macOS account.</p>
+<p>Login items (#594 step 2b, <code translate="no">crates/core/src/login_items.rs</code>, <code translate="no">service_install.rs</code>). Apple&#39;s
+references: <code translate="no">SMAppService</code>, <code translate="no">agent(plistName:)</code>, <code translate="no">register()</code>, <code translate="no">unregister()</code>, <code translate="no">status</code>
+(<code translate="no">SMAppService.Status</code>), <code translate="no">openSystemSettingsLoginItems()</code>, &quot;Updating your app package installer to
+use the new Service Management API&quot;, <code translate="no">man launchd.plist</code> (<code translate="no">BundleProgram</code>,
+<code translate="no">AssociatedBundleIdentifiers</code>).</p>
+<ul><li>Who registers: the app (setup, &quot;Set up service&quot;, the doctor&#39;s fixes) and the CLI inside the
+bundle (<code translate="no">Gitoodo.app/Contents/MacOS/gitoodo service install</code>, also through the <code translate="no">~/.local/bin</code>
+link of <code translate="no">install.sh</code>). The framework attributes the agent to the bundle the calling executable
+belongs to; a copy outside the bundle (the stable CLI in <code translate="no">bin/</code>) gets <code translate="no">notFound</code> and keeps the
+<code translate="no">launchctl</code> way; asked to change an existing login item it points to the app.</li><li>Status: <code translate="no">enabled</code> counts as installed; <code translate="no">requiresApproval</code> counts as installed too (registered,
+runs once allowed): the setup and the <code translate="no">/doctor</code> say so and offer &quot;Open Login Items&quot;
+(<code translate="no">open_login_items</code>, <code translate="no">openSystemSettingsLoginItems()</code>); <code translate="no">notRegistered</code> and <code translate="no">notFound</code> are not
+installed. <code translate="no">gitoodo doctor</code> prints the registration of each service.</li><li>Start, stop, switch-off: launchd knows the job under the same label, so <code translate="no">launchctl kickstart</code>,
+<code translate="no">bootout</code> and <code translate="no">disable</code> work as before (&quot;Stop services too&quot;, #737). A login item has no plist to
+bootstrap: it loads again by registering (<code translate="no">register()</code> loads a booted-out job and lifts a
+<code translate="no">launchctl disable</code>; measured on macOS 27).</li><li>Logs: a sealed plist cannot name a per-user <code translate="no">StandardErrorPath</code>; the plists set
+<code translate="no">GITOODO_SERVICE_STDERR=1</code> and the service sends its stderr to the same
+<code translate="no">~/Library/Logs/de.gitoodo.app/&lt;service&gt;.stderr.log</code> itself.</li><li>Updates: an update replaces the program the running agents execute. On launch the app compares
+the program file with the one it last started (<code translate="no">service-program.stamp</code> in the state folder) and
+restarts running agents (<code translate="no">kickstart -k</code>); <code translate="no">install.sh</code> does the same for labels launchd reports
+as <code translate="no">managed_by = com.apple.xpc.ServiceManagement</code>. When launchd refuses the new program (an ad
+hoc rebuild changes the code directory hash it recorded), the agent is unregistered and
+registered again. A switched-off service stays off.</li><li>Moving older installs (once, <code translate="no">migrate_to_login_items</code>, at app start and before every install):
+per old plist agent: <code translate="no">bootout</code> and wait, delete the plist, <code translate="no">register()</code>, switch it off again if
+the user had switched it off; then delete <code translate="no">bin/GitoodoService.app</code>. Logs, settings, state and the
+plain CLI copy for the terminal stay. If <code translate="no">register()</code> fails the old plist is restored and loaded
+again and the move is retried at the next start. The test build (<code translate="no">test-access</code>) never moves or
+restarts services on its own, but shares the labels with an installed release: its CLI
+(<code translate="no">service install</code>) does replace them.</li><li>Unsigned and dev builds: SMAppService also works with ad hoc signatures and outside
+<code translate="no">/Applications</code> (measured on macOS 27); a registration that fails with a signature, plist or
+availability error falls back to the <code translate="no">launchctl</code> way with the plain CLI copy and says so.</li></ul>
+<p>Migration and mixed builds (#236). Builds with and without the entitlement can run on the same Mac
+(direct build with profile next to a store preview without profile, dev or ad hoc). A build without
+the entitlement cannot see the data protection keychain, so a build with it keeps the token in both
+keychains: its own copy in the data protection keychain and the shared copy in the file-based
+keychain that every build reads. Until #236 the first read moved the token and deleted the
+file-based item; every build without the entitlement then failed with &quot;no token stored for this
+account&quot;.</p>
+<ul><li>Read, with entitlement: the data protection keychain is asked first. If it has no item, the
+file-based item is read (background: without prompt, so an item of another build yields
+<code translate="no">accessNeeded</code> and the existing hint; interactive: the one-time prompt), copied to the data
+protection keychain and kept. If it has an item, the shared copy is read without prompt as well:
+a different value wins (another build changed the token) and is copied over; a shared copy that
+needs approval leaves the build on its own copy.</li><li>A token only in the data protection keychain: if the mirror marker (data protection keychain,
+service <code translate="no">gitoodo.mirrored</code>, value without secret) is present, a build without the entitlement
+removed the account; the copy and the marker are removed and the account reads <code translate="no">missing</code>, so no
+removed token comes back. Without the marker the item was moved by an older version; the shared
+copy is restored (created by this build, so a build without the entitlement asks once through the
+existing hint).</li><li>Save: the shared copy first (a failure changes nothing, it may need the prompt when the item belongs
+to another build), then the data protection copy and the marker.</li><li>Remove: shared copy first, then the data protection copy, the marker last. A build without the
+entitlement removes only the shared copy; the next read of a build with the entitlement finishes
+the removal through the marker.</li><li>Without the entitlement everything stays in the file-based keychain.</li></ul>
+<p>Failures to copy or restore keep the existing items, still return the token and are logged
+(<code translate="no">keychain_access</code> op <code translate="no">migrate</code>, throttled); the next read tries again. A token moved by a version
+before #236 reaches a build without the entitlement only after a build with the entitlement has run
+the fixed version once. Tests: <code translate="no">secrets.rs</code> (<code translate="no">migration_*</code>, <code translate="no">mixed_builds_*</code>, <code translate="no">token_moved_*</code>,
+<code translate="no">without_entitlement_*</code>, <code translate="no">set_*</code>, <code translate="no">delete_*</code>).</p>
+<p>Verified on the Mac (2026-11-10): both profiles carry <code translate="no">com.apple.application-identifier</code>
+<code translate="no">Q7V3X27S2U.de.gitoodo.app</code> and the keychain group. The direct build with the overlay embeds
+the profile, passes <code translate="no">codesign --verify --strict --deep</code> and launches. The <code translate="no">keyring_roundtrip</code> test binary,
+wrapped in a bundle with the same profile and entitlements and signed with Developer ID, stores, reads
+and deletes a token without any dialog. The store build embeds its profile and is correctly signed, but a
+Mac App Store profile cannot be launched outside TestFlight or the App Store, so its keychain run is open.</p>
+<p>Not verified here: the cross-build read without prompt on the real Mac, a launch of the App Store build.</p>
+<p>When macOS asks for the old file-based keychain (item created by build A, read by build B; builds
+without the keychain entitlement read it, builds with it keep the shared copy there):</p>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col">Build A → build B</th><th scope="col">Prompt</th></tr></thead><tbody><tr><td>Same build type, regular update (same bundle id and team)</td><td>no, the designated requirement matches (verified, see below)</td></tr><tr><td>Reinstall of the same build type</td><td>no; the item stays in the login keychain</td></tr><tr><td>Developer ID ↔ App Store build</td><td>yes, once, different signing identity</td></tr><tr><td>Restored backup (Time Machine, Migration Assistant)</td><td>no for the same build type; the keychain file and its access lists are restored with it</td></tr><tr><td>Changed signing identity, same team (renewed certificate)</td><td>no; the requirement checks the team id, not the certificate</td></tr><tr><td>Changed signing identity, other team or bundle id</td><td>yes, once</td></tr><tr><td>Dev build (<code translate="no">tauri dev</code>, ad hoc or unsigned) ↔ release</td><td>yes, once; ad hoc signatures change (verified, see below)</td></tr><tr><td>Windows Credential Manager, any build</td><td>never; access is bound to the user</td></tr></tbody></table></div>
+<p>&quot;Always Allow&quot; adds the reading build to the item&#39;s access list, so the question does not come
+back for that build. &quot;Allow&quot; grants the single read only; the next start asks again. &quot;Deny&quot; leaves
+the item untouched.</p>
+<p>Local builds on the Mac (#364): a plain <code translate="no">npm run tauri build</code> without a signing identity is signed
+ad hoc. Its designated requirement is the build&#39;s <code translate="no">cdhash</code>, so every new build is a different app
+for the keychain and &quot;Always Allow&quot; from the previous build no longer applies; macOS asks again
+and wants the login password. Build local preview apps with the Developer ID identity instead:</p>
+<div class="docs-code"><pre dir="ltr" translate="no" tabindex="0" data-lang="sh"><code>bash scripts/build-local-mac.sh            # build and check the signature
+bash scripts/build-local-mac.sh --install  # also replace /Applications/Gitoodo.app and start it</code></pre><button type="button" class="docs-code__copy" data-copy hidden data-testid="docs-md-copy-1">Copy</button></div>
+<p>The script picks the first <code translate="no">Developer ID Application</code> identity from the keychain (or
+<code translate="no">APPLE_SIGNING_IDENTITY</code>), refuses an ad hoc result and prints the designated requirement
+(bundle id plus team id). After the switch from an ad hoc build, macOS asks once more; answer it
+with &quot;Always Allow&quot;. Later builds keep the same requirement and read the token without a prompt.</p>
+<p><code translate="no">--install</code> (#2068) asks the running app to quit and waits up to 60 seconds until its process is
+gone; one that is still there is ended (TERM, then KILL). Replacing the bundle under a running app
+and opening it again would only bring the old instance to the front, which never takes up the new
+build. After <code translate="no">open</code> the script waits for the app&#39;s <code translate="no">app_start</code> line in
+<code translate="no">~/Library/Logs/&lt;identifier&gt;/gitoodo.log</code> and fails unless its <code translate="no">commit</code> is the installed one. The
+background services are not ended by the script: they notice their replaced program and restart
+on the new one (<code translate="no">docs/orchestrator/dispatcher.md</code>, &quot;Replaced program&quot;).</p>
+<p>App behaviour:</p>
+<ul><li>Background reads (every sync) run with keychain user interaction switched off
+(<code translate="no">SecKeychainSetUserInteractionAllowed</code>, guard in <code translate="no">secrets.rs</code>). A read that would prompt fails
+with <code translate="no">errSecInteractionNotAllowed</code> (-25308) and becomes the state <code translate="no">accessNeeded</code>; no dialog
+appears out of context and the sync does not report &quot;server unreachable&quot;. Current macOS reports a
+refused access list check without interaction as <code translate="no">errSecAuthFailed</code> (-25293, measured on
+Darwin 27); a background read cannot have been declined, so it also becomes <code translate="no">accessNeeded</code>
+(<code translate="no">background_read_error</code>).</li><li>The popover then shows a calm note per account instead of the red error bar
+(<code translate="no">shell-keychain-&lt;account&gt;</code>): why the token is needed, that this edition of the app may not read
+it yet (for example after a switch between store and direct build; regular updates of the same
+build type never get here), to choose &quot;Always Allow&quot; and enter the Mac login password. Its action (<code translate="no">shell-keychain-&lt;account&gt;-action</code>) calls
+<code translate="no">unlock_keychain</code>, which reads once with the prompt allowed and starts a sync.</li><li>&quot;Deny&quot; (<code translate="no">errSecUserCanceled</code> -128, <code translate="no">errSecAuthFailed</code> -25293) becomes the state <code translate="no">denied</code>. The
+account stays paused with the same note and a retry action, not a generic sync error, until a read
+succeeds. A missing item stays <code translate="no">missing</code> (&quot;Replace token …&quot; in the settings).</li><li>A locked login keychain also yields -25308 and is handled the same way.</li><li>Logs carry the operation, account id and state only, never the token (<code translate="no">keychain_access</code>,
+<code translate="no">keychain_unlock</code> audit event). Error texts are the fixed state texts.</li><li>State mapping tests: <code translate="no">secrets.rs</code> (<code translate="no">status_codes_map_to_keychain_states</code>,
+<code translate="no">background_read_refusal_needs_approval_not_denied</code>, <code translate="no">token_state_of_read_results</code>) and
+<code translate="no">accounts.rs</code> (approval, denial, missing).</li></ul>
+<h3 id="background-services-read-the-token-without-a-prompt-369">Background services read the token without a prompt (#369)<a class="docs-anchor" href="#background-services-read-the-token-without-a-prompt-369" aria-label="Background services read the token without a prompt (#369)" data-testid="docs-md-anchor-background-services-read-the-token-without-a-prompt-369">#</a></h3>
+<p>The classifier and dispatcher run the stable per-user CLI copy (<code translate="no">cli_install::stable_path()</code>), not
+the app. On macOS the keychain access list is per binary, so the app being allowed says nothing
+about the services: a service that would need a prompt cannot answer it and stops reading.</p>
+<ul><li>State per account (<code translate="no">ServiceTokenAccess</code>, JSON camelCase): <code translate="no">readable</code> (silent read works),
+<code translate="no">needsPrompt</code> (token stored, a prompt or refusal would block the service), <code translate="no">missing</code> (no token),
+<code translate="no">unsupported</code> (store build, no services) and <code translate="no">failed</code> (keychain error, unknown).</li><li>Detection asks the service&#39;s own binary: <code translate="no">gitoodo token-access --account &lt;id&gt;</code> reads through the
+same store the services use (<code translate="no">ServiceEnvStore</code> over <code translate="no">KeyringStore</code>) with user interaction
+switched off and prints one state word, never a token. The mapping is the pure function
+<code translate="no">ServiceTokenAccess::of</code>; a failed or unparsable run counts as <code translate="no">failed</code>, never <code translate="no">readable</code>.</li><li>Fix: <code translate="no">gitoodo token-access --account &lt;id&gt; --grant</code> reads with the prompt allowed. The user
+chooses &quot;Always Allow&quot; once and the CLI copy reads silently afterwards. The grant survives later
+builds only with a stable signing identity (Developer ID, #364); ad-hoc signatures change the
+code hash and the prompt returns after an update, so the status shows <code translate="no">needsPrompt</code> again.</li><li>Automatic grant (#594): the app runs that grant itself, without a user step, for every
+account in <code translate="no">needsPrompt</code> after a token is stored or replaced, after the service CLI is installed
+and once at launch. With a Developer ID build the app owns the item and the CLI copy carries the
+same team, so no dialog appears and the item&#39;s partition list gains <code translate="no">teamid:&lt;team&gt;</code>; the
+registered services are restarted to pick it up (audit event <code translate="no">service_token_auto_grant</code>, with
+the binary asked as <code translate="no">program</code>). A grant counts only when a silent read through that binary works
+afterwards (#1198): a prompted read that returns the token once but leaves no lasting access
+stays <code translate="no">needsPrompt</code>, so no success is reported while the services still need approval. The
+manual &quot;Allow access&quot; in the status view stays as the fallback for a declined or ad-hoc build.</li><li>Texts (#594): the setup hint, the grant dialog and the guide never promise a macOS prompt. They
+say that Gitoodo sets the access up, usually without a question, and only if macOS asks, to
+choose &quot;Always Allow&quot;.</li><li>Windows Credential Manager has no access list, so the state there is <code translate="no">readable</code> or <code translate="no">missing</code>.</li><li>Tauri: <code translate="no">service_token_access(id)</code> and <code translate="no">service_token_grant(id)</code> return the state; <code translate="no">setup_status</code>
+carries <code translate="no">tokenAccess: [{ account, access }]</code> for all accounts (empty while the CLI copy is not
+installed). The grant writes the audit event <code translate="no">service_token_grant</code>.</li><li>Tests: <code translate="no">secrets.rs</code> (<code translate="no">service_access_*</code>), <code translate="no">service_access.rs</code> (output mapping), <code translate="no">main.rs</code>
+(<code translate="no">commands_and_flags_parse</code>).</li></ul>
+<p>Windows: Credential Manager (<code translate="no">CredRead</code>/<code translate="no">CredWrite</code>) has no per-app access list and no consent
+dialog; any process of the signed-in user reads the credential. There is nothing to announce or
+deny, so the keychain states never occur on Windows (Microsoft Learn, <code translate="no">CredReadW</code>, &quot;Credentials
+Management&quot;). Not run on a Windows host.</p>
+<h2 id="reduced-tauri-capabilities">Reduced Tauri capabilities<a class="docs-anchor" href="#reduced-tauri-capabilities" aria-label="Reduced Tauri capabilities" data-testid="docs-md-anchor-reduced-tauri-capabilities">#</a></h2>
+<p><code translate="no">src-tauri/capabilities/default.json</code> grants only <code translate="no">core:event:allow-listen</code>, <code translate="no">core:event:allow-unlisten</code>
+and <code translate="no">core:app:allow-version</code>. The frontend uses invoke (always allowed for app commands), event
+listening and the app version; everything else (network, keychain, files, dialogs, opener, autostart)
+runs in Rust.</p>
+<h2 id="sources">Sources<a class="docs-anchor" href="#sources" aria-label="Sources" data-testid="docs-md-anchor-sources">#</a></h2>
+<p>Not machine-verified: the Apple Developer pages are client-rendered and could not be fetched as text, so
+statements based on them (entitlement names, usage-description keys, Settings URLs) come from the
+documentation as known and from the Tauri/Apple tooling, and must be confirmed in review.</p>
+<ul><li>Apple HIG, Privacy: <a href="https://developer.apple.com/design/human-interface-guidelines/privacy" rel="noopener" data-testid="docs-md-link-8">https://developer.apple.com/design/human-interface-guidelines/privacy</a></li><li>Apple, App Sandbox entitlements and <code translate="no">NSLocalNetworkUsageDescription</code>: <a href="https://developer.apple.com/documentation/bundleresources/information-property-list/nslocalnetworkusagedescription" rel="noopener" data-testid="docs-md-link-9">https://developer.apple.com/documentation/bundleresources/information-property-list/nslocalnetworkusagedescription</a></li><li>Apple, security-scoped bookmarks: <a href="https://developer.apple.com/documentation/foundation/nsurl/bookmark-creation-options" rel="noopener" data-testid="docs-md-link-10">https://developer.apple.com/documentation/foundation/nsurl/bookmark-creation-options</a></li><li>Apple, <code translate="no">SMAppService</code>: <a href="https://developer.apple.com/documentation/servicemanagement/smappservice" rel="noopener" data-testid="docs-md-link-11">https://developer.apple.com/documentation/servicemanagement/smappservice</a></li><li>Microsoft Learn, app capability declarations: <a href="https://learn.microsoft.com/windows/uwp/packaging/app-capability-declarations" rel="noopener" data-testid="docs-md-link-12">https://learn.microsoft.com/windows/uwp/packaging/app-capability-declarations</a></li><li>Microsoft Learn, <code translate="no">windows.startupTask</code>: <a href="https://learn.microsoft.com/uwp/schemas/appxpackage/uapmanifestschema/element-uap5-startuptask" rel="noopener" data-testid="docs-md-link-13">https://learn.microsoft.com/uwp/schemas/appxpackage/uapmanifestschema/element-uap5-startuptask</a></li><li>Apple TN3137, On Mac keychain APIs and implementations: <a href="https://developer.apple.com/documentation/technotes/tn3137-on-mac-keychains" rel="noopener" data-testid="docs-md-link-14">https://developer.apple.com/documentation/technotes/tn3137-on-mac-keychains</a></li><li>Apple, Sharing access to keychain items among a collection of apps: <a href="https://developer.apple.com/documentation/security/sharing-access-to-keychain-items-among-a-collection-of-apps" rel="noopener" data-testid="docs-md-link-15">https://developer.apple.com/documentation/security/sharing-access-to-keychain-items-among-a-collection-of-apps</a></li><li>Apple TN3125, Inside Code Signing: Provisioning Profiles: <a href="https://developer.apple.com/documentation/technotes/tn3125-inside-code-signing-provisioning-profiles" rel="noopener" data-testid="docs-md-link-16">https://developer.apple.com/documentation/technotes/tn3125-inside-code-signing-provisioning-profiles</a></li><li>Apple, <code translate="no">kSecUseDataProtectionKeychain</code> (also <code translate="no">errSecMissingEntitlement</code> -34018 in <code translate="no">SecBase.h</code>): <a href="https://developer.apple.com/documentation/security/ksecusedataprotectionkeychain" rel="noopener" data-testid="docs-md-link-17">https://developer.apple.com/documentation/security/ksecusedataprotectionkeychain</a></li><li>Apple, Code Signing Guide, designated requirements: <a href="https://developer.apple.com/library/archive/documentation/Security/Conceptual/CodeSigningGuide/RequirementLang/RequirementLang.html" rel="noopener" data-testid="docs-md-link-18">https://developer.apple.com/library/archive/documentation/Security/Conceptual/CodeSigningGuide/RequirementLang/RequirementLang.html</a></li><li>Apple TN2206, macOS Code Signing In Depth: <a href="https://developer.apple.com/library/archive/technotes/tn2206/_index.html" rel="noopener" data-testid="docs-md-link-19">https://developer.apple.com/library/archive/technotes/tn2206/_index.html</a></li><li>Apple Platform Security, Keychain data protection: <a href="https://support.apple.com/guide/security/keychain-data-protection-secb0694df1a/web" rel="noopener" data-testid="docs-md-link-20">https://support.apple.com/guide/security/keychain-data-protection-secb0694df1a/web</a></li><li>Apple Support, Restore your Mac from a backup (Time Machine): <a href="https://support.apple.com/en-us/102307" rel="noopener" data-testid="docs-md-link-21">https://support.apple.com/en-us/102307</a></li><li>Apple Support, Transfer to a new Mac with Migration Assistant: <a href="https://support.apple.com/en-us/102613" rel="noopener" data-testid="docs-md-link-22">https://support.apple.com/en-us/102613</a></li><li>Apple, Developer ID (certificate renewal keeps the team): <a href="https://developer.apple.com/developer-id/" rel="noopener" data-testid="docs-md-link-23">https://developer.apple.com/developer-id/</a></li><li>Apple, <code translate="no">SecKeychainSetUserInteractionAllowed</code>: <a href="https://developer.apple.com/documentation/security/1393270-seckeychainsetuserinteractionall" rel="noopener" data-testid="docs-md-link-24">https://developer.apple.com/documentation/security/1393270-seckeychainsetuserinteractionall</a></li><li>Microsoft Learn, Credential Manager / <code translate="no">CredRead</code>: <a href="https://learn.microsoft.com/windows/win32/api/wincred/nf-wincred-credreadw" rel="noopener" data-testid="docs-md-link-25">https://learn.microsoft.com/windows/win32/api/wincred/nf-wincred-credreadw</a></li><li>Microsoft Learn, Credentials Management: <a href="https://learn.microsoft.com/windows/win32/secauthn/credentials-management" rel="noopener" data-testid="docs-md-link-26">https://learn.microsoft.com/windows/win32/secauthn/credentials-management</a></li><li>Microsoft Learn, launch Settings with <code translate="no">ms-settings:</code>: <a href="https://learn.microsoft.com/windows/apps/develop/launch/launch-settings-app" rel="noopener" data-testid="docs-md-link-27">https://learn.microsoft.com/windows/apps/develop/launch/launch-settings-app</a></li></ul>
+<h2 id="verified-and-open">Verified and open<a class="docs-anchor" href="#verified-and-open" aria-label="Verified and open" data-testid="docs-md-anchor-verified-and-open">#</a></h2>
+<p>Verified on the Mac: plist lint (<code translate="no">plutil -lint</code>), Rust and frontend unit tests for the state-to-behaviour
+mapping, clippy, typecheck, lint.</p>
+<p>The keychain sources TN3137, TN3125, &quot;Sharing access to keychain items&quot; and
+<code translate="no">kSecUseDataProtectionKeychain</code> were fetched as text through the Apple documentation JSON. The
+non-interactive read was run against the real keychain under a test service
+(<code translate="no">keyring_roundtrip</code>, ignored by default).</p>
+<p>Two consecutively signed builds (2026-11-09, Darwin 27): a probe binary on <code translate="no">crates/core</code>
+(<code translate="no">KeyringStore</code>, own test service) was built three times with a code change in between, each with a
+new cdhash, and signed with the Developer ID certificate, hardened runtime and a fixed identifier.
+Build 1 stored the item; builds 2 and 3 read it in the background without a dialog (<code translate="no">available</code>).
+The same code signed ad hoc read <code translate="no">accessNeeded</code> without a dialog (raw status -25293, see above).
+The test item was deleted afterwards.</p>
+<p>Open:</p>
+<ul><li>Keychain (#126): the cross-build read without prompt, the migration of a real old item and the
+App Store build&#39;s keychain run (TestFlight) are unverified.</li><li>Keychain: no real prompt or &quot;Don&#39;t Allow&quot; click (needs a human at the dialog), no App Store build,
+no restored backup; Windows Credential Manager is from the documentation only.</li></ul>
+<ul><li>Sandbox: the store build ran ad hoc signed with <code translate="no">Entitlements.appstore.plist</code> (2026-11-10);
+notarized, TestFlight and MSIX runs did not happen.</li><li>Windows is not verified on a Windows host (test machine only).</li><li>Agent skill folder access uses persistent security-scoped bookmarks through the scoped-folder
+crate. Per-target restore, stale grants and denied access still need a native store-build run.</li><li><code translate="no">SMAppService</code> autostart in the store build and the MSIX <code translate="no">StartupTask</code> are implemented (#75) but
+not yet exercised on a signed build; the direct build&#39;s <code translate="no">SMAppService.mainApp</code> see #1250.</li><li>Windows has no notification probe (<code translate="no">ToastNotifier.Setting</code>); the general hint stays there.</li><li>The skill catalog reads package state within the selected folder grant; without access it reports
+an unavailable state. Store compilation passes, but this flow has not been exercised in a store build.</li><li>The MSIX manifest is a template with placeholders (identity, publisher) for the Store account values.</li></ul>
+<h2 id="forge-token-scopes-189">Forge token scopes (#189)<a class="docs-anchor" href="#forge-token-scopes-189" aria-label="Forge token scopes (#189)" data-testid="docs-md-anchor-forge-token-scopes-189">#</a></h2>
+<p>Gitoodo no longer reads or marks forge notifications, so the token wizard and the permission
+check ask for no notification scopes. GitHub needs <code translate="no">repo</code> (or <code translate="no">public_repo</code>) and <code translate="no">read:user</code>;
+Gitea <code translate="no">read:user</code>, <code translate="no">read:repository</code> and <code translate="no">read:issue</code> (plus <code translate="no">write:issue</code> to answer); GitLab
+<code translate="no">read_api</code> (plus <code translate="no">api</code> to answer). Existing tokens that still carry notification scopes keep
+working; the extra scopes are ignored.</p>
+<h2 id="agent-skills">Agent skills<a class="docs-anchor" href="#agent-skills" aria-label="Agent skills" data-testid="docs-md-anchor-agent-skills">#</a></h2>
+<p>Gitoodo keeps its skills current in every assistant&#39;s skill folder on its own, without a choice per
+assistant: <code translate="no">~/.claude/skills</code>, <code translate="no">~/.agents/skills</code> (the shared folder Codex reads) and
+<code translate="no">~/.gemini/skills</code>. It writes the bundled question-format skill (<code translate="no">gitoodo-questions</code>) and, when
+Agent Desktop is installed, the skills of exactly that Agent Desktop version, at app start, once a
+day and after every install or update. Each copy carries Gitoodo&#39;s manifest
+(<code translate="no">.gitoodo-package.json</code>); a folder of the same name without it is the user&#39;s own and stays
+untouched (Settings → AI agents → Skills shows it as &quot;own version&quot;). An earlier link from Claude
+Code&#39;s folder to the shared copy becomes a real copy. The retired computer-use package
+(<code translate="no">lan-computer-use</code>) is removed where it is Gitoodo&#39;s unchanged copy.</p>
+<p>The macOS store build asks once for access to each of these folders (<code translate="no">with_access</code> bookmarks,
+explained first) and installs only the question-format skill; it cannot run npm or reach other
+computers, so Agent Desktop is a feature of the direct builds.</p>
+<h2 id="agent-desktop-desktop-control">Agent Desktop (desktop control)<a class="docs-anchor" href="#agent-desktop-desktop-control" aria-label="Agent Desktop (desktop control)" data-testid="docs-md-anchor-agent-desktop-desktop-control">#</a></h2>
+<p>Workers check native apps with <a href="https://github.com/vercel-labs/agent-desktop" rel="noopener" data-testid="docs-md-link-28">Agent Desktop</a>, the
+npm package <code translate="no">agent-desktop</code> (Apache License 2.0, by Vercel Labs; Gitoodo ships none of its code and
+installs it from npm). It reads and operates desktop apps through the system&#39;s accessibility
+interfaces.</p>
+<p>Install and updates (direct builds; not in the store and test access builds):</p>
+<ul><li>Settings → AI agents → Skills (and the onboarding) install it on this computer with one button.
+Gitoodo downloads a private Node.js runtime from <code translate="no">nodejs.org</code>, installs the package with npm into
+<code translate="no">~/.local/share/gitoodo/assistants</code> and writes the launcher <code translate="no">~/.local/bin/agent-desktop</code> (marked
+&quot;Managed by Gitoodo&quot;; a launcher of the user&#39;s own is backed up first). Worker computers get the
+same through Settings → Hosts → Install (<code translate="no">crates/core/src/worker_setup.rs</code>).</li><li>At app start and once a day the app asks the npm registry for the newest version
+(<code translate="no">registry.npmjs.org/agent-desktop/latest</code>) and updates Agent Desktop and its skills in the
+background, here and on every configured worker computer that is online. A failure stays
+visible: on the skills page for this computer, on the computer&#39;s card in Settings → Hosts for a
+worker computer (<code translate="no">desktop-rollout.json</code> in the state folder holds the last result per computer).
+A failed run is retried after a day; a computer whose only open point is a permission waits for
+the person there instead (and for the next Agent Desktop version).</li></ul>
+<p>Permissions:</p>
+<ul><li>macOS: desktop control needs <strong>Accessibility</strong> and <strong>Screen Recording</strong>. macOS grants them to
+the <em>responsible process</em>, and workers run under the dispatcher&#39;s background service, so the
+grants belong to <strong>Gitoodo Service</strong> (<code translate="no">de.gitoodo.app.service</code>, the helper inside the app), not to
+the Gitoodo app and not to a terminal (#1449). The app therefore never reads its own grants: it
+starts the service&#39;s program as a one-shot job in the signed-in session (<code translate="no">gitoodo desktop-access</code>), which reads them as the workers see them and records the result in
+<code translate="no">desktop-access.json</code> in the state folder (with the program&#39;s code requirement, see below).</li><li>Requesting (#1450): the skills page, the onboarding&#39;s desktop step and &quot;Asked of me&quot; show one
+&quot;Request permission&quot; button per missing permission. It runs <code translate="no">gitoodo desktop-access --request</code>
+in the same job, so the system&#39;s own dialog names Gitoodo Service, then opens exactly the
+matching System Settings pane (<code translate="no">Privacy_Accessibility</code>, <code translate="no">Privacy_ScreenCapture</code>) if the
+permission is still missing. The page rechecks every few seconds for two minutes and when the
+window gets focus again, so a grant shows without a restart. Nobody has to find the program in
+System Settings or add it by hand.</li><li>Denials are fed back (#1451): when Agent Desktop refuses a worker&#39;s command (<code translate="no">PERM_DENIED</code>),
+<code translate="no">gitoodo desktop</code> records the denial, the worker gets a short &quot;go on without the desktop&quot; line
+instead of instructions, and <code translate="no">gitoodo desktop-turn</code> answers <code translate="no">PERMISSION</code> for that machine. The
+dispatcher rechecks every five minutes and holds new desktop-needing work while every desktop it
+could use lacks a permission; work without the desktop goes on, and the hold ends by itself with
+the grant.</li><li>Stale grants after updates (#1452): macOS ties a grant to the program&#39;s code requirement
+(identifier and team). A Developer ID build keeps it across updates and reinstalls; a build with
+another signature (ad hoc, another team) is a new program to macOS and the old entry no longer
+applies, although System Settings still shows it switched on. Gitoodo notices that the
+requirement changed while the permission went missing and says so (&quot;granted for an earlier
+build&quot;); requesting again first removes the outdated entry (<code translate="no">tccutil reset &lt;service&gt; de.gitoodo.app.service</code>, only for Gitoodo Service) so the system asks afresh.</li><li>Worker Macs: their card in Settings → Worker machines and &quot;Asked of me&quot; show the same state;
+&quot;Request&quot; runs <code translate="no">agent-desktop permissions --request</code> there over SSH, then the guide, so the
+person at that Mac confirms the system&#39;s dialog. Workers there run under the satellite service.
+Its program, the uploaded CLI (<code translate="no">~/.local/bin/gitoodo</code>), changes with every update and, by
+source, its signature too (a copy of the app&#39;s build, a release, a build made on that machine),
+and a grant bound to one signature silently ends with the next while System Settings still
+shows it switched on; <code translate="no">tccutil</code> cannot remove the entry of a bare program (#1657). So the
+service starts through a fixed starter, <strong>Gitoodo Service</strong>: a frozen copy of the program in
+<code translate="no">~/Library/Application Support/de.gitoodo.app/service/&lt;hash&gt;/Gitoodo Service</code> that only runs
+<code translate="no">launch -- ~/.local/bin/gitoodo satellite</code>. It starts the installed program as its child, so
+macOS files the grants under the starter, and the starter never changes with updates: one
+grant there holds across all of them. It is made once (again only when it is missing, then in
+a new folder with a clean entry in System Settings); a service from before switches to it on
+its next idle restart, for example after an update. Checks and requests on such a Mac run
+through the starter too (the program of <code translate="no">satellite.plist</code> in the state folder while launchd
+knows the job), and <code translate="no">desktop-access.json</code> there names it. A grant made earlier for
+<code translate="no">gitoodo</code> or for the app&#39;s Gitoodo Service does not reach those workers.</li><li>Asking by itself (#1657): every 15 minutes the app reads the grants again on each worker
+computer with Agent Desktop set up, so a grant ends the hold without anyone pressing a button,
+and a missing one is noticed even when only the workers there were refused. While one is
+missing on a Mac, it asks the system there by itself, at most every six hours: the system&#39;s
+dialog and the matching place in System Settings (with the guide) open on that Mac. Granting
+stays with the person at that Mac; macOS lets nobody else do it.</li><li>Explained on the worker Mac first (#1487): a request from the other computer (the button or
+the six-hourly one) no longer leaves the person at the worker Mac alone with the system&#39;s
+dialog. <code translate="no">gitoodo desktop permissions --request</code> there first reads the grants and, while
+Accessibility or Screen Recording is missing, shows a window of its own in the desktop session
+(<code translate="no">crates/core/src/desktop_explain.rs</code>, an <code translate="no">osascript</code> dialog whose texts go in as arguments, in
+the Mac&#39;s system language, one of the six app languages, else English, Arabic right to left;
+with Gitoodo&#39;s icon when the app is installed there, else the caution icon): what desktop checks
+are, each missing permission with what it is for and its place in System Settings › Privacy &amp;
+Security, and the entry to switch on (the name System Settings lists, &quot;Gitoodo Service&quot;).
+&quot;Open System Settings&quot; lets the system ask and opens the pane of the first missing permission;
+&quot;Later&quot;, Escape or no answer within two minutes asks nothing and only reports the state, and
+the guide that follows from the other computer (<code translate="no">permissions --guide</code>) keeps System Settings
+closed for ten minutes (<code translate="no">desktop-explained.json</code> in the state folder holds the last answer,
+logged as <code translate="no">desktop_access.explained</code>/<code translate="no">desktop_access.guide_held</code>). The next request by itself
+comes after six hours as before.</li><li>Checklist before the first request (#1487): the last step of &quot;Add worker machine&quot; lists what a
+Mac needs for desktop tests (Accessibility, Screen Recording, each with what it is for, and how
+the person there grants them) or, for Windows, the signed-in, unlocked session; nothing for
+Linux.</li><li>Store builds: no desktop control, so neither checks nor requests run (sandbox, see
+<a href="https://github.com/silvio-l/gitoodo/blob/main/docs/store.md" rel="noopener" data-testid="docs-md-link-29">store</a>).</li><li>Windows: no grants. Agent Desktop works in the interactive session, so someone must be signed
+in and the session unlocked (permission <code translate="no">interactive_session</code>); a locked or signed-out
+computer shows that on its card. Elevated windows and UAC prompts cannot be operated.</li><li>Windows session self-check: from SSH, commands reach the session through a scheduled task.
+Before every <code translate="no">gitoodo desktop status</code> there, and whenever a command finds no session, the
+computer starts a trivial task in the session (20 s at most). When none answers it ends
+Gitoodo&#39;s own stuck helpers (its <code translate="no">gitoodo-desktop-*</code> PowerShell and the programs they started)
+and its leftover <code translate="no">gitoodo-desktop-*</code> tasks, never anything else, and checks again; it never
+signs anyone out and never restarts. A session that still starts nothing is <code translate="no">session_stuck</code>.
+Either fault holds desktop work for that computer (the issue waits and starts by itself), the
+main machine checks it again every two minutes, and &quot;Asked of me&quot; shows one card with the steps
+for the person there (sign in or unlock; or sign out and in, then restart) and &quot;Check again&quot;.
+The card goes once a check passes. Workers report the fault as <code translate="no">DESKTOP_DOWN</code> and hand the
+issue back (<code translate="no">gitoodo worker needs --desktop</code>); they never ask about it.</li><li>Installing grants nothing; the operating system asks only through these steps.</li></ul>
+<p>Which desktops workers may use (#995):</p>
+<ul><li>Every machine has its own &quot;Desktop tests&quot; setting on its card in Settings → Worker machines:
+not allowed, when nobody worked there for 1, 2 (default), 5, 10 or 30 minutes, or any time
+(for a dedicated test machine). Every machine whose Agent Desktop is ready and whose setting is
+not &quot;not allowed&quot; is a test desktop for its system, so workers check a cross-platform app on
+each system it targets. A machine that still waits for a permission is offered to workers with
+that note; they do other work there and never ask about it (Gitoodo asks the person itself).</li><li>Workers on this computer reach every such desktop (others over SSH); a worker running on a
+worker computer reaches only that computer&#39;s own desktop.</li><li>&quot;When nobody worked there&quot; is measured on the machine itself: on macOS from the system&#39;s input
+idle time, on Windows in the signed-in session. On Linux, and on a Windows computer without a
+signed-in session, the idle time is unknown and only the one-session-at-a-time rule applies.</li></ul>
+</div>
+<div class="docs-meta"><a class="docs-edit" href="https://github.com/silvio-l/gitoodo/edit/main/docs/permissions.md" data-testid="docs-edit">Edit on GitHub</a><span class="docs-meta__version">Docs version: <span dir="ltr">dev</span></span></div>
+</article>
+<nav class="docs-pager" aria-label="Previous / Next" data-testid="docs-pager"><a class="docs-pager__previous" href="../window-frame/" rel="prev" data-testid="docs-pager-previous"><span class="docs-pager__label">Previous</span><span class="docs-pager__title">Window frame</span></a><a class="docs-pager__next" href="../test-access/" rel="next" data-testid="docs-pager-next"><span class="docs-pager__label">Next</span><span class="docs-pager__title">Test access: driving the app without a human</span></a></nav>
+</main>
+<aside class="docs-toc" aria-labelledby="docs-toc-title" data-testid="docs-toc"><h2 id="docs-toc-title">On this page</h2><ol><li class="docs-toc__l2"><a href="#matrix" data-testid="docs-toc-matrix">Matrix</a></li><li class="docs-toc__l2"><a href="#prompt-timing-and-behaviour-when-denied" data-testid="docs-toc-prompt-timing-and-behaviour-when-denied">Prompt timing and behaviour when denied</a></li><li class="docs-toc__l2"><a href="#notifications-on-macos-131" data-testid="docs-toc-notifications-on-macos-131">Notifications on macOS (#131)</a></li><li class="docs-toc__l2"><a href="#notifications-on-macos-prompt-shown-in-the-background-166" data-testid="docs-toc-notifications-on-macos-prompt-shown-in-the-background-166">Notifications on macOS: prompt shown in the background (#166)</a></li><li class="docs-toc__l2"><a href="#folder-access-and-background-items-on-macos-1250" data-testid="docs-toc-folder-access-and-background-items-on-macos-1250">Folder access and background items on macOS (#1250)</a></li><li class="docs-toc__l2"><a href="#keychain" data-testid="docs-toc-keychain">Keychain</a></li><li class="docs-toc__l3"><a href="#background-services-read-the-token-without-a-prompt-369" data-testid="docs-toc-background-services-read-the-token-without-a-prompt-369">Background services read the token without a prompt (#369)</a></li><li class="docs-toc__l2"><a href="#reduced-tauri-capabilities" data-testid="docs-toc-reduced-tauri-capabilities">Reduced Tauri capabilities</a></li><li class="docs-toc__l2"><a href="#sources" data-testid="docs-toc-sources">Sources</a></li><li class="docs-toc__l2"><a href="#verified-and-open" data-testid="docs-toc-verified-and-open">Verified and open</a></li><li class="docs-toc__l2"><a href="#forge-token-scopes-189" data-testid="docs-toc-forge-token-scopes-189">Forge token scopes (#189)</a></li><li class="docs-toc__l2"><a href="#agent-skills" data-testid="docs-toc-agent-skills">Agent skills</a></li><li class="docs-toc__l2"><a href="#agent-desktop-desktop-control" data-testid="docs-toc-agent-desktop-desktop-control">Agent Desktop (desktop control)</a></li></ol></aside>
+</div>
+<footer class="docs-footer" data-testid="docs-footer"><div class="docs-footer__inner">
+<p class="docs-muted">The developer docs are in English only.</p>
+<ul class="docs-footer__links">
+<li><a href="../../../" data-testid="docs-footer-site">Website</a></li>
+<li><a href="../../../privacy/" data-testid="docs-footer-privacy">Privacy</a></li>
+<li><a href="https://github.com/silvio-l/gitoodo/blob/main/LICENSE" data-testid="docs-footer-license">MIT</a></li>
+</ul>
+</div></footer>
+</body>
+</html>

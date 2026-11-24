@@ -1,0 +1,41 @@
+WEBVTT
+
+1
+00:00:00.000 --> 00:00:04.200
+De la idea a la pull request fusionada.
+Así recorre un issue Gitoodo.
+
+2
+00:00:04.200 --> 00:00:10.400
+En el chat del orquestador cuentas qué quieres construir.
+Gitoodo propone los issues. No se crea nada hasta que pulsas «Aplicar».
+
+3
+00:00:10.400 --> 00:00:15.400
+Cuando un issue está claro, pasa a «Listo».
+«Todos los repos» muestra el estado de cada issue y su motivo.
+
+4
+00:00:15.400 --> 00:00:20.600
+Cada issue listo lo toma un agente.
+De «En curso» a «En revisión», ves cada paso.
+
+5
+00:00:20.600 --> 00:00:25.400
+Si falta una decisión, el agente te pregunta.
+La recomendación ya viene marcada.
+
+6
+00:00:25.400 --> 00:00:30.400
+Un clic y el agente sigue trabajando.
+Tu respuesta llega al issue como comentario.
+
+7
+00:00:30.400 --> 00:00:35.000
+El resumen muestra tu semana en cifras.
+Merges, respuestas, ocupación de workers. Lo que te espera está en «Para mí».
+
+8
+00:00:35.000 --> 00:00:38.400
+Gitoodo
+Gratis · Código abierto · macOS y Windows

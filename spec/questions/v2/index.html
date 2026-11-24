@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self'; style-src 'self'; script-src 'sha256-zclDvgIbJxhMP3hLx0Pe9wEzIPlPNUNObuWsVD7xB/M='; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="color-scheme" content="light dark">
+<script>try{var t=localStorage.getItem("gitoodo-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<title>Gitoodo question format (version 2)</title>
+<meta name="description" content="The open, versioned format in which coding agents ask a human a question in a forge issue, and the answer comment that comes back.">
+<link rel="canonical" href="https://gitoodo.com/spec/questions/v2/">
+<meta property="og:title" content="Gitoodo question format (version 2)">
+<meta property="og:description" content="The open, versioned format in which coding agents ask a human a question in a forge issue, and the answer comment that comes back.">
+<meta property="og:url" content="https://gitoodo.com/spec/questions/v2/">
+<meta property="og:type" content="article">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../../assets/site.css">
+</head>
+<body class="spec-page" data-spec-version="2">
+<a class="skip" href="#main" data-testid="spec-skip">Skip to content</a>
+<header class="header" data-testid="spec-header"><div class="wrap header__inner">
+<a class="lockup" href="../../../" aria-label="Gitoodo" data-testid="spec-header-logo"><svg class="lockup__art" data-brand="wordmark" viewBox="9.3 9.4 767.3 182.9" focusable="false" aria-hidden="true"><path class="logo__tray" fill-rule="evenodd" d="M66.7 89.5C54.7 90.9 52.5 108.4 63.6 112.9C69.4 115.3 80 113.9 86.5 113.9L136.5 114C143.6 114 155.7 115.4 157 105.5C157.8 99.1 154.7 91.2 147.7 89.6C141.7 88.1 126.5 89.3 119.5 89.3L84.5 89.3C78.7 89.3 72.5 88.8 66.7 89.5ZM210.5 93.7C206.3 95.4 202.9 98.6 198.6 100.3C196.7 101 193.8 101.2 192.6 103.1C191.3 105.1 191.8 108.3 191.8 110.5C191.8 115.6 192.1 120.9 191.5 125.9C184.9 128.1 171 126.6 163.5 126.6C159.8 126.6 155.9 126.2 152.5 128C144.2 132.6 147.8 144.9 143.6 152.1C138.9 160 121.4 157.2 113.5 157.2C110.3 157.2 106.8 157.7 103.6 156.7C92.4 153.3 98.2 135 89.9 128.6C86.5 125.9 81.6 126.6 77.5 126.6C69.3 126.6 58.2 128 50.5 126.1C48.8 117.6 51.8 108.1 49.7 99.7C47.3 90.3 31.5 89.8 27 97.5C25.1 100.8 24 104.7 22.6 108.2C19.8 115.2 15.3 122.8 16.1 130.5C16.6 134.9 19.5 139.2 21.5 143L31.8 163.7C35.7 171.7 38.9 183.6 48.9 185.5C52.3 186.2 56 185.8 59.5 185.8L83.5 185.8L157.5 185.8L183.5 185.8C188.2 185.8 193.2 186.3 197.4 183.8C203.4 180.3 207.1 168.8 210.3 162.7L221.6 140.2C223.6 136.2 226.1 132.2 226 127.5C225.9 121.1 221.5 114.3 219.2 108.4C217.1 103 215.9 96.5 210.5 93.7Z"/><path class="logo__bars" fill-rule="evenodd" d="M156.8 26.5C155.2 15.4 142.9 17.7 134.5 17.6C114.8 17.4 95.2 17.5 75.5 17.7C65.3 17.7 55.7 18.3 56.4 31.5C57.2 45.7 76.1 42.3 85.5 42.3L126.5 42.3C130.4 42.3 141.2 43.2 144.4 41.9C146.3 41.1 147.2 38.3 148.2 36.7C150.7 33 154.3 30.1 156.8 26.5ZM139.5 55.3C134 52 124.8 53.6 118.5 53.6L83.5 53.7C77.8 53.7 71.1 52.8 65.5 54C59.3 55.3 55.6 61.8 56.5 67.9C58.2 79.3 69.7 78.2 78.5 78.2L123.5 78.2C128.6 78.2 137 79.9 140.6 75.2C142.4 72.9 141 70.6 140.5 68C139.7 63.8 141 59.3 139.5 55.3Z"/><path class="logo__check" fill-rule="evenodd" d="M177.7 26.4C142.8 32.5 139 82.7 173 93.5C177.7 95 182.6 95.5 187.5 94.9C224.6 90.3 228 37.8 192.5 27.2C187.7 25.8 182.6 25.6 177.7 26.4ZM177.5 65.1C172.9 61.8 171.9 57.4 165.5 58.3C160.3 63.5 167.1 67.9 170.8 71.7C172.5 73.5 174.3 76 176.8 76.5C180.5 77.3 183.2 73.1 185.3 70.8L200.1 55.6C203 52.6 204.8 49.9 201.5 46.5C200 46.2 199.2 45.8 197.6 46.2C195.1 46.9 192.6 50.5 190.9 52.4C187.1 56.5 182.5 62.6 177.5 65.1Z"/><path class="word__git" fill-rule="evenodd" d="M379.6 38.4C360.7 39.7 362.8 67.8 381.5 66.9C400 66.1 398.7 37.2 379.6 38.4ZM362.5 92.7C357.9 91.8 353.1 92.2 348.5 92.2L325.5 92.2C321.8 92.2 314.8 90.8 311.8 93.3C308.9 95.8 309.6 111.2 311 114.5C317.2 118.1 327.7 114.3 334.7 116.5C329.4 130.4 309.1 132.6 297.7 125.8C288.9 120.6 283.8 110.5 283.8 100.5C283.6 81.9 299.6 66.6 318.5 71.2C328.3 73.6 329.5 78.5 336.5 83C340.9 81.5 353.8 72.2 356.6 68.5C355.1 63.6 350.2 59.4 346.3 56.2C332 44.2 311 40.6 293.5 47C262.7 58.3 249 94.7 262.4 124.2C276 154 314 165.2 341.5 147C354.5 138.4 363.1 123 364.1 107.5C364.4 102.6 365.3 96.8 362.5 92.7ZM407.5 73.5L400.4 74.5C398 78.5 398.4 90 399.5 94.7C402 96 404.7 95.9 407.4 96.5C410 113.1 400.2 145.4 422.7 151.6C426.2 152.6 429.9 152.6 433.5 152.6C437.5 152.7 441.9 153.2 445.5 151.5C446.4 146.9 446.8 134.4 444.6 130.5C441.2 130.2 436.3 131.5 433.3 129.2C430.8 127.2 431.4 123.3 431.4 120.5C431.4 112.7 430.6 104.3 431.7 96.5C436.1 95.3 440.9 96.3 445.5 95.3C447.3 89.6 447.2 80.3 445.5 74.6L431.9 73.5C430.6 68.1 433.1 59.6 430.5 54.9C428.6 51.5 415.9 52 412.5 52.6C410.9 53 409.4 53.6 408.6 55.1C406.2 59.4 408.5 68.4 407.5 73.5ZM369.5 151.7C373.7 153.3 388.3 153.6 392.1 151.5C393.7 145.8 392.7 138.5 392.7 132.5L392.6 94.5C392.6 90.3 394.1 79 391.6 75.9C389.3 73.1 377.1 73.6 373.5 74C366.1 74.9 368.5 86.3 368.5 91.5L368.6 131.5C368.6 137.8 367.2 145.8 369.5 151.7Z"/><path class="word__oodo" fill-rule="evenodd" d="M658.6 77.5C652.6 75.1 647.4 72.8 640.7 73.4C600.7 77.2 595.6 136.7 633.5 148.3C639.6 150.1 646.5 150.5 652.6 148.3C655 147.4 657.1 146 659.5 145.4C660 146.5 660.6 148.1 661.7 148.7C665.5 150.7 678.5 149.6 682.5 148.5C684.6 142.8 683.3 126.4 683.4 119.5L683.3 71.5C683.2 65 684.5 55.7 683 49.5C681.4 42.8 664.3 43.5 661.3 46.8C659.2 49.1 659.7 52.6 659.7 55.5C659.6 61.4 661.1 72.7 658.6 77.5ZM482.5 73.4C442.6 77.6 435.8 134.6 473.5 147.9C478.2 149.6 483.5 150.4 488.5 150.1C494.4 149.7 499.9 148.2 505.1 145.6C509.6 143.3 513.4 139.9 516.5 136C537.9 109 517 69.8 482.5 73.4ZM560.7 73.4C547.4 75.2 535.8 83.3 530.4 95.7C521.3 116.5 532.4 142.7 554.8 148.6C560 149.9 565.1 150.5 570.5 149.8C597.8 146.3 613.1 114.6 598.4 91.1C593.4 83 585.5 77.6 576.6 74.7C571.5 73.1 566 72.7 560.7 73.4ZM723.5 73.4C712.2 74.9 701.4 80.8 695.3 90.7C682.1 112 692 141 716.3 148.4C721.5 150 727 150.6 732.5 150C755.6 147.5 770.6 124.8 765.8 102.5C762.8 89.1 752.1 79.1 739.5 74.9C734.4 73.2 728.9 72.7 723.5 73.4ZM483.7 96.4C464.6 99.7 469.4 131.1 490.4 126.7C509.1 122.7 503.7 93.1 483.7 96.4ZM562.7 96.4C543.1 99.7 548.6 131.4 569.3 126.6C587.9 122.4 582.5 93.1 562.7 96.4ZM644.6 96.4C625.3 97.8 626.9 127.6 646.5 126.8C665.9 126 664.2 95 644.6 96.4ZM724.7 96.4C705.3 99.9 711 131.7 732.3 126.6C750.4 122.3 744.3 92.9 724.7 96.4Z"/></svg></a>
+<span class="spec__version">Question format v2</span>
+</div></header>
+<div class="wrap spec">
+<nav class="spec__toc" aria-label="Contents" data-testid="spec-toc"><ol><li><a href="#compatibility-promise" data-testid="spec-toc-compatibility-promise">Compatibility promise</a></li><li><a href="#design-goals" data-testid="spec-toc-design-goals">Design goals</a></li><li><a href="#question-block" data-testid="spec-toc-question-block">Question block</a></li><li><a href="#answer-comment" data-testid="spec-toc-answer-comment">Answer comment</a></li><li><a href="#gitoodo-comments" data-testid="spec-toc-gitoodo-comments">Gitoodo comments</a></li><li><a href="#detecting-an-answered-question" data-testid="spec-toc-detecting-an-answered-question">Detecting an answered question</a></li><li><a href="#forwarding" data-testid="spec-toc-forwarding">Forwarding</a></li><li><a href="#instructions" data-testid="spec-toc-instructions">Instructions</a></li><li><a href="#tolerant-reading" data-testid="spec-toc-tolerant-reading">Tolerant reading</a></li><li><a href="#invalid-and-partial-blocks" data-testid="spec-toc-invalid-and-partial-blocks">Invalid and partial blocks</a></li><li><a href="#examples" data-testid="spec-toc-examples">Examples</a></li></ol></nav>
+<main id="main" tabindex="-1" class="spec__body" data-testid="spec-main">
+<p class="spec__meta">Stable URL: <a href="https://gitoodo.com/spec/questions/v2/" data-testid="spec-permalink">https://gitoodo.com/spec/questions/v2/</a> · Source: <a href="https://github.com/silvio-l/gitoodo/blob/main/docs/question-format.md" data-testid="spec-source">docs/question-format.md</a></p>
+<h1 id="gitoodo-question-format-version-2">Gitoodo question format (version 2)</h1>
+<p>This document is the single source of truth for the format that agents use to ask a human a question in a forge
+issue or comment, and for the answer comment that Gitoodo posts back. The parsers (<code translate="no">src/question/</code> and
+<code translate="no">crates/core/src/question.rs</code>), the agent skill
+(<code translate="no">skill/gitoodo-questions/SKILL.md</code>) and the tests follow it. The examples below are extracted and parsed by a test,
+so they cannot drift from the parsers. Both question parsers read the examples directly from this document and
+compare their complete results against <code translate="no">tests/question-examples.expected.json</code>. When changing the format, update
+the examples and their shared expected results together; do not copy example inputs into another fixture.</p>
+<p>Version 2 replaces version 1; v1 blocks and answers are no longer read. The machine-read parts are fixed and
+English (markers, <code translate="no">kind</code>, <code translate="no">Deadline:</code>, <code translate="no">Recommendation:</code>, <code translate="no">(yes/no)</code>, <code translate="no">(multiple)</code>, <code translate="no">(text)</code>, the answer tokens <code translate="no">yes</code>,
+<code translate="no">no</code>, <code translate="no">explain</code>, <code translate="no">other</code>). The human-read parts (the header line, context, questions, option labels, consequences, reasons)
+are written in the language Gitoodo writes in on the forge (en, de, es, ar, hi, zh-Hans): the setting &quot;Language on the
+forge&quot; (the app language, English, the issue&#39;s language or a fixed language), which a repository can override. &quot;The
+issue&#39;s language&quot; is read from the issue&#39;s title and body without code, links and mentions; when the text is short,
+mixed or in another language, the app language is used. Readers never depend on that language: answers are
+understood in every supported language (<code translate="no">yes</code>, <code translate="no">ja</code>, <code translate="no">sí</code>, <code translate="no">نعم</code>, <code translate="no">हाँ</code>, <code translate="no">是</code>, …; see &quot;Answer comment&quot;).</p>
+<p>The format is an open standard: any agent, tool or forge integration may write and read it without Gitoodo. Its
+public, versioned home is <a data-testid="spec-link-1" href="https://gitoodo.com/spec/questions/v2/">https://gitoodo.com/spec/questions/v2/</a>, generated from this document when the
+site is built. Section anchors are the GitHub-style slugs of the headings (<code translate="no">#answer-comment</code>, <code translate="no">#tolerant-reading</code>,
+<code translate="no">#plain-answers</code>), so links into this document work the same in the repository and on the site.</p>
+<h2 id="compatibility-promise">Compatibility promise <a class="spec__anchor" href="#compatibility-promise" aria-label="Link to Compatibility promise" data-testid="spec-anchor-compatibility-promise">#</a></h2>
+<p>Version 2 is stable. Within version 2 these never break:</p>
+<ul><li>A block or answer comment that follows the exact grammar of this document stays valid and keeps its meaning: the
+markers, <code translate="no">v2</code>, the <code translate="no">id</code> and <code translate="no">kind</code> attributes, the header, context, <code translate="no">Deadline:</code>, question, option and
+<code translate="no">Recommendation:</code> lines, the kind suffixes and the answer tokens (<code translate="no">1b</code>, <code translate="no">2 yes</code>, <code translate="no">3 &quot;text&quot;</code>, <code translate="no">explain</code>,
+<code translate="no">1 other &quot;text&quot;</code>).</li><li>The machine-read parts stay English and keep their spelling; the block kinds <code translate="no">worker</code>, <code translate="no">approval</code> and
+<code translate="no">clarification</code> keep their meaning.</li><li>A reader never demands more than this document demands today, so a writer that follows it is understood by every
+version 2 reader.</li><li>The rule for detecting an answered question stays the same, and the forge remains the only source of truth. The one
+clarification (#764): a comment carrying a Gitoodo machine marker is never the human&#39;s reply, even under the human&#39;s
+login (see &quot;Gitoodo comments&quot;).</li><li>The URL above and its section anchors stay valid for as long as version 2 exists.</li></ul>
+<p>What may change within version 2:</p>
+<ul><li>Tolerant reading may accept more slips, words and languages. It never changes how an exact block is read.</li><li>Explanations, examples and the wording of this document may be clarified without changing a rule.</li><li>How an app presents a card (layout, hints, controls) is not part of the format.</li></ul>
+<p>Anything that would break a valid version 2 block or answer gets a new version with its own marker (<code translate="no">v3</code>) and its
+own URL (<code translate="no">/spec/questions/v3/</code>). The version 2 page stays published with its rules unchanged.</p>
+<h2 id="design-goals">Design goals <a class="spec__anchor" href="#design-goals" aria-label="Link to Design goals" data-testid="spec-anchor-design-goals">#</a></h2>
+<ul><li>Works on Forgejo, Gitea, GitHub and GitLab without any server-side support.</li><li>Reads well as plain Markdown when the app is not used (a human can answer with a normal comment).</li><li>Machine-readable: the app renders an answer card, the agent parses the answer.</li><li>Agents write the exact format below; the app reads leniently (see &quot;Tolerant reading&quot;) so that slips, hand-written
+questions and plain human answers still work. Anything that is not clearly a question stays plain text. Nothing
+ever crashes or half-renders.</li></ul>
+<h2 id="question-block">Question block <a class="spec__anchor" href="#question-block" aria-label="Link to Question block" data-testid="spec-anchor-question-block">#</a></h2>
+<p>A block is delimited by two HTML comments. HTML comments are invisible in the rendered Markdown of all four forges,
+and the text between them renders as normal Markdown (a numbered list with the options as lines below each item).</p>
+<pre class="spec__code" dir="ltr" translate="no" data-lang="text"><code>&lt;!-- gitoodo:questions v2 id=&quot;&lt;id&gt;&quot; kind=&quot;&lt;kind&gt;&quot; --&gt;
+@&lt;login&gt; **&lt;Name&gt;** (&lt;hint how to answer, e.g. `1b` or `2 yes`&gt;)
+&lt;up to 3 context lines&gt;
+Deadline: &lt;YYYY-MM-DD&gt;
+1. &lt;Question&gt;?
+   a) &lt;Option&gt; – &lt;consequence&gt;
+   b) &lt;Option&gt; – &lt;consequence&gt;
+   Recommendation: a
+2. &lt;Question&gt;? (yes/no)
+   Recommendation: yes
+&lt;!-- /gitoodo:questions --&gt;</code></pre>
+<h3 id="delimiters">Delimiters <a class="spec__anchor" href="#delimiters" aria-label="Link to Delimiters" data-testid="spec-anchor-delimiters">#</a></h3>
+<ul><li>Opening: <code translate="no">&lt;!-- gitoodo:questions v2 id=&quot;&lt;id&gt;&quot; kind=&quot;&lt;kind&gt;&quot; --&gt;</code>. <code translate="no">v2</code> is the format version; <code translate="no">&lt;id&gt;</code> matches
+<code translate="no">[A-Za-z0-9._-]{1,64}</code> and identifies the block inside its issue. The answer repeats it. <code translate="no">&lt;kind&gt;</code> is <code translate="no">worker</code>,
+<code translate="no">approval</code> or <code translate="no">clarification</code> (see &quot;Block kinds&quot;); both attributes are required, in this order.</li><li>Closing: <code translate="no">&lt;!-- /gitoodo:questions --&gt;</code>.</li><li>A body may contain several blocks. Ids must be unique per issue; for a repeated id the first block wins.</li><li>Blocks inside fenced code blocks (``` or ~~~) are ignored, so documentation can quote the format.</li></ul>
+<h3 id="block-kinds">Block kinds <a class="spec__anchor" href="#block-kinds" aria-label="Link to Block kinds" data-testid="spec-anchor-block-kinds">#</a></h3>
+<p>The <code translate="no">kind</code> tells the orchestrator (and the app) why the question is asked. It never changes how the block is
+parsed or answered; the parsed block carries it as <code translate="no">kind</code> next to <code translate="no">id</code>.</p>
+<div class="spec__table"><table><thead><tr><th scope="col">Kind</th><th scope="col">Asked by</th><th scope="col">Meaning</th></tr></thead><tbody><tr><td><code translate="no">worker</code></td><td>an agent working on the issue</td><td>The worker is blocked on a human decision and continues after it.</td></tr><tr><td><code translate="no">approval</code></td><td>the classifier</td><td>A yes/no gate, e.g. for an issue or PR of an untrusted author.</td></tr><tr><td><code translate="no">clarification</code></td><td>the classifier</td><td>The issue is contradictory or unclear (<code translate="no">needs-clarification</code>).</td></tr></tbody></table></div>
+<p>Unmarked questions (found in running text) have the kind <code translate="no">worker</code>.</p>
+<h3 id="who-is-asked">Who is asked <a class="spec__anchor" href="#who-is-asked" aria-label="Link to Who is asked" data-testid="spec-anchor-who-is-asked">#</a></h3>
+<p>A worker never picks the addressee. Each account has one setting, &quot;Agents&#39; questions go to&quot; (Settings → Accounts and
+the account step of the onboarding; by default the account&#39;s own login, the user the token belongs to; for a bot or
+worker account the app asks instead of assuming). A repository&#39;s <code translate="no">human</code> and its routing rules override it there.
+<code translate="no">gitoodo ask</code> writes that person into the header; a <code translate="no">to</code> that is none of these people (a placeholder such as
+<code translate="no">human</code>, a guess such as <code translate="no">x</code>, the agent account that opened the issue) is replaced. &quot;Questions for me&quot;, the
+notifications and the answer detection use the same setting: a <code translate="no">worker</code> card in a repository with Autopilot rules
+that names nobody of these people, and any card that names a placeholder, is read as addressed to the person who
+decides, so it shows and that person&#39;s reply answers it. A card someone forwarded on purpose keeps its addressee.
+The issue&#39;s assignees and its author never decide who is asked: they are often the worker or an agent account.
+The hint how to answer (<code translate="no">answer like …</code>) is written in the language Gitoodo writes in on that issue (the repository&#39;s
+forge language, else the app setting), whatever language the worker started its spec in.</p>
+<p>An issue with an open question is never shown as stuck: it waits in &quot;Questions for me&quot; with its question, also while
+its labels still say <code translate="no">stalled</code>. &quot;Stuck&quot; is only for an issue whose runs and resolver neither solved it nor asked.</p>
+<p><code translate="no">gitoodo ask --check</code> tests a spec and prints the block without posting it. A block whose <code translate="no">id</code> is already on the
+issue is refused, so a retry or a probe never posts the same question twice.</p>
+<h3 id="content">Content <a class="spec__anchor" href="#content" aria-label="Link to Content" data-testid="spec-anchor-content">#</a></h3>
+<p>All lines are optional, except at least one question.</p>
+<div class="spec__table"><table><thead><tr><th scope="col">Part</th><th scope="col">Syntax</th><th scope="col">Notes</th></tr></thead><tbody><tr><td>Header</td><td><code translate="no">@&lt;login&gt; **&lt;Name&gt;** (…)</code></td><td>First line. Addresses the human; text after the bold part is free. A login that is no trusted person of the repo (unknown on the forge, no write access) counts as addressed to the user who reads the questions.</td></tr><tr><td>Context</td><td>up to 3 plain lines between header and first question</td><td>More than 3 makes the block invalid.</td></tr><tr><td>Deadline</td><td><code translate="no">Deadline: YYYY-MM-DD</code></td><td>Among the context lines; does not count as one. At most once.</td></tr><tr><td>Question</td><td><code translate="no">&lt;n&gt;. &lt;text&gt;</code> with <code translate="no">n</code> = 1, 2, 3, 4 in order</td><td>1 to 4 questions per block.</td></tr><tr><td>Option</td><td><code translate="no">a) &lt;label&gt;</code> or <code translate="no">a) &lt;label&gt; – &lt;consequence&gt;</code></td><td>Keys <code translate="no">a</code> to <code translate="no">d</code> in order. The dash is an en dash or <code translate="no">-</code>.</td></tr><tr><td>Recommendation</td><td><code translate="no">Recommendation: &lt;value&gt;</code> below the question</td><td>At most once. Agents should always give one (see the skill).</td></tr></tbody></table></div>
+<h3 id="question-kinds">Question kinds <a class="spec__anchor" href="#question-kinds" aria-label="Link to Question kinds" data-testid="spec-anchor-question-kinds">#</a></h3>
+<p>The kind is given by an optional suffix at the end of the question line.</p>
+<div class="spec__table"><table><thead><tr><th scope="col">Kind</th><th scope="col">Suffix</th><th scope="col">Options</th><th scope="col"><code translate="no">Recommendation:</code> value</th><th scope="col">Answer token</th></tr></thead><tbody><tr><td>single choice</td><td>none</td><td>2 to 4 (<code translate="no">a</code> to <code translate="no">d</code>)</td><td>one key, e.g. <code translate="no">a</code></td><td><code translate="no">1b</code> or <code translate="no">1bc</code></td></tr><tr><td>multiple choice</td><td><code translate="no">(multiple)</code></td><td>2 to 4 (<code translate="no">a</code> to <code translate="no">d</code>)</td><td>keys separated by commas: <code translate="no">a, c</code></td><td><code translate="no">1ac</code></td></tr><tr><td>yes/no</td><td><code translate="no">(yes/no)</code></td><td>none</td><td><code translate="no">yes</code> or <code translate="no">no</code></td><td><code translate="no">2 yes</code></td></tr><tr><td>free text</td><td><code translate="no">(text)</code></td><td>none</td><td>not allowed</td><td><code translate="no">3 &quot;any text&quot;</code></td></tr></tbody></table></div>
+<p>A recommendation may be followed by <code translate="no"> – &lt;reason&gt;</code>; the reason is ignored.</p>
+<p>A single choice asks for one option, but the human may combine several: a click in the app picks one option, and
+an option can be added on purpose (the card&#39;s &quot;choose several&quot; control or a Cmd/Ctrl-click). The answer then carries
+every chosen key like a multiple choice (<code translate="no">1bc</code>). Agents read such an answer as &quot;all of these options&quot; (see the skill).
+The question block itself is unchanged: a single choice still has at most one recommended key.</p>
+<h2 id="answer-comment">Answer comment <a class="spec__anchor" href="#answer-comment" aria-label="Link to Answer comment" data-testid="spec-anchor-answer-comment">#</a></h2>
+<p>The app posts one comment per answered block:</p>
+<pre class="spec__code" dir="ltr" translate="no" data-lang="text"><code>&lt;!-- gitoodo:answer v2 id=&quot;&lt;id&gt;&quot; --&gt;
+&lt;answer line&gt;
+
+&lt;optional free text, Markdown&gt;</code></pre>
+<ul><li>Line 1 is the marker with the same <code translate="no">id</code> as the block.</li><li>Line 2 is the answer line: space-separated tokens, one per answered question, in question order:<ul><li>single or multiple choice: number plus the chosen keys in alphabetical order, no separator: <code translate="no">1b</code>, <code translate="no">3ac</code>;</li><li>yes/no: number, a space, <code translate="no">yes</code> or <code translate="no">no</code>: <code translate="no">2 yes</code>;</li><li>free text: number, a space, then the text as a double-quoted JSON string (<code translate="no">\&quot;</code> and <code translate="no">\n</code> escapes): <code translate="no">4 &quot;Berlin&quot;</code>;</li><li>&quot;please explain better&quot;, for every kind: number, a space, <code translate="no">explain</code>, optionally a space and a note what is unclear
+as a double-quoted JSON string: <code translate="no">2 explain</code> or <code translate="no">2 explain &quot;What does staging mean here?&quot;</code> (see &quot;Explanation
+requests&quot;);</li><li>&quot;none of these fits&quot;, for single and multiple choice: number, a space, <code translate="no">other</code>, a space and the person&#39;s own
+answer as a non-empty double-quoted JSON string: <code translate="no">1 other &quot;Only test it internally first&quot;</code> (see &quot;Own answers&quot;).</li></ul></li><li>Questions can be left out (partial answers are valid). Each number occurs at most once.</li><li>After one blank line follows optional free text, the person&#39;s note (&quot;Anmerkung&quot;). It is plain Markdown and not
+interpreted (see &quot;Notes&quot;).</li></ul>
+<p>An answer line that does not match this grammar makes the whole comment &quot;not an answer&quot; (it stays an ordinary
+comment). The tokens are case-insensitive when parsed; the app always writes the lowercase English tokens.</p>
+<p>Every supported language is understood when reading, in the answer comment and in plain answers:</p>
+<div class="spec__table"><table><thead><tr><th scope="col">Meaning</th><th scope="col">Words</th></tr></thead><tbody><tr><td>yes</td><td><code translate="no">yes</code>, <code translate="no">ja</code>, <code translate="no">sí</code>, <code translate="no">si</code>, <code translate="no">نعم</code>, <code translate="no">हाँ</code>, <code translate="no">हां</code>, <code translate="no">是</code>, <code translate="no">好</code></td></tr><tr><td>no</td><td><code translate="no">no</code>, <code translate="no">nein</code>, <code translate="no">لا</code>, <code translate="no">नहीं</code>, <code translate="no">नही</code>, <code translate="no">否</code>, <code translate="no">不</code></td></tr><tr><td>explain</td><td><code translate="no">explain</code>, <code translate="no">erklären</code>, <code translate="no">explicar</code>, <code translate="no">اشرح</code>, <code translate="no">समझाएं</code>, <code translate="no">解释</code></td></tr><tr><td>other</td><td><code translate="no">other</code>, <code translate="no">anders</code>, <code translate="no">andere</code>, <code translate="no">otro</code>, <code translate="no">otra</code>, <code translate="no">أخرى</code>, <code translate="no">آخر</code>, <code translate="no">अन्य</code>, <code translate="no">其他</code></td></tr></tbody></table></div>
+<p>A word ends at whitespace, <code translate="no">,</code>, <code translate="no">;</code>, <code translate="no">.</code> or a quote; digits and keys (<code translate="no">1ac</code>) stay as described above.</p>
+<h3 id="explanation-requests">Explanation requests <a class="spec__anchor" href="#explanation-requests" aria-label="Link to Explanation requests" data-testid="spec-anchor-explanation-requests">#</a></h3>
+<p>Instead of choosing, the human can send a single question back with <code translate="no">&lt;n&gt; explain</code> when the question, the options or
+the decision criteria are not understood. It is allowed for every question kind and can be combined with answers to
+the other questions of the same block (<code translate="no">1b 2 explain &quot;What does b cost?&quot; 3 yes</code>). The optional note is a JSON string like
+a free-text answer; an empty note is written as no note.</p>
+<p>The agent re-asks exactly the questions marked <code translate="no">explain</code> in a new block (new <code translate="no">id</code>) with a fuller explanation of the
+question, the options and the decision criteria, and keeps the other questions as answered. For the app the block
+counts as answered like after any other partial answer, so the question is no longer open until the new block arrives,
+which then shows up as a new question.</p>
+<h3 id="own-answers">Own answers <a class="spec__anchor" href="#own-answers" aria-label="Link to Own answers" data-testid="spec-anchor-own-answers">#</a></h3>
+<p>When none of the options of a single or multiple choice fits, the human answers that question with <code translate="no">&lt;n&gt; other &quot;…&quot;</code>
+and writes what they want instead (#1200). The text is required and replaces every option: an own answer never
+carries option keys, and it is not allowed for yes/no or free-text questions. It can be combined with answers to the
+other questions (<code translate="no">1 other &quot;Only test it internally first&quot; 2 yes</code>).</p>
+<p>An own answer is a real answer, not an explanation request: it answers the question and, like any other answer, the
+block. The agent treats the text as a binding instruction in place of the options and does not ask the question
+again unless the text itself leaves a real decision open.</p>
+<h3 id="notes">Notes <a class="spec__anchor" href="#notes" aria-label="Link to Notes" data-testid="spec-anchor-notes">#</a></h3>
+<p>Every answer a person gives through the app may carry a note: the free text of an answer comment (a question or an
+approval, also when a whole group of approvals is answered at once) and the note of a finished task (see
+&quot;Instructions&quot;). Before it is posted the app</p>
+<ul><li>trims it and normalises line ends to <code translate="no">\n</code>;</li><li>writes every <code translate="no">&lt;!--</code> as <code translate="no">&amp;lt;!--</code>, so a note can never open a Gitoodo marker (an answer, a question block, the
+automation marker) or hide text; it renders the same;</li><li>closes a code fence the note leaves open, so the fence cannot swallow the rest of the comment;</li><li>caps it at 4000 characters, marking a cut with <code translate="no">…</code>.</li></ul>
+<p>An empty note is left out. Readers take the free text as written; they never interpret it as an answer line.</p>
+<h2 id="gitoodo-comments">Gitoodo comments <a class="spec__anchor" href="#gitoodo-comments" aria-label="Link to Gitoodo comments" data-testid="spec-anchor-gitoodo-comments">#</a></h2>
+<p>The orchestrator may write with the user&#39;s own account (no separate worker account), so the login alone cannot tell a
+worker&#39;s question or a status note from the human&#39;s reply. Every comment that Gitoodo, its dispatcher, its classifier
+or a worker posts therefore carries a machine marker on a line of its own:</p>
+<ul><li>a question block (<code translate="no">&lt;!-- gitoodo:questions v2 … --&gt;</code>), a lease (<code translate="no">&lt;!-- gitoodo:lease v1</code>) or an intake marker
+(<code translate="no">&lt;!-- gitoodo:intake-rejected --&gt;</code>, <code translate="no">&lt;!-- gitoodo:intake-milestone-created --&gt;</code>), or else</li><li>the automation marker as the last line: <code translate="no">&lt;!-- gitoodo:auto --&gt;</code>.</li></ul>
+<p>A comment with any of these markers is written by Gitoodo, whatever account posted it. The answer marker
+(<code translate="no">&lt;!-- gitoodo:answer v2 …</code>), the forward marker (<code translate="no">&lt;!-- gitoodo:forwarded v2 …</code>) and the instruction marker
+(<code translate="no">&lt;!-- gitoodo:instruction v2 --&gt;</code>, see &quot;Instructions&quot;) belong to a human acting through the app; a comment with any of
+them is the human&#39;s, even when it also carries a question block (a forward). A comment
+without any marker is written by a person.</p>
+<p>A note on the internal issue about a reply to an external reporter carries <code translate="no">&lt;!-- gitoodo:reply --&gt;</code> before the
+automation marker; the decision that no reply is needed carries <code translate="no">&lt;!-- gitoodo:reply none --&gt;</code> (#2066). Either one ends
+the reminder to reply in &quot;Asked of me&quot;; both are only read together with <code translate="no">&lt;!-- gitoodo:auto --&gt;</code>.</p>
+<p>For comments written before the automation marker existed, readers also treat these unmarked status notes as Gitoodo&#39;s:
+a comment that starts with <code translate="no">gitoodo: </code>, one that starts with <code translate="no">Gitoodo could not bring this branch up to date with</code>, and
+<code translate="no">Milestone &lt;name&gt; is closed; removed from it (backlog).</code></p>
+<p>Writers other than Gitoodo (an agent asking through <code translate="no">gitoodo ask</code> or the skill) post question blocks, which are marked
+already; they add <code translate="no">&lt;!-- gitoodo:auto --&gt;</code> to any other comment they post in the issue on Gitoodo&#39;s behalf.</p>
+<h3 id="a-block-the-human-can-decide-from-alone">A block the human can decide from alone <a class="spec__anchor" href="#a-block-the-human-can-decide-from-alone" aria-label="Link to A block the human can decide from alone" data-testid="spec-anchor-a-block-the-human-can-decide-from-alone">#</a></h3>
+<p>The card is all the human should need (#949). Writers therefore give every block a context of one to three lines
+that says what the situation is, what is at stake and why the writer cannot decide it; every numbered item is a real
+question ending in <code translate="no">?</code> (<code translate="no">？</code> and <code translate="no">؟</code> count too); every option says its consequence after the dash; every choice has a
+recommendation. A block asks only what a person alone can decide; an open &quot;what is missing&quot; or &quot;which information&quot;
+question is never asked, and a free-text question names exactly the value it needs (#1566). A fault of Gitoodo&#39;s own
+machines (a test desktop or its session that does not answer, a worker computer that cannot be reached) is never asked
+at all, not even as a yes/no question whether access works again: Gitoodo checks and repairs it, holds the issue and
+guides the person in its app; the worker hands the issue back with <code translate="no">gitoodo worker needs --desktop NAME</code> instead. The grammar keeps
+these optional so that blocks written by hand stay valid; <code translate="no">gitoodo ask</code> enforces them for workers and names every
+miss. Text the writer puts in the same comment around the block is shown on the card as its explanation.</p>
+<h2 id="detecting-an-answered-question">Detecting an answered question <a class="spec__anchor" href="#detecting-an-answered-question" aria-label="Link to Detecting an answered question" data-testid="spec-anchor-detecting-an-answered-question">#</a></h2>
+<p>Only blocks and answers posted by trusted people count (the worker account, the repo&#39;s human, trusted authors,
+people with write access or organisation membership; <code translate="no">docs/security.md</code>). A block or answer marker in
+a comment of anyone else is ignored and never shown to a worker as a question or answer.</p>
+<p>A block is answered when the last comment after the question that is not a Gitoodo comment (see &quot;Gitoodo comments&quot;)
+was written by the asked human, the login in the header (<code translate="no">@&lt;login&gt;</code>). Gitoodo comments after the answer (a lease when
+a worker starts, a status note) are skipped and never reopen the question. The content of that comment does not
+matter otherwise; an answer comment of the app, a plain answer or a free remark all close the question, a status note
+of Gitoodo posted under the same login does not. A comment of the asked human that carries an answer marker with the
+block&#39;s <code translate="no">id</code> answers it for good: a later comment of anyone else does not reopen it. A block without a header login is answered by a comment that contains an answer
+marker with the block&#39;s <code translate="no">id</code> and a valid answer line, or by a plain human reply (see &quot;Plain answers&quot;) that fits the
+block. Only comments after the question count; the app and agents compare by position in the issue (body first, then
+the comments in order). A plain reply answers the latest card that was asked before it, never an older one. A block
+whose <code translate="no">id</code> appears in a later forward marker (see &quot;Forwarding&quot;) is answered for good. Without any of these the question
+is open.</p>
+<p>The app answers a block once (#1873). Right before it posts an answer comment it reads the issue&#39;s comments again and
+posts nothing when a comment of the same account already carries an answer marker with the block&#39;s <code translate="no">id</code> (posted from
+another computer or the browser); the client that answered second is told &quot;already answered&quot; instead. A marker in
+anyone else&#39;s comment does not stop it, and when the comments cannot be read nothing is posted.</p>
+<h2 id="forwarding">Forwarding <a class="spec__anchor" href="#forwarding" aria-label="Link to Forwarding" data-testid="spec-anchor-forwarding">#</a></h2>
+<p>The asked human can hand a question on to another trusted person. From the asked human&#39;s account, the app posts one
+comment that holds, per forwarded block:</p>
+<ol><li>a forward marker on its own line, outside code fences, naming the old block:
+<code translate="no">&lt;!-- gitoodo:forwarded v2 id=&quot;&lt;old id&gt;&quot; --&gt;</code></li><li>a new block of the same kind with a new <code translate="no">id</code> (the old one plus <code translate="no">-f1</code>, <code translate="no">-f2</code>, … until it is unused in the issue,
+at most 64 characters), the header <code translate="no">@&lt;new login&gt;</code>, and the same context, deadline, questions, options and
+recommendations.</li></ol>
+<p>The comment starts with one visible line that names the forwarding person, for example <code translate="no">Forwarded by @alice</code>. Markup
+in that line is removed, so it can never open or close a block.</p>
+<pre class="spec__code" dir="ltr" translate="no" data-lang="text"><code>Forwarded by @alice
+&lt;!-- gitoodo:forwarded v2 id=&quot;db-choice&quot; --&gt;
+&lt;!-- gitoodo:questions v2 db-choice-f1 worker --&gt;
+@bob **Bob**
+
+### 1. Which database?
+...
+&lt;!-- /gitoodo:questions --&gt;</code></pre>
+<p>The old block is answered by the forward itself: the comment is by the asked human, and the marker keeps it answered
+after the new person replies. The new block is open until <code translate="no">@&lt;new login&gt;</code> comments, like any other block. The app also
+assigns the issue to the new person and removes the forwarding person from the assignees.</p>
+<p>Rules of the app (not of the format): only blocks of kind <code translate="no">worker</code> whose header names the forwarding person can be
+forwarded; the new person must be trusted (a configured login, write access to the repo, or membership in the owning
+organisation); nobody receives a forward while they hold 10 or more open blocks in that repo. In a public repository
+the forwarded question is as public as the original. The forward dialog suggests only people: never the forwarding
+person&#39;s own accounts, the worker accounts the orchestrator writes or wrote as on that forge, or forge system accounts
+(the deleted-user placeholder <code translate="no">Ghost</code>/<code translate="no">ghost</code>, the actions bot <code translate="no">forgejo-actions</code>/<code translate="no">gitea-actions</code>, GitHub apps
+<code translate="no">…[bot]</code> and users of type <code translate="no">Bot</code>, GitLab bot and access-token users).</p>
+<p>The forge is the only source of truth: there is no <code translate="no">answered</code> label and no state outside the issue.</p>
+<h2 id="instructions">Instructions <a class="spec__anchor" href="#instructions" aria-label="Link to Instructions" data-testid="spec-anchor-instructions">#</a></h2>
+<p>A task (see &quot;Invalid and partial blocks&quot;) ends with &quot;Erledigt&quot; or &quot;Zurück an den Orchestrator&quot;. Both post one comment
+from the person&#39;s account: a fixed first line in the language on the forge and, if the person wrote one, the note (see
+&quot;Notes&quot;) below a bold label that names them. On a hand-back the note is the person&#39;s instruction to the orchestrator
+and its workers, and it sits between two markers, each on a line of its own:</p>
+<pre class="spec__code" dir="ltr" translate="no" data-lang="text"><code>Zurück an den Orchestrator.
+
+**Anweisung von @silvio:**
+
+&lt;!-- gitoodo:instruction v2 --&gt;
+Prüft das selbst, z. B. per Browserautomatisierung und den APIs.
+&lt;!-- /gitoodo:instruction --&gt;</code></pre>
+<ul><li>The instruction is the text between the first opening marker outside code fences and the next closing marker,
+trimmed. A comment without a complete, non-empty pair carries no instruction. The note cannot contain either marker,
+as every <code translate="no">&lt;!--</code> in it is escaped.</li><li>Only an instruction of a trusted person counts (see &quot;Detecting an answered question&quot;); the newest one wins.</li><li>It overrides the issue body and its checklist where they differ, also for steps they leave to a human: the worker
+does them itself with the means the instruction names (browser automation, the forge API, other APIs and tools) and
+asks with a question block only when it is truly blocked. Gitoodo gives it to the next worker first, ahead of the
+issue body (<code translate="no">gitoodo worker context</code> reports it as <code translate="no">human_instruction</code>).</li><li>The note of &quot;Erledigt&quot; is a plain remark under its label, without markers.</li></ul>
+<h2 id="tolerant-reading">Tolerant reading <a class="spec__anchor" href="#tolerant-reading" aria-label="Link to Tolerant reading" data-testid="spec-anchor-tolerant-reading">#</a></h2>
+<p>The exact format above is what agents write (the skill never changes). The app additionally reads what humans and
+less careful agents produce, in four tiers. Each block carries an <code translate="no">origin</code>: <code translate="no">strict</code> (exact block), <code translate="no">tolerant</code>
+(marked block with slips), <code translate="no">unmarked</code> (found in running text); the card shows a subtle hint for the last two.
+Everything else is plain text (tier four). Answers are always written in the strict form.</p>
+<p>Fenced code (``` or ~~~) is never read, in any tier, and neither are quoted lines (starting with <code translate="no">&gt;</code>).</p>
+<h3 id="marked-blocks-with-slips">Marked blocks with slips <a class="spec__anchor" href="#marked-blocks-with-slips" aria-label="Link to Marked blocks with slips" data-testid="spec-anchor-marked-blocks-with-slips">#</a></h3>
+<p>If the exact grammar fails, a block with a valid opening marker (<code translate="no">v2</code>, valid <code translate="no">id</code>, valid <code translate="no">kind</code>) and its closing marker is read
+again with these rules; the first block of an id wins in both tiers.</p>
+<ul><li>Question lines: <code translate="no">1.</code>, <code translate="no">1)</code>, <code translate="no">**1.**</code>, <code translate="no">### 1.</code> (one to six <code translate="no">#</code>) or <code translate="no">Frage 1:</code> (also <code translate="no">Frage 1.</code>, <code translate="no">**Frage 1:**</code>; the
+colon only after <code translate="no">Frage</code>), one to three digits, numbered 1, 2, 3, … in order; up to 5 questions. A line with another
+number is an ordinary line of the question above it. The list starts at the first line numbered 1. The text after
+the number must not be empty; the prefix is not part of the question text.</li><li>Before the list: an optional first line <code translate="no">@&lt;login&gt; …</code> (the addressee is the text after <code translate="no">Frage an</code>, else a leading
+bold name, else the login), <code translate="no">Deadline:</code> or <code translate="no">Frist:</code> lines (any case, bulleted or bold; the first valid date counts) and context lines (the first 3 are kept,
+further ones are dropped).</li><li>Kind hints at the end of the question text, in any case: <code translate="no">(yes/no)</code>, <code translate="no">(ja/nein)</code>, <code translate="no">(sí/no)</code>, <code translate="no">(j/n)</code> for yes/no,
+<code translate="no">(multiple)</code>, <code translate="no">(mehrfach)</code>, <code translate="no">(Mehrfachauswahl)</code> for multiple choice, <code translate="no">(text)</code>, <code translate="no">(Freitext)</code> for free text. Without a hint the kind
+follows from the content: two or more options give a single choice (multiple choice if the recommendation names
+several keys), a lone yes/no recommendation a yes/no question, no options and no recommendation a free-text question.</li><li>Options: <code translate="no">a)</code>, <code translate="no">a.</code>, <code translate="no">(a)</code>, <code translate="no">A)</code>, <code translate="no">A.</code> or <code translate="no">**a)**</code>, optionally after a list bullet (<code translate="no">-</code>, <code translate="no">*</code>, <code translate="no">+</code>) and indented or
+not; keys in order from <code translate="no">a</code>; 2 to 4 options, else the block is not read. An indented line right after an option
+continues that option (joined with a space); a blank line, an option or a recommendation line ends it.</li><li>Option separator between label and consequence: an en dash, an em dash or a hyphen with whitespace on both sides,
+or a colon followed by whitespace; the first one counts.</li><li>Recommendation keywords in any case, colon optional, optionally bulleted or bold: <code translate="no">Recommendation</code>,
+<code translate="no">Recommended</code>, <code translate="no">Empfehlung</code>, <code translate="no">Empfohlen</code>, <code translate="no">Vorschlag</code>. The value is read up to the first separator (so a reason may follow,
+<code translate="no">Empfehlung: c – because …</code>). Values: keys (<code translate="no">b</code>, <code translate="no">ab</code>, <code translate="no">a, b</code>), keys with a number (<code translate="no">1c</code>, <code translate="no">1b)</code>; the number must be
+that of the question) or in parentheses (<code translate="no">c)</code>), and any yes/no word of the table above or <code translate="no">j</code>/<code translate="no">n</code> for yes/no (stored as <code translate="no">yes</code>/<code translate="no">no</code>). The first usable one
+counts. A recommendation that names a key without an option, repeats a key, or is given to a text question or a
+question with options but a yes/no or text hint, makes the block unreadable, as do a single option and an option
+out of order.</li><li>Any other line inside a question is ignored.</li></ul>
+<h3 id="unmarked-questions">Unmarked questions <a class="spec__anchor" href="#unmarked-questions" aria-label="Link to Unmarked questions" data-testid="spec-anchor-unmarked-questions">#</a></h3>
+<p>Outside markers a numbered list is read as a card when all of these hold:</p>
+<ul><li>it starts at a question line numbered 1 (any form above) and continues over question lines, options,
+recommendation lines, blank lines and indented lines wrapping an option; the first other line ends it; numbering
+must run 1, 2, 3, … and have at most 5 questions;</li><li>every question text ends with <code translate="no">?</code> after the kind hint and the <code translate="no">Frage n:</code> prefix are removed;</li><li>at least one question is clearly a question: it has a kind suffix, two or more options, or a yes/no
+recommendation. A list of bare <code translate="no">1. …?</code> lines is not a card.</li></ul>
+<p>Unmarked cards have no addressee, context or deadline. Their <code translate="no">id</code> is derived from the content, so it stays the same
+on every poll: <code translate="no">u-</code> plus the 16 hex digits of the FNV-1a 64-bit hash (offset <code translate="no">0xcbf29ce484222325</code>, prime
+<code translate="no">0x100000001b3</code>) over the UTF-8 bytes of the question texts, each lowercased with whitespace collapsed to single
+spaces, joined by <code translate="no">\n</code>. The text of a broken or unsupported marked block is never read as an unmarked card.</p>
+<h3 id="plain-answers">Plain answers <a class="spec__anchor" href="#plain-answers" aria-label="Link to Plain answers" data-testid="spec-anchor-plain-answers">#</a></h3>
+<p>A human answers with an ordinary comment, e.g. <code translate="no">1c</code>, <code translate="no">1 yes, 2 b</code>, <code translate="no">1 ja</code> or <code translate="no">3 &quot;Berlin&quot;</code>:</p>
+<ul><li>The comment must not contain an answer marker. The first line that is not blank and not quoted (<code translate="no">&gt;</code>), after
+removing fenced code, is the answer line; the rest is free text.</li><li>The line consists only of entries separated by whitespace, <code translate="no">,</code> or <code translate="no">;</code>. An entry is a number (one to three
+digits), optionally followed by <code translate="no">:</code> and/or whitespace, and then keys (<code translate="no">c</code>, <code translate="no">ac</code>), a yes/no word in any
+supported language (any case), a quoted JSON string, an explain word with an optional quoted note after whitespace,
+or an other word followed by whitespace and a quoted JSON string. It ends at whitespace, <code translate="no">,</code>, <code translate="no">;</code>, <code translate="no">.</code> or the end of the line.</li><li>Each number occurs once, and every entry must fit its question in the block: the question exists, the kind
+matches, the keys exist and are unique (a single choice may name several), a text is not empty, an own answer
+(<code translate="no">other</code>) belongs to a choice question.</li><li>Anything else is an ordinary comment and does not answer.</li></ul>
+<p>A comment in the exact answer format is read by the strict rules only.</p>
+<h2 id="invalid-and-partial-blocks">Invalid and partial blocks <a class="spec__anchor" href="#invalid-and-partial-blocks" aria-label="Link to Invalid and partial blocks" data-testid="spec-anchor-invalid-and-partial-blocks">#</a></h2>
+<p>A marked block is plain text, and shows no card, when neither the exact grammar nor the tolerant reading accepts it:</p>
+<ul><li>the version is not <code translate="no">2</code> (this includes every <code translate="no">v1</code> block), the <code translate="no">id</code> or the <code translate="no">kind</code> is missing or malformed, or the
+closing marker is missing;</li><li>there is no question, or more than 5 (more than 4 in the exact grammar), or no <code translate="no">1.</code> question to start the list;</li><li>a choice question has fewer than 2 or more than 4 options, or the keys are not <code translate="no">a</code>, <code translate="no">b</code>, … in order;</li><li>a <code translate="no">yes/no</code> or <code translate="no">text</code> question has options, or a <code translate="no">text</code> question has a recommendation;</li><li>a recommendation names an unknown option or repeats a key.</li></ul>
+<p>The exact grammar is stricter: it also rejects stray lines, a numbering gap, more than 4 questions, more than 3 context
+lines, a second <code translate="no">Deadline:</code> or <code translate="no">Recommendation:</code> line and several recommended keys for a single choice; such a block is read
+tolerantly instead if the rules above allow it.</p>
+<p>There is no partial rendering: a block is either a valid card or plain text. Other valid blocks in the same body are
+unaffected.</p>
+<p>A waiting issue with no valid open block is not a question but a <strong>task</strong> for the human (&quot;Aufgabe&quot;): a hands-on step
+only a person can do, described in the body. Its <code translate="no">- [ ]</code> / <code translate="no">- [x]</code> task list (outside code fences and HTML comments) is
+the acceptance checklist; ticking an item in the app rewrites only that box in the issue body. &quot;Erledigt&quot; removes
+<code translate="no">needs-human</code> and comments, &quot;Zurück an den Orchestrator&quot; also sets <code translate="no">ready</code>; both may carry the person&#39;s note, on a
+hand-back as the instruction to the worker (see &quot;Instructions&quot;). Decisions always belong in a block with
+options; see <code translate="no">docs/counters.md</code> for how tasks are counted.</p>
+<h2 id="examples">Examples <a class="spec__anchor" href="#examples" aria-label="Link to Examples" data-testid="spec-anchor-examples">#</a></h2>
+<p>Single choice with a deadline:</p>
+<pre class="spec__code" dir="ltr" translate="no" data-lang="text"><code>&lt;!-- gitoodo:questions v2 id=&quot;db-choice&quot; kind=&quot;worker&quot; --&gt;
+@silvio **Silvio** (answer e.g. `1b` or `2 yes`)
+The sync job needs a store for seen notification ids.
+Deadline: 2026-11-20
+1. Which store should hold the seen ids?
+   a) SQLite – one more dependency, but queryable
+   b) JSON file – simple, enough for a few thousand ids
+   Recommendation: b
+&lt;!-- /gitoodo:questions --&gt;</code></pre>
+<p>Yes/no and single choice together:</p>
+<pre class="spec__code" dir="ltr" translate="no" data-lang="text"><code>&lt;!-- gitoodo:questions v2 id=&quot;release-1&quot; kind=&quot;worker&quot; --&gt;
+@silvio **Silvio** (answer e.g. `1b` or `2 yes`)
+Release 0.2.0 is ready on dev.
+1. Release now? (yes/no)
+   Recommendation: yes
+2. Which channel?
+   a) Staging only – safe
+   b) Staging and production – needs your approval
+   c) Hold back
+   Recommendation: a
+&lt;!-- /gitoodo:questions --&gt;</code></pre>
+<p>Multiple choice and free text:</p>
+<pre class="spec__code" dir="ltr" translate="no" data-lang="text"><code>&lt;!-- gitoodo:questions v2 id=&quot;platforms&quot; kind=&quot;worker&quot; --&gt;
+@maik **Maik**
+1. Which platforms should the first beta support? (multiple)
+   a) macOS
+   b) Windows
+   c) Linux – not planned
+   Recommendation: a, b
+2. What should the beta be called? (text)
+&lt;!-- /gitoodo:questions --&gt;</code></pre>
+<p>A marked block with slips (tolerant): addressee without bold, <code translate="no">1)</code> and <code translate="no">A.</code> with bullets, bold recommendation,
+upper-case kind suffix.</p>
+<pre class="spec__code" dir="ltr" translate="no" data-lang="text"><code>&lt;!-- gitoodo:questions v2 id=&quot;naming&quot; kind=&quot;worker&quot; --&gt;
+@silvio Frage an Silvio
+Which name do we ship?
+Deadline: 2026-11-30
+1) Name for the app?
+   - A. Gitoodo – short
+   - B. Git-to-do
+   **Recommendation:** a
+2. Ship it? (YES/NO)
+&lt;!-- /gitoodo:questions --&gt;</code></pre>
+<p>Questions without markers in the form people actually write them (from an issue), with an option wrapped over two
+lines:</p>
+<pre class="spec__code" dir="ltr" translate="no" data-lang="text"><code>Offen ist nur Akzeptanzpunkt 3: Nachweis in der echten App.
+
+1. Wie soll der Nachweis erbracht werden?
+   a) Ich teste selbst in der echten App
+   b) Ich lasse es per Skript pruefen
+   c) Der Punkt wird gestrichen
+   Recommendation: c – Code ist gegated und getestet.</code></pre>
+<p>Other forms of numbering, options and recommendations (unmarked): bold number, parenthesised options, <code translate="no">Empfohlen</code>
+with a question number.</p>
+<pre class="spec__code" dir="ltr" translate="no" data-lang="text"><code>**1.** Welche DB?
+(a) SQLite
+(b) JSON
+**Empfohlen:** 1b)</code></pre>
+<pre class="spec__code" dir="ltr" translate="no" data-lang="text"><code>Frage 1: Welche DB?
+**a)** SQLite
+**b)** JSON
+Vorschlag: b)</code></pre>
+<pre class="spec__code" dir="ltr" translate="no" data-lang="text"><code>### 1. Welche DB?
+- a) SQLite
+- b) JSON
+Recommendation: b</code></pre>
+<p>Yes/no hints <code translate="no">(j/n)</code> and <code translate="no">(yes/no)</code>:</p>
+<pre class="spec__code" dir="ltr" translate="no" data-lang="text"><code>1. Release jetzt? (j/n)
+Recommendation: yes</code></pre>
+<pre class="spec__code" dir="ltr" translate="no" data-lang="text"><code>1. Release now? (yes/no)
+Recommended: yes</code></pre>
+<p>Multiple choice and free text hints:</p>
+<pre class="spec__code" dir="ltr" translate="no" data-lang="text"><code>1. Welche Plattformen? (Mehrfachauswahl)
+a) Mac
+b) Win
+Empfehlung: ab</code></pre>
+<pre class="spec__code" dir="ltr" translate="no" data-lang="text"><code>1. Name? (Freitext)</code></pre>
+<p>Mixed forms, bulleted upper-case options, em dash and colon separators, a wrapped option and a <code translate="no">Frage n:</code> question:</p>
+<pre class="spec__code" dir="ltr" translate="no" data-lang="text"><code>1) Wohin soll der Build gehen?
+* A) Staging — nur intern
+* B) Produktion: braucht
+    deine Freigabe und ein
+    Zeitfenster
+* C) Nirgends
+Empfehlung: 1c
+Frage 2: Auch Windows bauen? (Ja/Nein)</code></pre>
+<p>Questions without markers, as a person or an agent without the skill would write them (unmarked):</p>
+<pre class="spec__code" dir="ltr" translate="no" data-lang="text"><code>Before I continue I need two decisions from you.
+
+1. Which database should hold the cache?
+   a) SQLite – queryable
+   b) JSON file – simple
+   Recommendation: b
+2. Should the old endpoint stay? (yes/no)
+   Recommendation: no
+
+Thanks!</code></pre>
+<p>An unmarked free-text question with a kind suffix:</p>
+<pre class="spec__code" dir="ltr" translate="no" data-lang="text"><code>Quick check:
+1) Wie soll das Release heißen? (text)</code></pre>
+<p>The matching answer comments:</p>
+<pre class="spec__code" dir="ltr" translate="no" data-lang="text"><code>&lt;!-- gitoodo:answer v2 id=&quot;release-1&quot; --&gt;
+1 yes 2a</code></pre>
+<pre class="spec__code" dir="ltr" translate="no" data-lang="text"><code>&lt;!-- gitoodo:answer v2 id=&quot;platforms&quot; --&gt;
+1ab 2 &quot;Gitoodo Beta&quot;
+
+Windows build only after the macOS one is stable.</code></pre>
+<p>An answer that sends question 2 back for a better explanation, with a note:</p>
+<pre class="spec__code" dir="ltr" translate="no" data-lang="text"><code>&lt;!-- gitoodo:answer v2 id=&quot;release-1&quot; --&gt;
+1 yes 2 explain &quot;What is the difference between staging and production?&quot;</code></pre>
+<p>An answer where none of the options of question 2 fits, with the person&#39;s own text:</p>
+<pre class="spec__code" dir="ltr" translate="no" data-lang="text"><code>&lt;!-- gitoodo:answer v2 id=&quot;release-1&quot; --&gt;
+1 yes 2 other &quot;Only the internal test channel, production after the audit&quot;</code></pre>
+<p>Invalid blocks, which are rendered as plain text. Missing closing marker:</p>
+<pre class="spec__code" dir="ltr" translate="no" data-lang="text"><code>&lt;!-- gitoodo:questions v2 id=&quot;broken-1&quot; kind=&quot;worker&quot; --&gt;
+@silvio **Silvio**
+1. Is anything closing this block?
+   a) No
+   b) Yes</code></pre>
+<p>A single-choice question with one option and a recommendation for an unknown key:</p>
+<pre class="spec__code" dir="ltr" translate="no" data-lang="text"><code>&lt;!-- gitoodo:questions v2 id=&quot;broken-2&quot; kind=&quot;worker&quot; --&gt;
+1. Only one option?
+   a) Yes
+   Recommendation: c
+&lt;!-- /gitoodo:questions --&gt;</code></pre>
+<p>An unsupported version:</p>
+<pre class="spec__code" dir="ltr" translate="no" data-lang="text"><code>&lt;!-- gitoodo:questions v3 id=&quot;future&quot; kind=&quot;worker&quot; --&gt;
+1. From the future? (yes/no)
+&lt;!-- /gitoodo:questions --&gt;</code></pre>
+<p>A heading list is not a question list:</p>
+<pre class="spec__code" dir="ltr" translate="no" data-lang="text"><code>### 1. Setup
+Install the package.
+### 2. Usage
+Run it.</code></pre>
+<p>Bare numbered questions without any option, hint or recommendation:</p>
+<pre class="spec__code" dir="ltr" translate="no" data-lang="text"><code>Open points:
+1. Who owns the release?
+2. When is the freeze?</code></pre>
+<p>Plain numbered list without questions:</p>
+<pre class="spec__code" dir="ltr" translate="no" data-lang="text"><code>Steps to reproduce:
+1. Open the app
+2. Click the tray icon
+3. Nothing happens</code></pre>
+<p>Quoted question list (quotes are never read):</p>
+<pre class="spec__code" dir="ltr" translate="no" data-lang="text"><code>&gt; 1. Which store?
+&gt;    a) SQLite
+&gt;    b) JSON file</code></pre>
+<p>Question list inside fenced code (here <code translate="no">~~~</code>, so it can sit inside this fence):</p>
+<pre class="spec__code" dir="ltr" translate="no" data-lang="text"><code>The format looks like this:
+
+~~~
+1. Which store?
+   a) SQLite
+   b) JSON file
+~~~</code></pre>
+<p>Prose that merely contains option letters:</p>
+<pre class="spec__code" dir="ltr" translate="no" data-lang="text"><code>Options a) keep it, b) drop it or c) wait - which one do you prefer?</code></pre>
+<p>Plain replies and what they mean for the block with the same id are listed in
+<code translate="no">tests/question-replies.expected.json</code>; both parsers are checked against it.</p>
+</main>
+</div>
+<footer class="footer" data-testid="spec-footer"><div class="wrap footer__inner">
+<a class="lockup" href="../../../" aria-label="Gitoodo" data-testid="spec-footer-logo"><svg class="lockup__art" data-brand="wordmark" viewBox="9.3 9.4 767.3 182.9" focusable="false" aria-hidden="true"><path class="logo__tray" fill-rule="evenodd" d="M66.7 89.5C54.7 90.9 52.5 108.4 63.6 112.9C69.4 115.3 80 113.9 86.5 113.9L136.5 114C143.6 114 155.7 115.4 157 105.5C157.8 99.1 154.7 91.2 147.7 89.6C141.7 88.1 126.5 89.3 119.5 89.3L84.5 89.3C78.7 89.3 72.5 88.8 66.7 89.5ZM210.5 93.7C206.3 95.4 202.9 98.6 198.6 100.3C196.7 101 193.8 101.2 192.6 103.1C191.3 105.1 191.8 108.3 191.8 110.5C191.8 115.6 192.1 120.9 191.5 125.9C184.9 128.1 171 126.6 163.5 126.6C159.8 126.6 155.9 126.2 152.5 128C144.2 132.6 147.8 144.9 143.6 152.1C138.9 160 121.4 157.2 113.5 157.2C110.3 157.2 106.8 157.7 103.6 156.7C92.4 153.3 98.2 135 89.9 128.6C86.5 125.9 81.6 126.6 77.5 126.6C69.3 126.6 58.2 128 50.5 126.1C48.8 117.6 51.8 108.1 49.7 99.7C47.3 90.3 31.5 89.8 27 97.5C25.1 100.8 24 104.7 22.6 108.2C19.8 115.2 15.3 122.8 16.1 130.5C16.6 134.9 19.5 139.2 21.5 143L31.8 163.7C35.7 171.7 38.9 183.6 48.9 185.5C52.3 186.2 56 185.8 59.5 185.8L83.5 185.8L157.5 185.8L183.5 185.8C188.2 185.8 193.2 186.3 197.4 183.8C203.4 180.3 207.1 168.8 210.3 162.7L221.6 140.2C223.6 136.2 226.1 132.2 226 127.5C225.9 121.1 221.5 114.3 219.2 108.4C217.1 103 215.9 96.5 210.5 93.7Z"/><path class="logo__bars" fill-rule="evenodd" d="M156.8 26.5C155.2 15.4 142.9 17.7 134.5 17.6C114.8 17.4 95.2 17.5 75.5 17.7C65.3 17.7 55.7 18.3 56.4 31.5C57.2 45.7 76.1 42.3 85.5 42.3L126.5 42.3C130.4 42.3 141.2 43.2 144.4 41.9C146.3 41.1 147.2 38.3 148.2 36.7C150.7 33 154.3 30.1 156.8 26.5ZM139.5 55.3C134 52 124.8 53.6 118.5 53.6L83.5 53.7C77.8 53.7 71.1 52.8 65.5 54C59.3 55.3 55.6 61.8 56.5 67.9C58.2 79.3 69.7 78.2 78.5 78.2L123.5 78.2C128.6 78.2 137 79.9 140.6 75.2C142.4 72.9 141 70.6 140.5 68C139.7 63.8 141 59.3 139.5 55.3Z"/><path class="logo__check" fill-rule="evenodd" d="M177.7 26.4C142.8 32.5 139 82.7 173 93.5C177.7 95 182.6 95.5 187.5 94.9C224.6 90.3 228 37.8 192.5 27.2C187.7 25.8 182.6 25.6 177.7 26.4ZM177.5 65.1C172.9 61.8 171.9 57.4 165.5 58.3C160.3 63.5 167.1 67.9 170.8 71.7C172.5 73.5 174.3 76 176.8 76.5C180.5 77.3 183.2 73.1 185.3 70.8L200.1 55.6C203 52.6 204.8 49.9 201.5 46.5C200 46.2 199.2 45.8 197.6 46.2C195.1 46.9 192.6 50.5 190.9 52.4C187.1 56.5 182.5 62.6 177.5 65.1Z"/><path class="word__git" fill-rule="evenodd" d="M379.6 38.4C360.7 39.7 362.8 67.8 381.5 66.9C400 66.1 398.7 37.2 379.6 38.4ZM362.5 92.7C357.9 91.8 353.1 92.2 348.5 92.2L325.5 92.2C321.8 92.2 314.8 90.8 311.8 93.3C308.9 95.8 309.6 111.2 311 114.5C317.2 118.1 327.7 114.3 334.7 116.5C329.4 130.4 309.1 132.6 297.7 125.8C288.9 120.6 283.8 110.5 283.8 100.5C283.6 81.9 299.6 66.6 318.5 71.2C328.3 73.6 329.5 78.5 336.5 83C340.9 81.5 353.8 72.2 356.6 68.5C355.1 63.6 350.2 59.4 346.3 56.2C332 44.2 311 40.6 293.5 47C262.7 58.3 249 94.7 262.4 124.2C276 154 314 165.2 341.5 147C354.5 138.4 363.1 123 364.1 107.5C364.4 102.6 365.3 96.8 362.5 92.7ZM407.5 73.5L400.4 74.5C398 78.5 398.4 90 399.5 94.7C402 96 404.7 95.9 407.4 96.5C410 113.1 400.2 145.4 422.7 151.6C426.2 152.6 429.9 152.6 433.5 152.6C437.5 152.7 441.9 153.2 445.5 151.5C446.4 146.9 446.8 134.4 444.6 130.5C441.2 130.2 436.3 131.5 433.3 129.2C430.8 127.2 431.4 123.3 431.4 120.5C431.4 112.7 430.6 104.3 431.7 96.5C436.1 95.3 440.9 96.3 445.5 95.3C447.3 89.6 447.2 80.3 445.5 74.6L431.9 73.5C430.6 68.1 433.1 59.6 430.5 54.9C428.6 51.5 415.9 52 412.5 52.6C410.9 53 409.4 53.6 408.6 55.1C406.2 59.4 408.5 68.4 407.5 73.5ZM369.5 151.7C373.7 153.3 388.3 153.6 392.1 151.5C393.7 145.8 392.7 138.5 392.7 132.5L392.6 94.5C392.6 90.3 394.1 79 391.6 75.9C389.3 73.1 377.1 73.6 373.5 74C366.1 74.9 368.5 86.3 368.5 91.5L368.6 131.5C368.6 137.8 367.2 145.8 369.5 151.7Z"/><path class="word__oodo" fill-rule="evenodd" d="M658.6 77.5C652.6 75.1 647.4 72.8 640.7 73.4C600.7 77.2 595.6 136.7 633.5 148.3C639.6 150.1 646.5 150.5 652.6 148.3C655 147.4 657.1 146 659.5 145.4C660 146.5 660.6 148.1 661.7 148.7C665.5 150.7 678.5 149.6 682.5 148.5C684.6 142.8 683.3 126.4 683.4 119.5L683.3 71.5C683.2 65 684.5 55.7 683 49.5C681.4 42.8 664.3 43.5 661.3 46.8C659.2 49.1 659.7 52.6 659.7 55.5C659.6 61.4 661.1 72.7 658.6 77.5ZM482.5 73.4C442.6 77.6 435.8 134.6 473.5 147.9C478.2 149.6 483.5 150.4 488.5 150.1C494.4 149.7 499.9 148.2 505.1 145.6C509.6 143.3 513.4 139.9 516.5 136C537.9 109 517 69.8 482.5 73.4ZM560.7 73.4C547.4 75.2 535.8 83.3 530.4 95.7C521.3 116.5 532.4 142.7 554.8 148.6C560 149.9 565.1 150.5 570.5 149.8C597.8 146.3 613.1 114.6 598.4 91.1C593.4 83 585.5 77.6 576.6 74.7C571.5 73.1 566 72.7 560.7 73.4ZM723.5 73.4C712.2 74.9 701.4 80.8 695.3 90.7C682.1 112 692 141 716.3 148.4C721.5 150 727 150.6 732.5 150C755.6 147.5 770.6 124.8 765.8 102.5C762.8 89.1 752.1 79.1 739.5 74.9C734.4 73.2 728.9 72.7 723.5 73.4ZM483.7 96.4C464.6 99.7 469.4 131.1 490.4 126.7C509.1 122.7 503.7 93.1 483.7 96.4ZM562.7 96.4C543.1 99.7 548.6 131.4 569.3 126.6C587.9 122.4 582.5 93.1 562.7 96.4ZM644.6 96.4C625.3 97.8 626.9 127.6 646.5 126.8C665.9 126 664.2 95 644.6 96.4ZM724.7 96.4C705.3 99.9 711 131.7 732.3 126.6C750.4 122.3 744.3 92.9 724.7 96.4Z"/></svg></a>
+</div></footer>
+</body>
+</html>

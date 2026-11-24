@@ -1,0 +1,656 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self'; style-src 'self'; script-src 'self' 'sha256-zclDvgIbJxhMP3hLx0Pe9wEzIPlPNUNObuWsVD7xB/M='; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="color-scheme" content="light dark">
+<script>try{var t=localStorage.getItem("gitoodo-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<title>Gitoodo Orchestrator – Specification (v1) – Gitoodo</title>
+<meta name="description" content="Status: agreed design, ready for implementation planning (2026-11-12). Source: design interview with the maintainer on the planning whiteboard. This file is the single source of …">
+<meta name="docs-version" content="dev">
+<link rel="canonical" href="https://gitoodo.com/docs/dev/orchestrator-spec/">
+
+<meta property="og:title" content="Gitoodo Orchestrator – Specification (v1) – Gitoodo">
+<meta property="og:description" content="Status: agreed design, ready for implementation planning (2026-11-12). Source: design interview with the maintainer on the planning whiteboard. This file is the single source of …">
+<meta property="og:url" content="https://gitoodo.com/docs/dev/orchestrator-spec/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Gitoodo">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://gitoodo.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../../assets/docs.css">
+<script defer src="../../../assets/docs.js"></script>
+</head>
+<body class="docs" data-lang="en" data-docs-root="../../" data-search-index="../../search/en.json" data-copied="Copied">
+<a class="skip" href="#main" data-testid="docs-skip">Skip to content</a>
+<header class="docs-header" data-testid="docs-header"><div class="docs-header__inner">
+<a class="lockup" href="../../../" aria-label="Gitoodo" data-testid="docs-logo"><svg class="lockup__art" data-brand="wordmark" viewBox="9.3 9.4 767.3 182.9" focusable="false" aria-hidden="true"><path class="logo__tray" fill-rule="evenodd" d="M66.7 89.5C54.7 90.9 52.5 108.4 63.6 112.9C69.4 115.3 80 113.9 86.5 113.9L136.5 114C143.6 114 155.7 115.4 157 105.5C157.8 99.1 154.7 91.2 147.7 89.6C141.7 88.1 126.5 89.3 119.5 89.3L84.5 89.3C78.7 89.3 72.5 88.8 66.7 89.5ZM210.5 93.7C206.3 95.4 202.9 98.6 198.6 100.3C196.7 101 193.8 101.2 192.6 103.1C191.3 105.1 191.8 108.3 191.8 110.5C191.8 115.6 192.1 120.9 191.5 125.9C184.9 128.1 171 126.6 163.5 126.6C159.8 126.6 155.9 126.2 152.5 128C144.2 132.6 147.8 144.9 143.6 152.1C138.9 160 121.4 157.2 113.5 157.2C110.3 157.2 106.8 157.7 103.6 156.7C92.4 153.3 98.2 135 89.9 128.6C86.5 125.9 81.6 126.6 77.5 126.6C69.3 126.6 58.2 128 50.5 126.1C48.8 117.6 51.8 108.1 49.7 99.7C47.3 90.3 31.5 89.8 27 97.5C25.1 100.8 24 104.7 22.6 108.2C19.8 115.2 15.3 122.8 16.1 130.5C16.6 134.9 19.5 139.2 21.5 143L31.8 163.7C35.7 171.7 38.9 183.6 48.9 185.5C52.3 186.2 56 185.8 59.5 185.8L83.5 185.8L157.5 185.8L183.5 185.8C188.2 185.8 193.2 186.3 197.4 183.8C203.4 180.3 207.1 168.8 210.3 162.7L221.6 140.2C223.6 136.2 226.1 132.2 226 127.5C225.9 121.1 221.5 114.3 219.2 108.4C217.1 103 215.9 96.5 210.5 93.7Z"/><path class="logo__bars" fill-rule="evenodd" d="M156.8 26.5C155.2 15.4 142.9 17.7 134.5 17.6C114.8 17.4 95.2 17.5 75.5 17.7C65.3 17.7 55.7 18.3 56.4 31.5C57.2 45.7 76.1 42.3 85.5 42.3L126.5 42.3C130.4 42.3 141.2 43.2 144.4 41.9C146.3 41.1 147.2 38.3 148.2 36.7C150.7 33 154.3 30.1 156.8 26.5ZM139.5 55.3C134 52 124.8 53.6 118.5 53.6L83.5 53.7C77.8 53.7 71.1 52.8 65.5 54C59.3 55.3 55.6 61.8 56.5 67.9C58.2 79.3 69.7 78.2 78.5 78.2L123.5 78.2C128.6 78.2 137 79.9 140.6 75.2C142.4 72.9 141 70.6 140.5 68C139.7 63.8 141 59.3 139.5 55.3Z"/><path class="logo__check" fill-rule="evenodd" d="M177.7 26.4C142.8 32.5 139 82.7 173 93.5C177.7 95 182.6 95.5 187.5 94.9C224.6 90.3 228 37.8 192.5 27.2C187.7 25.8 182.6 25.6 177.7 26.4ZM177.5 65.1C172.9 61.8 171.9 57.4 165.5 58.3C160.3 63.5 167.1 67.9 170.8 71.7C172.5 73.5 174.3 76 176.8 76.5C180.5 77.3 183.2 73.1 185.3 70.8L200.1 55.6C203 52.6 204.8 49.9 201.5 46.5C200 46.2 199.2 45.8 197.6 46.2C195.1 46.9 192.6 50.5 190.9 52.4C187.1 56.5 182.5 62.6 177.5 65.1Z"/><path class="word__git" fill-rule="evenodd" d="M379.6 38.4C360.7 39.7 362.8 67.8 381.5 66.9C400 66.1 398.7 37.2 379.6 38.4ZM362.5 92.7C357.9 91.8 353.1 92.2 348.5 92.2L325.5 92.2C321.8 92.2 314.8 90.8 311.8 93.3C308.9 95.8 309.6 111.2 311 114.5C317.2 118.1 327.7 114.3 334.7 116.5C329.4 130.4 309.1 132.6 297.7 125.8C288.9 120.6 283.8 110.5 283.8 100.5C283.6 81.9 299.6 66.6 318.5 71.2C328.3 73.6 329.5 78.5 336.5 83C340.9 81.5 353.8 72.2 356.6 68.5C355.1 63.6 350.2 59.4 346.3 56.2C332 44.2 311 40.6 293.5 47C262.7 58.3 249 94.7 262.4 124.2C276 154 314 165.2 341.5 147C354.5 138.4 363.1 123 364.1 107.5C364.4 102.6 365.3 96.8 362.5 92.7ZM407.5 73.5L400.4 74.5C398 78.5 398.4 90 399.5 94.7C402 96 404.7 95.9 407.4 96.5C410 113.1 400.2 145.4 422.7 151.6C426.2 152.6 429.9 152.6 433.5 152.6C437.5 152.7 441.9 153.2 445.5 151.5C446.4 146.9 446.8 134.4 444.6 130.5C441.2 130.2 436.3 131.5 433.3 129.2C430.8 127.2 431.4 123.3 431.4 120.5C431.4 112.7 430.6 104.3 431.7 96.5C436.1 95.3 440.9 96.3 445.5 95.3C447.3 89.6 447.2 80.3 445.5 74.6L431.9 73.5C430.6 68.1 433.1 59.6 430.5 54.9C428.6 51.5 415.9 52 412.5 52.6C410.9 53 409.4 53.6 408.6 55.1C406.2 59.4 408.5 68.4 407.5 73.5ZM369.5 151.7C373.7 153.3 388.3 153.6 392.1 151.5C393.7 145.8 392.7 138.5 392.7 132.5L392.6 94.5C392.6 90.3 394.1 79 391.6 75.9C389.3 73.1 377.1 73.6 373.5 74C366.1 74.9 368.5 86.3 368.5 91.5L368.6 131.5C368.6 137.8 367.2 145.8 369.5 151.7Z"/><path class="word__oodo" fill-rule="evenodd" d="M658.6 77.5C652.6 75.1 647.4 72.8 640.7 73.4C600.7 77.2 595.6 136.7 633.5 148.3C639.6 150.1 646.5 150.5 652.6 148.3C655 147.4 657.1 146 659.5 145.4C660 146.5 660.6 148.1 661.7 148.7C665.5 150.7 678.5 149.6 682.5 148.5C684.6 142.8 683.3 126.4 683.4 119.5L683.3 71.5C683.2 65 684.5 55.7 683 49.5C681.4 42.8 664.3 43.5 661.3 46.8C659.2 49.1 659.7 52.6 659.7 55.5C659.6 61.4 661.1 72.7 658.6 77.5ZM482.5 73.4C442.6 77.6 435.8 134.6 473.5 147.9C478.2 149.6 483.5 150.4 488.5 150.1C494.4 149.7 499.9 148.2 505.1 145.6C509.6 143.3 513.4 139.9 516.5 136C537.9 109 517 69.8 482.5 73.4ZM560.7 73.4C547.4 75.2 535.8 83.3 530.4 95.7C521.3 116.5 532.4 142.7 554.8 148.6C560 149.9 565.1 150.5 570.5 149.8C597.8 146.3 613.1 114.6 598.4 91.1C593.4 83 585.5 77.6 576.6 74.7C571.5 73.1 566 72.7 560.7 73.4ZM723.5 73.4C712.2 74.9 701.4 80.8 695.3 90.7C682.1 112 692 141 716.3 148.4C721.5 150 727 150.6 732.5 150C755.6 147.5 770.6 124.8 765.8 102.5C762.8 89.1 752.1 79.1 739.5 74.9C734.4 73.2 728.9 72.7 723.5 73.4ZM483.7 96.4C464.6 99.7 469.4 131.1 490.4 126.7C509.1 122.7 503.7 93.1 483.7 96.4ZM562.7 96.4C543.1 99.7 548.6 131.4 569.3 126.6C587.9 122.4 582.5 93.1 562.7 96.4ZM644.6 96.4C625.3 97.8 626.9 127.6 646.5 126.8C665.9 126 664.2 95 644.6 96.4ZM724.7 96.4C705.3 99.9 711 131.7 732.3 126.6C750.4 122.3 744.3 92.9 724.7 96.4Z"/></svg></a>
+<a class="docs-header__title" href="../../" data-testid="docs-home">Documentation</a>
+<span class="docs-version" title="Pre-release: Gitoodo has not been released yet" data-version="dev"><span class="visually-hidden">Docs version: </span><span dir="ltr">dev</span><span class="visually-hidden"> (Pre-release: Gitoodo has not been released yet)</span></span>
+<div class="docs-header__tools">
+<div class="docs-search" role="search" data-testid="docs-search">
+<label class="visually-hidden" for="docs-search-input">Search the docs</label>
+<input id="docs-search-input" class="docs-search__input" type="search" placeholder="Search …" autocomplete="off" spellcheck="false" aria-describedby="docs-search-hint" aria-controls="docs-search-results" aria-expanded="false" role="combobox" aria-autocomplete="list" data-testid="docs-search-input">
+<p id="docs-search-hint" class="visually-hidden">Arrow keys choose, Enter opens, Escape closes.</p>
+<div id="docs-search-results" class="docs-search__results" role="listbox" aria-label="Search the docs" hidden data-empty="No page matches “{query}”." data-testid="docs-search-results"></div>
+<p id="docs-search-status" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true" data-count="Results: {count}" data-testid="docs-search-status"></p>
+</div>
+<div class="header__prefs"><details class="langs" name="header-popover" data-langs data-testid="docs-langs"><summary class="langs__toggle" data-testid="docs-langs-toggle"><svg class="langs__globe" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg><span class="visually-hidden">Language: </span><span class="langs__code" translate="no">EN</span></summary>
+<ul class="langs__list" aria-label="Language"><li><a href="../../de/" hreflang="de" lang="de" data-lang="de" data-track="language" data-track-name="de" data-testid="docs-langs-de"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Deutsch</span></a></li><li><a href="../../" hreflang="en" lang="en" data-lang="en" data-track="language" data-track-name="en" aria-current="page" data-testid="docs-langs-en"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>English</span></a></li><li><a href="../../zh-Hans/" hreflang="zh-Hans" lang="zh-Hans" data-lang="zh-Hans" data-track="language" data-track-name="zh-Hans" data-testid="docs-langs-zh-Hans"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>中文（简体）</span></a></li><li><a href="../../hi/" hreflang="hi" lang="hi" data-lang="hi" data-track="language" data-track-name="hi" data-testid="docs-langs-hi"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>हिन्दी</span></a></li><li><a href="../../es/" hreflang="es" lang="es" data-lang="es" data-track="language" data-track-name="es" data-testid="docs-langs-es"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Español</span></a></li><li><a href="../../ar/" hreflang="ar" lang="ar" data-lang="ar" data-track="language" data-track-name="ar" data-testid="docs-langs-ar"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>العربية</span></a></li></ul></details><button class="theme" type="button" hidden data-theme-toggle data-choice="system" data-label="Theme: {current}, switch to {next}" data-system="System" data-light="Light" data-dark="Dark" aria-label="Theme: System, switch to Light" title="Theme: System, switch to Light" data-testid="docs-theme"><svg class="theme__icon theme__icon--system" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg><svg class="theme__icon theme__icon--light" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg><svg class="theme__icon theme__icon--dark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></button></div>
+<button type="button" class="docs-menu" aria-controls="docs-nav" aria-expanded="false" hidden data-testid="docs-menu">Pages</button>
+</div>
+<a class="docs-header__link" href="https://github.com/silvio-l/gitoodo" data-testid="docs-github">GitHub</a>
+<a class="docs-install" href="../../../#download" data-testid="docs-install">Get notified</a>
+</div></header>
+<div class="docs-layout">
+<nav id="docs-nav" class="docs-nav" aria-label="Documentation" data-testid="docs-nav"><div class="docs-nav__section"><p class="docs-nav__title"><a href="../../" data-testid="docs-nav-section-user">For users</a></p><p class="docs-nav__group" id="docs-nav-user-0">Get started</p><ul aria-labelledby="docs-nav-user-0"><li><a href="../../introduction/" data-testid="docs-nav-docs-introduction">What is Gitoodo?</a></li><li><a href="../../getting-started/" data-testid="docs-nav-docs-getting-started">Getting started</a></li></ul><p class="docs-nav__group" id="docs-nav-user-1">Guides</p><ul aria-labelledby="docs-nav-user-1"><li><a href="../../self-hosted-forges/" data-testid="docs-nav-docs-self-hosted-forges">Forgejo and Gitea</a></li><li><a href="../../github-issues-to-pull-requests/" data-testid="docs-nav-docs-github-issues-to-pull-requests">GitHub issues to pull requests</a></li><li><a href="../../safe-auto-merge/" data-testid="docs-nav-docs-safe-auto-merge">Safe auto-merge</a></li><li><a href="../../parallel-coding-agents/" data-testid="docs-nav-docs-parallel-coding-agents">Parallel coding agents</a></li><li><a href="../../switch-from-another-agent-app/" data-testid="docs-nav-docs-switch-from-another-agent-app">Coming from another agent app</a></li></ul><p class="docs-nav__group" id="docs-nav-user-2">Daily use</p><ul aria-labelledby="docs-nav-user-2"><li><a href="../../daily-use/" data-testid="docs-nav-docs-daily-use">How to work with Gitoodo</a></li><li><a href="../../overview/" data-testid="docs-nav-docs-overview">Overview</a></li><li><a href="../../needs-you/" data-testid="docs-nav-docs-needs-you">Needs you</a></li><li><a href="../../questions/" data-testid="docs-nav-docs-questions">Asked of me</a></li><li><a href="../../board/" data-testid="docs-nav-docs-board">All repos</a></li><li><a href="../../chat/" data-testid="docs-nav-docs-chat">Chat</a></li><li><a href="../../repositories/" data-testid="docs-nav-docs-repositories">Repositories</a></li></ul><p class="docs-nav__group" id="docs-nav-user-3">Orchestrator</p><ul aria-labelledby="docs-nav-user-3"><li><a href="../../labels/" data-testid="docs-nav-docs-labels">Status labels and workflow</a></li><li><a href="../../merge-and-release/" data-testid="docs-nav-docs-merge-and-release">Merge control</a></li><li><a href="../../releases/" data-testid="docs-nav-docs-releases">Releases</a></li><li><a href="../../services/" data-testid="docs-nav-docs-services">Classifier, dispatcher and workers</a></li></ul><p class="docs-nav__group" id="docs-nav-user-4">Reference and help</p><ul aria-labelledby="docs-nav-user-4"><li><a href="../../settings/" data-testid="docs-nav-docs-settings">Settings</a></li><li><a href="../../status/" data-testid="docs-nav-docs-status">Status</a></li><li><a href="../../troubleshooting/" data-testid="docs-nav-docs-troubleshooting">Troubleshooting</a></li><li><a href="../../faq/" data-testid="docs-nav-docs-faq">FAQ</a></li><li><a href="../../privacy/" data-testid="docs-nav-docs-privacy">Privacy</a></li></ul></div><div class="docs-nav__section"><p class="docs-nav__title"><a href="../" data-testid="docs-nav-section-dev">For developers</a></p><p class="docs-nav__group" id="docs-nav-dev-0">Start here</p><ul aria-labelledby="docs-nav-dev-0"><li><a href="../architecture/" data-testid="docs-nav-docs-dev-architecture">Architecture</a></li><li><a href="../building/" data-testid="docs-nav-docs-dev-building">Building</a></li><li><a href="../releasing/" data-testid="docs-nav-docs-dev-releasing">Release</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-1">Interfaces</p><ul aria-labelledby="docs-nav-dev-1"><li><a href="../question-format/" data-testid="docs-nav-docs-dev-question-format">Gitoodo question format (version 2)</a></li><li><a href="../cli/" data-testid="docs-nav-docs-dev-cli">Command line reference</a></li><li><a href="../daemon/" data-testid="docs-nav-docs-dev-daemon">Classifier daemon and command line</a></li><li><a href="../phone-access/" data-testid="docs-nav-docs-dev-phone-access">Phone access</a></li><li><a href="../forge-tokens/" data-testid="docs-nav-docs-dev-forge-tokens">Token permissions per forge</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-2">Orchestrator</p><ul aria-labelledby="docs-nav-dev-2"><li><a href="../states/" data-testid="docs-nav-docs-dev-states">States: what Gitoodo shows and what you do about it</a></li><li><a href="../all-repos/" data-testid="docs-nav-docs-dev-all-repos">&quot;All repos&quot;: pages and where things went</a></li><li><a href="./" aria-current="page" data-testid="docs-nav-docs-dev-orchestrator-spec">Gitoodo Orchestrator – Specification (v1)</a></li><li><a href="../orchestrator-setup/" data-testid="docs-nav-docs-dev-orchestrator-setup">Orchestrator setup</a></li><li><a href="../dispatcher/" data-testid="docs-nav-docs-dev-dispatcher">Dispatcher</a></li><li><a href="../queue-order/" data-testid="docs-nav-docs-dev-queue-order">Queue order and slot share</a></li><li><a href="../branch-rules/" data-testid="docs-nav-docs-dev-branch-rules">Branch rules that work with the autopilot</a></li><li><a href="../security/" data-testid="docs-nav-docs-dev-security">Security model of the orchestrator</a></li><li><a href="../satellites/" data-testid="docs-nav-docs-dev-satellites">Satellites</a></li><li><a href="../keychains/" data-testid="docs-nav-docs-dev-keychains">Keychains, signing and dialogs</a></li><li><a href="../local-inputs/" data-testid="docs-nav-docs-dev-local-inputs">Local inputs</a></li><li><a href="../resolver/" data-testid="docs-nav-docs-dev-resolver">The resolver for stuck issues</a></li><li><a href="../triage/" data-testid="docs-nav-docs-dev-triage">Triage</a></li><li><a href="../repo-hygiene/" data-testid="docs-nav-docs-dev-repo-hygiene">Repo hygiene</a></li><li><a href="../storage-cleanup/" data-testid="docs-nav-docs-dev-storage-cleanup">Automatic disk cleanup</a></li><li><a href="../orchestrator-chat/" data-testid="docs-nav-docs-dev-orchestrator-chat">Orchestrator chat</a></li><li><a href="../release-planning/" data-testid="docs-nav-docs-dev-release-planning">Release planning</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-3">App internals</p><ul aria-labelledby="docs-nav-dev-3"><li><a href="../status-model/" data-testid="docs-nav-docs-dev-status-model">Overview status model</a></li><li><a href="../counters/" data-testid="docs-nav-docs-dev-counters">Counters</a></li><li><a href="../startup/" data-testid="docs-nav-docs-dev-startup">Start: first paint and loading state</a></li><li><a href="../logging/" data-testid="docs-nav-docs-dev-logging">Logging</a></li><li><a href="../localisation/" data-testid="docs-nav-docs-dev-localisation">Localisation</a></li><li><a href="../settings-backup/" data-testid="docs-nav-docs-dev-settings-backup">Settings export, import and backup</a></li><li><a href="../symlinks/" data-testid="docs-nav-docs-dev-symlinks">Symbolic links</a></li><li><a href="../window-frame/" data-testid="docs-nav-docs-dev-window-frame">Window frame</a></li><li><a href="../system-permissions/" data-testid="docs-nav-docs-dev-system-permissions">System permissions</a></li><li><a href="../test-access/" data-testid="docs-nav-docs-dev-test-access">Test access: driving the app without a human</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-4">Privacy and data</p><ul aria-labelledby="docs-nav-dev-4"><li><a href="../privacy-policy/" data-testid="docs-nav-docs-dev-privacy-policy">Privacy policy: feedback, usage statistics and the phone app</a></li><li><a href="../network-inventory/" data-testid="docs-nav-docs-dev-network-inventory">Network inventory of the desktop app and the phone app</a></li><li><a href="../chat-notification/" data-testid="docs-nav-docs-dev-chat-notification">Chat notification</a></li><li><a href="../support/" data-testid="docs-nav-docs-dev-support">Voluntary support</a></li></ul></div></nav>
+<main id="main" class="docs-main" tabindex="-1" data-testid="docs-main">
+<article class="docs-article">
+<p class="docs-eyebrow">For developers · Orchestrator</p><h1>Gitoodo Orchestrator – Specification (v1)</h1>
+<details class="docs-toc-inline" data-testid="docs-toc-inline"><summary data-testid="docs-toc-inline-toggle">On this page</summary><ol><li class="docs-toc__l2"><a href="#1-goal-and-scope" data-testid="docs-toc-inline-1-goal-and-scope">1. Goal and scope</a></li><li class="docs-toc__l2"><a href="#2-principles" data-testid="docs-toc-inline-2-principles">2. Principles</a></li><li class="docs-toc__l3"><a href="#21-the-system-never-blocks-itself" data-testid="docs-toc-inline-21-the-system-never-blocks-itself">2.1 The system never blocks itself</a></li><li class="docs-toc__l3"><a href="#22-facts-and-labels" data-testid="docs-toc-inline-22-facts-and-labels">2.2 Facts and labels</a></li><li class="docs-toc__l2"><a href="#3-architecture" data-testid="docs-toc-inline-3-architecture">3. Architecture</a></li><li class="docs-toc__l3"><a href="#31-components" data-testid="docs-toc-inline-31-components">3.1 Components</a></li><li class="docs-toc__l3"><a href="#32-communication" data-testid="docs-toc-inline-32-communication">3.2 Communication</a></li><li class="docs-toc__l2"><a href="#4-the-app" data-testid="docs-toc-inline-4-the-app">4. The app</a></li><li class="docs-toc__l2"><a href="#5-ledger-labels-questions-trust" data-testid="docs-toc-inline-5-ledger-labels-questions-trust">5. Ledger: labels, questions, trust</a></li><li class="docs-toc__l3"><a href="#51-label-catalog" data-testid="docs-toc-inline-51-label-catalog">5.1 Label catalog</a></li><li class="docs-toc__l3"><a href="#52-manually-set-labels-not-by-the-worker-account" data-testid="docs-toc-inline-52-manually-set-labels-not-by-the-worker-account">5.2 Manually set labels (not by the worker account)</a></li><li class="docs-toc__l3"><a href="#53-trust-and-approval" data-testid="docs-toc-inline-53-trust-and-approval">5.3 Trust and approval</a></li><li class="docs-toc__l3"><a href="#531-orchestrator-account-764" data-testid="docs-toc-inline-531-orchestrator-account-764">5.3.1 Orchestrator account (#764)</a></li><li class="docs-toc__l3"><a href="#54-question-format-v2" data-testid="docs-toc-inline-54-question-format-v2">5.4 Question format v2</a></li><li class="docs-toc__l3"><a href="#541-routing-and-forwarding-704" data-testid="docs-toc-inline-541-routing-and-forwarding-704">5.4.1 Routing and forwarding (#704)</a></li><li class="docs-toc__l3"><a href="#55-dependencies" data-testid="docs-toc-inline-55-dependencies">5.5 Dependencies</a></li><li class="docs-toc__l3"><a href="#56-activating-a-repository" data-testid="docs-toc-inline-56-activating-a-repository">5.6 Activating a repository</a></li><li class="docs-toc__l3"><a href="#57-human-control-568" data-testid="docs-toc-inline-57-human-control-568">5.7 Human control (#568)</a></li><li class="docs-toc__l2"><a href="#6-classifier" data-testid="docs-toc-inline-6-classifier">6. Classifier</a></li><li class="docs-toc__l2"><a href="#7-dispatcher" data-testid="docs-toc-inline-7-dispatcher">7. Dispatcher</a></li><li class="docs-toc__l3"><a href="#71-loop-push-model" data-testid="docs-toc-inline-71-loop-push-model">7.1 Loop (push model)</a></li><li class="docs-toc__l3"><a href="#72-branches-and-worktrees" data-testid="docs-toc-inline-72-branches-and-worktrees">7.2 Branches and worktrees</a></li><li class="docs-toc__l3"><a href="#73-session-environment" data-testid="docs-toc-inline-73-session-environment">7.3 Session environment</a></li><li class="docs-toc__l3"><a href="#74-hang-detection-v1" data-testid="docs-toc-inline-74-hang-detection-v1">7.4 Hang detection (v1)</a></li><li class="docs-toc__l3"><a href="#75-questions-gitoodo-ask" data-testid="docs-toc-inline-75-questions-gitoodo-ask">7.5 Questions (gitoodo ask)</a></li><li class="docs-toc__l3"><a href="#76-leases-and-dead-workers" data-testid="docs-toc-inline-76-leases-and-dead-workers">7.6 Leases and dead workers</a></li><li class="docs-toc__l3"><a href="#77-claude-usage-limits" data-testid="docs-toc-inline-77-claude-usage-limits">7.7 Claude usage limits</a></li><li class="docs-toc__l3"><a href="#78-pull-requests-and-merge" data-testid="docs-toc-inline-78-pull-requests-and-merge">7.8 Pull requests and merge</a></li><li class="docs-toc__l3"><a href="#79-blockade-table-proposal" data-testid="docs-toc-inline-79-blockade-table-proposal">7.9 Blockade table (proposal)</a></li><li class="docs-toc__l2"><a href="#8-workers" data-testid="docs-toc-inline-8-workers">8. Workers</a></li><li class="docs-toc__l3"><a href="#81-contract" data-testid="docs-toc-inline-81-contract">8.1 Contract</a></li><li class="docs-toc__l3"><a href="#82-prompt-template-proposal" data-testid="docs-toc-inline-82-prompt-template-proposal">8.2 Prompt template (proposal)</a></li><li class="docs-toc__l3"><a href="#83-gitoodo-ask" data-testid="docs-toc-inline-83-gitoodo-ask">8.3 gitoodo ask</a></li><li class="docs-toc__l2"><a href="#9-sweeper" data-testid="docs-toc-inline-9-sweeper">9. Sweeper</a></li><li class="docs-toc__l2"><a href="#10-release-planning-optional-per-repo" data-testid="docs-toc-inline-10-release-planning-optional-per-repo">10. Release planning (optional per repo)</a></li><li class="docs-toc__l2"><a href="#11-satellites" data-testid="docs-toc-inline-11-satellites">11. Satellites</a></li><li class="docs-toc__l2"><a href="#12-orchestrator-chat" data-testid="docs-toc-inline-12-orchestrator-chat">12. Orchestrator chat</a></li><li class="docs-toc__l2"><a href="#13-configuration-proposal" data-testid="docs-toc-inline-13-configuration-proposal">13. Configuration (proposal)</a></li><li class="docs-toc__l2"><a href="#14-quality-requirements" data-testid="docs-toc-inline-14-quality-requirements">14. Quality requirements</a></li><li class="docs-toc__l2"><a href="#15-migration-plan-proposal-each-step-mergeable-the-system-stays-usable-in-between" data-testid="docs-toc-inline-15-migration-plan-proposal-each-step-mergeable-the-system-stays-usable-in-between">15. Migration plan (proposal; each step mergeable, the system stays usable in between)</a></li><li class="docs-toc__l2"><a href="#16-to-verify-during-implementation" data-testid="docs-toc-inline-16-to-verify-during-implementation">16. To verify during implementation</a></li></ol></details>
+<div class="docs-body">
+<p>Status: agreed design, ready for implementation planning (2026-11-12).
+Source: design interview with the maintainer on the planning whiteboard. This file is the single source of
+truth for the orchestrator; where it contradicts older docs (<code translate="no">docs/daemon.md</code>, <code translate="no">docs/status-model.md</code>,
+the former integration doc of the external orchestrator, <code translate="no">docs/question-format.md</code>), this file wins and those docs are to be updated.</p>
+<p>Values marked <em>(default)</em> are configurable. Items marked <em>(proposal)</em> were not decided in detail by the
+maintainer and may be refined by the implementer; flag deviations in the PR description.</p>
+<h2 id="1-goal-and-scope">1. Goal and scope<a class="docs-anchor" href="#1-goal-and-scope" aria-label="1. Goal and scope" data-testid="docs-md-anchor-1-goal-and-scope">#</a></h2>
+<p>Gitoodo grows from a tray app into an open-source orchestrator that runs many Claude Code sessions
+deterministically across several machines, using a forge (Forgejo or GitHub) as the ledger.</p>
+<ul><li>Open source, built for other people: all identifiers (labels, services, config keys, markers) are
+English and configurable. Human-facing text in the app follows the app language; what Gitoodo and its
+workers write on the forge follows the setting &quot;Language on the forge&quot; (app language, English, the
+issue&#39;s language or a fixed language; a repository can override it, #980).</li><li>The existing integration of an external agent orchestrator is removed and replaced. It was only the
+reference for several mechanisms below (worktrees, usage limits, remote hosts).</li><li>Clean start: no old German keywords or question format. Old German labels are written never and
+read only as their catalog role (<code translate="no">aliases.tsv</code>, section 5.6).</li></ul>
+<p><strong>Version 1:</strong> classifier, dispatcher with local and remote workers, sweeper, <code translate="no">gitoodo ask</code>, answering
+questions in Gitoodo, orchestrator chat, Claude usage limits in the status bar, release planning
+(optional per repo).</p>
+<p><strong>Later:</strong> screenshot-based hang detection (screenwatch), mobile app (QR pairing, LAN TLS), GitLab for
+the orchestrator (the existing GitLab adapter for the plain app stays), releasing dev to main from
+Gitoodo, AI review of PRs.</p>
+<h2 id="2-principles">2. Principles<a class="docs-anchor" href="#2-principles" aria-label="2. Principles" data-testid="docs-md-anchor-2-principles">#</a></h2>
+<h3 id="21-the-system-never-blocks-itself">2.1 The system never blocks itself<a class="docs-anchor" href="#21-the-system-never-blocks-itself" aria-label="2.1 The system never blocks itself" data-testid="docs-md-anchor-21-the-system-never-blocks-itself">#</a></h3>
+<ol><li><strong>Reconstructible:</strong> every state can be rebuilt from facts on the forge after a restart, crash or
+lost cache. Local databases are caches, never the truth.</li><li><strong>Nothing waits forever:</strong> every waiting or locked state has a deadline or a way out and becomes
+visible to the human at the latest then.</li><li><strong>Fallback instead of standstill:</strong> when a service or path fails, the others keep working
+(e.g. polling instead of webhooks).
+<strong>Exception:</strong> a fallback must never hide a failure. Where it would, use self-start plus a clear
+error instead of a silent substitute (e.g. the app in orchestrator mode, section 4).</li><li><strong>Failures stay small:</strong> a problem affects one issue or one host, never the whole queue.</li><li>Every component documents where it can block and how it heals (blockade tables below).</li></ol>
+<p>The main host is not always on. When it is off, the system stands still; this is intended. After
+waking, every service first reconciles with the forge, then acts.</p>
+<h3 id="22-facts-and-labels">2.2 Facts and labels<a class="docs-anchor" href="#22-facts-and-labels" aria-label="2.2 Facts and labels" data-testid="docs-md-anchor-22-facts-and-labels">#</a></h3>
+<ul><li>The forge is the only source of truth. Services write <strong>facts</strong> (comments, assignees, PRs, lease
+audit comments, question blocks) and labels.</li><li><strong>Each label group has exactly one owner</strong> – the component that makes that decision. Nobody else
+writes labels of that group. Owners recompute their group from the facts on every run and overwrite
+it; there is no &quot;conflict resolution&quot;.</li><li>Services are deterministic. LLMs run only inside workers and the chat.</li></ul>
+<h2 id="3-architecture">3. Architecture<a class="docs-anchor" href="#3-architecture" aria-label="3. Architecture" data-testid="docs-md-anchor-3-architecture">#</a></h2>
+<h3 id="31-components">3.1 Components<a class="docs-anchor" href="#31-components" aria-label="3.1 Components" data-testid="docs-md-anchor-31-components">#</a></h3>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col">Name</th><th scope="col">Binary / command</th><th scope="col">Job</th><th scope="col">Not responsible for</th></tr></thead><tbody><tr><td>Gitoodo (app)</td><td><code translate="no">Gitoodo.app</code> (binary renamed internally to <code translate="no">gitoodo-app</code>)</td><td>GUI, orchestrator chat, questions, status</td><td>hosting services, writing service labels</td></tr><tr><td>Classifier</td><td><code translate="no">gitoodo classifier</code></td><td>readiness, dependencies, PR links, answer detection, release planning</td><td>starting workers, merging</td></tr><tr><td>Dispatcher</td><td><code translate="no">gitoodo dispatcher</code></td><td>assigning issues, starting/stopping sessions, limits, hang detection, PR auto-merge</td><td>classification labels, writing code</td></tr><tr><td>Sweeper</td><td><code translate="no">gitoodo sweeper</code></td><td>removing merged branches and worktrees</td><td>deleting unmerged work</td></tr><tr><td>Ask</td><td><code translate="no">gitoodo ask</code></td><td>a worker&#39;s question to the human</td><td>waiting for the answer</td></tr><tr><td>Satellite</td><td><code translate="no">gitoodo satellite</code></td><td>hosts worker PTYs and the sweeper on a remote host</td><td>scheduling</td></tr><tr><td>MCP server</td><td><code translate="no">gitoodo mcp</code></td><td>the chat&#39;s tools</td><td>file or shell access</td></tr><tr><td>Attach</td><td><code translate="no">gitoodo attach &lt;issue&gt;</code></td><td>view/interact with a running session in any terminal</td><td>–</td></tr><tr><td>Worker</td><td>a Claude Code session (no own binary)</td><td>one issue, one worktree, PR</td><td>labels, other workers, merging to main</td></tr><tr><td>Forge adapter</td><td>library in <code translate="no">gitoodo-core</code></td><td>uniform API for Forgejo and GitHub</td><td>business logic</td></tr><tr><td>Ledger</td><td>Forgejo or GitHub (exactly one forge per project, configured per repo)</td><td>issues, labels, PRs, milestones, branch protection</td><td>running services</td></tr></tbody></table></div>
+<ul><li><strong>One program</strong> <code translate="no">gitoodo</code> with subcommands; each service runs as its own process and system service,
+started and stopped independently. Today&#39;s <code translate="no">gitoodo-cli</code> becomes <code translate="no">gitoodo</code>.</li><li><strong>Shipping (#355):</strong> the direct-distribution app bundles the CLI as a Tauri sidecar
+(<code translate="no">bundle.externalBin</code>, overlay <code translate="no">src-tauri/tauri.sidecar.conf.json</code>, built by
+<code translate="no">scripts/build-sidecar.sh</code>). Installing copies it to a stable per-user folder
+(<code translate="no">paths::bin_dir</code>, <code translate="no">GITOODO_BIN_DIR</code> overrides) and registers classifier and dispatcher there as
+system services with automatic restart (launchd <code translate="no">KeepAlive</code>, systemd <code translate="no">Restart=always</code>; Windows:
+classifier only, task with restart on failure; the dispatcher needs named-pipe control first).
+The app shows app, installed CLI and running classifier versions and offers a reinstall on a
+mismatch. The sandboxed store builds (<code translate="no">store</code> feature) ship no sidecar and install no services:
+they are a viewer and the orchestrator runs from the direct build or a manual CLI install.</li><li>Today&#39;s daemon (<code translate="no">docs/daemon.md</code>) is split: queue/lease logic moves into the dispatcher, label
+hygiene into the classifier. Destructive catalog transfer on activation is dropped (section 5.6).</li><li><strong>Where things run:</strong> main host – classifier, dispatcher, sweeper, local workers, app. Satellites –
+<code translate="no">gitoodo satellite</code> (workers + sweeper), controlled by the main host&#39;s dispatcher over SSH.</li><li>Forge adapters in v1: Forgejo and GitHub. Capabilities: issues, labels, comments, dependencies,
+branches, PRs, auto-merge, milestones, events/webhooks with polling fallback (default 5 min).</li></ul>
+<h3 id="32-communication">3.2 Communication<a class="docs-anchor" href="#32-communication" aria-label="3.2 Communication" data-testid="docs-md-anchor-32-communication">#</a></h3>
+<ul><li>App ↔ services: local socket / named pipe (as today&#39;s daemon: mode 0600, user-only pipe).</li><li>Dispatcher ↔ satellite: SSH only (stdio bridge, JSON lines). No open ports on satellites.</li><li>Workers never talk back to the dispatcher directly; they write to the forge (<code translate="no">gitoodo ask</code>, PRs).</li><li>Writes from the app (answers, approvals, chat actions) go straight to the forge; in orchestrator
+mode the app then nudges the classifier to re-read immediately.</li></ul>
+<h2 id="4-the-app">4. The app<a class="docs-anchor" href="#4-the-app" aria-label="4. The app" data-testid="docs-md-anchor-4-the-app">#</a></h2>
+<ul><li><strong>Two modes</strong>, selectable in the app, with the consequences explained in the UI:<ul><li><em>Direct mode:</em> the app polls the forges itself, as today. No orchestrator, no label maintenance;
+status is derived from assignees and PRs.</li><li><em>Orchestrator mode:</em> the app shows the services&#39; picture via the local socket (classifier:
+issues/labels; dispatcher: workers, queue, leases, hosts), plus chat, worker control and limits.
+If the services are down, the app tries to start them; if that fails it shows a clear error
+state instead of data. It never silently falls back to direct mode.</li></ul></li><li><strong>Repositories:</strong> connect a forge, Gitoodo lists all repos, the user switches them individually or
+in bulk. In the app a fetched repo is <strong>on</strong> (fully autonomous) or <strong>off</strong>; pausing is an action
+on a repo that is on, not a level picked during setup (#599). Stored states: <code translate="no">off</code> (not fetched,
+<code translate="no">disabled_repos</code>), <code translate="no">observed</code> (shown as &quot;off&quot;: fetched, nobody writes; default for newly imported
+repos), <code translate="no">paused</code> (on and paused: classifier works, dispatcher assigns nothing), <code translate="no">active</code> (on). The
+stored values need no migration: <code translate="no">observed</code> reads as off, <code translate="no">paused</code> as on + paused, <code translate="no">active</code> as on.
+Switchable in the app and by chat (project focus, e.g. &quot;only A and B now&quot;).
+Since #569 the repository list selects all, by owner or row by row and switches the selection in
+one step; the repository&#39;s own settings (#926) edit the config-only options per repo (the human whose questions get
+assigned, whether release planning runs).</li><li><strong>Guided setup (#569):</strong> the onboarding offers orchestrator mode and hands over to the setup
+assistant (service, account and rights, labels, repo, local copy, skill and <code translate="no">AGENTS.md</code>, first
+worker; see <a href="../orchestrator-setup/" data-testid="docs-md-link-1">setup.md</a>). The assistant writes only the marked Gitoodo section of
+<code translate="no">AGENTS.md</code> in the local copy, on request, and never commits.</li><li><strong>Issues from the app (#569):</strong> the orchestrator view creates an issue per repo, optionally with
+the ready label set at once.</li><li><strong>Questions:</strong> questions on which other issues wait are sorted first and show the number of waiting
+issues. After 2 h <em>(default)</em> unanswered – or the question&#39;s own deadline – Gitoodo notifies again.</li><li><strong>Status bar:</strong> per Claude login the remaining 5-hour and weekly limit with reset time; when locked,
+clearly when work resumes; stale values are marked as stale.</li><li>Viewing sessions: live terminal view of any worker (local or remote) in the app.</li></ul>
+<h2 id="5-ledger-labels-questions-trust">5. Ledger: labels, questions, trust<a class="docs-anchor" href="#5-ledger-labels-questions-trust" aria-label="5. Ledger: labels, questions, trust" data-testid="docs-md-anchor-5-ledger-labels-questions-trust">#</a></h2>
+<h3 id="51-label-catalog">5.1 Label catalog<a class="docs-anchor" href="#51-label-catalog" aria-label="5.1 Label catalog" data-testid="docs-md-anchor-51-label-catalog">#</a></h3>
+<p>Names are canonical defaults; users can map them to their own names. Never created: <code translate="no">type:*</code>,
+<code translate="no">needs-classification</code> (nothing in the system consumes them) and <code translate="no">answered</code> (answers are detected
+from the comment order, section 5.4).</p>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col">Group (question)</th><th scope="col">Label</th><th scope="col">Owner</th><th scope="col">Meaning</th><th scope="col">Self-healing</th></tr></thead><tbody><tr><td>1 Placement: where and how urgent?</td><td><code translate="no">priority:p0</code>…<code translate="no">p3</code></td><td>classifier, human</td><td>dispatcher order. p0 now, p1 next, p2 normal, p3 some day</td><td>missing → p1 for a bug label, else p2 (#1635)</td></tr><tr><td></td><td><code translate="no">os:windows</code> / <code translate="no">os:macos</code> / <code translate="no">os:linux</code></td><td>classifier, human</td><td>OS the worker must run on</td><td>missing → any host; no matching host online → waits visibly, notify</td></tr><tr><td></td><td><code translate="no">host:&lt;name&gt;</code></td><td>human (optional)</td><td>pins an issue to one host</td><td>host offline long → notify</td></tr><tr><td></td><td><code translate="no">tool:&lt;command&gt;</code></td><td>dispatcher (worker hand-back), human</td><td>the worker needs this command; only machines that have it take the issue</td><td>no machine has it → <code translate="no">tool_missing</code> wait, asked of the user</td></tr><tr><td>2 Readiness: may it start?</td><td><code translate="no">needs-clarification</code></td><td>classifier</td><td>contradiction (dependencies, PR link); starts a clarification worker</td><td>clarification fails → <code translate="no">needs-human</code></td></tr><tr><td></td><td><code translate="no">blocked</code></td><td>classifier</td><td>an open dependency</td><td>lifted when all dependencies are closed; cycle → <code translate="no">needs-clarification</code></td></tr><tr><td></td><td><code translate="no">ready</code></td><td>classifier</td><td>may be worked on (see 5.3)</td><td>unanswered approval blocks this issue and its dependents, visibly</td></tr><tr><td>3 Workflow: what is happening?</td><td><code translate="no">in-progress</code></td><td>dispatcher</td><td>reserved, prevents double assignment, shows who works on it</td><td>see 7.6</td></tr><tr><td></td><td><code translate="no">in-review</code></td><td>dispatcher</td><td>PR open, auto-merge to dev enabled, waiting for green CI</td><td>CI red / conflict → new session; no movement → notify</td></tr><tr><td></td><td><code translate="no">stalled</code></td><td>dispatcher</td><td>still failing after 3 restarts</td><td>blocks this issue and its dependents, waits for the human</td></tr><tr><td>4 Human: is something waiting for you?</td><td><code translate="no">needs-human</code></td><td>question mechanism: whoever asks via <code translate="no">gitoodo ask</code> sets it; answer detection (classifier) removes it</td><td>worker question, approval or clarification; the kind is in the question block</td><td>deadline in the block, reminder (section 4)</td></tr><tr><td>5 Pull requests: is the PR clean?</td><td><code translate="no">needs-issue-link</code></td><td>classifier</td><td>PR without issue; merge blocked by a failing status check</td><td>lifted once the link is unambiguous</td></tr><tr><td>6 Release (optional)</td><td><code translate="no">release:next</code></td><td>human (also via chat)</td><td>scope of the next release</td><td>see section 10</td></tr><tr><td>7 Marker (no question)</td><td><code translate="no">gitoodo</code></td><td>classifier</td><td>teal <code translate="no">#29aea9</code>; set on every open issue and open PR of <code translate="no">paused</code> and <code translate="no">active</code> repos, so you see the classifier handles it. Added only, never replaces another label; in no exclusive group</td><td>missing → added; label missing → recreated</td></tr></tbody></table></div>
+<p>Precedence: blocking wins (<code translate="no">blocked</code> over <code translate="no">ready</code>); an open question wins over <code translate="no">stalled</code> (<code translate="no">needs-human</code>
+beside <code translate="no">stalled</code> reads as waiting for an answer, never as stuck, #1535). Dispatcher candidates: open, <code translate="no">ready</code>, repo
+<code translate="no">active</code>, no <code translate="no">in-progress</code> / <code translate="no">needs-human</code> / <code translate="no">stalled</code>, all dependencies closed.</p>
+<h3 id="52-manually-set-labels-not-by-the-worker-account">5.2 Manually set labels (not by the worker account)<a class="docs-anchor" href="#52-manually-set-labels-not-by-the-worker-account" aria-label="5.2 Manually set labels (not by the worker account)" data-testid="docs-md-anchor-52-manually-set-labels-not-by-the-worker-account">#</a></h3>
+<p>The forge records who set a label.</p>
+<ul><li><code translate="no">ready</code> by hand = approval; dependencies still win.</li><li><code translate="no">blocked</code> by hand without a dependency fact = deliberate hold until the human removes it; the
+classifier comments once.</li><li><code translate="no">needs-clarification</code> by hand starts a clarification worker: an approved issue (<code translate="no">ready</code> or a
+trusted author) with the label is dispatched like a ready one, its brief starts with &quot;Clarify
+first&quot; (find out what is wanted, then do it, or ask what only a person can decide), and the
+claim removes the label so an answer leads to the work, not to clarifying again. A dependency
+cycle still waits for a person.</li><li>The chat may set the labels a human sets (priority, <code translate="no">host:</code>, <code translate="no">release:next</code>), never service labels.</li></ul>
+<h3 id="53-trust-and-approval">5.3 Trust and approval<a class="docs-anchor" href="#53-trust-and-approval" aria-label="5.3 Trust and approval" data-testid="docs-md-anchor-53-trust-and-approval">#</a></h3>
+<ul><li>Issues and PRs by trusted authors (maintainers, own worker account, configurable list) become <code translate="no">ready</code> / are
+auto-merged without approval. Trusted from the start (#599): the connected account, the repo&#39;s
+<code translate="no">human</code>, the logins in <code translate="no">trusted_authors</code> (own worker accounts), everyone with write access and the
+members of the organisation owning the repo (Forgejo/Gitea and GitHub <code translate="no">orgs/{org}/members/{login}</code>;
+GitLab&#39;s inherited group members already count through the member level). The settings show this
+list next to the editable <code translate="no">trusted_authors</code>.</li><li>Others get an approval question (<code translate="no">needs-human</code>, kind <code translate="no">approval</code>). Yes → <code translate="no">ready</code>. No → the classifier
+closes the issue with a comment. Reopened by a trusted person = approval; by anyone else = ask again.</li><li>Foreign contributions (#705): the approval question is the <strong>only</strong> question a foreign
+contribution gets. It is addressed to the maintainer, but the author reads it too, so its English
+context explains the process (&quot;A maintainer decides before an AI agent works on this; you&#39;ll get
+an answer here.&quot;); a short description adds a line, and the maintainer&#39;s yes also covers it (no
+clarification question to the stranger afterwards). It never carries a recommendation. A question
+counts as asked when the worker account or a trusted person wrote it, so changing the connected account does
+not ask again; the only second question is the one after a reopen of a refused issue. The per-repo
+rule <code translate="no">foreign_intake</code> (default on) switches new approval questions off; such issues then wait
+untouched. A follow-up a worker proposed becomes ready like the worker account&#39;s own issues; only a
+repo with the option <code translate="no">follow_up_approval</code> on (default <code translate="no">dispatch.follow_up_approval</code>, off) asks for
+approval first, and switching it off releases the waiting ones. The cap of five comments per repo and run stays. A paused repo (writes, but no
+dispatch) asks no new approval question either: nothing would work on the issue, so it waits
+untouched until the repo is active again. Its existing approval questions and their answers stay
+valid; an approval is never assumed.</li><li>Bundled approvals (#705): &quot;Fragen an mich&quot; shows &quot;N fremde Beiträge warten auf Freigabe&quot; above the
+list, with every open <code translate="no">intake-approval-*</code> question (title, author, repo, age), oldest first, and
+never inside the list. They are grouped by repo or by author (switchable), groups collapsed
+unless there is only one; the title opens the item. Every item still gets an explicit yes or no:
+per row (buttons or Y/J and N; Enter and Space never answer, arrows skip), per group or for all.
+A group answer first opens a confirmation that names the count and the scope (Cancel is focused,
+Escape cancels), then answers only the items of the group still undecided at that moment. There
+is no preselection and no trust that follows from it: bots and deleted accounts (&quot;gelöschtes
+Konto&quot;, shown for Forgejo&#39;s/Gitea&#39;s <code translate="no">Ghost</code>) are asked like everyone else. A single answer waits
+five seconds, a group answer ten, and one undo (U, Backspace, Cmd/Ctrl+Z, the row&#39;s or the
+group bar&#39;s button) takes back the single answer or the whole group before it is posted through
+<code translate="no">answer_question</code> in the normal answer format, at most four at a time; leaving the view posts
+the answers already given. A failed post puts the item back to unanswered.</li><li>Approvals count apart (#705): <code translate="no">Counts.approvals</code> holds the open approvals, <code translate="no">Counts.questions</code> the
+other questions, <code translate="no">total</code> both (docs/counters.md). In this app, approvals of repos this
+orchestrator lists as observed or paused are hidden (<code translate="no">Config::ungated</code>); repos it does not list
+keep theirs, since another maintainer&#39;s orchestrator may have asked.</li><li>Optional spec link (#705): per repo (<code translate="no">label_spec_link</code>, default off, Settings → repo → Rules) the
+<code translate="no">needs-human</code> label description becomes &quot;Waits for the maintainer. Questions:
+<a href="https://gitoodo.com/spec/questions/v2/&amp;quot" rel="noopener" data-testid="docs-md-link-2">https://gitoodo.com/spec/questions/v2/&quot</a>; (within the forges&#39; 100 characters).</li><li>Turning a repo on never writes in bulk unseen (#598): the app shows the adoption preview first and
+stores the backlog choice (<code translate="no">new</code> default, <code translate="no">ready</code>, <code translate="no">ask</code>) with <code translate="no">adopted_at</code>. With <code translate="no">new</code>, items
+opened before <code translate="no">adopted_at</code> are not touched (pull requests: not updated since). The intake posts at
+most five comments per repo and run and reports the rest as pending. Questions address the repo&#39;s
+<code translate="no">human</code>, else the connected account, never the repo owner (may be an organisation).</li><li>Trust comes from the author&#39;s real permission on the forge, looked up once per repo and login:
+GitHub and Forgejo/Gitea <code translate="no">collaborators/{login}/permission</code> (owner/admin, maintain, write trusted;
+triage, read, none not), GitLab the project member level incl. inherited access (Maintainer 40 and up
+trusted; Developer 30 counts as write, below that not). A failed lookup, an unknown role or a missing
+user is <strong>untrusted</strong>.</li><li>Only a trusted commenter can approve; the approval question&#39;s &quot;yes&quot; makes the issue <code translate="no">ready</code>. The
+classifier closes a refused issue with a comment and the marker <code translate="no">&lt;!-- gitoodo:intake-rejected --&gt;</code>;
+a &quot;no&quot; followed by that marker is stale, so an issue reopened by anyone gets the question again
+(new block id). Limitation: the forge does not tell who reopened, so a trusted person approves by
+answering &quot;yes&quot; on the new question.</li><li>Incomplete issue of a trusted author (fewer than 20 non-whitespace body characters, deterministic):
+clarification question (kind <code translate="no">clarification</code>) to the author, who may answer it; once answered the
+issue is <code translate="no">ready</code>. Re-runs write nothing when the question or its answer is already there.</li><li>Every decision carries a reason in the read model (<code translate="no">IssueModel.reason</code>: <code translate="no">trusted_author</code>, <code translate="no">approved</code>,
+<code translate="no">untrusted_author</code>, <code translate="no">follow_up</code>, <code translate="no">incomplete</code>, <code translate="no">backlog</code>). <code translate="no">untrusted_author</code> (with
+<code translate="no">IssueModel.author</code>, the login) and <code translate="no">follow_up</code> (a worker&#39;s proposal in a repo that asks about
+them) appear only while the issue waits for that approval (<code translate="no">needs-approval</code>, or <code translate="no">needs-human</code>
+with the question open, #1677): a held (<code translate="no">extern</code>), blocked or stalled issue of an untrusted
+author shows its own state; the intake asks once it is due. A worker&#39;s follow-up is never shown
+as an untrusted author. Where no question was asked yet (paused repo, foreign intake off, run
+budget), the app approves with one click by setting the <code translate="no">ready</code> label (<code translate="no">approve_issue</code>).</li><li>The legacy label <code translate="no">einordnung:fehlt</code> is no longer set or read; a missing description is the clarification question.</li><li>Untrusted PRs never get auto-merge; they get an approval question.</li><li>This rule is security-critical (workers run without permission prompts, section 8) and needs tests.</li></ul>
+<h3 id="531-orchestrator-account-764">5.3.1 Orchestrator account (#764)<a class="docs-anchor" href="#531-orchestrator-account-764" aria-label="5.3.1 Orchestrator account (#764)" data-testid="docs-md-anchor-531-orchestrator-account-764">#</a></h3>
+<ul><li>Per forge host (origin, case and trailing slash ignored) <code translate="no">orchestration.json</code> may name the account
+the orchestrator acts as: <code translate="no">orchestrator_accounts</code> maps the host to an account id. One resolution
+(<code translate="no">orchestration::acting::write_account</code>) picks the account for every write: the host&#39;s
+orchestrator account when it exists with the same forge kind and origin, else the repo&#39;s own
+account. The dispatcher (push, pull requests, merge, comments, leases), the classifier, workers
+(<code translate="no">gitoodo ask</code>) and satellite delivery all write through it; reads may stay on the repo account.</li><li>Choosing an account adds its login to <code translate="no">trusted_authors</code> once (clearing the choice keeps it), so the
+worker account&#39;s own issues and PRs stay trusted. While a worker account writes, questions still address the person: the
+repo&#39;s <code translate="no">human</code>, else the login of the repo&#39;s own account.</li><li>An account chosen for a host and the account of no repo rule is a pure worker account: the app does
+not sync it as a source of repos and leaves it out of the account list; the settings section
+&quot;Orchestrator-Konto&quot; shows, checks and renews it.</li><li>The onboarding asks per host before the services start (step &quot;Worker-Konto&quot;, orchestrator mode
+only). A separate worker account is recommended: clear history, separate rights, revocable on its own,
+the human&#39;s notifications stay clean, and branch protection can require a human review. The own
+account stays possible and works: Gitoodo tells its comments from the human&#39;s by the machine
+markers (<code translate="no">docs/question-format.md</code>, &quot;Gitoodo comments&quot;), never by login alone; the history then
+shows the human&#39;s name and the forge does not notify about these actions.</li><li>The check of a worker account (<code translate="no">check_worker_account</code>) names its login, the token scopes it lacks
+and every activated repo on the host it cannot see or lacks a right in (the orchestrator&#39;s rights
+without repository settings), each with a link to grant access.</li><li>Existing installs keep their behaviour until the user chooses; the app shows a one-time hint that
+recommends the switch, never above a view (#919): a quiet entry in the status bar and one line
+with &quot;Not now&quot; in Settings › Accounts (<code translate="no">orchestrator_hint_done</code> ends it; any choice ends it too).</li><li>Lease audit comments count only from Gitoodo&#39;s own write logins of the host
+(<code translate="no">acting::known_writers</code>): the acting login, the repo account&#39;s login and the earlier orchestrator
+logins. A switch records the logins before and after it in <code translate="no">orchestrator_writers</code> (per host,
+newest last, at most 8), so a lease written before the switch still completes after it. A lease
+comment by any other user is never read (the fence against forged leases stays).</li><li>Items a separate orchestrator account opened do not wait for the user (#709): the adapters read the
+author of every open pull request, the sync flags pulls by <code translate="no">acting::orchestrator_logins</code> (current
+and earlier worker-account logins, never the user&#39;s own), and &quot;Wartet auf dich&quot; skips their failing checks.
+Issues the worker account opened stay in the questions list only while they carry an open question card. While
+the orchestrator writes as the user, nothing is told apart.</li></ul>
+<h3 id="54-question-format-v2">5.4 Question format v2<a class="docs-anchor" href="#54-question-format-v2" aria-label="5.4 Question format v2" data-testid="docs-md-anchor-54-question-format-v2">#</a></h3>
+<ul><li>Machine-read parts are fixed and English: <code translate="no">&lt;!-- gitoodo:questions v2 id=&quot;…&quot; kind=&quot;worker|approval|clarification&quot; --&gt;</code>
+… <code translate="no">&lt;!-- /gitoodo:questions --&gt;</code>. Human-read parts follow the language on the forge
+(docs/question-format.md); the machine-read parts stay English.</li><li>1 to 4 questions per block, each with options and a recommendation; optional deadline.</li><li>Answers are understood in every supported language (<code translate="no">yes/no</code>, <code translate="no">ja/nein</code>, <code translate="no">1b</code>, …).</li><li><strong>Answered</strong> = the last comment after the question that is not Gitoodo&#39;s own was written by the asked human. No <code translate="no">answered</code> label.</li><li>An answer that sends a question back (<code translate="no">&lt;n&gt; explain</code>) counts as answered; the next worker&#39;s brief
+starts with the questions sent back and their notes and asks it to ask again, clearer, with a new
+id (or decide it when the repository settles it). An id already on the issue is refused by
+<code translate="no">gitoodo ask</code>.</li><li>Update <code translate="no">docs/question-format.md</code>, its parsers, tests and the skill accordingly (v1 support is dropped).</li></ul>
+<h3 id="541-routing-and-forwarding-704">5.4.1 Routing and forwarding (#704)<a class="docs-anchor" href="#541-routing-and-forwarding-704" aria-label="5.4.1 Routing and forwarding (#704)" data-testid="docs-md-anchor-541-routing-and-forwarding-704">#</a></h3>
+<ul><li>Routing rules per repo in <code translate="no">orchestration.json</code> (<code translate="no">routes: [{label, to}]</code>, at most 50, edited in the
+repo&#39;s rules in the settings): <code translate="no">gitoodo ask</code> addresses a worker&#39;s question to the first rule whose
+label the issue carries (any case), else to the repo&#39;s <code translate="no">human</code>, else to the account&#39;s &quot;Agents&#39;
+questions go to&quot; login (Settings → Accounts, default the account&#39;s own login, #1511). The worker&#39;s
+<code translate="no">to</code> stays only when it names one of these people; a placeholder (<code translate="no">human</code>, <code translate="no">x</code>) or the agent
+account that opened the issue is never asked. Older cards that name such a login are read as the
+decider&#39;s in the answer detection and in &quot;Asked of me&quot;, so they show and their answer counts.</li><li>The asked person can forward a worker question addressed to them to another trusted person (5.3)
+from the app (&quot;Forward to …&quot;). The app posts, from the asked person&#39;s account, one comment with a
+forward marker and a new block per card (format: <code translate="no">docs/question-format.md</code>, &quot;Forwarding&quot;), assigns
+the issue to the new person and removes the forwarding person. The old card counts as answered; the
+new one waits for the new person.</li><li>Nobody receives a forward while holding 10 or more open cards in that repo; the app says so.</li><li>Answer detection follows the addressed logins: while a card addressed to someone is open the issue
+keeps <code translate="no">needs-human</code> and stays assigned to them; the answer may come from the repo&#39;s <code translate="no">human</code> or from
+any login a card of the issue names. &quot;Asked of me&quot; only lists items with an open card for me (or
+without an addressee).</li><li>The team chat mentions the person asked through the login-to-handle mapping
+(<code translate="no">docs/chat-notification.md</code>).</li></ul>
+<h3 id="55-dependencies">5.5 Dependencies<a class="docs-anchor" href="#55-dependencies" aria-label="5.5 Dependencies" data-testid="docs-md-anchor-55-dependencies">#</a></h3>
+<ul><li>Text lines <code translate="no">Depends on #12</code> / <code translate="no">Blocked by #12</code> (also <code translate="no">repo#12</code>, <code translate="no">owner/repo#12</code>), plus the forge&#39;s
+native dependencies where the adapter supports them. The classifier keeps both consistent;
+contradictions and cycles → <code translate="no">needs-clarification</code>. The dispatcher only reads the cleaned result.</li></ul>
+<h3 id="56-activating-a-repository">5.6 Activating a repository<a class="docs-anchor" href="#56-activating-a-repository" aria-label="5.6 Activating a repository" data-testid="docs-md-anchor-56-activating-a-repository">#</a></h3>
+<p>Activation shows a preview: labels mapped to the catalog, labels to be created, remaining labels.
+Remaining labels are never deleted automatically, only after explicit confirmation.</p>
+<p>Label migration (#464): the preview can be re-opened for an already active repo (app: &quot;Migrate old
+labels…&quot; in the repository&#39;s own settings (#926); CLI: <code translate="no">gitoodo labels migrate &lt;account&gt; &lt;owner/repo&gt; [--yes]</code>, preview only
+without <code translate="no">--yes</code>). Only after confirmation are legacy labels (<code translate="no">aliases.tsv</code>) renamed on the forge, so
+issues keep them; a rename whose catalog name already exists is skipped (no merge, no duplicate) and
+missing catalog labels are created. Where a legacy name and its catalog name both exist, both stay.
+The classifier, the dispatcher, the read model and <code translate="no">gitoodo status</code> read a legacy name as its
+catalog role (<code translate="no">Profile::canonical</code>: a configured mapping first, then <code translate="no">aliases.tsv</code>), so an issue
+labelled <code translate="no">status:bereit</code> is ready, <code translate="no">prio:1</code> ranks as priority 1 and <code translate="no">an:mensch</code> waits for a human,
+without rewriting any issue. Gitoodo writes catalog names only; when it removes a role from an issue
+(ready to in-progress, an answered <code translate="no">needs-human</code>, a cleared <code translate="no">stalled</code>) it removes every legacy alias
+of that role on the issue too, and a legacy alias beside its catalog name for a role that stays is
+left alone. The app&#39;s overview and default views (#467) still show catalog names only; a repo that
+still holds legacy labels shows a hint (<code translate="no">settings-repo-detail-migrate-pending</code>) pointing to the
+activation preview.</p>
+<p>Legacy groups (#567): status (<code translate="no">status:bereit/blockiert/in-arbeit/review</code>, <code translate="no">an:mensch</code>), priority
+(<code translate="no">prio:N</code>) and release (<code translate="no">release:muss</code>, <code translate="no">release:now</code>, <code translate="no">release:blocker</code> → <code translate="no">release:next</code>) are
+renamed. Without a catalog label and therefore kept as remaining labels (no information lost, never
+deleted automatically): type (<code translate="no">typ:*</code>), severity (<code translate="no">schwere:*</code>), <code translate="no">release:später</code>/<code translate="no">later</code>/<code translate="no">backlog</code>,
+and the retired markers <code translate="no">status:neu</code> and <code translate="no">einordnung:fehlt</code> (no status = waits for the intake; a
+missing description is a clarification question). The system neither sets nor reads them; the
+renamed groups above are read as their catalog role where the rename could not run (pairs).</p>
+<h3 id="57-human-control-568">5.7 Human control (#568)<a class="docs-anchor" href="#57-human-control-568" aria-label="5.7 Human control (#568)" data-testid="docs-md-anchor-57-human-control-568">#</a></h3>
+<p>The maintainer can stop, hold and veto anything the orchestrator does, and see what it did. The app
+reads and writes the same state files the services read (no extra RPC), so control works while a
+service is busy or restarting.</p>
+<ul><li><strong>Global switch</strong> (<code translate="no">control.json</code> in the state dir, <code translate="no">paused</code>): while on, the classifier writes
+nothing (<code translate="no">reconcile</code> is empty, the <code translate="no">Writer</code> hands out no assignment) and the dispatcher starts
+nothing and merges nothing. It survives restarts; resuming continues where it stopped. The tray
+item <code translate="no">control-pause</code> and the commands <code translate="no">control_get</code> / <code translate="no">control_set_paused</code> toggle it. Pausing
+also stops every running worker (the lease is released, the <code translate="no">in-progress</code> label removed, the
+issue is not flagged <code translate="no">needs-human</code>), so it returns to the queue on resume.</li><li><strong>Repo pause or off</strong> stops the repo&#39;s running workers the same way (the dispatcher enforces it
+on every push tick, also for remote workers) and releases leases and <code translate="no">in-progress</code> labels
+(<code translate="no">Flag::Release</code> over the classifier RPC removes only <code translate="no">in-progress</code>).</li><li><strong>Merge gate per PR</strong> (<code translate="no">control_set_merge_gate</code>: <code translate="no">open</code>, <code translate="no">held</code>, <code translate="no">vetoed</code>, keyed
+<code translate="no">&lt;account&gt;/&lt;owner/repo&gt;#&lt;n&gt;</code>): a held PR is not merged and keeps waiting; a vetoed PR is never
+auto-merged and its issue gets <code translate="no">needs-human</code>. A global pause holds every merge. Limit: auto-merge
+that was already enabled at the forge cannot be cancelled by Gitoodo.</li><li><strong>Activity log</strong> (<code translate="no">activity/forge-writes.jsonl</code>): every forge write of the classifier,
+dispatcher and worker tools (labels, comments, milestones, merges, closes) with time, repo, item,
+action, detail, reason and result. Append-only, mode 0600, texts redacted (never a token),
+bounded to 512 KiB (past that the newest half is kept). Read with <code translate="no">activity_forge_writes</code>.</li><li><strong>Alerts</strong> (<code translate="no">activity/alerts.jsonl</code>): the dispatcher emits <code translate="no">question</code>, <code translate="no">stalled</code>, <code translate="no">merge_failed</code>
+(with a <code translate="no">cause</code> category, deduplicated per pull) and <code translate="no">merge_vetoed</code> events; the app polls <code translate="no">control_alerts</code> and shows them through
+<code translate="no">notify::show</code> with a click target (#939, <code translate="no">docs/counters.md</code>). Event <code translate="no">control-changed</code> carries the new control state.</li></ul>
+<h2 id="6-classifier">6. Classifier<a class="docs-anchor" href="#6-classifier" aria-label="6. Classifier" data-testid="docs-md-anchor-6-classifier">#</a></h2>
+<ul><li>Polls (or receives events for) all repos in <code translate="no">observed</code> (read only), <code translate="no">paused</code> and <code translate="no">active</code>; writes only
+in <code translate="no">paused</code> and <code translate="no">active</code>. Serves the read model to the app.</li><li>Recomputes groups 1 (defaults), 2, 5 and 6 per run; recreates missing catalog labels. Adds the marker
+<code translate="no">gitoodo</code> (group 7) to every open issue and open PR on GitHub, Forgejo/Gitea and GitLab when it is
+missing; <code translate="no">observed</code> repos stay untouched.</li><li>PR hygiene: a PR is linked when its commits reference exactly one issue → the classifier adds the
+link itself. Zero or several → failing status check + <code translate="no">needs-issue-link</code> + comment +
+<code translate="no">needs-clarification</code>. Lifted automatically once the link is recognised (re-run the status check).</li><li>Intake (5.3): a new open issue (no status label, no <code translate="no">stalled</code>/<code translate="no">extern</code>/<code translate="no">blocked</code>) becomes <code translate="no">ready</code> when
+its author is trusted and the body is complete; otherwise the approval or clarification question is
+asked. A worker&#39;s follow-up (8.3) gets the approval question only where the repo asks for it (<code translate="no">follow_up_approval</code>, off by default). Nobody labels <code translate="no">ready</code> by hand. Block ids <code translate="no">intake-approval-N</code>, <code translate="no">intake-clarify-N</code>. A question block asked after the newest intake block (a worker&#39;s parked question) owns <code translate="no">needs-human</code>: the intake leaves the issue to the answer detection, an earlier intake answer never ends that wait (#930).</li><li>Answer detection → removes <code translate="no">needs-human</code>, sets <code translate="no">ready</code> (worker questions: the issue continues on its
+branch, section 8.3). Each person&#39;s reply ends one wait only: a <code translate="no">needs-human</code> the dispatcher or a
+worker sets (a merge conflict, a stopped worker) ends only on a person&#39;s reply that is newer than
+that flag, or on a person removing the label; a reply that already ended a wait, an earlier intake
+answer included, never ends a later one. Replies to a card the worker posted right before its flag
+still count. The classifier keeps the newest used comment id per issue in <code translate="no">answer-marks.json</code> in
+its state folder (ids and issue keys only), so restarts of the classifier or the dispatcher change
+nothing. It runs in every repo: without a repo <code translate="no">human</code> or routing rule the asked human
+is the login in the card&#39;s header (<code translate="no">docs/question-format.md</code>, &quot;Detecting an answered question&quot;). A
+no to an approval card the intake no longer reads is no go-ahead; the issue keeps waiting.</li></ul>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col">What can happen</th><th scope="col">Effect</th><th scope="col">Handling</th></tr></thead><tbody><tr><td>classifier crashed</td><td>answers not detected, blocks not lifted</td><td>system service restarts it; app shows error; dispatcher keeps assigning <code translate="no">ready</code> issues</td></tr><tr><td>forge unreachable</td><td>nothing updates</td><td>retry with growing backoff, visible; full reconcile afterwards</td></tr><tr><td>forge API limit</td><td>requests rejected</td><td>wait until the reset the forge reports; active repos first</td></tr><tr><td>catalog label deleted/renamed on the forge</td><td>labels missing</td><td>recreated next run</td></tr><tr><td>contradictory labels</td><td>unclear readiness</td><td>recompute own group from facts; never touch other groups</td></tr><tr><td><code translate="no">in-progress</code> without valid lease</td><td>issue reserved forever</td><td>dispatcher&#39;s group; it removes it after the lease check</td></tr><tr><td>human &quot;answers&quot; with a non-answer</td><td>worker starts without answer</td><td>worker asks again; bounded because each question needs the human</td></tr><tr><td>question stays unanswered</td><td>issue and dependents wait</td><td>visible, sorted first, reminder</td></tr></tbody></table></div>
+<h2 id="7-dispatcher">7. Dispatcher<a class="docs-anchor" href="#7-dispatcher" aria-label="7. Dispatcher" data-testid="docs-md-anchor-7-dispatcher">#</a></h2>
+<h3 id="71-loop-push-model">7.1 Loop (push model)<a class="docs-anchor" href="#71-loop-push-model" aria-label="7.1 Loop (push model)" data-testid="docs-md-anchor-71-loop-push-model">#</a></h3>
+<p>The dispatcher starts one session per issue; <code translate="no">next</code>/<code translate="no">done</code> of today&#39;s daemon are absorbed.</p>
+<ol><li><strong>Triggers:</strong> a slot frees up (worker done, question asked, worker ended), a forge change, an interval.</li><li><strong>Candidates:</strong> see 5.1.</li><li><strong>Host:</strong> reachable, matching <code translate="no">os:</code>/<code translate="no">host:</code>, below its own limit and the global limit, enough free
+memory, Claude login not locked. Prefer the host that already has the branch&#39;s worktree, then the
+least loaded one. If no host fits, skip the issue (never stall the queue). The host is chosen
+per issue, best score first: its <code translate="no">os:</code> (<code translate="no">macos</code>, <code translate="no">linux</code>, <code translate="no">windows</code>; <code translate="no">darwin</code>/<code translate="no">win</code> accepted) and
+<code translate="no">host:&lt;name&gt;</code> labels form the constraint. A <code translate="no">host:</code> name is a configured satellite name or one
+of the names of the machine running the dispatcher (#750): its own name
+(<code translate="no">orchestration.json</code> › <code translate="no">local_host.name</code>, default the sanitised short host name, e.g. <code translate="no">mac</code>
+for <code translate="no">Mac.local</code>, written once into the file on the first start), its aliases
+(<code translate="no">local_host.aliases</code>, e.g. added by &quot;Is this machine&quot; in Settings › Worker machines or by
+&quot;Call this Mac “x”&quot; on the switch card) and always <code translate="no">local</code>. The UI calls every machine that
+runs workers a worker machine (&quot;Worker-Rechner&quot;); this one is always one of them, with at least
+one slot, wherever the dispatcher runs.
+Names compare without case; one matcher (<code translate="no">dispatch::host::names_host</code>) serves the dispatcher
+and the daemon&#39;s <code translate="no">next</code>. Internally the machine stays the host id <code translate="no">local</code>, so leases and
+worker lists do not change when it is renamed. A satellite may not take one of these names
+(<code translate="no">local_name</code> error), and a rename may not take a satellite&#39;s name.
+<strong>Platform aliases.</strong> A <code translate="no">host:</code> value that names no machine but a platform means &quot;any worker
+machine with that system&quot;, so labels from older setups work as meant (<code translate="no">host:mac</code> = needs a
+Mac). Built in (<code translate="no">dispatch::host::PLATFORM_ALIASES</code>, the one list): <code translate="no">mac</code>, <code translate="no">macos</code>, <code translate="no">darwin</code> →
+macOS; <code translate="no">win</code>, <code translate="no">windows</code> → Windows; <code translate="no">linux</code>, <code translate="no">ubu</code>, <code translate="no">ubuntu</code> → Linux. <code translate="no">orchestration.json</code> ›
+<code translate="no">platform_aliases</code> adds more or overrides one (<code translate="no">{&quot;nixbox&quot;: &quot;linux&quot;}</code>; other systems are
+ignored). An exact machine name always wins: with a satellite called <code translate="no">win</code>, <code translate="no">host:win</code> means
+that machine only. The same rule (<code translate="no">dispatch::host::place</code> over all hosts, <code translate="no">label_fits</code> for the
+daemon&#39;s <code translate="no">next</code>) serves the dispatcher, the read model&#39;s <code translate="no">host_wait</code> and <code translate="no">gitoodo next</code>; the
+label scan of Settings › Worker machines skips platform aliases. This machine may not take
+another system&#39;s alias as its name or alias (<code translate="no">invalid_name</code>), so a Mac never becomes <code translate="no">win</code>.
+An issue no host can take waits without blocking other issues, with one concrete reason
+(<code translate="no">dispatch::host::WaitReason</code>, checked in this order): <code translate="no">unknown_host</code> (the <code translate="no">host:</code> label names
+no host and is no platform alias), <code translate="no">no_platform</code> (no worker machine runs the system the issue
+needs: its <code translate="no">os:</code> label or the platform of its <code translate="no">host:</code> alias; an offline machine counts with the
+system stored at its setup, <code translate="no">hosts[].platform</code>), <code translate="no">os_mismatch</code> (the named host,
+or every host of the <code translate="no">host:</code> platform, runs another system than <code translate="no">os:</code>), <code translate="no">offline</code> (set up but
+does not answer), <code translate="no">machine_paused</code> (answers, but paused after a failed start until its retry,
+#982), <code translate="no">disk_low</code> (answers, but its disk is nearly full, #970; neither of the two reads as
+offline, #1643), <code translate="no">build_budget</code> (answers, but the build a worker of the issue&#39;s
+repository would make does not fit there above what stays free for the user, or within a build
+cap from the file, #1418, #1809; judged per
+repository, so issues of a repository with a smaller build still start, #1804), <code translate="no">agent_missing</code> (coding agent
+missing or signed out), <code translate="no">usage_gate</code>, <code translate="no">login_expired</code> (the agent says its login there no
+longer works, e.g. a revoked refresh token behind &quot;Logged in&quot;, #994), <code translate="no">low_memory</code>, <code translate="no">at_capacity</code>, <code translate="no">host_limit</code> (the matching host runs the maximum the user set for
+it, below its cores, #967), <code translate="no">global_limit</code> or <code translate="no">tool_missing</code> (every host that fits lacks a
+command of the issue&#39;s <code translate="no">tool:</code> labels, <code translate="no">docs/orchestrator/satellites.md</code>); <code translate="no">repo_share</code> (the
+repository is at its fair share of the slots while another one below its share has ready work,
+#959) is the dispatcher&#39;s own and applies to unpinned issues too. The reason
+is written to <code translate="no">host-wait.json</code> and the read model (<code translate="no">host_wait.reason</code>), logged once per new
+wait or changed reason as <code translate="no">dispatch.host_wait issue=&lt;repo#n&gt; host=&lt;name|-&gt; reason=&lt;reason&gt;: …</code>,
+shown on the board, and notified once per issue and reason for <code translate="no">unknown_host</code>,
+<code translate="no">os_mismatch</code>, <code translate="no">offline</code>, <code translate="no">disk_low</code>, <code translate="no">build_budget</code> and <code translate="no">agent_missing</code> (only the user can end
+those). With <code translate="no">offline</code>, <code translate="no">machine_paused</code>, <code translate="no">disk_low</code> and <code translate="no">build_budget</code> the wait names the machines whose state is the
+reason (<code translate="no">host_wait.held_by</code>), and the log line, the notification, the board and the status
+line name them too (#1643). The dispatcher
+status counts the waits by reason (<code translate="no">host_wait_reasons</code>), the unknown <code translate="no">host:</code> names with their
+issues (<code translate="no">unknown_hosts</code>), the systems no machine runs (<code translate="no">missing_platforms</code>, e.g.
+<code translate="no">{&quot;windows&quot;: 12, &quot;linux&quot;: 42}</code>) and per reason the machines that hold issues back
+(<code translate="no">host_wait_machines</code>, e.g. <code translate="no">{&quot;disk_low&quot;: {&quot;hp840&quot;: 1}}</code>). Only those six reasons make the status page and the switch
+card say &quot;needs you&quot;, with the concrete fix in place: one unknown name as &quot;3 issues are marked
+for the machine “studio2” (label host:studio2) … This machine is called “macstudio”. Is this
+machine “studio2”? [Yes]&quot; (adds the alias) and [Show labels], several names grouped with their
+counts and one question each. <code translate="no">no_platform</code> is no problem: it notifies nobody, and the card
+names it in one calm line (&quot;12 issues need a Windows machine, 42 issues need a Linux machine.
+They start once one is connected.&quot;) with [Add machine] (Settings › Worker machines). Settings › Worker machines lists <code translate="no">host:</code> labels
+on the open issues of the paused and active repos that name no machine, with counts, and
+offers: set it up as another machine, treat it as this machine (adds an alias), or remove the
+label from those issues (forge write after a confirmation with the count). The onboarding&#39;s
+workers step (orchestrator mode, after accounts, repos and the setup) sets the workers at once
+(<code translate="no">max_workers</code>), this machine&#39;s name, explains <code translate="no">host:</code> labels and offers the alias for each
+unknown label once the read model has them.</li><li><strong>Order:</strong> first the next release, then the score. The next release of a repository is its
+release scope (<code translate="no">release:next</code> while it has no version), the open issues of its next release milestone
+(the open milestone with a version title that is due first, else the lowest version; sprints and
+other titles never count) and every issue they depend on; boosted issues join that first group.
+Inside each group: score = priority weight + age factor + manual boost + release bonus. Age grows
+steadily so nothing starves. Impact and effort are not part of it. <em>(defaults: p0
+1000, p1 300, p2 100, p3 30; +1 per hour of age; manual boost +500; release bonus +200, scaled
+by the release&#39;s due date: full without one and from one day before it, 25 % from 14 days
+away, linear in between, #1850)</em>. Between repositories a release due soon goes before the
+rotation and may take more than the equal share of the slots; see <code translate="no">queue-order.md</code>. A
+blocked issue is skipped, so the rest of the release and then the other issues still go; with no
+dispatchable release issue the queue runs on the score alone. Repositories with release planning
+off have no first group but boosted issues. A repo may carry its own <code translate="no">score</code> weights in its
+<code translate="no">repos</code> entry (#569); without one the global <code translate="no">score</code> applies. Editable in the
+repository&#39;s own settings, section &quot;Order&quot; (#926).</li><li><strong>Assign:</strong> set <code translate="no">in-progress</code>, write the lease audit comment, create or continue branch and
+worktree, start the session (section 8).</li><li><strong>Watch:</strong> liveness, hangs, leases, limits, PR state.</li></ol>
+<p>Limits: per host 1 worker per 2 CPU cores <em>(default)</em>, global 8 <em>(default)</em>, set in Gitoodo.</p>
+<h3 id="72-branches-and-worktrees">7.2 Branches and worktrees<a class="docs-anchor" href="#72-branches-and-worktrees" aria-label="7.2 Branches and worktrees" data-testid="docs-md-anchor-72-branches-and-worktrees">#</a></h3>
+<ul><li>Branch <code translate="no">&lt;prefix&gt;/&lt;issue-number&gt;-&lt;short-title&gt;</code>, prefix default <code translate="no">gitoodo</code> (e.g. <code translate="no">gitoodo/42-login-fix</code>).</li><li>Worktree under a root per host, default <code translate="no">~/gitoodo/worktrees/&lt;repo&gt;/&lt;issue-number&gt;</code>. Base is always dev.</li><li>A restart (hang, dead worker, after a question) continues branch and worktree with a <strong>new session</strong>
+(issue + Q&amp;A + handoff + <code translate="no">git log</code> + diff as start; no <code translate="no">--continue</code>).</li><li>Only a new attempt after the old branch was merged (issue reopened) gets <code translate="no">-2</code>, <code translate="no">-3</code>.</li></ul>
+<h3 id="73-session-environment">7.3 Session environment<a class="docs-anchor" href="#73-session-environment" aria-label="7.3 Session environment" data-testid="docs-md-anchor-73-session-environment">#</a></h3>
+<ul><li>Claude Code is started with <code translate="no">--dangerously-skip-permissions</code> (maintainer decision; accepted risk)
+unless the repo&#39;s <code translate="no">worker_permissions</code> is <code translate="no">guarded</code> (<code translate="no">--permission-mode auto</code>). Only the issue and
+trusted people&#39;s comments reach the worker (<code translate="no">docs/security.md</code>).</li><li>Sub-agents stay off unless the repo&#39;s <code translate="no">worker_sub_agents</code> is on (#952): Claude Code
+<code translate="no">--disallowed-tools Agent</code>, Codex <code translate="no">-c features.multi_agent=false -c features.multi_agent_v2=false -c agents.enabled=false</code>;
+another agent program started from the worker&#39;s shell is logged (<code translate="no">dispatch.nested_agent</code>) and,
+with the setting off, ended.</li><li>Workers start lean (no user MCP servers, plugins, skills, slash commands, memory or extra
+tools; the repository&#39;s instructions and Gitoodo&#39;s hooks stay); a repository can allow named MCP
+servers (<code translate="no">worker_mcp_servers</code>). See <code translate="no">docs/orchestrator/dispatcher.md</code>, &quot;What a worker loads&quot;.</li><li>The dispatcher passes settings with a managed statusLine command and <code translate="no">Stop</code>/<code translate="no">StopFailure</code> hooks that
+call <code translate="no">gitoodo</code> (usage limits, section 7.7), the app language, and build-parallelism limits:
+<code translate="no">CARGO_BUILD_JOBS</code>, <code translate="no">MAKEFLAGS=-jN</code>, test thread counts = cores / workers on that host.</li><li>Optional shared compiler cache (e.g. sccache) across worktrees.</li><li>No worker starts below 1.5 GB free memory <em>(default)</em>; under memory pressure nothing new starts there.</li></ul>
+<h3 id="74-hang-detection-v1">7.4 Hang detection (v1)<a class="docs-anchor" href="#74-hang-detection-v1" aria-label="7.4 Hang detection (v1)" data-testid="docs-md-anchor-74-hang-detection-v1">#</a></h3>
+<ul><li>Active = terminal output or git changes in the worktree. Both silent for 10 min <em>(proposal; the
+board had 5 min before the screenshot stage, which is postponed)</em> → before acting, re-read the issue:
+<code translate="no">needs-human</code> open or Claude login locked → not a hang. Otherwise restart.</li><li>3 restarts <em>(default, per issue configurable)</em> → <code translate="no">stalled</code>.</li></ul>
+<h3 id="75-questions-gitoodo-ask">7.5 Questions (<code translate="no">gitoodo ask</code>)<a class="docs-anchor" href="#75-questions-gitoodo-ask" aria-label="7.5 Questions (gitoodo ask)" data-testid="docs-md-anchor-75-questions-gitoodo-ask">#</a></h3>
+<p><code translate="no">gitoodo ask</code> reports &quot;done with question&quot;; the dispatcher ends the session and frees the slot
+immediately (<code translate="no">in-progress</code> → <code translate="no">needs-human</code>). When the classifier sets <code translate="no">ready</code> after the answer, the
+issue is assigned like any other (preferring the host with the worktree).</p>
+<h3 id="76-leases-and-dead-workers">7.6 Leases and dead workers<a class="docs-anchor" href="#76-leases-and-dead-workers" aria-label="7.6 Leases and dead workers" data-testid="docs-md-anchor-76-leases-and-dead-workers">#</a></h3>
+<ul><li>Lease expired and the worker provably dead (no process, no output, session gone) → release the issue;
+counts as a restart.</li><li>Not checkable (host offline) → release after a 30 min grace period <em>(default)</em>.</li><li>After the main host wakes: check liveness before releasing anything.</li><li>One dispatcher per config and state folder (OS file lock). A starting dispatcher releases only
+local leases whose owner (machine, process id, start time) is provably gone; leases of other
+machines or installs are never deleted, only expired by time (release-gate review M7).</li><li>Claiming is compare-and-confirm: status label, own login added to the assignees (others stay),
+lease comment, then a fresh read; the oldest active lease comment of the race wins, the loser
+withdraws its lease and only its own assignee (M10, <code translate="no">docs/daemon.md</code>).</li></ul>
+<h3 id="77-claude-usage-limits">7.7 Claude usage limits<a class="docs-anchor" href="#77-claude-usage-limits" aria-label="7.7 Claude usage limits" data-testid="docs-md-anchor-77-claude-usage-limits">#</a></h3>
+<ul><li>Tracked per host / Claude login: 5-hour and weekly window (percent, reset time), plus per-model
+weekly limits where reported.</li><li>Sources: (1) statusLine JSON of running sessions (<code translate="no">rate_limits.five_hour</code> / <code translate="no">seven_day</code>, Claude Code
+≥ 2.1.80) – primary while sessions run; (2) the OAuth usage endpoint of the login
+(<code translate="no">api.anthropic.com/api/oauth/usage</code>) when no session runs, with a minimum interval,
+backoff and <code translate="no">Retry-After</code>; (3) the <code translate="no">StopFailure</code> hook (≥ 2.1.78) for &quot;limit reached&quot;.
+If (2) breaks, fall back to (1)/(3) and the known reset time; show values as stale.
+(2) reads the login Claude Code itself keeps (macOS: the keychain item under the user&#39;s name,
+named after <code translate="no">CLAUDE_CONFIG_DIR</code> when set). An ended access token is Claude Code&#39;s to renew:
+the poll has it renew (<code translate="no">claude auth status</code>) and reads again; &quot;not signed in&quot; only when Claude
+Code itself says so or the login is refused or missing, otherwise the query failed for now
+(#1912).</li><li>At ≥ 90 % <em>(default)</em> in any window: no new workers on that login.</li><li>Limit reached: login locked until the reset; the session stays open; at reset the dispatcher types
+&quot;continue&quot;. Not counted as hang or restart. Other hosts with other logins keep working.</li><li>While locked, the usage source is asked every 5 minutes (instead of 15), or just after a sooner
+known reset, at most once a minute; a report with room again ends the lock early. The app shows
+the pause with its end and offers &quot;Resume now&quot;, an immediate check (<code translate="no">recheck</code>).</li><li>Satellites deliver the values through a small state file the dispatcher reads over SSH.</li></ul>
+<h3 id="78-pull-requests-and-merge">7.8 Pull requests and merge<a class="docs-anchor" href="#78-pull-requests-and-merge" aria-label="7.8 Pull requests and merge" data-testid="docs-md-anchor-78-pull-requests-and-merge">#</a></h3>
+<ul><li>The worker opens a PR (<code translate="no">Closes #N</code>, normal description) and ends. No extra review in v1; the
+condition is the complete green CI (dev is protected: merge only with green status checks).</li><li>The dispatcher enables auto-merge to dev (squash) and sets <code translate="no">in-review</code>. Auto-merge is only a real
+gate with branch protection requiring status checks; without it, or where the forge has no usable
+auto-merge API, the dispatcher merges itself once all checks reported on the reviewed head SHA are
+green, and a head without any check only after a grace period (checked against the forges&#39;
+sources; see <code translate="no">dispatcher.md</code>).</li><li><strong>Required checks per repo (#569):</strong> <code translate="no">repos[].required_checks</code> lists check names that must be
+green on top of the forge&#39;s required checks (default: empty, i.e. exactly the forge&#39;s required
+checks as before). A listed check counts with the worst state its head commit reported and as
+pending while nobody reported it; failing ones count as red CI. With such a list the dispatcher
+merges itself instead of enabling forge auto-merge, because the forge does not know the extra
+checks. Editable in the repository&#39;s own settings, section &quot;Merging&quot; (#926).</li><li>CI red or merge conflict → new session on the same branch with the failure output; counts as a restart.</li><li>After the merge the dispatcher closes the issue itself (<code translate="no">Closes #N</code> acts only on the default branch
+on GitHub; Forgejo behaviour differs; closing explicitly is idempotent) and triggers
+the sweeper.</li><li>Workers never merge to main.</li><li>A worker holds no forge credential. It delivers with <code translate="no">gitoodo worker pr</code> (push, then open the PR;
+<code translate="no">--title</code>, <code translate="no">--body</code>) or <code translate="no">gitoodo worker push</code> (push only), which use the account connected in
+Gitoodo (keychain token, existing write adapters). Design and limits: <code translate="no">dispatcher.md</code>
+&quot;Worker delivery&quot;.</li></ul>
+<h3 id="79-blockade-table-proposal">7.9 Blockade table <em>(proposal)</em><a class="docs-anchor" href="#79-blockade-table-proposal" aria-label="7.9 Blockade table (proposal)" data-testid="docs-md-anchor-79-blockade-table-proposal">#</a></h3>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col">What can happen</th><th scope="col">Handling</th></tr></thead><tbody><tr><td>dispatcher crashed</td><td>system service restart; on start reconcile leases from forge audit comments</td></tr><tr><td>satellite unreachable</td><td>its issues: lease grace period, then release; no new work there; notify</td></tr><tr><td>worktree corrupt / git lock left over</td><td>recreate the worktree from the pushed branch; never delete unmerged commits</td></tr><tr><td>session fails to start (auth, missing tool)</td><td>mark host unhealthy, notify, try another host; issue not counted as restart</td></tr><tr><td>auto-merge not available on a forge</td><td>dispatcher merges itself when CI is green</td></tr><tr><td>issue edited while in progress</td><td>worker continues; new facts are read at the next session start</td></tr></tbody></table></div>
+<h2 id="8-workers">8. Workers<a class="docs-anchor" href="#8-workers" aria-label="8. Workers" data-testid="docs-md-anchor-8-workers">#</a></h2>
+<h3 id="81-contract">8.1 Contract<a class="docs-anchor" href="#81-contract" aria-label="8.1 Contract" data-testid="docs-md-anchor-81-contract">#</a></h3>
+<p>One issue, one worktree, good commit messages, a PR with <code translate="no">Closes #N</code> into dev. No labels, no control of
+other workers, never merge to main. Asks via <code translate="no">gitoodo ask</code> when a decision is missing.</p>
+<h3 id="82-prompt-template-proposal">8.2 Prompt template <em>(proposal)</em><a class="docs-anchor" href="#82-prompt-template-proposal" aria-label="8.2 Prompt template (proposal)" data-testid="docs-md-anchor-82-prompt-template-proposal">#</a></h3>
+<p>Issue title/body/comments (incl. Q&amp;A and handoff), repo conventions (CLAUDE.md), branch, base dev,
+definition of done (green CI, PR), how to ask (<code translate="no">gitoodo ask --help</code>), the language on the forge for
+question blocks, status notes and the pull request title and description (code, commit messages and
+repository files follow the repository&#39;s own rules; <code translate="no">gitoodo worker context</code> repeats it as
+<code translate="no">forge_language</code>).
+A clarification worker gets the contradiction and resolves it or asks.
+When the human handed the issue back with a note (<code translate="no">docs/question-format.md</code>, &quot;Instructions&quot;), the newest
+instruction of a trusted person comes first, outside the comment budget, with the rule that it
+overrides the issue body and its checklist (steps left to a human included) and that the worker asks
+back only when truly blocked; <code translate="no">gitoodo worker context</code> carries it as <code translate="no">human_instruction</code>.
+When a trusted person answered the newest question block, the answer follows, also outside the
+comment budget and resolved against the block: every question with all its options and, next to
+each, what was chosen (<code translate="no">1a 2b</code> never has to be mapped by the worker); <code translate="no">gitoodo worker context</code>
+carries it as <code translate="no">answered_question</code>. Question blocks and answers in the discussion are never cut;
+only other comments are clipped, and older ones give way first.
+The brief is the worker&#39;s copy of the issue (#1431): body up to 8,000 characters, failed checks of a
+restart included, so the worker needs no first <code translate="no">gitoodo worker context</code> call.</p>
+<h3 id="83-gitoodo-ask">8.3 <code translate="no">gitoodo ask</code><a class="docs-anchor" href="#83-gitoodo-ask" aria-label="8.3 gitoodo ask" data-testid="docs-md-anchor-83-gitoodo-ask">#</a></h3>
+<p>Required: <code translate="no">--question</code> (1–4, each with options and a recommendation), <code translate="no">--next</code> (what to do after the
+answer, per option if they differ). Optional: <code translate="no">--notes</code> (rejected approaches, pitfalls). Added
+automatically: issue and branch (from the worktree), commit messages since dev, changed files, worker,
+host. The tool refuses calls with missing fields and limits the handoff to about 15 lines.</p>
+<p>Behaviour: commit and push the work in progress → write the question block (question on top, handoff
+collapsed below) → set <code translate="no">needs-human</code>, assign the human → tell the dispatcher (session ends, slot freed).
+It writes directly to the forge, so questions arrive even when the dispatcher is down.
+<code translate="no">gitoodo ask --help</code> is the worker&#39;s manual; the skill only points to it. No handoff on normal
+completion – the PR description is enough.</p>
+<p>Follow-up work found by a worker (#337): work outside the worker&#39;s issue (a bug elsewhere, a missing
+test, outdated docs) is proposed, not done. <code translate="no">gitoodo worker follow-up --title &lt;t&gt; --body-file &lt;path|-&gt; [--label &lt;kind&gt;]</code> sends the proposal to the dispatcher with the worker&#39;s capability; the worker never
+creates issues itself. The dispatcher checks, in this order: the capability and the issue path (as
+for every worker action), title and body (title one line, at most 200 characters; body a complete
+description, at most 16 KiB), the repo setting <code translate="no">worker_follow_ups</code> (default on, Settings → repo
+options), a live lease of this worker on its issue, at most <code translate="no">dispatch.max_follow_ups_per_run</code> per run
+(default 3, 0–20; restarts of the same run count together) and at most 10 per repo and hour, and a
+chain depth of at most 3 (<code translate="no">follow_up::MAX_DEPTH</code>: the issue a follow-up comes from counts its own
+depth in the marker, a legacy marker without one counts as 1). Then it creates the issue with the
+account&#39;s token:</p>
+<ul><li>the worker&#39;s title and body, with <code translate="no">&lt;!--</code> defused so the text cannot forge Gitoodo markers, and a
+footer &quot;Follow-up from #N (worker W)&quot; plus the marker
+<code translate="no">&lt;!-- gitoodo:follow-up parent=N worker=W depth=D --&gt;</code>;</li><li>the intake label <code translate="no">gitoodo</code> (if the repo has it), so the classifier triages the issue, and the
+optional <code translate="no">--label</code> when the repo has that label and it is no workflow, priority, host or release
+label;</li><li>never <code translate="no">ready</code>: an open issue with the same normalised title (case, whitespace and punctuation
+ignored) refuses the proposal instead.</li></ul>
+<p>A short note on the parent issue lists the follow-up. Refusals reach the worker as one line naming
+the reason (setting off, cap reached, duplicate #M, unknown label, rate limit, too deep); forge errors
+only say that nothing was created. By default the intake makes the follow-up <code translate="no">ready</code> like the worker
+account&#39;s own issues, so it joins the queue. A repo with &quot;Approve each follow-up before it is worked
+on&quot; (<code translate="no">follow_up_approval</code>, default <code translate="no">dispatch.follow_up_approval</code>, off) has the intake treat it like a
+contribution from outside (5.3): it asks the repo&#39;s human for approval (&quot;yes&quot; makes it <code translate="no">ready</code>, &quot;no&quot;
+closes it) and the read model never counts it ready on its own; switching the option off releases
+the waiting follow-ups as if approved. Satellite workers cannot propose
+follow-ups yet; they mention findings in the PR description. Red CI never creates a new issue.</p>
+<p>Splitting an issue that is too big (#1012): the brief&#39;s first section asks the worker to size up its
+issue before changing anything. An issue that fits into one coherent run (the usual case) is done
+there; one that is clearly too big is split before any code with <code translate="no">gitoodo worker split --plan &lt;file&gt;</code>, a JSON plan <code translate="no">{&quot;reason&quot;: &quot;…&quot;, &quot;parts&quot;: [{&quot;title&quot;, &quot;body&quot;, &quot;label&quot;, &quot;after&quot;}]}</code> of 2–8 parts,
+each with goal, scope and acceptance criteria; <code translate="no">after</code> names earlier parts (0-based) a part needs.
+Splitting is offered where follow-ups are (the setting <code translate="no">worker_follow_ups</code>, not on satellites);
+otherwise the brief says to do the whole issue in one run. The dispatcher checks the plan (each part
+like a follow-up, <code translate="no">after</code> only backwards, no part depending on the parent), a live lease and at most
+5 splits per repo and hour, then creates the parts in order with the account&#39;s token: the worker&#39;s
+text, a <code translate="no">Depends on #x</code> line for its <code translate="no">after</code> parts, a footer &quot;Part i of n of #N&quot; with the marker
+<code translate="no">&lt;!-- gitoodo:part parent=N index=i worker=W --&gt;</code> and the intake label <code translate="no">gitoodo</code>, in the parent&#39;s
+release (its milestone and <code translate="no">release:next</code>, #2061). One note on the
+parent lists the parts and says that it waits for them. Parts go through the intake like follow-ups
+(approval only where <code translate="no">follow_up_approval</code> is on); independent parts are dispatched in parallel,
+dependent ones only after their prerequisites (5.4).</p>
+<ul><li>The parent waits while one of its parts is open (read model, dispatch pick and hygiene agree; only
+parts the writing account opened count). Once all are closed it is ready again, and its brief lists
+the parts and asks for the integration and verification of the whole; it is never split again.
+The parent closes only through its own pull request.</li><li>A part is never split again (refused, and its brief says so).</li><li>A split run again (after a restart) reuses the parts that exist by index and creates only the
+missing ones; a split of a parent whose parts are all closed is refused.</li><li>After a successful split the worker stops without a pull request. The run ends as <code translate="no">split</code>
+(trace <code translate="no">dispatch.split</code>), a good end: no restart, no &quot;no PR&quot; handling; the lease goes, the
+worktree and branch are removed and the parent returns to the queue, where it waits. A failed
+split reaches the worker as <code translate="no">issue not split: &lt;reason&gt;</code> and changes nothing on the parent; when the
+forge failed after some parts, the reason names them, and the same split run again reuses them.</li></ul>
+<h2 id="9-sweeper">9. Sweeper<a class="docs-anchor" href="#9-sweeper" aria-label="9. Sweeper" data-testid="docs-md-anchor-9-sweeper">#</a></h2>
+<ul><li>Triggers: event from the dispatcher (PR merged to dev, issue closed; on satellites over SSH), an
+interval <em>(default hourly)</em>, and workers clean their own worktree regularly.</li><li>Deletes worktree, local and remote branch after the merge to dev.</li><li>Never deletes branches with unmerged commits or worktrees of running workers; reports them with a
+comment and <code translate="no">needs-human</code>. Offline hosts catch up on the next run.</li><li>Crashes, resets and leftovers: the reconcile round, remote branch cleanup, disk guard and temp
+root of the <a href="../repo-hygiene/" data-testid="docs-md-link-3">repo hygiene</a> (#771).</li></ul>
+<h2 id="10-release-planning-optional-per-repo">10. Release planning (optional per repo)<a class="docs-anchor" href="#10-release-planning-optional-per-repo" aria-label="10. Release planning (optional per repo)" data-testid="docs-md-anchor-10-release-planning-optional-per-repo">#</a></h2>
+<ul><li>A release is a milestone whose title is a version; membership is the milestone. <code translate="no">release:next</code>
+marks the next release while it has no version. Once a release milestone is the next one, its
+<code translate="no">release:next</code> issues move into it and lose the label (on every forge; existing labelled issues
+carry over on the first poll, no separate migration).</li><li>An issue enters a release only through: (1) its release milestone or <code translate="no">release:next</code>, set by the
+human, the chat or an assignment rule (open <code translate="no">priority:p0</code> issues by the default rule &quot;Urgent
+issues join the next release&quot;), (2) being an open dependency of a member: it joins that
+release with it, transitively (#1824; one in an earlier release stays, one in a later release is
+pulled forward; the other way round, an issue moved into a later release takes the issues of
+earlier releases that wait for it along, #2046). Everything else is backlog. A removal by hand sticks: no
+rule and no hygiene puts the issue back into that release.</li><li>Only milestones whose title is a version (<code translate="no">v1.2.3</code>, <code translate="no">1.2</code>, <code translate="no">2026.11</code>, <code translate="no">build 42</code>) are releases;
+sprints and other milestones are left alone. Next release milestone = the open release milestone
+that is due first, else the lowest version, else the oldest; default length 3 weeks. Several open
+release milestones are normal (the others are later releases); only a tie for the next one is a
+finding. One rule
+(<code translate="no">release::next_release_milestone</code>) serves the queue, the allocation of <code translate="no">release:next</code> issues and
+follow-ups, the adoption preview and the release view.</li><li>The due date is a decision point, not a cut: all done → question &quot;release now?&quot;; open items at the
+due date → question with the list (move, remove, extend). Nothing is cut automatically.</li><li>No open release milestone → question &quot;create the next milestone?&quot; (block <code translate="no">intake-milestone-N</code>, anchored
+on the lowest-numbered open issue, no planning issue). Yes → the classifier creates the version the
+question named (the version suggestion, #1142; asked again when it changed meanwhile) and writes <code translate="no">&lt;!-- gitoodo:intake-milestone-created --&gt;</code>;
+No → asked again after 28 days.</li><li>All questions and findings of release planning name the scope label <code translate="no">release:next</code> (never the
+legacy <code translate="no">release:muss</code>).</li><li>The app shows the release milestone planning works on (or none, or several without a clear next
+one) in the release view next to each repo and in the repository&#39;s own settings (#569, #926).</li><li>Issues of the next release (the scope above plus the open issues of the next release milestone
+and their dependencies) go first in the queue and get the score bonus (7.1 item 4).</li><li>In the app the user creates releases, assigns issues to the next, a later or no release, and
+sees each issue&#39;s release on the board row, the issue sheet and the release view. Completing a
+release runs its steps (close milestone, notes, tag, forge release, own commands) after a
+confirmation in the app (<a href="../release-planning/" data-testid="docs-md-link-4">release planning</a>).</li></ul>
+<h2 id="11-satellites">11. Satellites<a class="docs-anchor" href="#11-satellites" aria-label="11. Satellites" data-testid="docs-md-anchor-11-satellites">#</a></h2>
+<ul><li><code translate="no">gitoodo host add &lt;host&gt;</code> (also from the app): copy <code translate="no">gitoodo</code> over SSH/SFTP into a versioned
+directory, verify the checksum, start <code translate="no">gitoodo satellite</code>. On every connect compare versions,
+update, roll back if the new version does not start.</li><li>Service per OS: Windows with a visible desktop session → task at logon (windows optionally visible);
+Linux without desktop → systemd user service with lingering; macOS → LaunchAgent in the GUI session
+(keychain access for the Claude login). If no session is logged in, the dispatcher starts the
+satellite detached over SSH (<code translate="no">setsid</code>/<code translate="no">nohup</code>; on Windows break away from the OpenSSH job object)
+without windows, and the app says so clearly.</li><li>The satellite owns one PTY per worker (Unix PTY / ConPTY via <code translate="no">portable-pty</code>), keeps a bounded
+scrollback, feeds output to hang and limit detection, accepts input, streams to the app, and lets
+<code translate="no">gitoodo attach &lt;issue&gt;</code> (local or <code translate="no">ssh host gitoodo attach 42</code>) attach; the most recently active
+viewer sets the terminal size. Workers keep running when SSH drops or the main host sleeps.</li><li>Delivery from a satellite (#582): <code translate="no">gitoodo worker push|pr</code> there sends the assigned branch as a git
+bundle (commits beyond <code translate="no">origin/&lt;base&gt;</code>, at most 16 MiB) over the satellite&#39;s subscribe connection
+(<code translate="no">DeliverForward</code>/<code translate="no">DeliverDone</code>, like questions). The main host checks that the satellite holds the
+issue&#39;s lease for exactly that branch, replays the bundle into a temporary bare repo, then pushes and
+opens the PR (<code translate="no">Closes #n</code>) with its own token through the same code as local workers, so gate and
+merge are identical. The token never leaves the main host. Failures (main host offline, no
+subscriber, push refused, no lease) are returned to the worker, logged and recorded as a refused
+activity entry; the lease and the worker stay, so the issue waits and delivery can be retried.</li><li>The main host runs the same PTY host locally.</li><li>Auth: per forge one worker account with its own token, shared by all hosts; rights: issues, labels,
+comments, branches, PRs, merge to dev. No rotation inside the system.</li></ul>
+<h2 id="12-orchestrator-chat">12. Orchestrator chat<a class="docs-anchor" href="#12-orchestrator-chat" aria-label="12. Orchestrator chat" data-testid="docs-md-anchor-12-orchestrator-chat">#</a></h2>
+<ul><li>Claude Code headless in structured mode (<code translate="no">claude -p</code> with <code translate="no">stream-json</code> input and output), rendered
+as a native chat in Gitoodo. Uses the user&#39;s existing Claude login.</li><li>Tools only through <code translate="no">gitoodo mcp</code>; no file access, no shell (enforced via allowed tools). Its tools
+only read; every change below is a proposal the human applies with an OK in the app.</li><li>Can: create and sharpen issues (priority, OS, dependencies, several at once), query status, change
+priorities and boost, focus or pause projects, answer approvals and questions, stop or restart
+workers, set human labels. Cannot: write code, change repos, set service labels, merge.</li><li>Lean context: reset at 10 % used context <em>(default)</em> with a handoff of fixed fields (goal,
+decisions, open points), stored locally in Gitoodo; the next session starts from the handoff.</li></ul>
+<h2 id="13-configuration-proposal">13. Configuration <em>(proposal)</em><a class="docs-anchor" href="#13-configuration-proposal" aria-label="13. Configuration (proposal)" data-testid="docs-md-anchor-13-configuration-proposal">#</a></h2>
+<p>Shared <code translate="no">settings.json</code> (accounts, app mode, language, repo states) plus an orchestration file:
+trusted authors, the orchestrator account per forge host (section 5.3.1), hosts (name, SSH target,
+OS, worker limit, show windows, worktree root), global
+limit, branch prefix, score weights, timers (hang 10 min, lease grace 30 min, reminder 2 h, sweeper
+interval 1 h, polling 5 min), thresholds (Claude 90 %, free memory 1.5 GB), label name mapping,
+release planning on/off per repo. Reloaded without restart, as today. A broken file never stops
+running work: the dispatcher keeps the last valid configuration for it, starts nothing new and
+reports the file and position once (alert, status, <code translate="no">gitoodo doctor</code>; M9).</p>
+<h2 id="14-quality-requirements">14. Quality requirements<a class="docs-anchor" href="#14-quality-requirements" aria-label="14. Quality requirements" data-testid="docs-md-anchor-14-quality-requirements">#</a></h2>
+<ul><li><strong>Terminal fidelity:</strong> Claude Code must work in the PTYs as it does in a normal terminal. Acceptance tests on
+Linux, macOS and Windows: true colour, resize, full-screen UI, large paste (bracketed paste), Esc,
+Ctrl+C, Shift+Enter, Unicode/emoji width, scrollback, attach/detach without the session noticing.</li><li><strong>Resources:</strong> event-driven, near-zero idle CPU. Budgets as acceptance criteria: <code translate="no">gitoodo satellite</code>
+idle &lt; 15 MB RSS, classifier and dispatcher &lt; 30 MB each, scrollback 2 MB per session.
+<code translate="no">crates/cli/tests/rss_budget.rs</code> checks the resident set and, tighter, the private memory
+(Linux <code translate="no">RssAnon</code>, macOS physical footprint) of debug builds in an empty home (#769).</li><li><strong>Robustness:</strong> section 2.1 and the blockade tables.</li><li><strong>Single writer:</strong> classifier and dispatcher each hold an OS-level lock (lock file with
+<code translate="no">flock</code>/<code translate="no">LockFileEx</code>) so that a second instance on the same host never writes to the forge.</li><li><strong>Tests:</strong> table-driven tests for labels, trust (including reopening and foreign PRs),
+dependencies and cycles, score, host selection, leases and release scope; contract tests against
+recorded Forgejo and GitHub responses; terminal acceptance tests (above); RSS budgets as tests;
+end-to-end tests only against a dedicated Forgejo test repository, never a real project.</li></ul>
+<h2 id="15-migration-plan-proposal-each-step-mergeable-the-system-stays-usable-in-between">15. Migration plan <em>(proposal; each step mergeable, the system stays usable in between)</em><a class="docs-anchor" href="#15-migration-plan-proposal-each-step-mergeable-the-system-stays-usable-in-between" aria-label="15. Migration plan (proposal; each step mergeable, the system stays usable in between)" data-testid="docs-md-anchor-15-migration-plan-proposal-each-step-mergeable-the-system-stays-usable-in-between">#</a></h2>
+<ol><li>Rename <code translate="no">gitoodo-cli</code> → <code translate="no">gitoodo</code>, app binary → <code translate="no">gitoodo-app</code>.</li><li>English label catalog, question format v2, non-destructive activation preview, repo states.</li><li>Split the daemon: classifier (+ read model on the socket); app direct/orchestrator mode.</li><li>Dispatcher with local PTY host: push loop, worktrees, leases, <code translate="no">gitoodo ask</code>, hang detection,
+auto-merge, sweeper. The former integration of the external orchestrator (doc, modules, UI, settings) was removed
+afterwards (done, #306).</li><li>Claude usage limits and status bar.</li><li>Satellites: <code translate="no">host add</code>, satellite service, SSH bridge, attach, optional windows.</li><li>Orchestrator chat (<code translate="no">gitoodo mcp</code>, stream-json UI).</li><li>Release planning.</li></ol>
+<h2 id="16-to-verify-during-implementation">16. To verify during implementation<a class="docs-anchor" href="#16-to-verify-during-implementation" aria-label="16. To verify during implementation" data-testid="docs-md-anchor-16-to-verify-during-implementation">#</a></h2>
+<ul><li>Forgejo: does <code translate="no">Closes #N</code> close issues on merges into a non-default branch? Auto-merge API.</li><li>Native dependency APIs of Forgejo and GitHub.</li><li>Claude Code: statusLine <code translate="no">rate_limits</code> fields, <code translate="no">StopFailure</code> hook, <code translate="no">--settings</code> injection, stream-json.</li><li>Stability of the OAuth usage endpoint; behaviour without a subscription (API key).</li><li>ConPTY attach behaviour and resize on Windows; keychain access of a detached satellite on macOS.</li></ul>
+</div>
+<div class="docs-meta"><a class="docs-edit" href="https://github.com/silvio-l/gitoodo/edit/main/docs/orchestrator/spec.md" data-testid="docs-edit">Edit on GitHub</a><span class="docs-meta__version">Docs version: <span dir="ltr">dev</span></span></div>
+</article>
+<nav class="docs-pager" aria-label="Previous / Next" data-testid="docs-pager"><a class="docs-pager__previous" href="../all-repos/" rel="prev" data-testid="docs-pager-previous"><span class="docs-pager__label">Previous</span><span class="docs-pager__title">&quot;All repos&quot;: pages and where things went</span></a><a class="docs-pager__next" href="../orchestrator-setup/" rel="next" data-testid="docs-pager-next"><span class="docs-pager__label">Next</span><span class="docs-pager__title">Orchestrator setup</span></a></nav>
+</main>
+<aside class="docs-toc" aria-labelledby="docs-toc-title" data-testid="docs-toc"><h2 id="docs-toc-title">On this page</h2><ol><li class="docs-toc__l2"><a href="#1-goal-and-scope" data-testid="docs-toc-1-goal-and-scope">1. Goal and scope</a></li><li class="docs-toc__l2"><a href="#2-principles" data-testid="docs-toc-2-principles">2. Principles</a></li><li class="docs-toc__l3"><a href="#21-the-system-never-blocks-itself" data-testid="docs-toc-21-the-system-never-blocks-itself">2.1 The system never blocks itself</a></li><li class="docs-toc__l3"><a href="#22-facts-and-labels" data-testid="docs-toc-22-facts-and-labels">2.2 Facts and labels</a></li><li class="docs-toc__l2"><a href="#3-architecture" data-testid="docs-toc-3-architecture">3. Architecture</a></li><li class="docs-toc__l3"><a href="#31-components" data-testid="docs-toc-31-components">3.1 Components</a></li><li class="docs-toc__l3"><a href="#32-communication" data-testid="docs-toc-32-communication">3.2 Communication</a></li><li class="docs-toc__l2"><a href="#4-the-app" data-testid="docs-toc-4-the-app">4. The app</a></li><li class="docs-toc__l2"><a href="#5-ledger-labels-questions-trust" data-testid="docs-toc-5-ledger-labels-questions-trust">5. Ledger: labels, questions, trust</a></li><li class="docs-toc__l3"><a href="#51-label-catalog" data-testid="docs-toc-51-label-catalog">5.1 Label catalog</a></li><li class="docs-toc__l3"><a href="#52-manually-set-labels-not-by-the-worker-account" data-testid="docs-toc-52-manually-set-labels-not-by-the-worker-account">5.2 Manually set labels (not by the worker account)</a></li><li class="docs-toc__l3"><a href="#53-trust-and-approval" data-testid="docs-toc-53-trust-and-approval">5.3 Trust and approval</a></li><li class="docs-toc__l3"><a href="#531-orchestrator-account-764" data-testid="docs-toc-531-orchestrator-account-764">5.3.1 Orchestrator account (#764)</a></li><li class="docs-toc__l3"><a href="#54-question-format-v2" data-testid="docs-toc-54-question-format-v2">5.4 Question format v2</a></li><li class="docs-toc__l3"><a href="#541-routing-and-forwarding-704" data-testid="docs-toc-541-routing-and-forwarding-704">5.4.1 Routing and forwarding (#704)</a></li><li class="docs-toc__l3"><a href="#55-dependencies" data-testid="docs-toc-55-dependencies">5.5 Dependencies</a></li><li class="docs-toc__l3"><a href="#56-activating-a-repository" data-testid="docs-toc-56-activating-a-repository">5.6 Activating a repository</a></li><li class="docs-toc__l3"><a href="#57-human-control-568" data-testid="docs-toc-57-human-control-568">5.7 Human control (#568)</a></li><li class="docs-toc__l2"><a href="#6-classifier" data-testid="docs-toc-6-classifier">6. Classifier</a></li><li class="docs-toc__l2"><a href="#7-dispatcher" data-testid="docs-toc-7-dispatcher">7. Dispatcher</a></li><li class="docs-toc__l3"><a href="#71-loop-push-model" data-testid="docs-toc-71-loop-push-model">7.1 Loop (push model)</a></li><li class="docs-toc__l3"><a href="#72-branches-and-worktrees" data-testid="docs-toc-72-branches-and-worktrees">7.2 Branches and worktrees</a></li><li class="docs-toc__l3"><a href="#73-session-environment" data-testid="docs-toc-73-session-environment">7.3 Session environment</a></li><li class="docs-toc__l3"><a href="#74-hang-detection-v1" data-testid="docs-toc-74-hang-detection-v1">7.4 Hang detection (v1)</a></li><li class="docs-toc__l3"><a href="#75-questions-gitoodo-ask" data-testid="docs-toc-75-questions-gitoodo-ask">7.5 Questions (gitoodo ask)</a></li><li class="docs-toc__l3"><a href="#76-leases-and-dead-workers" data-testid="docs-toc-76-leases-and-dead-workers">7.6 Leases and dead workers</a></li><li class="docs-toc__l3"><a href="#77-claude-usage-limits" data-testid="docs-toc-77-claude-usage-limits">7.7 Claude usage limits</a></li><li class="docs-toc__l3"><a href="#78-pull-requests-and-merge" data-testid="docs-toc-78-pull-requests-and-merge">7.8 Pull requests and merge</a></li><li class="docs-toc__l3"><a href="#79-blockade-table-proposal" data-testid="docs-toc-79-blockade-table-proposal">7.9 Blockade table (proposal)</a></li><li class="docs-toc__l2"><a href="#8-workers" data-testid="docs-toc-8-workers">8. Workers</a></li><li class="docs-toc__l3"><a href="#81-contract" data-testid="docs-toc-81-contract">8.1 Contract</a></li><li class="docs-toc__l3"><a href="#82-prompt-template-proposal" data-testid="docs-toc-82-prompt-template-proposal">8.2 Prompt template (proposal)</a></li><li class="docs-toc__l3"><a href="#83-gitoodo-ask" data-testid="docs-toc-83-gitoodo-ask">8.3 gitoodo ask</a></li><li class="docs-toc__l2"><a href="#9-sweeper" data-testid="docs-toc-9-sweeper">9. Sweeper</a></li><li class="docs-toc__l2"><a href="#10-release-planning-optional-per-repo" data-testid="docs-toc-10-release-planning-optional-per-repo">10. Release planning (optional per repo)</a></li><li class="docs-toc__l2"><a href="#11-satellites" data-testid="docs-toc-11-satellites">11. Satellites</a></li><li class="docs-toc__l2"><a href="#12-orchestrator-chat" data-testid="docs-toc-12-orchestrator-chat">12. Orchestrator chat</a></li><li class="docs-toc__l2"><a href="#13-configuration-proposal" data-testid="docs-toc-13-configuration-proposal">13. Configuration (proposal)</a></li><li class="docs-toc__l2"><a href="#14-quality-requirements" data-testid="docs-toc-14-quality-requirements">14. Quality requirements</a></li><li class="docs-toc__l2"><a href="#15-migration-plan-proposal-each-step-mergeable-the-system-stays-usable-in-between" data-testid="docs-toc-15-migration-plan-proposal-each-step-mergeable-the-system-stays-usable-in-between">15. Migration plan (proposal; each step mergeable, the system stays usable in between)</a></li><li class="docs-toc__l2"><a href="#16-to-verify-during-implementation" data-testid="docs-toc-16-to-verify-during-implementation">16. To verify during implementation</a></li></ol></aside>
+</div>
+<footer class="docs-footer" data-testid="docs-footer"><div class="docs-footer__inner">
+<p class="docs-muted">The developer docs are in English only.</p>
+<ul class="docs-footer__links">
+<li><a href="../../../" data-testid="docs-footer-site">Website</a></li>
+<li><a href="../../../privacy/" data-testid="docs-footer-privacy">Privacy</a></li>
+<li><a href="https://github.com/silvio-l/gitoodo/blob/main/LICENSE" data-testid="docs-footer-license">MIT</a></li>
+</ul>
+</div></footer>
+</body>
+</html>

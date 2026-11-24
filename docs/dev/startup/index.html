@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self'; style-src 'self'; script-src 'self' 'sha256-zclDvgIbJxhMP3hLx0Pe9wEzIPlPNUNObuWsVD7xB/M='; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="color-scheme" content="light dark">
+<script>try{var t=localStorage.getItem("gitoodo-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<title>Start: first paint and loading state – Gitoodo</title>
+<meta name="description" content="The window is never empty after a start. It shows the last known state at once and replaces it part by part as the accounts and repositories answer. &quot;Synced&quot; only shows once every …">
+<meta name="docs-version" content="dev">
+<link rel="canonical" href="https://gitoodo.com/docs/dev/startup/">
+
+<meta property="og:title" content="Start: first paint and loading state – Gitoodo">
+<meta property="og:description" content="The window is never empty after a start. It shows the last known state at once and replaces it part by part as the accounts and repositories answer. &quot;Synced&quot; only shows once every …">
+<meta property="og:url" content="https://gitoodo.com/docs/dev/startup/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Gitoodo">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://gitoodo.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../../assets/docs.css">
+<script defer src="../../../assets/docs.js"></script>
+</head>
+<body class="docs" data-lang="en" data-docs-root="../../" data-search-index="../../search/en.json" data-copied="Copied">
+<a class="skip" href="#main" data-testid="docs-skip">Skip to content</a>
+<header class="docs-header" data-testid="docs-header"><div class="docs-header__inner">
+<a class="lockup" href="../../../" aria-label="Gitoodo" data-testid="docs-logo"><svg class="lockup__art" data-brand="wordmark" viewBox="9.3 9.4 767.3 182.9" focusable="false" aria-hidden="true"><path class="logo__tray" fill-rule="evenodd" d="M66.7 89.5C54.7 90.9 52.5 108.4 63.6 112.9C69.4 115.3 80 113.9 86.5 113.9L136.5 114C143.6 114 155.7 115.4 157 105.5C157.8 99.1 154.7 91.2 147.7 89.6C141.7 88.1 126.5 89.3 119.5 89.3L84.5 89.3C78.7 89.3 72.5 88.8 66.7 89.5ZM210.5 93.7C206.3 95.4 202.9 98.6 198.6 100.3C196.7 101 193.8 101.2 192.6 103.1C191.3 105.1 191.8 108.3 191.8 110.5C191.8 115.6 192.1 120.9 191.5 125.9C184.9 128.1 171 126.6 163.5 126.6C159.8 126.6 155.9 126.2 152.5 128C144.2 132.6 147.8 144.9 143.6 152.1C138.9 160 121.4 157.2 113.5 157.2C110.3 157.2 106.8 157.7 103.6 156.7C92.4 153.3 98.2 135 89.9 128.6C86.5 125.9 81.6 126.6 77.5 126.6C69.3 126.6 58.2 128 50.5 126.1C48.8 117.6 51.8 108.1 49.7 99.7C47.3 90.3 31.5 89.8 27 97.5C25.1 100.8 24 104.7 22.6 108.2C19.8 115.2 15.3 122.8 16.1 130.5C16.6 134.9 19.5 139.2 21.5 143L31.8 163.7C35.7 171.7 38.9 183.6 48.9 185.5C52.3 186.2 56 185.8 59.5 185.8L83.5 185.8L157.5 185.8L183.5 185.8C188.2 185.8 193.2 186.3 197.4 183.8C203.4 180.3 207.1 168.8 210.3 162.7L221.6 140.2C223.6 136.2 226.1 132.2 226 127.5C225.9 121.1 221.5 114.3 219.2 108.4C217.1 103 215.9 96.5 210.5 93.7Z"/><path class="logo__bars" fill-rule="evenodd" d="M156.8 26.5C155.2 15.4 142.9 17.7 134.5 17.6C114.8 17.4 95.2 17.5 75.5 17.7C65.3 17.7 55.7 18.3 56.4 31.5C57.2 45.7 76.1 42.3 85.5 42.3L126.5 42.3C130.4 42.3 141.2 43.2 144.4 41.9C146.3 41.1 147.2 38.3 148.2 36.7C150.7 33 154.3 30.1 156.8 26.5ZM139.5 55.3C134 52 124.8 53.6 118.5 53.6L83.5 53.7C77.8 53.7 71.1 52.8 65.5 54C59.3 55.3 55.6 61.8 56.5 67.9C58.2 79.3 69.7 78.2 78.5 78.2L123.5 78.2C128.6 78.2 137 79.9 140.6 75.2C142.4 72.9 141 70.6 140.5 68C139.7 63.8 141 59.3 139.5 55.3Z"/><path class="logo__check" fill-rule="evenodd" d="M177.7 26.4C142.8 32.5 139 82.7 173 93.5C177.7 95 182.6 95.5 187.5 94.9C224.6 90.3 228 37.8 192.5 27.2C187.7 25.8 182.6 25.6 177.7 26.4ZM177.5 65.1C172.9 61.8 171.9 57.4 165.5 58.3C160.3 63.5 167.1 67.9 170.8 71.7C172.5 73.5 174.3 76 176.8 76.5C180.5 77.3 183.2 73.1 185.3 70.8L200.1 55.6C203 52.6 204.8 49.9 201.5 46.5C200 46.2 199.2 45.8 197.6 46.2C195.1 46.9 192.6 50.5 190.9 52.4C187.1 56.5 182.5 62.6 177.5 65.1Z"/><path class="word__git" fill-rule="evenodd" d="M379.6 38.4C360.7 39.7 362.8 67.8 381.5 66.9C400 66.1 398.7 37.2 379.6 38.4ZM362.5 92.7C357.9 91.8 353.1 92.2 348.5 92.2L325.5 92.2C321.8 92.2 314.8 90.8 311.8 93.3C308.9 95.8 309.6 111.2 311 114.5C317.2 118.1 327.7 114.3 334.7 116.5C329.4 130.4 309.1 132.6 297.7 125.8C288.9 120.6 283.8 110.5 283.8 100.5C283.6 81.9 299.6 66.6 318.5 71.2C328.3 73.6 329.5 78.5 336.5 83C340.9 81.5 353.8 72.2 356.6 68.5C355.1 63.6 350.2 59.4 346.3 56.2C332 44.2 311 40.6 293.5 47C262.7 58.3 249 94.7 262.4 124.2C276 154 314 165.2 341.5 147C354.5 138.4 363.1 123 364.1 107.5C364.4 102.6 365.3 96.8 362.5 92.7ZM407.5 73.5L400.4 74.5C398 78.5 398.4 90 399.5 94.7C402 96 404.7 95.9 407.4 96.5C410 113.1 400.2 145.4 422.7 151.6C426.2 152.6 429.9 152.6 433.5 152.6C437.5 152.7 441.9 153.2 445.5 151.5C446.4 146.9 446.8 134.4 444.6 130.5C441.2 130.2 436.3 131.5 433.3 129.2C430.8 127.2 431.4 123.3 431.4 120.5C431.4 112.7 430.6 104.3 431.7 96.5C436.1 95.3 440.9 96.3 445.5 95.3C447.3 89.6 447.2 80.3 445.5 74.6L431.9 73.5C430.6 68.1 433.1 59.6 430.5 54.9C428.6 51.5 415.9 52 412.5 52.6C410.9 53 409.4 53.6 408.6 55.1C406.2 59.4 408.5 68.4 407.5 73.5ZM369.5 151.7C373.7 153.3 388.3 153.6 392.1 151.5C393.7 145.8 392.7 138.5 392.7 132.5L392.6 94.5C392.6 90.3 394.1 79 391.6 75.9C389.3 73.1 377.1 73.6 373.5 74C366.1 74.9 368.5 86.3 368.5 91.5L368.6 131.5C368.6 137.8 367.2 145.8 369.5 151.7Z"/><path class="word__oodo" fill-rule="evenodd" d="M658.6 77.5C652.6 75.1 647.4 72.8 640.7 73.4C600.7 77.2 595.6 136.7 633.5 148.3C639.6 150.1 646.5 150.5 652.6 148.3C655 147.4 657.1 146 659.5 145.4C660 146.5 660.6 148.1 661.7 148.7C665.5 150.7 678.5 149.6 682.5 148.5C684.6 142.8 683.3 126.4 683.4 119.5L683.3 71.5C683.2 65 684.5 55.7 683 49.5C681.4 42.8 664.3 43.5 661.3 46.8C659.2 49.1 659.7 52.6 659.7 55.5C659.6 61.4 661.1 72.7 658.6 77.5ZM482.5 73.4C442.6 77.6 435.8 134.6 473.5 147.9C478.2 149.6 483.5 150.4 488.5 150.1C494.4 149.7 499.9 148.2 505.1 145.6C509.6 143.3 513.4 139.9 516.5 136C537.9 109 517 69.8 482.5 73.4ZM560.7 73.4C547.4 75.2 535.8 83.3 530.4 95.7C521.3 116.5 532.4 142.7 554.8 148.6C560 149.9 565.1 150.5 570.5 149.8C597.8 146.3 613.1 114.6 598.4 91.1C593.4 83 585.5 77.6 576.6 74.7C571.5 73.1 566 72.7 560.7 73.4ZM723.5 73.4C712.2 74.9 701.4 80.8 695.3 90.7C682.1 112 692 141 716.3 148.4C721.5 150 727 150.6 732.5 150C755.6 147.5 770.6 124.8 765.8 102.5C762.8 89.1 752.1 79.1 739.5 74.9C734.4 73.2 728.9 72.7 723.5 73.4ZM483.7 96.4C464.6 99.7 469.4 131.1 490.4 126.7C509.1 122.7 503.7 93.1 483.7 96.4ZM562.7 96.4C543.1 99.7 548.6 131.4 569.3 126.6C587.9 122.4 582.5 93.1 562.7 96.4ZM644.6 96.4C625.3 97.8 626.9 127.6 646.5 126.8C665.9 126 664.2 95 644.6 96.4ZM724.7 96.4C705.3 99.9 711 131.7 732.3 126.6C750.4 122.3 744.3 92.9 724.7 96.4Z"/></svg></a>
+<a class="docs-header__title" href="../../" data-testid="docs-home">Documentation</a>
+<span class="docs-version" title="Pre-release: Gitoodo has not been released yet" data-version="dev"><span class="visually-hidden">Docs version: </span><span dir="ltr">dev</span><span class="visually-hidden"> (Pre-release: Gitoodo has not been released yet)</span></span>
+<div class="docs-header__tools">
+<div class="docs-search" role="search" data-testid="docs-search">
+<label class="visually-hidden" for="docs-search-input">Search the docs</label>
+<input id="docs-search-input" class="docs-search__input" type="search" placeholder="Search …" autocomplete="off" spellcheck="false" aria-describedby="docs-search-hint" aria-controls="docs-search-results" aria-expanded="false" role="combobox" aria-autocomplete="list" data-testid="docs-search-input">
+<p id="docs-search-hint" class="visually-hidden">Arrow keys choose, Enter opens, Escape closes.</p>
+<div id="docs-search-results" class="docs-search__results" role="listbox" aria-label="Search the docs" hidden data-empty="No page matches “{query}”." data-testid="docs-search-results"></div>
+<p id="docs-search-status" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true" data-count="Results: {count}" data-testid="docs-search-status"></p>
+</div>
+<div class="header__prefs"><details class="langs" name="header-popover" data-langs data-testid="docs-langs"><summary class="langs__toggle" data-testid="docs-langs-toggle"><svg class="langs__globe" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg><span class="visually-hidden">Language: </span><span class="langs__code" translate="no">EN</span></summary>
+<ul class="langs__list" aria-label="Language"><li><a href="../../de/" hreflang="de" lang="de" data-lang="de" data-track="language" data-track-name="de" data-testid="docs-langs-de"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Deutsch</span></a></li><li><a href="../../" hreflang="en" lang="en" data-lang="en" data-track="language" data-track-name="en" aria-current="page" data-testid="docs-langs-en"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>English</span></a></li><li><a href="../../zh-Hans/" hreflang="zh-Hans" lang="zh-Hans" data-lang="zh-Hans" data-track="language" data-track-name="zh-Hans" data-testid="docs-langs-zh-Hans"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>中文（简体）</span></a></li><li><a href="../../hi/" hreflang="hi" lang="hi" data-lang="hi" data-track="language" data-track-name="hi" data-testid="docs-langs-hi"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>हिन्दी</span></a></li><li><a href="../../es/" hreflang="es" lang="es" data-lang="es" data-track="language" data-track-name="es" data-testid="docs-langs-es"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Español</span></a></li><li><a href="../../ar/" hreflang="ar" lang="ar" data-lang="ar" data-track="language" data-track-name="ar" data-testid="docs-langs-ar"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>العربية</span></a></li></ul></details><button class="theme" type="button" hidden data-theme-toggle data-choice="system" data-label="Theme: {current}, switch to {next}" data-system="System" data-light="Light" data-dark="Dark" aria-label="Theme: System, switch to Light" title="Theme: System, switch to Light" data-testid="docs-theme"><svg class="theme__icon theme__icon--system" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg><svg class="theme__icon theme__icon--light" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg><svg class="theme__icon theme__icon--dark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></button></div>
+<button type="button" class="docs-menu" aria-controls="docs-nav" aria-expanded="false" hidden data-testid="docs-menu">Pages</button>
+</div>
+<a class="docs-header__link" href="https://github.com/silvio-l/gitoodo" data-testid="docs-github">GitHub</a>
+<a class="docs-install" href="../../../#download" data-testid="docs-install">Get notified</a>
+</div></header>
+<div class="docs-layout">
+<nav id="docs-nav" class="docs-nav" aria-label="Documentation" data-testid="docs-nav"><div class="docs-nav__section"><p class="docs-nav__title"><a href="../../" data-testid="docs-nav-section-user">For users</a></p><p class="docs-nav__group" id="docs-nav-user-0">Get started</p><ul aria-labelledby="docs-nav-user-0"><li><a href="../../introduction/" data-testid="docs-nav-docs-introduction">What is Gitoodo?</a></li><li><a href="../../getting-started/" data-testid="docs-nav-docs-getting-started">Getting started</a></li></ul><p class="docs-nav__group" id="docs-nav-user-1">Guides</p><ul aria-labelledby="docs-nav-user-1"><li><a href="../../self-hosted-forges/" data-testid="docs-nav-docs-self-hosted-forges">Forgejo and Gitea</a></li><li><a href="../../github-issues-to-pull-requests/" data-testid="docs-nav-docs-github-issues-to-pull-requests">GitHub issues to pull requests</a></li><li><a href="../../safe-auto-merge/" data-testid="docs-nav-docs-safe-auto-merge">Safe auto-merge</a></li><li><a href="../../parallel-coding-agents/" data-testid="docs-nav-docs-parallel-coding-agents">Parallel coding agents</a></li><li><a href="../../switch-from-another-agent-app/" data-testid="docs-nav-docs-switch-from-another-agent-app">Coming from another agent app</a></li></ul><p class="docs-nav__group" id="docs-nav-user-2">Daily use</p><ul aria-labelledby="docs-nav-user-2"><li><a href="../../daily-use/" data-testid="docs-nav-docs-daily-use">How to work with Gitoodo</a></li><li><a href="../../overview/" data-testid="docs-nav-docs-overview">Overview</a></li><li><a href="../../needs-you/" data-testid="docs-nav-docs-needs-you">Needs you</a></li><li><a href="../../questions/" data-testid="docs-nav-docs-questions">Asked of me</a></li><li><a href="../../board/" data-testid="docs-nav-docs-board">All repos</a></li><li><a href="../../chat/" data-testid="docs-nav-docs-chat">Chat</a></li><li><a href="../../repositories/" data-testid="docs-nav-docs-repositories">Repositories</a></li></ul><p class="docs-nav__group" id="docs-nav-user-3">Orchestrator</p><ul aria-labelledby="docs-nav-user-3"><li><a href="../../labels/" data-testid="docs-nav-docs-labels">Status labels and workflow</a></li><li><a href="../../merge-and-release/" data-testid="docs-nav-docs-merge-and-release">Merge control</a></li><li><a href="../../releases/" data-testid="docs-nav-docs-releases">Releases</a></li><li><a href="../../services/" data-testid="docs-nav-docs-services">Classifier, dispatcher and workers</a></li></ul><p class="docs-nav__group" id="docs-nav-user-4">Reference and help</p><ul aria-labelledby="docs-nav-user-4"><li><a href="../../settings/" data-testid="docs-nav-docs-settings">Settings</a></li><li><a href="../../status/" data-testid="docs-nav-docs-status">Status</a></li><li><a href="../../troubleshooting/" data-testid="docs-nav-docs-troubleshooting">Troubleshooting</a></li><li><a href="../../faq/" data-testid="docs-nav-docs-faq">FAQ</a></li><li><a href="../../privacy/" data-testid="docs-nav-docs-privacy">Privacy</a></li></ul></div><div class="docs-nav__section"><p class="docs-nav__title"><a href="../" data-testid="docs-nav-section-dev">For developers</a></p><p class="docs-nav__group" id="docs-nav-dev-0">Start here</p><ul aria-labelledby="docs-nav-dev-0"><li><a href="../architecture/" data-testid="docs-nav-docs-dev-architecture">Architecture</a></li><li><a href="../building/" data-testid="docs-nav-docs-dev-building">Building</a></li><li><a href="../releasing/" data-testid="docs-nav-docs-dev-releasing">Release</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-1">Interfaces</p><ul aria-labelledby="docs-nav-dev-1"><li><a href="../question-format/" data-testid="docs-nav-docs-dev-question-format">Gitoodo question format (version 2)</a></li><li><a href="../cli/" data-testid="docs-nav-docs-dev-cli">Command line reference</a></li><li><a href="../daemon/" data-testid="docs-nav-docs-dev-daemon">Classifier daemon and command line</a></li><li><a href="../phone-access/" data-testid="docs-nav-docs-dev-phone-access">Phone access</a></li><li><a href="../forge-tokens/" data-testid="docs-nav-docs-dev-forge-tokens">Token permissions per forge</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-2">Orchestrator</p><ul aria-labelledby="docs-nav-dev-2"><li><a href="../states/" data-testid="docs-nav-docs-dev-states">States: what Gitoodo shows and what you do about it</a></li><li><a href="../all-repos/" data-testid="docs-nav-docs-dev-all-repos">&quot;All repos&quot;: pages and where things went</a></li><li><a href="../orchestrator-spec/" data-testid="docs-nav-docs-dev-orchestrator-spec">Gitoodo Orchestrator – Specification (v1)</a></li><li><a href="../orchestrator-setup/" data-testid="docs-nav-docs-dev-orchestrator-setup">Orchestrator setup</a></li><li><a href="../dispatcher/" data-testid="docs-nav-docs-dev-dispatcher">Dispatcher</a></li><li><a href="../queue-order/" data-testid="docs-nav-docs-dev-queue-order">Queue order and slot share</a></li><li><a href="../branch-rules/" data-testid="docs-nav-docs-dev-branch-rules">Branch rules that work with the autopilot</a></li><li><a href="../security/" data-testid="docs-nav-docs-dev-security">Security model of the orchestrator</a></li><li><a href="../satellites/" data-testid="docs-nav-docs-dev-satellites">Satellites</a></li><li><a href="../keychains/" data-testid="docs-nav-docs-dev-keychains">Keychains, signing and dialogs</a></li><li><a href="../local-inputs/" data-testid="docs-nav-docs-dev-local-inputs">Local inputs</a></li><li><a href="../resolver/" data-testid="docs-nav-docs-dev-resolver">The resolver for stuck issues</a></li><li><a href="../triage/" data-testid="docs-nav-docs-dev-triage">Triage</a></li><li><a href="../repo-hygiene/" data-testid="docs-nav-docs-dev-repo-hygiene">Repo hygiene</a></li><li><a href="../storage-cleanup/" data-testid="docs-nav-docs-dev-storage-cleanup">Automatic disk cleanup</a></li><li><a href="../orchestrator-chat/" data-testid="docs-nav-docs-dev-orchestrator-chat">Orchestrator chat</a></li><li><a href="../release-planning/" data-testid="docs-nav-docs-dev-release-planning">Release planning</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-3">App internals</p><ul aria-labelledby="docs-nav-dev-3"><li><a href="../status-model/" data-testid="docs-nav-docs-dev-status-model">Overview status model</a></li><li><a href="../counters/" data-testid="docs-nav-docs-dev-counters">Counters</a></li><li><a href="./" aria-current="page" data-testid="docs-nav-docs-dev-startup">Start: first paint and loading state</a></li><li><a href="../logging/" data-testid="docs-nav-docs-dev-logging">Logging</a></li><li><a href="../localisation/" data-testid="docs-nav-docs-dev-localisation">Localisation</a></li><li><a href="../settings-backup/" data-testid="docs-nav-docs-dev-settings-backup">Settings export, import and backup</a></li><li><a href="../symlinks/" data-testid="docs-nav-docs-dev-symlinks">Symbolic links</a></li><li><a href="../window-frame/" data-testid="docs-nav-docs-dev-window-frame">Window frame</a></li><li><a href="../system-permissions/" data-testid="docs-nav-docs-dev-system-permissions">System permissions</a></li><li><a href="../test-access/" data-testid="docs-nav-docs-dev-test-access">Test access: driving the app without a human</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-4">Privacy and data</p><ul aria-labelledby="docs-nav-dev-4"><li><a href="../privacy-policy/" data-testid="docs-nav-docs-dev-privacy-policy">Privacy policy: feedback, usage statistics and the phone app</a></li><li><a href="../network-inventory/" data-testid="docs-nav-docs-dev-network-inventory">Network inventory of the desktop app and the phone app</a></li><li><a href="../chat-notification/" data-testid="docs-nav-docs-dev-chat-notification">Chat notification</a></li><li><a href="../support/" data-testid="docs-nav-docs-dev-support">Voluntary support</a></li></ul></div></nav>
+<main id="main" class="docs-main" tabindex="-1" data-testid="docs-main">
+<article class="docs-article">
+<p class="docs-eyebrow">For developers · App internals</p><h1>Start: first paint and loading state</h1>
+<details class="docs-toc-inline" data-testid="docs-toc-inline"><summary data-testid="docs-toc-inline-toggle">On this page</summary><ol><li class="docs-toc__l2"><a href="#where-the-window-opens" data-testid="docs-toc-inline-where-the-window-opens">Where the window opens</a></li><li class="docs-toc__l2"><a href="#the-view-from-earlier" data-testid="docs-toc-inline-the-view-from-earlier">The view from earlier</a></li><li class="docs-toc__l2"><a href="#figures-of-the-start-page-1659" data-testid="docs-toc-inline-figures-of-the-start-page-1659">Figures of the start page (#1659)</a></li><li class="docs-toc__l2"><a href="#what-the-window-shows-while-loading" data-testid="docs-toc-inline-what-the-window-shows-while-loading">What the window shows while loading</a></li><li class="docs-toc__l2"><a href="#the-start-dialog" data-testid="docs-toc-inline-the-start-dialog">The start dialog</a></li><li class="docs-toc__l3"><a href="#actions-that-wait-for-their-data" data-testid="docs-toc-inline-actions-that-wait-for-their-data">Actions that wait for their data</a></li><li class="docs-toc__l3"><a href="#retried-not-failed" data-testid="docs-toc-inline-retried-not-failed">Retried, not failed</a></li><li class="docs-toc__l2"><a href="#loading-in-place" data-testid="docs-toc-inline-loading-in-place">Loading in place</a></li><li class="docs-toc__l2"><a href="#the-classifiers-pass" data-testid="docs-toc-inline-the-classifiers-pass">The classifier&#39;s pass</a></li><li class="docs-toc__l2"><a href="#next-sync" data-testid="docs-toc-inline-next-sync">Next sync</a></li><li class="docs-toc__l2"><a href="#shimmer" data-testid="docs-toc-inline-shimmer">Shimmer</a></li><li class="docs-toc__l2"><a href="#start-cost" data-testid="docs-toc-inline-start-cost">Start cost</a></li><li class="docs-toc__l2"><a href="#measuring" data-testid="docs-toc-inline-measuring">Measuring</a></li></ol></details>
+<div class="docs-body">
+<p>The window is never empty after a start. It shows the last known state at once and replaces it
+part by part as the accounts and repositories answer. &quot;Synced&quot; only shows once every account has
+answered.</p>
+<h2 id="where-the-window-opens">Where the window opens<a class="docs-anchor" href="#where-the-window-opens" aria-label="Where the window opens" data-testid="docs-md-anchor-where-the-window-opens">#</a></h2>
+<p>The window opens on the start page: the statistics overview (<code translate="no">src/views/overview/OverviewView.tsx</code>,
+<code translate="no">docs/metrics.md</code>, &quot;Overview dashboard&quot;), with what only the user can fix above the figures. The
+way back to it from anywhere is the first entry of the navigation, &quot;Überblick&quot; (&quot;Overview&quot;, key
+1), marked like every entry while the start page shows. The header shows the same full wordmark on
+every view, never a view title (each view names itself in its own heading), so the top of the
+window does not change when a repository or a page opens. The wordmark is a second way to the
+start page: a button named &quot;Gitoodo, zum Überblick&quot; (&quot;Gitoodo, go to the overview&quot;), reachable
+with Tab and pressed with Enter or Space. The introduction tour points at the navigation entry.</p>
+<p>What the next start opens (<code translate="no">src/state/lastView.ts</code>, kept in the window&#39;s local storage, never in
+<code translate="no">start-view.json</code>):</p>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col">Before the window closed</th><th scope="col">Next start</th></tr></thead><tbody><tr><td>Nothing kept (first start, private mode, damaged entry)</td><td>The start page.</td></tr><tr><td>The start page, a tab (&quot;All repos&quot;, &quot;Asked of me&quot;, Chat)</td><td>The start page.</td></tr><tr><td>A repository&#39;s page, or a question or the settings opened on it</td><td>That repository&#39;s page; Back leads to the start page.</td></tr><tr><td>A repository that is gone since</td><td>The start page.</td></tr><tr><td>The onboarding handed over to the setup assistant</td><td>The setup assistant over the start page.</td></tr></tbody></table></div>
+<p>Why not the tab of earlier: the start page answers &quot;is everything running?&quot; in one look, which is
+the question at every start, and a list from earlier can have changed meanwhile. A repository is
+the exception: whoever closed the window inside one was in the middle of its work. &quot;All repos&quot;
+keeps its subpage, so the tab shows the page used last. A kept &quot;Overview&quot; subpage of earlier
+versions opens the start page.</p>
+<h2 id="the-view-from-earlier">The view from earlier<a class="docs-anchor" href="#the-view-from-earlier" aria-label="The view from earlier" data-testid="docs-md-anchor-the-view-from-earlier">#</a></h2>
+<ul><li><strong>What is stored:</strong> a compact copy of what the window showed: the accounts (id, kind, label,
+address, login), each account&#39;s last good snapshot (questions and tasks, dashboard rows, repo
+list), the orchestrator&#39;s repositories (state and issues), the counts and the release
+planning&#39;s last report (#1694, the release plan and overview of the accounts still known). The
+releases keep the time they were read: a session that never opens the release view stores the
+ones from earlier again, with their old time, not as new. Errors are not stored; they belong to
+the moment.</li><li><strong>Where it lives:</strong> <code translate="no">start-view.json</code> in the app&#39;s state folder (the folder that also holds
+<code translate="no">settings.json</code>). It is local only: it is not part of the settings export, and it is never
+sent anywhere.</li><li><strong>Who writes it:</strong> the window composes the view (<code translate="no">src/state/startView.ts</code>). The core stores it
+(<code translate="no">crates/core/src/store/start_view.rs</code>):<ul><li>fields whose names suggest a secret (<code translate="no">token</code>, <code translate="no">password</code>, <code translate="no">secret</code>, <code translate="no">cookie</code>,
+<code translate="no">credential</code>, <code translate="no">authorization</code>, <code translate="no">api_key</code>, <code translate="no">private_key</code>, <code translate="no">auth</code>) are dropped;</li><li>every text passes the log redaction: registered tokens, token prefixes and URL
+credentials are replaced;</li><li>the file stays under 4 MiB. A bigger view first loses issue bodies and comments, and
+a view that is still too big is not stored at all.</li></ul></li><li><strong>When it is written:</strong> at most every 3 seconds while the window shows data that arrived since
+the start. The view from earlier alone is never stored again.</li><li><strong>Version:</strong> a view with another version, or a damaged one, is ignored whole, never shown in
+part. The next save replaces it.</li></ul>
+<h2 id="figures-of-the-start-page-1659">Figures of the start page (#1659)<a class="docs-anchor" href="#figures-of-the-start-page-1659" aria-label="Figures of the start page (#1659)" data-testid="docs-md-anchor-figures-of-the-start-page-1659">#</a></h2>
+<p>The start page&#39;s statistics come from reads of their own, not from the sync. So that the page
+does not start empty on every visit, it shows the figures of its last visit at once and lets a
+fresh read replace them in the background (<code translate="no">src/state/pageCache.ts</code>, keys and checks in
+<code translate="no">src/views/overview/cachedFigures.ts</code>):</p>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col">Figure</th><th scope="col">Kept for</th><th scope="col">Where</th></tr></thead><tbody><tr><td>Daily activity (tiles, today strip, bars, heat map)</td><td>each scope: repos shown, days asked</td><td>memory and the window&#39;s local storage</td></tr><tr><td>Queue waiting time</td><td>the week starts asked</td><td>memory and the window&#39;s local storage</td></tr><tr><td>App mode and dispatcher status (slots, usage)</td><td>the running window</td><td>memory only</td></tr></tbody></table></div>
+<ul><li><strong>Per scope:</strong> an entry belongs to its repos and days, so figures of other filters or of
+yesterday never show; a new day reads anew. Activity is kept only from a read that is through
+(no repo still being read), so part of the repos never shows as too low figures. Up to six scopes per page are kept, the most
+recent ones.</li><li><strong>Only counts:</strong> the activity is kept without the read&#39;s progress (which names repos that
+failed), the queue waits only from a running dispatcher. The key names the repos in scope, as
+the kept last view does; no token, no forge text.</li><li><strong>Damaged or old:</strong> a store of another version, or an entry of a shape the page does not
+accept, is dropped without a message and read anew.</li><li><strong>Errors:</strong> a fresh read that fails shows its error as before; the kept figures are not kept
+on screen in its place.</li></ul>
+<h2 id="what-the-window-shows-while-loading">What the window shows while loading<a class="docs-anchor" href="#what-the-window-shows-while-loading" aria-label="What the window shows while loading" data-testid="docs-md-anchor-what-the-window-shows-while-loading">#</a></h2>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col">Part</th><th scope="col">Not known yet</th><th scope="col">From earlier</th></tr></thead><tbody><tr><td>Sidebar</td><td>Shimmering placeholder rows; at the foot while an account&#39;s repositories are not listed</td><td>Rows as before; &quot;As of 14:32&quot; next to the heading (the hover explains it); &quot;from earlier&quot; in the row&#39;s tooltip</td></tr><tr><td>Repository row</td><td>A short shimmering bar where its state will show; &quot;loading&quot; in its label and tooltip</td><td>Its last state</td></tr><tr><td>Group or owner</td><td>No count, and a placeholder instead of &quot;Empty. Drag repositories here…&quot;</td><td>Its count from earlier</td></tr><tr><td>Questions</td><td>The skeleton; once some arrived, shimmering rows under the list</td><td>The questions from earlier; &quot;As of 14:32&quot; behind the heading</td></tr><tr><td>Counters</td><td>An empty shimmering pill, never &quot;0&quot;</td><td>The counts from earlier</td></tr><tr><td>Status bar</td><td>&quot;Loading repositories …&quot;, or &quot;Loading 12 of 34 repositories …&quot; once the totals are known</td><td>Same</td></tr><tr><td>Releases</td><td>The loading line, or &quot;busy&quot; while the classifier&#39;s first poll runs</td><td>The releases from earlier; &quot;As of 14:32&quot; in the place of the poll time (the hover explains it)</td></tr></tbody></table></div>
+<p>Rules:</p>
+<ul><li><strong>&quot;As of HH:MM&quot;:</strong> wherever data from earlier shows (sidebar, questions, releases), the label
+names when it was read, in local time; before today with the day, in another year with the
+year (<code translate="no">formatEarlier</code>). The sidebar and questions take the time the view was saved, the
+releases their own read time. The label goes as soon as fresh data replaces it: for the
+releases, the session&#39;s first report that shows something (an error keeps them in place,
+with the error).</li><li><strong>Synced:</strong> &quot;Synced&quot; (with its age) only shows once every account that the core polls has
+answered at least once since the start. A failed poll is also an answer; the error bar says why
+it failed. Until then the status bar counts the repositories that have answered.</li><li><strong>Unknown is not zero:</strong> a repository whose data has not arrived is a placeholder, never
+missing, &quot;Empty&quot; or a count of 0. &quot;Only with work&quot; keeps such repositories in the list until
+their data is known.</li><li><strong>A failed first poll</strong> keeps the data from earlier, still marked as from earlier.</li><li><strong>Repository by repository:</strong> the core reports each repository&#39;s progress as it is fetched (the
+<code translate="no">repo-progress</code> event: the account&#39;s listing first, then for each repository the start of each
+read and one event once it is through, with its dashboard row). The sidebar and the counts fill in as the events arrive, without waiting for
+the whole account. The core keeps the steps of each account&#39;s latest poll (<code translate="no">get_repo_progress</code>),
+and a window that opens while a poll runs replays them, so it knows the listings it did not hear.</li></ul>
+<h2 id="the-start-dialog">The start dialog<a class="docs-anchor" href="#the-start-dialog" aria-label="The start dialog" data-testid="docs-md-anchor-the-start-dialog">#</a></h2>
+<p>While a start is not through, a dialog lies over every page (<code translate="no">src/views/shell/StartDialog.tsx</code>,
+model in <code translate="no">src/state/startDialog.ts</code>, #1421). It lists the steps of this start, each with its state
+(waiting, running, done, error, or a note) and its progress, in words from the user&#39;s side:</p>
+<ul><li><strong>Signing in to accounts</strong>: &quot;1/3&quot; until every account is signed in: the forge accepted its token,
+which the listing of its repositories shows (or the account answered). The account&#39;s whole load
+is the next step. An account that answers with an error is retried by the sync; for 30 seconds
+the step only says &quot;trying again&quot;, so a short network blip never shows as an error.</li><li><strong>Loading repositories</strong>: &quot;12/33 (36 %)&quot;, or what loads right now while a repo list is still open
+(<code translate="no">src/state/loadPanel.ts</code>). It waits while no account is signed in.</li><li><strong>Starting background services</strong>: done once the app&#39;s own service step is through (<code translate="no">launch_state</code>,
+<code translate="no">src-tauri/src/launch_state.rs</code>) and every awaited service runs. When that step restarted the
+services (after an update), only what they wrote since counts; their activity from the old run
+never makes a start look finished. A service that is not up a minute later is an error.</li><li><strong>Looking through issues</strong>: the classifier&#39;s first full pass since it started: &quot;12 of 33
+repositories with autopilot&quot; against the pass&#39;s own plan (<code translate="no">Request::Pass</code>, <code translate="no">PassProgress</code> in
+<code translate="no">crates/core/src/service_rpc.rs</code>): each account adds the repositories the pass reads once it
+listed them, so the total is fixed before the reads count up, and only finished reads count.
+After the last repository the pass still stores its picture; the step then says &quot;Finishing …&quot;
+without a count. A classifier that does not tell its plan shows only the running time.</li><li><strong>Reaching worker machines</strong>: &quot;1/2&quot; from <code translate="no">DispatcherStatus.machines</code>. A machine that does not
+answer 30 seconds after the dispatcher started is only a note: Gitoodo goes on without it.</li><li><strong>Handing out work</strong>: the first dispatcher round after the first look through the issues.</li></ul>
+<p>A step that runs longer than 2 seconds shows its running time at the end of its line and a
+slim bar under it, so a fast start stays clean. The bar is filled when the source knows a count,
+with the count in words under the name (&quot;12 of 31 repositories (38 %)&quot;): signed-in accounts,
+loaded repositories, repositories the classifier read in this pass, reachable worker machines,
+and for handing out work the filled worker slots of those the queue can fill (<code translate="no">workers</code> of
+<code translate="no">min(max_workers, workers + queued)</code>). A running step never shows a full count: once its count is
+through, what is left has none, and the step says &quot;Finishing …&quot;. Otherwise a faint band runs along
+the bar; with reduced motion a short block breathes in its middle instead, never a full bar.</p>
+<p>Under the intro one bar shows the whole start, with its percentage and, when known, the time
+left: &quot;37 % · about 20 s left&quot; (<code translate="no">src/state/startProgress.ts</code>). Each step weighs what it took at
+the last start (kept in the window&#39;s local storage: milliseconds per step, nothing else), else a
+typical share. A step adds its own share of done work only where it has a count; a step without
+one counts once it is done, so the percentage never pretends and never creeps towards 99 %. The
+bar never goes backwards: a step that turns out longer only slows it. The time left comes from
+this start&#39;s own rate where a count runs long enough to tell (2 seconds), from the last start&#39;s
+durations before that, and is left out when neither knows, e.g. at the very first start. The
+worker machines are reached beside the other steps, so their time does not add to the rest.</p>
+<p>Steps that do not apply are left out: without background services (store build, direct mode)
+only the first two; a service that is switched off or not set up is not awaited; with the
+orchestrator off, nothing the dispatcher does.</p>
+<p>The window is free once no step holds it. A step that failed or runs longer than usual (90
+seconds, the look through the issues 3 minutes) offers &quot;Go on without this step&quot;, an error also
+&quot;View status&quot; and &quot;Open log&quot;. Tab stays inside.</p>
+<p>The dialog can always be closed, also while the first sign-in runs: with &quot;Start now&quot; at its foot,
+the close button at its top or Escape. Loading goes on; the window is usable at once. While the
+start still runs, the status bar shows a calm chip instead of its load line, &quot;Still loading ·
+42 %&quot; with a slim bar (<code translate="no">src/views/shell/StartChip.tsx</code>, shared through
+<code translate="no">src/state/startBackground.ts</code>); a click opens the dialog again. The chip is a plain button in
+the tab order, so Enter and Space open the dialog too; a polite live region beside it says the
+same words to screen readers, at most every 5 seconds with the latest percentage
+(<code translate="no">src/ui/throttledAnnouncement.ts</code>, shared with the dialog). The chip goes once the start is
+through. Nothing of it is stored: the next cold start shows the dialog again unless that start is
+fast. Views whose data is not loaded yet say so (&quot;loading …&quot;) instead of showing an empty list or
+zero counts (see &quot;Start cost&quot;).</p>
+<p>It shows only after 400 ms (a fast start never flashes) and once per window: a new view or a wake
+from sleep never brings it back, only a real reload. Screen readers hear the running step or the
+one that needs the user at most every 5 seconds; reduced motion stops the breathing dot.</p>
+<p>Closing the dialog (with &quot;Start now&quot;, the close button or Escape) hands the focus back to the
+element that had it before the dialog opened (#1692): the control the user reached during the
+dialog&#39;s delay, or, when the chip opened it again, the chip shown again. When nothing had the
+focus, the shown page takes it (#1163); focus that went somewhere else meanwhile stays there
+(<code translate="no">focusReturn</code> in <code translate="no">src/views/shell/StartDialog.tsx</code>).</p>
+<h3 id="actions-that-wait-for-their-data">Actions that wait for their data<a class="docs-anchor" href="#actions-that-wait-for-their-data" aria-label="Actions that wait for their data" data-testid="docs-md-anchor-actions-that-wait-for-their-data">#</a></h3>
+<p>An action whose data still loads is not hidden and never fails with an error: it stays in place
+and focusable, reads as unavailable (<code translate="no">aria-disabled</code>) and says why on hover and to screen readers
+(<code translate="no">aria-description</code>), &quot;Still loading … &quot; with what it waits for (<code translate="no">src/ui/loadLock.ts</code>, the
+<code translate="no">locked</code> prop of <code translate="no">Button</code>). A press does nothing; from the keyboard the sidebar announces the
+reason instead.</p>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col">Action</th><th scope="col">Waits for</th></tr></thead><tbody><tr><td>A repository&#39;s autopilot switch (row, its menu, a multi-pick)</td><td>The stored repository states, which the switch reads (<code translate="no">statesLoading</code>)</td></tr><tr><td>&quot;Add to the release&quot; in the release plan</td><td>The release plan (the repositories&#39; releases the dialog offers)</td></tr><tr><td>Moving an issue between releases, naming a milestone</td><td>Shown only with the plan or the milestone read</td></tr><tr><td>Creating or renaming labels in the setup assistant</td><td>Shown only once the label preview is read</td></tr></tbody></table></div>
+<h3 id="retried-not-failed">Retried, not failed<a class="docs-anchor" href="#retried-not-failed" aria-label="Retried, not failed" data-testid="docs-md-anchor-retried-not-failed">#</a></h3>
+<p>While the start runs, a failure that the next try gets over by itself is not shown as an error
+at once (<code translate="no">src/state/startRetry.ts</code>, <code translate="no">src/state/useRetryGrace.ts</code>). For the same 30 seconds the
+start dialog says &quot;trying again&quot;, the view keeps saying &quot;loading …&quot;; only a failure that lasts, or
+one after the start, shows with its cause:</p>
+<ul><li><strong>Account error bar:</strong> a forge that does not answer, a rate limit or a failed poll
+(<code translate="no">isRetriedCause</code>); a rejected token or a TLS problem shows at once.</li><li><strong>Board, queue and release plan:</strong> services that are still starting or restarting after an
+update (<code translate="no">retriedAtStart</code>); the view asks again every 3 seconds meanwhile. A missing command-line
+tool or a protocol mismatch shows at once.</li><li><strong>Milestone line:</strong> a forge or network that does not answer, a server error or a rate limit is
+read again every 3 seconds; no access or no such repository shows at once.</li><li><strong>Workers tile of the overview:</strong> a dispatcher that is not up yet shows &quot;loading&quot;, not &quot;not
+reachable&quot;.</li></ul>
+<p>Lists and counts follow &quot;Loading in place&quot; and &quot;Unknown is not zero&quot;: the shared load line or
+<code translate="no">rowsLoading</code> instead of &quot;empty&quot; or &quot;0&quot;.</p>
+<h2 id="loading-in-place">Loading in place<a class="docs-anchor" href="#loading-in-place" aria-label="Loading in place" data-testid="docs-md-anchor-loading-in-place">#</a></h2>
+<p>Every list that is still loading says so in its own place, with one shared line
+(<code translate="no">src/views/shell/LoadLine.tsx</code>, model in <code translate="no">src/state/loadLine.ts</code>): what loads, how far and a
+slim bar, e.g. &quot;Loading the queue … 12/33 repos (36 %)&quot;. It counts the same repositories as the
+start dialog and stays until the list has its data; a list that waits for its own source too (the
+worker list, the release plan, the status) keeps it, without a count, until that answered. An
+empty list is never called empty while it loads. Used by the queue, the worker grid, the sidebar,
+the release plan, &quot;Asked of me&quot;, the board, the overview, the repo page and the status page. Only
+the first line on screen speaks to screen readers.</p>
+<p>The browser demo shows a slow start with <code translate="no">?stagger</code> (the services restart as after an update)
+and adds a worker machine that never answers with <code translate="no">&amp;trouble</code>. <code translate="no">scripts/start-shots.mjs</code> captures
+the dialog and the lines in place into <code translate="no">docs/startup-shots/</code>.</p>
+<h2 id="the-classifiers-pass">The classifier&#39;s pass<a class="docs-anchor" href="#the-classifiers-pass" aria-label="The classifier&#39;s pass" data-testid="docs-md-anchor-the-classifiers-pass">#</a></h2>
+<p>The queue, the board and &quot;Synced&quot; show the classifier&#39;s picture, so they wait for its pass
+(<code translate="no">src/state/classifierPass.ts</code>, kept current by <code translate="no">src/state/classifierPassStore.ts</code>, which asks
+the read model every 2 seconds while a pass runs and every 20 seconds after). A pass is through
+once the model has its <code translate="no">polled_at</code>; until then the repositories with their own <code translate="no">polled_at</code> count
+as read. A model kept from the classifier&#39;s earlier run (after an update) has neither, so a queue
+shown from it is never called empty: it shows the load line with the pass&#39;s count instead. A
+classifier that does not answer three times in a row (direct mode, not set up) is not waited for.</p>
+<p>The status bar shows &quot;Syncing … 14/60 repos&quot; (the bar joins after 2 seconds) until the window has every
+account&#39;s answer and, with the orchestrator on, the classifier&#39;s pass is through; only then
+&quot;Synced&quot;, with the time of the classifier&#39;s last whole pass. The bars move: a band while the total
+is not known, a soft light over the fill once it is; with reduced motion the band becomes a calm
+pulse, the light stops, and the count stays.</p>
+<h2 id="next-sync">Next sync<a class="docs-anchor" href="#next-sync" aria-label="Next sync" data-testid="docs-md-anchor-next-sync">#</a></h2>
+<p>The classifier reads the forges in polls; the dispatcher places work from the model of its last
+finished poll every 5 seconds (<code translate="no">PUSH_ROUND_SECS</code>). A change on the forge therefore reaches the
+autopilot with the end of the first poll that started after it. Every change the user makes in
+the app (an answer, a comment, a priority or status, a new task, a release focus or plan, the
+autopilot switch, adopting a repository, a finding or a resolved need) asks the classifier to poll
+at once (<code translate="no">SyncHub::changed</code> in <code translate="no">src-tauri/src/sync.rs</code>; the autopilot switch through
+<code translate="no">nudge_classifier</code>), instead of waiting out its interval. The autopilot switch needs it too:
+placement reads each repository&#39;s state from the classifier&#39;s model. Saved release rules ask the
+same way. A test in <code translate="no">src/views/shell/SyncEntry.test.ts</code> holds every command in
+<code translate="no">CHANGE_COMMANDS</code> (<code translate="no">src/core/changes.ts</code>) to it.</p>
+<p>The classifier tells its clock on request (<code translate="no">Request::PollTimes</code> in <code translate="no">crates/core/src/ service_rpc.rs</code>): the start of the running poll, the end and length of the last one, when the next
+one starts, and whether one was asked for. The status bar asks every 10 seconds, every 2 seconds
+while a change waits (<code translate="no">src/state/nextSyncStore.ts</code>, logic in <code translate="no">src/state/nextSync.ts</code>):</p>
+<ul><li>Normally it shows &quot;Synced 2 min ago&quot;. The countdown stays on demand: in the tooltip and in the
+small panel a click opens, &quot;Next sync in 0:42&quot; (or &quot;Syncing now&quot;) with &quot;Sync now&quot;, which polls
+every account and the classifier at once.</li><li>While a change of the user waits for the classifier, the entry says when it takes effect: &quot;Takes
+effect in ~40 s&quot;, from the last poll&#39;s length and one push round; &quot;Takes effect shortly&quot; while no
+poll length is known yet. It counts from when the change was sent and ends one push round after
+the first poll that started after it; after 15 minutes it no longer counts as pending.</li></ul>
+<p>The browser demo&#39;s classifier polls 20 seconds every minute (<code translate="no">?pollMs=</code> changes the length) and
+answers &quot;Sync now&quot; and every change the same way (<code translate="no">src/platform/demo/pollClock.ts</code>).</p>
+<h2 id="shimmer">Shimmer<a class="docs-anchor" href="#shimmer" aria-label="Shimmer" data-testid="docs-md-anchor-shimmer">#</a></h2>
+<p>Placeholders use the shared <code translate="no">.shimmer</code> class (<code translate="no">src/ui/tokens.css</code>): the grey <code translate="no">--color-skeleton</code>
+with a light band (<code translate="no">--color-skeleton-shine</code>) that runs across it every 1.8 seconds. With reduced
+motion the band is off, and the placeholder only fades slowly. It uses design tokens only, never a
+meaning colour.</p>
+<h2 id="start-cost">Start cost<a class="docs-anchor" href="#start-cost" aria-label="Start cost" data-testid="docs-md-anchor-start-cost">#</a></h2>
+<p>What a start reads, per account (<code translate="no">fetch_account</code> in <code translate="no">crates/core/src/sync/fetch.rs</code>):</p>
+<ol><li><strong>Repo list</strong>: one listing, about 70 ms.</li><li><strong>Questions and tasks</strong>: per repository its open issues and pull requests (the question pass,
+<code translate="no">questions.rs</code>).</li><li><strong>Dashboard rows</strong>: per repository the counts of every configured label, its open issues and
+pull requests with their checks (<code translate="no">dashboard.rs</code>). On Gitea and Forgejo every label count is a
+request of its own (<code translate="no">label_counts</code>), and these forges send no ETag, so nothing answers
+&quot;304 Not Modified&quot;.</li></ol>
+<p>The classifier&#39;s pass (the &quot;Looking through issues&quot; step) and the release plan run in the
+background services and do not hold the window&#39;s own load. With <code translate="no">GITOODO_LOG=debug</code> the sync
+logs each account&#39;s phases as <code translate="no">sync_phases</code> (<code translate="no">docs/logging.md</code>).</p>
+<p>The dashboard rows are the expensive part: on the dev forge with 36 repositories they took 46 to
+119 seconds, the questions 4 to 6 seconds. Reading them four repositories at a time did not help
+(the forge itself is the bottleneck, the times only spread more), so it is not done. Instead:</p>
+<ul><li><strong>Rows after the first poll.</strong> An account&#39;s first poll in a run leaves the dashboard rows out;
+its questions and repository list are there after a few seconds, and the next poll follows at
+once and reads the rows (<code translate="no">dashboard_plan</code> in <code translate="no">src-tauri/src/sync.rs</code>). Until they arrive the
+snapshot says <code translate="no">rows_pending</code>: the window keeps the rows it shows from earlier, and where there
+are none, the board, a repository&#39;s list and the review&#39;s figures say &quot;loading&quot; instead of
+&quot;nothing open&quot; (<code translate="no">rowsLoading</code> in <code translate="no">src/state/loading.ts</code>).</li><li><strong>The view from earlier always shows.</strong> The core answers at once with an empty, unsynced event
+per account; it used to win over the stored view, so the view from earlier was never shown in
+the real app (only in the demo, whose core answers later). Now such an event no longer counts
+as data (<code translate="no">withEarlier</code>).</li></ul>
+<p>Measured with the real test app against the dev forge (1 account with 36 repositories, plus the
+fixture account), three cold starts each, each a new process:</p>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col">Start</th><th scope="col">Sidebar complete, before</th><th scope="col">All loaded, before</th><th scope="col">Sidebar complete, after</th><th scope="col">All loaded, after</th></tr></thead><tbody><tr><td>First (no stored view)</td><td>48.2 s</td><td>48.3 s</td><td>8.2 s</td><td>9.1 s</td></tr><tr><td>Again (stored view)</td><td>61.1 s</td><td>61.2 s</td><td>0.21 s</td><td>8.8 s</td></tr><tr><td>Again (stored view)</td><td>75.6 s</td><td>75.7 s</td><td>0.19 s</td><td>6.2 s</td></tr></tbody></table></div>
+<p>Before, the view from earlier was never shown (<code translate="no">from_earlier: false</code>); after, it is on every
+start that has one. First content showed after 0.14 to 0.20 s in both. The dashboard rows follow
+in the background, 60 to 70 s after the first poll on that forge; warm polls stay as they were
+(the rows every 5 minutes).</p>
+<h2 id="measuring">Measuring<a class="docs-anchor" href="#measuring" aria-label="Measuring" data-testid="docs-md-anchor-measuring">#</a></h2>
+<p>The window logs its start once, when every account has answered, as the <code translate="no">start_timings</code> event
+(<code translate="no">docs/logging.md</code>). It records milliseconds since the page began loading:</p>
+<ul><li><code translate="no">firstContentMs</code>: first content shows, either from earlier or from the core;</li><li><code translate="no">sidebarMs</code>: the sidebar names every repository with data, with no placeholder left;</li><li><code translate="no">allLoadedMs</code>: every account has answered;</li></ul>
+<p>plus the number of accounts and repositories, and whether a view from earlier was shown.
+The values are also on <code translate="no">globalThis.gitoodoStartTimings</code> while the window runs.</p>
+<p>The browser demo simulates a slow start with <code translate="no">?stagger</code> (or <code translate="no">?stagger=&lt;ms&gt;</code>, the base step,
+default 400). It works like this:</p>
+<ul><li>every account starts unsynced;</li><li>each account lists its repositories after one to four steps, reports them one by one at its
+own pace and then sends its full snapshot;</li><li>the orchestrator answers after two steps;</li><li>the demo keeps its view from earlier for the tab, so a reload shows the second start.</li></ul>
+<p>Measured in the demo (4 accounts, 60 repositories, <code translate="no">?stagger=400</code>, Vite dev server, headless
+Chrome):</p>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col">Start</th><th scope="col">First content</th><th scope="col">Sidebar complete</th><th scope="col">All loaded</th></tr></thead><tbody><tr><td>First (nothing earlier)</td><td>481 ms</td><td>9605 ms</td><td>10115 ms</td></tr><tr><td>Again (view from earlier)</td><td>139 ms</td><td>139 ms</td><td>9797 ms</td></tr></tbody></table></div>
+<p>In both starts, placeholders show from the first frame. On the second start, the sidebar shows
+all 60 repositories from earlier at once. The demo&#39;s numbers are no measure of a real forge; see
+&quot;Start cost&quot; for those.</p>
+</div>
+<div class="docs-meta"><a class="docs-edit" href="https://github.com/silvio-l/gitoodo/edit/main/docs/startup.md" data-testid="docs-edit">Edit on GitHub</a><span class="docs-meta__version">Docs version: <span dir="ltr">dev</span></span></div>
+</article>
+<nav class="docs-pager" aria-label="Previous / Next" data-testid="docs-pager"><a class="docs-pager__previous" href="../counters/" rel="prev" data-testid="docs-pager-previous"><span class="docs-pager__label">Previous</span><span class="docs-pager__title">Counters</span></a><a class="docs-pager__next" href="../logging/" rel="next" data-testid="docs-pager-next"><span class="docs-pager__label">Next</span><span class="docs-pager__title">Logging</span></a></nav>
+</main>
+<aside class="docs-toc" aria-labelledby="docs-toc-title" data-testid="docs-toc"><h2 id="docs-toc-title">On this page</h2><ol><li class="docs-toc__l2"><a href="#where-the-window-opens" data-testid="docs-toc-where-the-window-opens">Where the window opens</a></li><li class="docs-toc__l2"><a href="#the-view-from-earlier" data-testid="docs-toc-the-view-from-earlier">The view from earlier</a></li><li class="docs-toc__l2"><a href="#figures-of-the-start-page-1659" data-testid="docs-toc-figures-of-the-start-page-1659">Figures of the start page (#1659)</a></li><li class="docs-toc__l2"><a href="#what-the-window-shows-while-loading" data-testid="docs-toc-what-the-window-shows-while-loading">What the window shows while loading</a></li><li class="docs-toc__l2"><a href="#the-start-dialog" data-testid="docs-toc-the-start-dialog">The start dialog</a></li><li class="docs-toc__l3"><a href="#actions-that-wait-for-their-data" data-testid="docs-toc-actions-that-wait-for-their-data">Actions that wait for their data</a></li><li class="docs-toc__l3"><a href="#retried-not-failed" data-testid="docs-toc-retried-not-failed">Retried, not failed</a></li><li class="docs-toc__l2"><a href="#loading-in-place" data-testid="docs-toc-loading-in-place">Loading in place</a></li><li class="docs-toc__l2"><a href="#the-classifiers-pass" data-testid="docs-toc-the-classifiers-pass">The classifier&#39;s pass</a></li><li class="docs-toc__l2"><a href="#next-sync" data-testid="docs-toc-next-sync">Next sync</a></li><li class="docs-toc__l2"><a href="#shimmer" data-testid="docs-toc-shimmer">Shimmer</a></li><li class="docs-toc__l2"><a href="#start-cost" data-testid="docs-toc-start-cost">Start cost</a></li><li class="docs-toc__l2"><a href="#measuring" data-testid="docs-toc-measuring">Measuring</a></li></ol></aside>
+</div>
+<footer class="docs-footer" data-testid="docs-footer"><div class="docs-footer__inner">
+<p class="docs-muted">The developer docs are in English only.</p>
+<ul class="docs-footer__links">
+<li><a href="../../../" data-testid="docs-footer-site">Website</a></li>
+<li><a href="../../../privacy/" data-testid="docs-footer-privacy">Privacy</a></li>
+<li><a href="https://github.com/silvio-l/gitoodo/blob/main/LICENSE" data-testid="docs-footer-license">MIT</a></li>
+</ul>
+</div></footer>
+</body>
+</html>

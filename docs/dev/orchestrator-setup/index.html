@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self'; style-src 'self'; script-src 'self' 'sha256-zclDvgIbJxhMP3hLx0Pe9wEzIPlPNUNObuWsVD7xB/M='; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="color-scheme" content="light dark">
+<script>try{var t=localStorage.getItem("gitoodo-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<title>Orchestrator setup – Gitoodo</title>
+<meta name="description" content="The app guides you through the orchestrator setup and does each step for you. On first start the onboarding offers orchestrator mode (preselected) next to the plain to-do list. …">
+<meta name="docs-version" content="dev">
+<link rel="canonical" href="https://gitoodo.com/docs/dev/orchestrator-setup/">
+
+<meta property="og:title" content="Orchestrator setup – Gitoodo">
+<meta property="og:description" content="The app guides you through the orchestrator setup and does each step for you. On first start the onboarding offers orchestrator mode (preselected) next to the plain to-do list. …">
+<meta property="og:url" content="https://gitoodo.com/docs/dev/orchestrator-setup/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Gitoodo">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://gitoodo.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../../assets/docs.css">
+<script defer src="../../../assets/docs.js"></script>
+</head>
+<body class="docs" data-lang="en" data-docs-root="../../" data-search-index="../../search/en.json" data-copied="Copied">
+<a class="skip" href="#main" data-testid="docs-skip">Skip to content</a>
+<header class="docs-header" data-testid="docs-header"><div class="docs-header__inner">
+<a class="lockup" href="../../../" aria-label="Gitoodo" data-testid="docs-logo"><svg class="lockup__art" data-brand="wordmark" viewBox="9.3 9.4 767.3 182.9" focusable="false" aria-hidden="true"><path class="logo__tray" fill-rule="evenodd" d="M66.7 89.5C54.7 90.9 52.5 108.4 63.6 112.9C69.4 115.3 80 113.9 86.5 113.9L136.5 114C143.6 114 155.7 115.4 157 105.5C157.8 99.1 154.7 91.2 147.7 89.6C141.7 88.1 126.5 89.3 119.5 89.3L84.5 89.3C78.7 89.3 72.5 88.8 66.7 89.5ZM210.5 93.7C206.3 95.4 202.9 98.6 198.6 100.3C196.7 101 193.8 101.2 192.6 103.1C191.3 105.1 191.8 108.3 191.8 110.5C191.8 115.6 192.1 120.9 191.5 125.9C184.9 128.1 171 126.6 163.5 126.6C159.8 126.6 155.9 126.2 152.5 128C144.2 132.6 147.8 144.9 143.6 152.1C138.9 160 121.4 157.2 113.5 157.2C110.3 157.2 106.8 157.7 103.6 156.7C92.4 153.3 98.2 135 89.9 128.6C86.5 125.9 81.6 126.6 77.5 126.6C69.3 126.6 58.2 128 50.5 126.1C48.8 117.6 51.8 108.1 49.7 99.7C47.3 90.3 31.5 89.8 27 97.5C25.1 100.8 24 104.7 22.6 108.2C19.8 115.2 15.3 122.8 16.1 130.5C16.6 134.9 19.5 139.2 21.5 143L31.8 163.7C35.7 171.7 38.9 183.6 48.9 185.5C52.3 186.2 56 185.8 59.5 185.8L83.5 185.8L157.5 185.8L183.5 185.8C188.2 185.8 193.2 186.3 197.4 183.8C203.4 180.3 207.1 168.8 210.3 162.7L221.6 140.2C223.6 136.2 226.1 132.2 226 127.5C225.9 121.1 221.5 114.3 219.2 108.4C217.1 103 215.9 96.5 210.5 93.7Z"/><path class="logo__bars" fill-rule="evenodd" d="M156.8 26.5C155.2 15.4 142.9 17.7 134.5 17.6C114.8 17.4 95.2 17.5 75.5 17.7C65.3 17.7 55.7 18.3 56.4 31.5C57.2 45.7 76.1 42.3 85.5 42.3L126.5 42.3C130.4 42.3 141.2 43.2 144.4 41.9C146.3 41.1 147.2 38.3 148.2 36.7C150.7 33 154.3 30.1 156.8 26.5ZM139.5 55.3C134 52 124.8 53.6 118.5 53.6L83.5 53.7C77.8 53.7 71.1 52.8 65.5 54C59.3 55.3 55.6 61.8 56.5 67.9C58.2 79.3 69.7 78.2 78.5 78.2L123.5 78.2C128.6 78.2 137 79.9 140.6 75.2C142.4 72.9 141 70.6 140.5 68C139.7 63.8 141 59.3 139.5 55.3Z"/><path class="logo__check" fill-rule="evenodd" d="M177.7 26.4C142.8 32.5 139 82.7 173 93.5C177.7 95 182.6 95.5 187.5 94.9C224.6 90.3 228 37.8 192.5 27.2C187.7 25.8 182.6 25.6 177.7 26.4ZM177.5 65.1C172.9 61.8 171.9 57.4 165.5 58.3C160.3 63.5 167.1 67.9 170.8 71.7C172.5 73.5 174.3 76 176.8 76.5C180.5 77.3 183.2 73.1 185.3 70.8L200.1 55.6C203 52.6 204.8 49.9 201.5 46.5C200 46.2 199.2 45.8 197.6 46.2C195.1 46.9 192.6 50.5 190.9 52.4C187.1 56.5 182.5 62.6 177.5 65.1Z"/><path class="word__git" fill-rule="evenodd" d="M379.6 38.4C360.7 39.7 362.8 67.8 381.5 66.9C400 66.1 398.7 37.2 379.6 38.4ZM362.5 92.7C357.9 91.8 353.1 92.2 348.5 92.2L325.5 92.2C321.8 92.2 314.8 90.8 311.8 93.3C308.9 95.8 309.6 111.2 311 114.5C317.2 118.1 327.7 114.3 334.7 116.5C329.4 130.4 309.1 132.6 297.7 125.8C288.9 120.6 283.8 110.5 283.8 100.5C283.6 81.9 299.6 66.6 318.5 71.2C328.3 73.6 329.5 78.5 336.5 83C340.9 81.5 353.8 72.2 356.6 68.5C355.1 63.6 350.2 59.4 346.3 56.2C332 44.2 311 40.6 293.5 47C262.7 58.3 249 94.7 262.4 124.2C276 154 314 165.2 341.5 147C354.5 138.4 363.1 123 364.1 107.5C364.4 102.6 365.3 96.8 362.5 92.7ZM407.5 73.5L400.4 74.5C398 78.5 398.4 90 399.5 94.7C402 96 404.7 95.9 407.4 96.5C410 113.1 400.2 145.4 422.7 151.6C426.2 152.6 429.9 152.6 433.5 152.6C437.5 152.7 441.9 153.2 445.5 151.5C446.4 146.9 446.8 134.4 444.6 130.5C441.2 130.2 436.3 131.5 433.3 129.2C430.8 127.2 431.4 123.3 431.4 120.5C431.4 112.7 430.6 104.3 431.7 96.5C436.1 95.3 440.9 96.3 445.5 95.3C447.3 89.6 447.2 80.3 445.5 74.6L431.9 73.5C430.6 68.1 433.1 59.6 430.5 54.9C428.6 51.5 415.9 52 412.5 52.6C410.9 53 409.4 53.6 408.6 55.1C406.2 59.4 408.5 68.4 407.5 73.5ZM369.5 151.7C373.7 153.3 388.3 153.6 392.1 151.5C393.7 145.8 392.7 138.5 392.7 132.5L392.6 94.5C392.6 90.3 394.1 79 391.6 75.9C389.3 73.1 377.1 73.6 373.5 74C366.1 74.9 368.5 86.3 368.5 91.5L368.6 131.5C368.6 137.8 367.2 145.8 369.5 151.7Z"/><path class="word__oodo" fill-rule="evenodd" d="M658.6 77.5C652.6 75.1 647.4 72.8 640.7 73.4C600.7 77.2 595.6 136.7 633.5 148.3C639.6 150.1 646.5 150.5 652.6 148.3C655 147.4 657.1 146 659.5 145.4C660 146.5 660.6 148.1 661.7 148.7C665.5 150.7 678.5 149.6 682.5 148.5C684.6 142.8 683.3 126.4 683.4 119.5L683.3 71.5C683.2 65 684.5 55.7 683 49.5C681.4 42.8 664.3 43.5 661.3 46.8C659.2 49.1 659.7 52.6 659.7 55.5C659.6 61.4 661.1 72.7 658.6 77.5ZM482.5 73.4C442.6 77.6 435.8 134.6 473.5 147.9C478.2 149.6 483.5 150.4 488.5 150.1C494.4 149.7 499.9 148.2 505.1 145.6C509.6 143.3 513.4 139.9 516.5 136C537.9 109 517 69.8 482.5 73.4ZM560.7 73.4C547.4 75.2 535.8 83.3 530.4 95.7C521.3 116.5 532.4 142.7 554.8 148.6C560 149.9 565.1 150.5 570.5 149.8C597.8 146.3 613.1 114.6 598.4 91.1C593.4 83 585.5 77.6 576.6 74.7C571.5 73.1 566 72.7 560.7 73.4ZM723.5 73.4C712.2 74.9 701.4 80.8 695.3 90.7C682.1 112 692 141 716.3 148.4C721.5 150 727 150.6 732.5 150C755.6 147.5 770.6 124.8 765.8 102.5C762.8 89.1 752.1 79.1 739.5 74.9C734.4 73.2 728.9 72.7 723.5 73.4ZM483.7 96.4C464.6 99.7 469.4 131.1 490.4 126.7C509.1 122.7 503.7 93.1 483.7 96.4ZM562.7 96.4C543.1 99.7 548.6 131.4 569.3 126.6C587.9 122.4 582.5 93.1 562.7 96.4ZM644.6 96.4C625.3 97.8 626.9 127.6 646.5 126.8C665.9 126 664.2 95 644.6 96.4ZM724.7 96.4C705.3 99.9 711 131.7 732.3 126.6C750.4 122.3 744.3 92.9 724.7 96.4Z"/></svg></a>
+<a class="docs-header__title" href="../../" data-testid="docs-home">Documentation</a>
+<span class="docs-version" title="Pre-release: Gitoodo has not been released yet" data-version="dev"><span class="visually-hidden">Docs version: </span><span dir="ltr">dev</span><span class="visually-hidden"> (Pre-release: Gitoodo has not been released yet)</span></span>
+<div class="docs-header__tools">
+<div class="docs-search" role="search" data-testid="docs-search">
+<label class="visually-hidden" for="docs-search-input">Search the docs</label>
+<input id="docs-search-input" class="docs-search__input" type="search" placeholder="Search …" autocomplete="off" spellcheck="false" aria-describedby="docs-search-hint" aria-controls="docs-search-results" aria-expanded="false" role="combobox" aria-autocomplete="list" data-testid="docs-search-input">
+<p id="docs-search-hint" class="visually-hidden">Arrow keys choose, Enter opens, Escape closes.</p>
+<div id="docs-search-results" class="docs-search__results" role="listbox" aria-label="Search the docs" hidden data-empty="No page matches “{query}”." data-testid="docs-search-results"></div>
+<p id="docs-search-status" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true" data-count="Results: {count}" data-testid="docs-search-status"></p>
+</div>
+<div class="header__prefs"><details class="langs" name="header-popover" data-langs data-testid="docs-langs"><summary class="langs__toggle" data-testid="docs-langs-toggle"><svg class="langs__globe" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg><span class="visually-hidden">Language: </span><span class="langs__code" translate="no">EN</span></summary>
+<ul class="langs__list" aria-label="Language"><li><a href="../../de/" hreflang="de" lang="de" data-lang="de" data-track="language" data-track-name="de" data-testid="docs-langs-de"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Deutsch</span></a></li><li><a href="../../" hreflang="en" lang="en" data-lang="en" data-track="language" data-track-name="en" aria-current="page" data-testid="docs-langs-en"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>English</span></a></li><li><a href="../../zh-Hans/" hreflang="zh-Hans" lang="zh-Hans" data-lang="zh-Hans" data-track="language" data-track-name="zh-Hans" data-testid="docs-langs-zh-Hans"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>中文（简体）</span></a></li><li><a href="../../hi/" hreflang="hi" lang="hi" data-lang="hi" data-track="language" data-track-name="hi" data-testid="docs-langs-hi"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>हिन्दी</span></a></li><li><a href="../../es/" hreflang="es" lang="es" data-lang="es" data-track="language" data-track-name="es" data-testid="docs-langs-es"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Español</span></a></li><li><a href="../../ar/" hreflang="ar" lang="ar" data-lang="ar" data-track="language" data-track-name="ar" data-testid="docs-langs-ar"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>العربية</span></a></li></ul></details><button class="theme" type="button" hidden data-theme-toggle data-choice="system" data-label="Theme: {current}, switch to {next}" data-system="System" data-light="Light" data-dark="Dark" aria-label="Theme: System, switch to Light" title="Theme: System, switch to Light" data-testid="docs-theme"><svg class="theme__icon theme__icon--system" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg><svg class="theme__icon theme__icon--light" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg><svg class="theme__icon theme__icon--dark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></button></div>
+<button type="button" class="docs-menu" aria-controls="docs-nav" aria-expanded="false" hidden data-testid="docs-menu">Pages</button>
+</div>
+<a class="docs-header__link" href="https://github.com/silvio-l/gitoodo" data-testid="docs-github">GitHub</a>
+<a class="docs-install" href="../../../#download" data-testid="docs-install">Get notified</a>
+</div></header>
+<div class="docs-layout">
+<nav id="docs-nav" class="docs-nav" aria-label="Documentation" data-testid="docs-nav"><div class="docs-nav__section"><p class="docs-nav__title"><a href="../../" data-testid="docs-nav-section-user">For users</a></p><p class="docs-nav__group" id="docs-nav-user-0">Get started</p><ul aria-labelledby="docs-nav-user-0"><li><a href="../../introduction/" data-testid="docs-nav-docs-introduction">What is Gitoodo?</a></li><li><a href="../../getting-started/" data-testid="docs-nav-docs-getting-started">Getting started</a></li></ul><p class="docs-nav__group" id="docs-nav-user-1">Guides</p><ul aria-labelledby="docs-nav-user-1"><li><a href="../../self-hosted-forges/" data-testid="docs-nav-docs-self-hosted-forges">Forgejo and Gitea</a></li><li><a href="../../github-issues-to-pull-requests/" data-testid="docs-nav-docs-github-issues-to-pull-requests">GitHub issues to pull requests</a></li><li><a href="../../safe-auto-merge/" data-testid="docs-nav-docs-safe-auto-merge">Safe auto-merge</a></li><li><a href="../../parallel-coding-agents/" data-testid="docs-nav-docs-parallel-coding-agents">Parallel coding agents</a></li><li><a href="../../switch-from-another-agent-app/" data-testid="docs-nav-docs-switch-from-another-agent-app">Coming from another agent app</a></li></ul><p class="docs-nav__group" id="docs-nav-user-2">Daily use</p><ul aria-labelledby="docs-nav-user-2"><li><a href="../../daily-use/" data-testid="docs-nav-docs-daily-use">How to work with Gitoodo</a></li><li><a href="../../overview/" data-testid="docs-nav-docs-overview">Overview</a></li><li><a href="../../needs-you/" data-testid="docs-nav-docs-needs-you">Needs you</a></li><li><a href="../../questions/" data-testid="docs-nav-docs-questions">Asked of me</a></li><li><a href="../../board/" data-testid="docs-nav-docs-board">All repos</a></li><li><a href="../../chat/" data-testid="docs-nav-docs-chat">Chat</a></li><li><a href="../../repositories/" data-testid="docs-nav-docs-repositories">Repositories</a></li></ul><p class="docs-nav__group" id="docs-nav-user-3">Orchestrator</p><ul aria-labelledby="docs-nav-user-3"><li><a href="../../labels/" data-testid="docs-nav-docs-labels">Status labels and workflow</a></li><li><a href="../../merge-and-release/" data-testid="docs-nav-docs-merge-and-release">Merge control</a></li><li><a href="../../releases/" data-testid="docs-nav-docs-releases">Releases</a></li><li><a href="../../services/" data-testid="docs-nav-docs-services">Classifier, dispatcher and workers</a></li></ul><p class="docs-nav__group" id="docs-nav-user-4">Reference and help</p><ul aria-labelledby="docs-nav-user-4"><li><a href="../../settings/" data-testid="docs-nav-docs-settings">Settings</a></li><li><a href="../../status/" data-testid="docs-nav-docs-status">Status</a></li><li><a href="../../troubleshooting/" data-testid="docs-nav-docs-troubleshooting">Troubleshooting</a></li><li><a href="../../faq/" data-testid="docs-nav-docs-faq">FAQ</a></li><li><a href="../../privacy/" data-testid="docs-nav-docs-privacy">Privacy</a></li></ul></div><div class="docs-nav__section"><p class="docs-nav__title"><a href="../" data-testid="docs-nav-section-dev">For developers</a></p><p class="docs-nav__group" id="docs-nav-dev-0">Start here</p><ul aria-labelledby="docs-nav-dev-0"><li><a href="../architecture/" data-testid="docs-nav-docs-dev-architecture">Architecture</a></li><li><a href="../building/" data-testid="docs-nav-docs-dev-building">Building</a></li><li><a href="../releasing/" data-testid="docs-nav-docs-dev-releasing">Release</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-1">Interfaces</p><ul aria-labelledby="docs-nav-dev-1"><li><a href="../question-format/" data-testid="docs-nav-docs-dev-question-format">Gitoodo question format (version 2)</a></li><li><a href="../cli/" data-testid="docs-nav-docs-dev-cli">Command line reference</a></li><li><a href="../daemon/" data-testid="docs-nav-docs-dev-daemon">Classifier daemon and command line</a></li><li><a href="../phone-access/" data-testid="docs-nav-docs-dev-phone-access">Phone access</a></li><li><a href="../forge-tokens/" data-testid="docs-nav-docs-dev-forge-tokens">Token permissions per forge</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-2">Orchestrator</p><ul aria-labelledby="docs-nav-dev-2"><li><a href="../states/" data-testid="docs-nav-docs-dev-states">States: what Gitoodo shows and what you do about it</a></li><li><a href="../all-repos/" data-testid="docs-nav-docs-dev-all-repos">&quot;All repos&quot;: pages and where things went</a></li><li><a href="../orchestrator-spec/" data-testid="docs-nav-docs-dev-orchestrator-spec">Gitoodo Orchestrator – Specification (v1)</a></li><li><a href="./" aria-current="page" data-testid="docs-nav-docs-dev-orchestrator-setup">Orchestrator setup</a></li><li><a href="../dispatcher/" data-testid="docs-nav-docs-dev-dispatcher">Dispatcher</a></li><li><a href="../queue-order/" data-testid="docs-nav-docs-dev-queue-order">Queue order and slot share</a></li><li><a href="../branch-rules/" data-testid="docs-nav-docs-dev-branch-rules">Branch rules that work with the autopilot</a></li><li><a href="../security/" data-testid="docs-nav-docs-dev-security">Security model of the orchestrator</a></li><li><a href="../satellites/" data-testid="docs-nav-docs-dev-satellites">Satellites</a></li><li><a href="../keychains/" data-testid="docs-nav-docs-dev-keychains">Keychains, signing and dialogs</a></li><li><a href="../local-inputs/" data-testid="docs-nav-docs-dev-local-inputs">Local inputs</a></li><li><a href="../resolver/" data-testid="docs-nav-docs-dev-resolver">The resolver for stuck issues</a></li><li><a href="../triage/" data-testid="docs-nav-docs-dev-triage">Triage</a></li><li><a href="../repo-hygiene/" data-testid="docs-nav-docs-dev-repo-hygiene">Repo hygiene</a></li><li><a href="../storage-cleanup/" data-testid="docs-nav-docs-dev-storage-cleanup">Automatic disk cleanup</a></li><li><a href="../orchestrator-chat/" data-testid="docs-nav-docs-dev-orchestrator-chat">Orchestrator chat</a></li><li><a href="../release-planning/" data-testid="docs-nav-docs-dev-release-planning">Release planning</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-3">App internals</p><ul aria-labelledby="docs-nav-dev-3"><li><a href="../status-model/" data-testid="docs-nav-docs-dev-status-model">Overview status model</a></li><li><a href="../counters/" data-testid="docs-nav-docs-dev-counters">Counters</a></li><li><a href="../startup/" data-testid="docs-nav-docs-dev-startup">Start: first paint and loading state</a></li><li><a href="../logging/" data-testid="docs-nav-docs-dev-logging">Logging</a></li><li><a href="../localisation/" data-testid="docs-nav-docs-dev-localisation">Localisation</a></li><li><a href="../settings-backup/" data-testid="docs-nav-docs-dev-settings-backup">Settings export, import and backup</a></li><li><a href="../symlinks/" data-testid="docs-nav-docs-dev-symlinks">Symbolic links</a></li><li><a href="../window-frame/" data-testid="docs-nav-docs-dev-window-frame">Window frame</a></li><li><a href="../system-permissions/" data-testid="docs-nav-docs-dev-system-permissions">System permissions</a></li><li><a href="../test-access/" data-testid="docs-nav-docs-dev-test-access">Test access: driving the app without a human</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-4">Privacy and data</p><ul aria-labelledby="docs-nav-dev-4"><li><a href="../privacy-policy/" data-testid="docs-nav-docs-dev-privacy-policy">Privacy policy: feedback, usage statistics and the phone app</a></li><li><a href="../network-inventory/" data-testid="docs-nav-docs-dev-network-inventory">Network inventory of the desktop app and the phone app</a></li><li><a href="../chat-notification/" data-testid="docs-nav-docs-dev-chat-notification">Chat notification</a></li><li><a href="../support/" data-testid="docs-nav-docs-dev-support">Voluntary support</a></li></ul></div></nav>
+<main id="main" class="docs-main" tabindex="-1" data-testid="docs-main">
+<article class="docs-article">
+<p class="docs-eyebrow">For developers · Orchestrator</p><h1>Orchestrator setup</h1>
+<details class="docs-toc-inline" data-testid="docs-toc-inline"><summary data-testid="docs-toc-inline-toggle">On this page</summary><ol><li class="docs-toc__l3"><a href="#first-run-337" data-testid="docs-toc-inline-first-run-337">First run (#337)</a></li><li class="docs-toc__l3"><a href="#without-a-desktop-headless-linux-1208" data-testid="docs-toc-inline-without-a-desktop-headless-linux-1208">Without a desktop (headless Linux, #1208)</a></li><li class="docs-toc__l2"><a href="#0-install" data-testid="docs-toc-inline-0-install">0. Install</a></li><li class="docs-toc__l2"><a href="#1-background-service" data-testid="docs-toc-inline-1-background-service">1. Background service</a></li><li class="docs-toc__l2"><a href="#2-account-and-token" data-testid="docs-toc-inline-2-account-and-token">2. Account and token</a></li><li class="docs-toc__l2"><a href="#3-map-labels" data-testid="docs-toc-inline-3-map-labels">3. Map labels</a></li><li class="docs-toc__l2"><a href="#4-activate-a-repository" data-testid="docs-toc-inline-4-activate-a-repository">4. Activate a repository</a></li><li class="docs-toc__l3"><a href="#removing-a-repository-again" data-testid="docs-toc-inline-removing-a-repository-again">Removing a repository again</a></li><li class="docs-toc__l2"><a href="#5-local-copy" data-testid="docs-toc-inline-5-local-copy">5. Local copy</a></li><li class="docs-toc__l2"><a href="#6-skill-and-agent-instructions" data-testid="docs-toc-inline-6-skill-and-agent-instructions">6. Skill and agent instructions</a></li><li class="docs-toc__l2"><a href="#7-first-worker" data-testid="docs-toc-inline-7-first-worker">7. First worker</a></li><li class="docs-toc__l2"><a href="#final-check" data-testid="docs-toc-inline-final-check">Final check</a></li><li class="docs-toc__l2"><a href="#what-the-assistant-never-does" data-testid="docs-toc-inline-what-the-assistant-never-does">What the assistant never does</a></li></ol></details>
+<div class="docs-body">
+<p>The app guides you through the orchestrator setup and does each step for you. On first start the
+onboarding offers orchestrator mode (preselected) next to the plain to-do list. With orchestrator
+mode, the onboarding sets up every repository picked in its repo step in one go, right after that
+step: you choose once what happens to issues that are already open and press <strong>Set up now</strong>.
+Gitoodo then installs the background service (the signed release reads tokens through the
+service helper without any keychain step; other builds grant the services access once, macOS may
+ask: choose <strong>Always Allow</strong>), renames legacy labels and creates missing ones, switches each repo
+on, clones missing local copies into the clone folder, installs the skill for the worker agent and
+starts the dispatcher. Each part and each repository shows its own state; <strong>Try again</strong> repeats only
+what failed. Own label names, single repositories and agent instructions stay in the settings.</p>
+<h3 id="first-run-337">First run (#337)<a class="docs-anchor" href="#first-run-337" aria-label="First run (#337)" data-testid="docs-md-anchor-first-run-337">#</a></h3>
+<p>The onboarding leads a first-time user from the account to a running worker:</p>
+<ul><li><strong>Repos to work on</strong>: every repository Gitoodo reads starts switched off. The step lists them
+with the already active ones checked (none on a first run), with search and &quot;All&quot;/&quot;None&quot;; only
+the checked ones are set up and switched on. A
+repository switched off here (or later in the settings) does not show in the sidebar.</li><li><strong>Setup</strong>: one confirmation sets up all checked repositories. Each shows its label preview
+(kept, renamed <code translate="no">old → new</code>, created) before anything is written, then its progress; <strong>Try again</strong>
+repeats only what failed. Legacy labels are read under their catalog meaning; nothing is
+deleted. The open-issue choice defaults to <strong>Check existing issues and ask</strong>: open contributions
+of other authors are never trusted on their own, the intake asks for an approval, which &quot;Asked
+of me&quot; answers per group or all at once. The merge style is preselected from what the
+repositories allow (Forgejo repositories that only allow fast-forward get <code translate="no">fast-forward-only</code>).</li><li><strong>Workers</strong>: this machine is listed as a worker with its capacity (default 2, editable) and the
+agent found on it; machines named in <code translate="no">host:</code> labels that do not exist are listed with the
+issues waiting for them and can be made an alias of this machine.</li><li><strong>How it goes on</strong>: the live state (dispatcher, workers, ready issues), then either **Release an
+issue** (sets the ready label on an open issue of a switched-on repository) or **Create a test
+task** (a small issue that is ready at once), and where progress shows (board, sidebar, status).</li></ul>
+<p>Switching a repository on records <code translate="no">adopted_at</code>. Every switched-on repository can be paused and
+switched on again where it shows: the play/pause button on its sidebar row (on hover and in the
+&quot;…&quot; menu) and in the board&#39;s repository header. Both write the same state as Settings →
+Repositories (<code translate="no">active</code>/<code translate="no">paused</code> in <code translate="no">orchestration.json</code>); pausing lets running workers finish. A
+short message confirms each switch.</p>
+<p>The emergency stop keeps its state across restarts: what ran when the app ended runs again,
+what was halted stays halted (a banner says so, with &quot;Fortsetzen&quot;, which lets every repo
+continue in its own state). &quot;Alles anhalten&quot; in the title bar, in the tray menu, Cmd/Ctrl+Shift+H or
+<code translate="no">gitoodo stop-all</code> stops everything at once (see <code translate="no">dispatcher.md</code>, &quot;Emergency stop&quot;). Switching on more than three repositories at once asks first and names the count and how
+many workers run in parallel (<code translate="no">dispatch.max_workers</code>, default 2).</p>
+<p>The sidebar picks several repositories at once: Shift-click picks a range, Cmd-click (macOS) or
+Ctrl-click (Windows, Linux) adds or drops one, Shift+arrow extends from the keyboard, Cmd/Ctrl+A
+picks every shown repository and Escape lets go. A bar at the foot of the list and the &quot;…&quot; menu
+then pause, switch on, star or move all picked repositories (&quot;Pause 3 repos&quot;).</p>
+<p>Groups nest: &quot;New group inside&quot; in a group&#39;s &quot;…&quot; menu, dragging a group onto the middle of another
+one, Alt+Right/Left (into the group above, out one level) or &quot;Move to group …&quot; (also M) put a
+group inside another, shown with the path (&quot;Clients › Web&quot;). A group never moves into itself or a
+group inside it. Each level is indented, keeps its folded state and counts what its subgroups
+hold. Groups can be picked like repositories; pausing or switching on a picked group acts on every
+repository inside it. Deleting a group moves what it holds up one level.</p>
+<p>The assistant below covers the same steps one by one, for a skipped onboarding step, later changes
+and single repositories. Open it from <strong>Settings → Setup assistant</strong>, or from <strong>Settings → Mode</strong>
+once orchestrator mode is selected.</p>
+<p>The assistant stores no progress of its own. Each time it opens, and whenever you press
+<strong>Check again</strong>, it checks the real state of the service, the accounts, the labels, the repository
+state and the dispatcher. It then continues at the first step that is still open. You can stop at
+any point and resume later, or run it again on a finished setup: steps that are already done stay
+done and are skipped.</p>
+<p>The assistant opens in its own window, shows one step per page with <strong>Back</strong> and <strong>Next</strong> and a
+progress bar of all steps, and moves on by itself once a step is done (#589).</p>
+<p>Everything the assistant does is also possible by hand. Each step below names the manual way.</p>
+<h3 id="without-a-desktop-headless-linux-1208">Without a desktop (headless Linux, #1208)<a class="docs-anchor" href="#without-a-desktop-headless-linux-1208" aria-label="Without a desktop (headless Linux, #1208)" data-testid="docs-md-anchor-without-a-desktop-headless-linux-1208">#</a></h3>
+<p>On a server without a graphical session there is no app and no assistant; the command line does
+every step, without editing <code translate="no">settings.json</code> or <code translate="no">orchestration.json</code> by hand and without a token
+file of your own:</p>
+<div class="docs-code"><pre dir="ltr" translate="no" tabindex="0" data-lang="sh"><code>gitoodo account add --forge forgejo --url https://git.example.org --token-stdin   # 2.
+gitoodo repo list &lt;account&gt;
+gitoodo repo activate &lt;account&gt; owner/repo                  # 3. + 4.: preview, writes nothing
+gitoodo repo activate &lt;account&gt; owner/repo --backlog ask    # labels, then switched on
+gitoodo service install all                                 # 1. + 7.
+gitoodo doctor                                              # final check</code></pre><button type="button" class="docs-code__copy" data-copy hidden data-testid="docs-md-copy-1">Copy</button></div>
+<p>The token goes in on stdin only (typed hidden, or piped). Where no system keyring answers it is
+kept as a systemd credential that both services load: a file only you can read in Gitoodo&#39;s state
+folder and one drop-in per service, which <code translate="no">account add</code> writes and <code translate="no">account remove</code> removes
+(<a href="../daemon/" data-testid="docs-md-link-1">daemon.md</a>, &quot;Headless setup&quot;). <code translate="no">gitoodo doctor</code> names the command line there, never
+the app, and a token only the services read is no warning. The worker agent needs its own sign-in
+on that machine (for example the agent CLI&#39;s login); the first worker starts once an issue of the
+active repository is ready.</p>
+<h2 id="0-install">0. Install<a class="docs-anchor" href="#0-install" aria-label="0. Install" data-testid="docs-md-anchor-0-install">#</a></h2>
+<p>Install the app from the download on the landing page (macOS DMG, Windows setup). On macOS,
+<code translate="no">curl -fsSL https://gitoodo.com/install.sh | bash</code> installs the app and the <code translate="no">gitoodo</code> command; on
+Windows, <code translate="no">irm https://gitoodo.com/install.ps1 | iex</code> does the same. Then open
+<strong>Settings → Setup assistant</strong>. The matching <code translate="no">uninstall.sh</code> / <code translate="no">uninstall.ps1</code> removes the services and
+everything else again (see the README).</p>
+<h2 id="1-background-service">1. Background service<a class="docs-anchor" href="#1-background-service" aria-label="1. Background service" data-testid="docs-md-anchor-1-background-service">#</a></h2>
+<p><strong>Check:</strong> the classifier answers on its local socket and reports its version, its secret backend
+and whether its first poll has finished. Accounts the last poll could not read are shown as a hint.</p>
+<p><strong>Assistant:</strong> registers the classifier with the system service manager and waits until it answers.
+This is launchd on macOS, a systemd user unit on Linux and a scheduled task on Windows. When the
+service is registered but silent, <strong>Set up service again</strong> restarts it. If the <code translate="no">gitoodo</code> command
+line program is missing (it is looked for next to the app, then on <code translate="no">PATH</code>), the step says so.</p>
+<p>The assistant first copies the bundled CLI to a per-user folder and the services run that copy,
+so moving or updating the app does not break them; both services restart on their own after a
+crash or a reboot. The step shows the app and installed CLI versions; when they differ from each
+other or from the running classifier, <strong>Reinstall</strong> aligns them. Classifier and dispatcher each
+have Start, Stop and Remove. The store builds install no services.</p>
+<p><strong>By hand:</strong> <code translate="no">gitoodo service install|uninstall|start|stop [classifier|dispatcher|all]</code>,
+<code translate="no">gitoodo --version</code>. On a system without a service manager, run
+<code translate="no">gitoodo classifier</code> in a terminal. <code translate="no">gitoodo doctor</code> checks the result.</p>
+<h2 id="2-account-and-token">2. Account and token<a class="docs-anchor" href="#2-account-and-token" aria-label="2. Account and token" data-testid="docs-md-anchor-2-account-and-token">#</a></h2>
+<p><strong>Check:</strong> at least one account is connected and no account&#39;s token lacks a permission or has
+expired.</p>
+<p><strong>Assistant:</strong> opens the account wizard. A token that needs renewing is replaced in the <strong>Replace token …</strong> dialog of that account.
+Tokens go to the system keychain only.</p>
+<p><strong>By hand:</strong> Settings → Accounts. Without the app: <code translate="no">gitoodo account add --forge forgejo|gitea|github|gitlab --url &lt;url&gt; --token-stdin</code> (token on stdin; keyring, or a systemd
+credential on headless Linux), <code translate="no">gitoodo account token &lt;account&gt; --token-stdin</code> to replace a token,
+<code translate="no">gitoodo account list|remove</code>.</p>
+<p><strong>Orchestrator account (#764):</strong> per forge host the orchestrator acts as a chosen account. The
+onboarding step &quot;Worker-Konto&quot; recommends a separate worker account and guides through it per forge:
+create the account, give it write access to the repos (Forgejo/Gitea: collaborator with write or a
+team; GitHub: collaborator or team with Write; GitLab: Developer, Maintainer for protected
+branches), sign in as the worker account and create a token with the rights listed there (the orchestrator&#39;s
+rights without repository settings), and allow it to merge under branch protection. The token goes
+through the normal account wizard, so it lands in the system keychain only. The check then shows the
+worker account&#39;s login, missing scopes and every activated repo it cannot work in, with a link to grant access.
+Using the own account stays possible; the history then shows the user&#39;s name. Change and check it
+later under Settings → Accounts → Orchestrator-Konto.</p>
+<p>In orchestrator mode the onboarding step &quot;Konto&quot; says which account belongs there: the user&#39;s own
+account, with admin/owner rights for the setup; the worker account follows in the step &quot;Worker-Konto&quot;.</p>
+<p><strong>Automatic worker account (#764):</strong> where the own account may create accounts, the step
+&quot;Worker-Konto&quot; offers &quot;Create worker account automatically&quot; above the guide. Nothing is written before the user
+has seen a summary and confirmed it. Then four steps run in order, each with its state; a failed
+step is run again and continues where it stopped (every step is idempotent):</p>
+<ol><li><strong>Account.</strong> Forgejo/Gitea: needs a site administrator (<code translate="no">GET /user</code> → <code translate="no">is_admin</code>) and a token
+with <code translate="no">write:admin</code>. <code translate="no">POST /admin/users</code> with the chosen login and email, <code translate="no">restricted: true</code>
+(sees only what it is added to), <code translate="no">must_change_password: false</code>, full name &quot;Gitoodo worker&quot; as
+marker. GitLab self-managed: an administrator with the <code translate="no">api</code> scope (and Admin Mode, where it is
+on); <code translate="no">POST /users</code> with <code translate="no">skip_confirmation</code>, <code translate="no">force_random_password</code>, <code translate="no">external: true</code>,
+<code translate="no">projects_limit: 0</code>, no group creation, and an admin note as marker. The login is checked (letters,
+digits, <code translate="no">-</code>, <code translate="no">_</code>, <code translate="no">.</code>, at most 39 characters); the email defaults to a plus address of the own
+email (<code translate="no">alice+gitoodo@…</code>), Gitoodo never invents a domain. A login that already exists is used
+again only if it carries Gitoodo&#39;s marker; anyone else&#39;s account is never changed.</li><li><strong>Access.</strong> Per activated repo (or every listed repo when none is active yet) the worker becomes
+a collaborator with write (Forgejo/Gitea), or a member as Developer (GitLab; Maintainer only
+where a protected branch lets only Maintainers merge). Organisation repos get a per-repo
+collaborator as well, not a team: Gitoodo creates no teams and changes no organisation
+membership, so the worker only reaches the repos the user switched on. A failed repo fails the
+step with its reason; the retry skips what is already in place.</li><li><strong>Merge.</strong> Forgejo/Gitea: on protected branches with a merge allowlist the worker is added to
+<code translate="no">merge_whitelist_usernames</code>. GitLab: a protected branch where nobody may merge is listed for the
+user. Anything that cannot be done is listed under &quot;Still for you&quot; with the repo.</li><li><strong>Token.</strong> Forgejo/Gitea: the token endpoint only accepts basic auth (Sudo does not apply), so
+Gitoodo sets a random one-time password as admin, creates the token <code translate="no">gitoodo-&lt;time&gt;</code> with
+exactly the worker scopes (<code translate="no">read:user</code>, <code translate="no">write:repository</code>, <code translate="no">write:issue</code>) by basic auth and
+immediately sets another random password nobody knows. GitLab: <code translate="no">POST /users/:id/personal_access_tokens</code> with <code translate="no">api</code> and an expiry of 364 days. The token is stored
+through the normal account path (system keychain only, rights recorded, service access granted)
+and chosen as the host&#39;s worker account; the check below then runs as usual.</li></ol>
+<p>The step leads with that card (&quot;Create the worker account automatically&quot;) wherever it is
+possible; the manual guide sits behind &quot;Set it up myself instead&quot;, the reasons behind a collapsed
+&quot;Why a worker account?&quot;. A line under the step title says which way applies (&quot;Gitoodo creates the
+worker account for you&quot; or the guide).</p>
+<p><strong>Admin without admin scope.</strong> Where the own account is a site administrator but its token lacks
+the admin scope, the card stays and asks to confirm admin rights once:</p>
+<ul><li>Forgejo/Gitea: the user enters the own password (and, if the forge asks, the code of the
+authenticator app). The core creates a short-lived token with basic auth
+(<code translate="no">POST /api/v1/users/{login}/tokens</code>, scopes <code translate="no">write:admin</code>, <code translate="no">write:repository</code>, <code translate="no">write:user</code>; the
+one-time code goes out as <code translate="no">X-Forgejo-OTP</code> and <code translate="no">X-Gitea-OTP</code>), runs the setup with it and deletes
+it right after (<code translate="no">DELETE /api/v1/users/{login}/tokens/{id}</code>), also when the setup fails. If that
+delete fails (a one-time code may have expired), the step names the token so the user can delete
+it under Settings › Applications. Accounts with security keys cannot use basic auth; the step
+then offers the token way.</li><li>Alternatively (and on self-managed GitLab only): paste a temporary admin token (Forgejo/Gitea
+scopes as above, GitLab <code translate="no">api</code>, with Admin Mode also <code translate="no">admin_mode</code>). It is used for this one run and
+not stored; the user deletes it afterwards.</li><li>Or &quot;Renew token with admin rights&quot;: the <strong>Replace token …</strong> dialog of the own account opens over
+the step and asks for the admin scope; once the new token is saved, the step checks again and
+shows the plain card.</li></ul>
+<p>The onboarding&#39;s account step offers &quot;Replace token …&quot; and &quot;Connect another account&quot; (disconnect,
+then the wizard) for a connected account; in orchestrator mode its wizard mentions that the admin
+scope lets Gitoodo create the worker account later.</p>
+<p>Where the own account is no admin, the step says so in one line and shows the guide. gitlab.com and GitHub always use the guide (no account API). On GitHub, once
+the worker token is connected, &quot;Give access to all repos&quot; in the check invites the worker as
+collaborator (Write) from the own account and accepts the invitations with the worker token
+(<code translate="no">PATCH /user/repository_invitations/{id}</code>); the same button adds missing collaborators on the other
+forges. Merge rules (GitHub rulesets, branch protection bypass lists) stay manual on GitHub.</p>
+<h2 id="3-map-labels">3. Map labels<a class="docs-anchor" href="#3-map-labels" aria-label="3. Map labels" data-testid="docs-md-anchor-3-map-labels">#</a></h2>
+<p><strong>Check:</strong> the target repository has every catalog label (see <code translate="no">spec.md</code>, section 5.1) and no
+legacy label names the migration would rename (#591). The target
+is the first active repository of a connected account; if there is none, you pick an account and a
+repository.</p>
+<p><strong>Assistant:</strong> shows the labels the repository lacks. For each one you can use a label the
+repository already has, or have it created. The mapping applies to all repositories and is written
+to <code translate="no">profile.names</code> in Gitoodo&#39;s own <code translate="no">orchestration.json</code>. Missing labels are created only after
+you confirm the list. Legacy labels (for example <code translate="no">prio:1</code>, <code translate="no">status:*</code>) are listed as
+<code translate="no">old → new</code> and renamed by the same click (the #567 migration), so no English duplicates appear
+beside them; issues and pull requests keep their labels. Labels already in use under their catalog
+name are listed as &quot;stay as they are&quot;. Where a legacy name and its catalog name both exist, both
+stay and are named as a pair; Gitoodo merges nothing, and the step does not wait on such a pair.
+The same holds for two legacy names of one catalog label (<code translate="no">an:mensch</code> and <code translate="no">ready-for-human</code>): the
+first in the list is renamed, the second stays beside it as a pair, since Forgejo and Gitea would
+accept a second label of the same name. Other existing labels are never changed or deleted.</p>
+<p>The onboarding&#39;s setup step and <strong>Adopt several repositories …</strong> show the same preview for every
+picked repository before anything is written: a total line (kept, renamed, new) and per repository
+the labels it keeps, renames (<code translate="no">old → new</code>) and gets created. It is read from the forge without
+writing; a repository whose labels cannot be read says so and can be read again.</p>
+<p><strong>By hand:</strong> set <code translate="no">profile.names</code> in <code translate="no">&lt;config&gt;/orchestration.json</code> (catalog name to your label name,
+see <a href="../daemon/#shared-configuration" data-testid="docs-md-link-2">daemon.md</a>) and create the labels on the forge. The
+classifier also recreates missing catalog labels in active repositories on its next run.</p>
+<h2 id="4-activate-a-repository">4. Activate a repository<a class="docs-anchor" href="#4-activate-a-repository" aria-label="4. Activate a repository" data-testid="docs-md-anchor-4-activate-a-repository">#</a></h2>
+<p><strong>Check:</strong> the target repository is listed in <code translate="no">orchestration.json</code> with the state <code translate="no">active</code> and is
+not switched off in the settings.</p>
+<p><strong>Assistant:</strong> sets the repository to <code translate="no">active</code>. This means the orchestrator may take issues
+labelled <code translate="no">ready</code> (or your mapped name) and set labels in that repository. Before a repository
+writes for the first time, the assistant (and Settings → Repositories) shows a preview read from
+the forge without writing: how many issues are open, how many would become ready, how many would
+get an approval or clarification question and to whom, how many labels and milestones would be
+set (#598). You pick what happens to the issues that are already open:</p>
+<ul><li><strong>Only handle new issues</strong>: issues and pull requests opened before this moment get no labels,
+comments or milestones and never become ready on their own.</li><li><strong>Take existing issues as ready</strong>: they become <code translate="no">ready</code> without a question.</li><li><strong>Check existing issues and ask</strong> (recommended; the default in the onboarding, in Settings →
+Repositories and for the sidebar&#39;s switch, #1115): the normal intake; questions go out at most
+five per repository and run, the rest is logged as &quot;N more questions pending&quot;.</li></ul>
+<p>Questions mention the configured person of the repository, else the connected account, never the
+owning organisation. The choice is stored as <code translate="no">backlog</code> (<code translate="no">new</code>, <code translate="no">ready</code>, <code translate="no">ask</code>) with <code translate="no">adopted_at</code> in
+the repository&#39;s rule; rules written before #598 behave like <code translate="no">ask</code>. If no suitable
+repository exists yet, <strong>Create a new project</strong> or <strong>Adopt an existing repository</strong> open the
+project wizard inside the assistant.</p>
+<p><strong>Adopt several repositories …</strong> (#590) lists the account&#39;s other repositories with a search
+field and &quot;All of &lt;owner&gt;&quot; per owner or organisation, plus its own choice for open issues
+(default: only new issues). Nothing is written until <strong>Adopt N repositories</strong>; until then any
+repository can be deselected, and the label preview above the button lists what each selected
+repository keeps, renames and gets created. The onboarding&#39;s repo step offers the same &quot;All of
+&lt;owner&gt;&quot; switch when an account reaches repositories of several owners or organisations. The repositories are then handled one after the other, each with
+its status (waiting, setting up, turned on, failed): legacy labels are renamed and missing ones
+created, then the repository is switched on. A failed repository does not stop the others; retry
+it under Settings → Repositories. The local-copy step then lists every repository adopted in
+this run (see below).</p>
+<p><strong>By hand:</strong> Settings → Repositories. Without the app: <code translate="no">gitoodo repo activate &lt;account&gt; &lt;owner/repo&gt;</code> prints the label preview and the open-issue counts per choice and writes nothing;
+<code translate="no">--backlog new|ready|ask</code> then renames and creates the labels and switches the repository on
+(<code translate="no">--paused</code> for paused). <code translate="no">gitoodo repo pause|observe</code> switch it back, <code translate="no">gitoodo repo list &lt;account&gt;</code>
+shows every repository&#39;s state.</p>
+<h3 id="removing-a-repository-again">Removing a repository again<a class="docs-anchor" href="#removing-a-repository-again" aria-label="Removing a repository again" data-testid="docs-md-anchor-removing-a-repository-again">#</a></h3>
+<p><strong>Aus Gitoodo entfernen …</strong> (sidebar actions menu of a repository, Settings → Repositories in a
+repository&#39;s detail and for a multi-selection) takes repositories out of Gitoodo&#39;s management
+(<code translate="no">src-tauri/src/repo_remove.rs</code>, <code translate="no">crates/core/src/repo_remove.rs</code>):</p>
+<ul><li>The repository is switched off in the settings, so lists, counts and notifications skip it.</li><li>Its rule leaves <code translate="no">orchestration.json</code>. The dispatcher assigns nothing new there and, in its next
+round, <strong>stops</strong> its running and parked workers rather than letting them finish
+(<code translate="no">enforce_control</code>). Unfinished changes stay in the worktree; forge labels and issues stay as
+they are.</li><li>Its leases are released: by the app while no dispatcher holds the state folder (the app takes
+the dispatcher&#39;s instance lock for the edit), otherwise by the dispatcher in its next round.</li><li>Optionally, Gitoodo&#39;s own worktrees of the repository are removed through the hygiene&#39;s guarded
+removal: only folders with Gitoodo&#39;s ownership marker for exactly this repository, none with a
+live lease or unsaved work. The user&#39;s own checkout is never removed.</li><li>Nothing changes on the forge. The toast offers <strong>Undo</strong> for about 30 seconds (the app keeps the
+removed rule for 10 minutes); afterwards the repository comes back through Settings →
+Repositories or <strong>Repos hinzufügen</strong>.</li></ul>
+<p><strong>Auch auf der Forge löschen (endgültig)</strong> additionally deletes the repository on its forge. The
+dialog names what is lost (code, issues, pull requests, wiki, releases) and whether the forge can
+restore it: Forgejo/Gitea have no trash; GitHub keeps most deleted repositories for 90 days (not
+forks); GitLab may only mark the project for deletion (delayed deletion, usually 7 days, depending
+on version and settings). Before the button is enabled, the core checks with the connected
+account&#39;s token whether it may delete (Forgejo/Gitea: repository admin and scope
+<code translate="no">write:repository</code>, for a repository of an organisation also <code translate="no">write:organization</code>, asked with a
+write the forge refuses (<code translate="no">docs/token-permissions.md</code>); GitHub: scope <code translate="no">delete_repo</code> and admin;
+GitLab: scope <code translate="no">api</code> and the Owner role) and names a missing right with <strong>Token ersetzen …</strong>. When a
+delete still fails, the toast says the repository left Gitoodo and why it was not deleted on the
+forge (&quot;Removed from Gitoodo; not deleted on the forge: …&quot;). The user types the full name
+<code translate="no">owner/repo</code>, or for several repositories their count or &quot;löschen&quot;. The delete itself runs in the
+core against <code translate="no">DELETE /api/v1/repos/{owner}/{repo}</code>, <code translate="no">DELETE /repos/{owner}/{repo}</code> or
+<code translate="no">DELETE /api/v4/projects/{path}</code>; see <code translate="no">docs/security.md</code>.</p>
+<h2 id="5-local-copy">5. Local copy<a class="docs-anchor" href="#5-local-copy" aria-label="5. Local copy" data-testid="docs-md-anchor-5-local-copy">#</a></h2>
+<p><strong>Check:</strong> the dispatcher has a local copy of the target repository.</p>
+<p>Each worker works in its own worktree of this copy: it creates a branch there, opens a pull
+request and merges it into the base branch.</p>
+<p>The dispatcher uses, in this order: the folder set for the repository, a clone found by its
+<code translate="no">origin</code> in the projects folders or the clone folder (any layout), else
+<code translate="no">&lt;dispatch.clone_root&gt;/&lt;owner&gt;/&lt;repository&gt;</code> (#592; default clone folder <code translate="no">~/gitoodo/repos</code>, a folder
+of Gitoodo&#39;s own, #735). In a copy of yours Gitoodo only fetches and creates its <code translate="no">&lt;prefix&gt;/…</code>
+branches and worktrees (under <code translate="no">dispatch.worktree_root</code>); it never checks out, resets or cleans
+your working tree. The worktree folder must lie apart from the clone and projects folders. The
+step shows the clone folder with <strong>Change…</strong>, which opens the native folder picker (Finder,
+Explorer, the desktop portal) and applies to every repository. The assistant lists the target and
+every repository adopted with it in this run (#590), one row each with its folder and state:</p>
+<ul><li><strong>No clone yet</strong> (nothing there or an empty folder): ticked, <strong>Clone N repositories</strong> clones it
+with the connected account. The token reaches only that one <code translate="no">git clone</code> through <code translate="no">GIT_ASKPASS</code>, as with
+<code translate="no">gitoodo worker push</code>; <code translate="no">origin</code> is the plain HTTPS URL and no token lands in <code translate="no">.git/config</code>, a
+file, a log or an error text.</li><li><strong>Clone present</strong>: <code translate="no">origin</code> points at the repository on the account&#39;s server (HTTPS or SSH).</li><li><strong>Clone of another repository</strong>, **repository without <code translate="no">origin</code><strong>, </strong>not a repository**: shown
+and left as it is. Move the folder away or fix <code translate="no">origin</code>, then check again.</li></ul>
+<p>Later fetches of the dispatcher (base branch, branch updates) and the workers&#39; pushes use the
+connected account the same way, so a fresh device needs no git credential helper and no SSH key,
+also for private repositories. A missing or expired token is reported in the dispatcher log and
+the app (&quot;reconnect the account&quot;) instead of a git prompt.</p>
+<p>Instead of cloning, <strong>Other folder…</strong> points the assistant to the folder where the repository
+already lives. The folder is checked before it is saved: a clone of this repository is used; a
+missing or empty folder is saved and offered for cloning there; a clone of another repository, a
+repository without <code translate="no">origin</code> or a folder with other files is refused with that reason and nothing
+is saved.</p>
+<p><strong>Several repositories (#590):</strong> every repository without a copy is ticked; untick it, or use
+<strong>Select all</strong> / <strong>Select none</strong>, to skip it. The target cannot be skipped, the first worker needs
+its copy. <strong>Use the clone folder</strong> drops a folder set with <strong>Other folder…</strong>. Nothing is cloned
+before <strong>Clone N repositories</strong>; the clones then run in the background (at most two at a time, as
+in the onboarding), each row with its state (will be cloned, skipped, waiting, cloning with its
+share, cloned, failed) and an overall progress bar below the list. A failed clone shows its reason
+with <strong>Try again</strong> and does not stop the others. The step is done once the choice is confirmed and
+every ticked repository has its copy.</p>
+<p><strong>By hand:</strong> clone the repository yourself into the clone folder.</p>
+<h2 id="6-skill-and-agent-instructions">6. Skill and agent instructions<a class="docs-anchor" href="#6-skill-and-agent-instructions" aria-label="6. Skill and agent instructions" data-testid="docs-md-anchor-6-skill-and-agent-instructions">#</a></h2>
+<p><strong>Check:</strong> the <code translate="no">AGENTS.md</code> in the local copy holds the current Gitoodo section.</p>
+<p><strong>Assistant:</strong> installs the Gitoodo skill on this computer if it is missing, and on request writes
+or updates the marked Gitoodo section of <code translate="no">AGENTS.md</code> in the local copy. Text outside the markers
+stays as it is, and nothing is committed: you review and commit the change yourself. This step does
+not hold back the first worker.</p>
+<p><strong>By hand:</strong> Settings → Skill, and copy the section shown there into <code translate="no">AGENTS.md</code>.</p>
+<h2 id="7-first-worker">7. First worker<a class="docs-anchor" href="#7-first-worker" aria-label="7. First worker" data-testid="docs-md-anchor-7-first-worker">#</a></h2>
+<p><strong>Check:</strong> the dispatcher is registered as a background service (where the build may install one)
+and answers on its control socket and reports running workers.</p>
+<p><strong>Assistant:</strong> installs the dispatcher as a background service and starts it unless one already
+answers, so it keeps running after the app quits; the store build cannot install services and
+starts it from the app. The dispatcher logs to <code translate="no">dispatcher.jsonl</code> in the log folder (see
+<a href="../logging/" data-testid="docs-md-link-3">logging</a>). The assistant then waits for a
+worker. A worker starts as soon as an issue in an active repository carries the ready label. The
+setup is complete once a worker runs.</p>
+<p>On Windows the dispatcher has no scheduled task yet (#355): the assistant starts <code translate="no">gitoodo dispatcher</code> from the app as its own process, which answers on a named pipe of the current user
+(#354) and keeps running after the app quits, but not across a new login.</p>
+<p><strong>By hand:</strong> <code translate="no">gitoodo dispatcher</code> in a terminal, then give an issue the ready label. Details:
+<a href="../dispatcher/" data-testid="docs-md-link-4">dispatcher.md</a>.</p>
+<h2 id="final-check">Final check<a class="docs-anchor" href="#final-check" aria-label="Final check" data-testid="docs-md-anchor-final-check">#</a></h2>
+<p>The last page and the success page list the live state of everything the orchestrator needs
+(#601): classifier running as a service, every token readable by the services without a prompt,
+the classifier polling without errors, the local copy present with a matching <code translate="no">origin</code>, the
+dispatcher registered as a service and running. Each red item has one <strong>Fix</strong> button that opens
+the step that fixes it. The service step counts as done only once no token needs a keychain
+prompt, so the assistant never says &quot;ready&quot; while the services cannot work.</p>
+<h2 id="what-the-assistant-never-does">What the assistant never does<a class="docs-anchor" href="#what-the-assistant-never-does" aria-label="What the assistant never does" data-testid="docs-md-anchor-what-the-assistant-never-does">#</a></h2>
+<ul><li>It never commits and never writes configuration that is versioned in your repositories. It
+writes Gitoodo&#39;s own <code translate="no">settings.json</code> and <code translate="no">orchestration.json</code>, and only on request the marked
+Gitoodo section of <code translate="no">AGENTS.md</code> in the local copy.</li><li>It never shows a token, writes one to a file or log, or sends one to the app&#39;s frontend. (Only
+<code translate="no">gitoodo account add</code> on a machine without a keyring keeps it as the services&#39; systemd
+credential, a file only you can read.)</li><li>It never deletes or renames labels on the forge.</li><li>It never deletes a repository on the forge; only the removal dialog does, after a typed
+confirmation (see &quot;Removing a repository again&quot;).</li></ul>
+</div>
+<div class="docs-meta"><a class="docs-edit" href="https://github.com/silvio-l/gitoodo/edit/main/docs/orchestrator/setup.md" data-testid="docs-edit">Edit on GitHub</a><span class="docs-meta__version">Docs version: <span dir="ltr">dev</span></span></div>
+</article>
+<nav class="docs-pager" aria-label="Previous / Next" data-testid="docs-pager"><a class="docs-pager__previous" href="../orchestrator-spec/" rel="prev" data-testid="docs-pager-previous"><span class="docs-pager__label">Previous</span><span class="docs-pager__title">Gitoodo Orchestrator – Specification (v1)</span></a><a class="docs-pager__next" href="../dispatcher/" rel="next" data-testid="docs-pager-next"><span class="docs-pager__label">Next</span><span class="docs-pager__title">Dispatcher</span></a></nav>
+</main>
+<aside class="docs-toc" aria-labelledby="docs-toc-title" data-testid="docs-toc"><h2 id="docs-toc-title">On this page</h2><ol><li class="docs-toc__l3"><a href="#first-run-337" data-testid="docs-toc-first-run-337">First run (#337)</a></li><li class="docs-toc__l3"><a href="#without-a-desktop-headless-linux-1208" data-testid="docs-toc-without-a-desktop-headless-linux-1208">Without a desktop (headless Linux, #1208)</a></li><li class="docs-toc__l2"><a href="#0-install" data-testid="docs-toc-0-install">0. Install</a></li><li class="docs-toc__l2"><a href="#1-background-service" data-testid="docs-toc-1-background-service">1. Background service</a></li><li class="docs-toc__l2"><a href="#2-account-and-token" data-testid="docs-toc-2-account-and-token">2. Account and token</a></li><li class="docs-toc__l2"><a href="#3-map-labels" data-testid="docs-toc-3-map-labels">3. Map labels</a></li><li class="docs-toc__l2"><a href="#4-activate-a-repository" data-testid="docs-toc-4-activate-a-repository">4. Activate a repository</a></li><li class="docs-toc__l3"><a href="#removing-a-repository-again" data-testid="docs-toc-removing-a-repository-again">Removing a repository again</a></li><li class="docs-toc__l2"><a href="#5-local-copy" data-testid="docs-toc-5-local-copy">5. Local copy</a></li><li class="docs-toc__l2"><a href="#6-skill-and-agent-instructions" data-testid="docs-toc-6-skill-and-agent-instructions">6. Skill and agent instructions</a></li><li class="docs-toc__l2"><a href="#7-first-worker" data-testid="docs-toc-7-first-worker">7. First worker</a></li><li class="docs-toc__l2"><a href="#final-check" data-testid="docs-toc-final-check">Final check</a></li><li class="docs-toc__l2"><a href="#what-the-assistant-never-does" data-testid="docs-toc-what-the-assistant-never-does">What the assistant never does</a></li></ol></aside>
+</div>
+<footer class="docs-footer" data-testid="docs-footer"><div class="docs-footer__inner">
+<p class="docs-muted">The developer docs are in English only.</p>
+<ul class="docs-footer__links">
+<li><a href="../../../" data-testid="docs-footer-site">Website</a></li>
+<li><a href="../../../privacy/" data-testid="docs-footer-privacy">Privacy</a></li>
+<li><a href="https://github.com/silvio-l/gitoodo/blob/main/LICENSE" data-testid="docs-footer-license">MIT</a></li>
+</ul>
+</div></footer>
+</body>
+</html>

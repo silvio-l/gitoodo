@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self'; style-src 'self'; script-src 'self' 'sha256-zclDvgIbJxhMP3hLx0Pe9wEzIPlPNUNObuWsVD7xB/M='; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="color-scheme" content="light dark">
+<script>try{var t=localStorage.getItem("gitoodo-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<title>Classifier daemon and command line – Gitoodo</title>
+<meta name="description" content="gitoodo is the headless side of Gitoodo: the classifier daemon that polls the forges of the configured accounts and a command line that asks it for the queue picture. The app does …">
+<meta name="docs-version" content="dev">
+<link rel="canonical" href="https://gitoodo.com/docs/dev/daemon/">
+
+<meta property="og:title" content="Classifier daemon and command line – Gitoodo">
+<meta property="og:description" content="gitoodo is the headless side of Gitoodo: the classifier daemon that polls the forges of the configured accounts and a command line that asks it for the queue picture. The app does …">
+<meta property="og:url" content="https://gitoodo.com/docs/dev/daemon/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Gitoodo">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://gitoodo.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="../../../favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../../assets/docs.css">
+<script defer src="../../../assets/docs.js"></script>
+</head>
+<body class="docs" data-lang="en" data-docs-root="../../" data-search-index="../../search/en.json" data-copied="Copied">
+<a class="skip" href="#main" data-testid="docs-skip">Skip to content</a>
+<header class="docs-header" data-testid="docs-header"><div class="docs-header__inner">
+<a class="lockup" href="../../../" aria-label="Gitoodo" data-testid="docs-logo"><svg class="lockup__art" data-brand="wordmark" viewBox="9.3 9.4 767.3 182.9" focusable="false" aria-hidden="true"><path class="logo__tray" fill-rule="evenodd" d="M66.7 89.5C54.7 90.9 52.5 108.4 63.6 112.9C69.4 115.3 80 113.9 86.5 113.9L136.5 114C143.6 114 155.7 115.4 157 105.5C157.8 99.1 154.7 91.2 147.7 89.6C141.7 88.1 126.5 89.3 119.5 89.3L84.5 89.3C78.7 89.3 72.5 88.8 66.7 89.5ZM210.5 93.7C206.3 95.4 202.9 98.6 198.6 100.3C196.7 101 193.8 101.2 192.6 103.1C191.3 105.1 191.8 108.3 191.8 110.5C191.8 115.6 192.1 120.9 191.5 125.9C184.9 128.1 171 126.6 163.5 126.6C159.8 126.6 155.9 126.2 152.5 128C144.2 132.6 147.8 144.9 143.6 152.1C138.9 160 121.4 157.2 113.5 157.2C110.3 157.2 106.8 157.7 103.6 156.7C92.4 153.3 98.2 135 89.9 128.6C86.5 125.9 81.6 126.6 77.5 126.6C69.3 126.6 58.2 128 50.5 126.1C48.8 117.6 51.8 108.1 49.7 99.7C47.3 90.3 31.5 89.8 27 97.5C25.1 100.8 24 104.7 22.6 108.2C19.8 115.2 15.3 122.8 16.1 130.5C16.6 134.9 19.5 139.2 21.5 143L31.8 163.7C35.7 171.7 38.9 183.6 48.9 185.5C52.3 186.2 56 185.8 59.5 185.8L83.5 185.8L157.5 185.8L183.5 185.8C188.2 185.8 193.2 186.3 197.4 183.8C203.4 180.3 207.1 168.8 210.3 162.7L221.6 140.2C223.6 136.2 226.1 132.2 226 127.5C225.9 121.1 221.5 114.3 219.2 108.4C217.1 103 215.9 96.5 210.5 93.7Z"/><path class="logo__bars" fill-rule="evenodd" d="M156.8 26.5C155.2 15.4 142.9 17.7 134.5 17.6C114.8 17.4 95.2 17.5 75.5 17.7C65.3 17.7 55.7 18.3 56.4 31.5C57.2 45.7 76.1 42.3 85.5 42.3L126.5 42.3C130.4 42.3 141.2 43.2 144.4 41.9C146.3 41.1 147.2 38.3 148.2 36.7C150.7 33 154.3 30.1 156.8 26.5ZM139.5 55.3C134 52 124.8 53.6 118.5 53.6L83.5 53.7C77.8 53.7 71.1 52.8 65.5 54C59.3 55.3 55.6 61.8 56.5 67.9C58.2 79.3 69.7 78.2 78.5 78.2L123.5 78.2C128.6 78.2 137 79.9 140.6 75.2C142.4 72.9 141 70.6 140.5 68C139.7 63.8 141 59.3 139.5 55.3Z"/><path class="logo__check" fill-rule="evenodd" d="M177.7 26.4C142.8 32.5 139 82.7 173 93.5C177.7 95 182.6 95.5 187.5 94.9C224.6 90.3 228 37.8 192.5 27.2C187.7 25.8 182.6 25.6 177.7 26.4ZM177.5 65.1C172.9 61.8 171.9 57.4 165.5 58.3C160.3 63.5 167.1 67.9 170.8 71.7C172.5 73.5 174.3 76 176.8 76.5C180.5 77.3 183.2 73.1 185.3 70.8L200.1 55.6C203 52.6 204.8 49.9 201.5 46.5C200 46.2 199.2 45.8 197.6 46.2C195.1 46.9 192.6 50.5 190.9 52.4C187.1 56.5 182.5 62.6 177.5 65.1Z"/><path class="word__git" fill-rule="evenodd" d="M379.6 38.4C360.7 39.7 362.8 67.8 381.5 66.9C400 66.1 398.7 37.2 379.6 38.4ZM362.5 92.7C357.9 91.8 353.1 92.2 348.5 92.2L325.5 92.2C321.8 92.2 314.8 90.8 311.8 93.3C308.9 95.8 309.6 111.2 311 114.5C317.2 118.1 327.7 114.3 334.7 116.5C329.4 130.4 309.1 132.6 297.7 125.8C288.9 120.6 283.8 110.5 283.8 100.5C283.6 81.9 299.6 66.6 318.5 71.2C328.3 73.6 329.5 78.5 336.5 83C340.9 81.5 353.8 72.2 356.6 68.5C355.1 63.6 350.2 59.4 346.3 56.2C332 44.2 311 40.6 293.5 47C262.7 58.3 249 94.7 262.4 124.2C276 154 314 165.2 341.5 147C354.5 138.4 363.1 123 364.1 107.5C364.4 102.6 365.3 96.8 362.5 92.7ZM407.5 73.5L400.4 74.5C398 78.5 398.4 90 399.5 94.7C402 96 404.7 95.9 407.4 96.5C410 113.1 400.2 145.4 422.7 151.6C426.2 152.6 429.9 152.6 433.5 152.6C437.5 152.7 441.9 153.2 445.5 151.5C446.4 146.9 446.8 134.4 444.6 130.5C441.2 130.2 436.3 131.5 433.3 129.2C430.8 127.2 431.4 123.3 431.4 120.5C431.4 112.7 430.6 104.3 431.7 96.5C436.1 95.3 440.9 96.3 445.5 95.3C447.3 89.6 447.2 80.3 445.5 74.6L431.9 73.5C430.6 68.1 433.1 59.6 430.5 54.9C428.6 51.5 415.9 52 412.5 52.6C410.9 53 409.4 53.6 408.6 55.1C406.2 59.4 408.5 68.4 407.5 73.5ZM369.5 151.7C373.7 153.3 388.3 153.6 392.1 151.5C393.7 145.8 392.7 138.5 392.7 132.5L392.6 94.5C392.6 90.3 394.1 79 391.6 75.9C389.3 73.1 377.1 73.6 373.5 74C366.1 74.9 368.5 86.3 368.5 91.5L368.6 131.5C368.6 137.8 367.2 145.8 369.5 151.7Z"/><path class="word__oodo" fill-rule="evenodd" d="M658.6 77.5C652.6 75.1 647.4 72.8 640.7 73.4C600.7 77.2 595.6 136.7 633.5 148.3C639.6 150.1 646.5 150.5 652.6 148.3C655 147.4 657.1 146 659.5 145.4C660 146.5 660.6 148.1 661.7 148.7C665.5 150.7 678.5 149.6 682.5 148.5C684.6 142.8 683.3 126.4 683.4 119.5L683.3 71.5C683.2 65 684.5 55.7 683 49.5C681.4 42.8 664.3 43.5 661.3 46.8C659.2 49.1 659.7 52.6 659.7 55.5C659.6 61.4 661.1 72.7 658.6 77.5ZM482.5 73.4C442.6 77.6 435.8 134.6 473.5 147.9C478.2 149.6 483.5 150.4 488.5 150.1C494.4 149.7 499.9 148.2 505.1 145.6C509.6 143.3 513.4 139.9 516.5 136C537.9 109 517 69.8 482.5 73.4ZM560.7 73.4C547.4 75.2 535.8 83.3 530.4 95.7C521.3 116.5 532.4 142.7 554.8 148.6C560 149.9 565.1 150.5 570.5 149.8C597.8 146.3 613.1 114.6 598.4 91.1C593.4 83 585.5 77.6 576.6 74.7C571.5 73.1 566 72.7 560.7 73.4ZM723.5 73.4C712.2 74.9 701.4 80.8 695.3 90.7C682.1 112 692 141 716.3 148.4C721.5 150 727 150.6 732.5 150C755.6 147.5 770.6 124.8 765.8 102.5C762.8 89.1 752.1 79.1 739.5 74.9C734.4 73.2 728.9 72.7 723.5 73.4ZM483.7 96.4C464.6 99.7 469.4 131.1 490.4 126.7C509.1 122.7 503.7 93.1 483.7 96.4ZM562.7 96.4C543.1 99.7 548.6 131.4 569.3 126.6C587.9 122.4 582.5 93.1 562.7 96.4ZM644.6 96.4C625.3 97.8 626.9 127.6 646.5 126.8C665.9 126 664.2 95 644.6 96.4ZM724.7 96.4C705.3 99.9 711 131.7 732.3 126.6C750.4 122.3 744.3 92.9 724.7 96.4Z"/></svg></a>
+<a class="docs-header__title" href="../../" data-testid="docs-home">Documentation</a>
+<span class="docs-version" title="Pre-release: Gitoodo has not been released yet" data-version="dev"><span class="visually-hidden">Docs version: </span><span dir="ltr">dev</span><span class="visually-hidden"> (Pre-release: Gitoodo has not been released yet)</span></span>
+<div class="docs-header__tools">
+<div class="docs-search" role="search" data-testid="docs-search">
+<label class="visually-hidden" for="docs-search-input">Search the docs</label>
+<input id="docs-search-input" class="docs-search__input" type="search" placeholder="Search …" autocomplete="off" spellcheck="false" aria-describedby="docs-search-hint" aria-controls="docs-search-results" aria-expanded="false" role="combobox" aria-autocomplete="list" data-testid="docs-search-input">
+<p id="docs-search-hint" class="visually-hidden">Arrow keys choose, Enter opens, Escape closes.</p>
+<div id="docs-search-results" class="docs-search__results" role="listbox" aria-label="Search the docs" hidden data-empty="No page matches “{query}”." data-testid="docs-search-results"></div>
+<p id="docs-search-status" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true" data-count="Results: {count}" data-testid="docs-search-status"></p>
+</div>
+<div class="header__prefs"><details class="langs" name="header-popover" data-langs data-testid="docs-langs"><summary class="langs__toggle" data-testid="docs-langs-toggle"><svg class="langs__globe" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"/></svg><span class="visually-hidden">Language: </span><span class="langs__code" translate="no">EN</span></summary>
+<ul class="langs__list" aria-label="Language"><li><a href="../../de/" hreflang="de" lang="de" data-lang="de" data-track="language" data-track-name="de" data-testid="docs-langs-de"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Deutsch</span></a></li><li><a href="../../" hreflang="en" lang="en" data-lang="en" data-track="language" data-track-name="en" aria-current="page" data-testid="docs-langs-en"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>English</span></a></li><li><a href="../../zh-Hans/" hreflang="zh-Hans" lang="zh-Hans" data-lang="zh-Hans" data-track="language" data-track-name="zh-Hans" data-testid="docs-langs-zh-Hans"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>中文（简体）</span></a></li><li><a href="../../hi/" hreflang="hi" lang="hi" data-lang="hi" data-track="language" data-track-name="hi" data-testid="docs-langs-hi"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>हिन्दी</span></a></li><li><a href="../../es/" hreflang="es" lang="es" data-lang="es" data-track="language" data-track-name="es" data-testid="docs-langs-es"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>Español</span></a></li><li><a href="../../ar/" hreflang="ar" lang="ar" data-lang="ar" data-track="language" data-track-name="ar" data-testid="docs-langs-ar"><svg class="langs__tick" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg><span>العربية</span></a></li></ul></details><button class="theme" type="button" hidden data-theme-toggle data-choice="system" data-label="Theme: {current}, switch to {next}" data-system="System" data-light="Light" data-dark="Dark" aria-label="Theme: System, switch to Light" title="Theme: System, switch to Light" data-testid="docs-theme"><svg class="theme__icon theme__icon--system" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg><svg class="theme__icon theme__icon--light" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></svg><svg class="theme__icon theme__icon--dark" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg></button></div>
+<button type="button" class="docs-menu" aria-controls="docs-nav" aria-expanded="false" hidden data-testid="docs-menu">Pages</button>
+</div>
+<a class="docs-header__link" href="https://github.com/silvio-l/gitoodo" data-testid="docs-github">GitHub</a>
+<a class="docs-install" href="../../../#download" data-testid="docs-install">Get notified</a>
+</div></header>
+<div class="docs-layout">
+<nav id="docs-nav" class="docs-nav" aria-label="Documentation" data-testid="docs-nav"><div class="docs-nav__section"><p class="docs-nav__title"><a href="../../" data-testid="docs-nav-section-user">For users</a></p><p class="docs-nav__group" id="docs-nav-user-0">Get started</p><ul aria-labelledby="docs-nav-user-0"><li><a href="../../introduction/" data-testid="docs-nav-docs-introduction">What is Gitoodo?</a></li><li><a href="../../getting-started/" data-testid="docs-nav-docs-getting-started">Getting started</a></li></ul><p class="docs-nav__group" id="docs-nav-user-1">Guides</p><ul aria-labelledby="docs-nav-user-1"><li><a href="../../self-hosted-forges/" data-testid="docs-nav-docs-self-hosted-forges">Forgejo and Gitea</a></li><li><a href="../../github-issues-to-pull-requests/" data-testid="docs-nav-docs-github-issues-to-pull-requests">GitHub issues to pull requests</a></li><li><a href="../../safe-auto-merge/" data-testid="docs-nav-docs-safe-auto-merge">Safe auto-merge</a></li><li><a href="../../parallel-coding-agents/" data-testid="docs-nav-docs-parallel-coding-agents">Parallel coding agents</a></li><li><a href="../../switch-from-another-agent-app/" data-testid="docs-nav-docs-switch-from-another-agent-app">Coming from another agent app</a></li></ul><p class="docs-nav__group" id="docs-nav-user-2">Daily use</p><ul aria-labelledby="docs-nav-user-2"><li><a href="../../daily-use/" data-testid="docs-nav-docs-daily-use">How to work with Gitoodo</a></li><li><a href="../../overview/" data-testid="docs-nav-docs-overview">Overview</a></li><li><a href="../../needs-you/" data-testid="docs-nav-docs-needs-you">Needs you</a></li><li><a href="../../questions/" data-testid="docs-nav-docs-questions">Asked of me</a></li><li><a href="../../board/" data-testid="docs-nav-docs-board">All repos</a></li><li><a href="../../chat/" data-testid="docs-nav-docs-chat">Chat</a></li><li><a href="../../repositories/" data-testid="docs-nav-docs-repositories">Repositories</a></li></ul><p class="docs-nav__group" id="docs-nav-user-3">Orchestrator</p><ul aria-labelledby="docs-nav-user-3"><li><a href="../../labels/" data-testid="docs-nav-docs-labels">Status labels and workflow</a></li><li><a href="../../merge-and-release/" data-testid="docs-nav-docs-merge-and-release">Merge control</a></li><li><a href="../../releases/" data-testid="docs-nav-docs-releases">Releases</a></li><li><a href="../../services/" data-testid="docs-nav-docs-services">Classifier, dispatcher and workers</a></li></ul><p class="docs-nav__group" id="docs-nav-user-4">Reference and help</p><ul aria-labelledby="docs-nav-user-4"><li><a href="../../settings/" data-testid="docs-nav-docs-settings">Settings</a></li><li><a href="../../status/" data-testid="docs-nav-docs-status">Status</a></li><li><a href="../../troubleshooting/" data-testid="docs-nav-docs-troubleshooting">Troubleshooting</a></li><li><a href="../../faq/" data-testid="docs-nav-docs-faq">FAQ</a></li><li><a href="../../privacy/" data-testid="docs-nav-docs-privacy">Privacy</a></li></ul></div><div class="docs-nav__section"><p class="docs-nav__title"><a href="../" data-testid="docs-nav-section-dev">For developers</a></p><p class="docs-nav__group" id="docs-nav-dev-0">Start here</p><ul aria-labelledby="docs-nav-dev-0"><li><a href="../architecture/" data-testid="docs-nav-docs-dev-architecture">Architecture</a></li><li><a href="../building/" data-testid="docs-nav-docs-dev-building">Building</a></li><li><a href="../releasing/" data-testid="docs-nav-docs-dev-releasing">Release</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-1">Interfaces</p><ul aria-labelledby="docs-nav-dev-1"><li><a href="../question-format/" data-testid="docs-nav-docs-dev-question-format">Gitoodo question format (version 2)</a></li><li><a href="../cli/" data-testid="docs-nav-docs-dev-cli">Command line reference</a></li><li><a href="./" aria-current="page" data-testid="docs-nav-docs-dev-daemon">Classifier daemon and command line</a></li><li><a href="../phone-access/" data-testid="docs-nav-docs-dev-phone-access">Phone access</a></li><li><a href="../forge-tokens/" data-testid="docs-nav-docs-dev-forge-tokens">Token permissions per forge</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-2">Orchestrator</p><ul aria-labelledby="docs-nav-dev-2"><li><a href="../states/" data-testid="docs-nav-docs-dev-states">States: what Gitoodo shows and what you do about it</a></li><li><a href="../all-repos/" data-testid="docs-nav-docs-dev-all-repos">&quot;All repos&quot;: pages and where things went</a></li><li><a href="../orchestrator-spec/" data-testid="docs-nav-docs-dev-orchestrator-spec">Gitoodo Orchestrator – Specification (v1)</a></li><li><a href="../orchestrator-setup/" data-testid="docs-nav-docs-dev-orchestrator-setup">Orchestrator setup</a></li><li><a href="../dispatcher/" data-testid="docs-nav-docs-dev-dispatcher">Dispatcher</a></li><li><a href="../queue-order/" data-testid="docs-nav-docs-dev-queue-order">Queue order and slot share</a></li><li><a href="../branch-rules/" data-testid="docs-nav-docs-dev-branch-rules">Branch rules that work with the autopilot</a></li><li><a href="../security/" data-testid="docs-nav-docs-dev-security">Security model of the orchestrator</a></li><li><a href="../satellites/" data-testid="docs-nav-docs-dev-satellites">Satellites</a></li><li><a href="../keychains/" data-testid="docs-nav-docs-dev-keychains">Keychains, signing and dialogs</a></li><li><a href="../local-inputs/" data-testid="docs-nav-docs-dev-local-inputs">Local inputs</a></li><li><a href="../resolver/" data-testid="docs-nav-docs-dev-resolver">The resolver for stuck issues</a></li><li><a href="../triage/" data-testid="docs-nav-docs-dev-triage">Triage</a></li><li><a href="../repo-hygiene/" data-testid="docs-nav-docs-dev-repo-hygiene">Repo hygiene</a></li><li><a href="../storage-cleanup/" data-testid="docs-nav-docs-dev-storage-cleanup">Automatic disk cleanup</a></li><li><a href="../orchestrator-chat/" data-testid="docs-nav-docs-dev-orchestrator-chat">Orchestrator chat</a></li><li><a href="../release-planning/" data-testid="docs-nav-docs-dev-release-planning">Release planning</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-3">App internals</p><ul aria-labelledby="docs-nav-dev-3"><li><a href="../status-model/" data-testid="docs-nav-docs-dev-status-model">Overview status model</a></li><li><a href="../counters/" data-testid="docs-nav-docs-dev-counters">Counters</a></li><li><a href="../startup/" data-testid="docs-nav-docs-dev-startup">Start: first paint and loading state</a></li><li><a href="../logging/" data-testid="docs-nav-docs-dev-logging">Logging</a></li><li><a href="../localisation/" data-testid="docs-nav-docs-dev-localisation">Localisation</a></li><li><a href="../settings-backup/" data-testid="docs-nav-docs-dev-settings-backup">Settings export, import and backup</a></li><li><a href="../symlinks/" data-testid="docs-nav-docs-dev-symlinks">Symbolic links</a></li><li><a href="../window-frame/" data-testid="docs-nav-docs-dev-window-frame">Window frame</a></li><li><a href="../system-permissions/" data-testid="docs-nav-docs-dev-system-permissions">System permissions</a></li><li><a href="../test-access/" data-testid="docs-nav-docs-dev-test-access">Test access: driving the app without a human</a></li></ul><p class="docs-nav__group" id="docs-nav-dev-4">Privacy and data</p><ul aria-labelledby="docs-nav-dev-4"><li><a href="../privacy-policy/" data-testid="docs-nav-docs-dev-privacy-policy">Privacy policy: feedback, usage statistics and the phone app</a></li><li><a href="../network-inventory/" data-testid="docs-nav-docs-dev-network-inventory">Network inventory of the desktop app and the phone app</a></li><li><a href="../chat-notification/" data-testid="docs-nav-docs-dev-chat-notification">Chat notification</a></li><li><a href="../support/" data-testid="docs-nav-docs-dev-support">Voluntary support</a></li></ul></div></nav>
+<main id="main" class="docs-main" tabindex="-1" data-testid="docs-main">
+<article class="docs-article">
+<p class="docs-eyebrow">For developers · Interfaces</p><h1>Classifier daemon and command line</h1>
+<details class="docs-toc-inline" data-testid="docs-toc-inline"><summary data-testid="docs-toc-inline-toggle">On this page</summary><ol><li class="docs-toc__l2"><a href="#commands" data-testid="docs-toc-inline-commands">Commands</a></li><li class="docs-toc__l2"><a href="#classifier-role-and-read-model" data-testid="docs-toc-inline-classifier-role-and-read-model">Classifier role and read model</a></li><li class="docs-toc__l2"><a href="#queue-writer-and-leases" data-testid="docs-toc-inline-queue-writer-and-leases">Queue writer and leases</a></li><li class="docs-toc__l2"><a href="#label-template-and-hygiene" data-testid="docs-toc-inline-label-template-and-hygiene">Label template and hygiene</a></li><li class="docs-toc__l2"><a href="#shared-configuration" data-testid="docs-toc-inline-shared-configuration">Shared configuration</a></li><li class="docs-toc__l2"><a href="#tokens" data-testid="docs-toc-inline-tokens">Tokens</a></li><li class="docs-toc__l3"><a href="#headless-setup-1208" data-testid="docs-toc-inline-headless-setup-1208">Headless setup (#1208)</a></li><li class="docs-toc__l2"><a href="#state" data-testid="docs-toc-inline-state">State</a></li><li class="docs-toc__l2"><a href="#local-access-only" data-testid="docs-toc-inline-local-access-only">Local access only</a></li><li class="docs-toc__l2"><a href="#services" data-testid="docs-toc-inline-services">Services</a></li><li class="docs-toc__l3"><a href="#quitting-the-app-and-the-services-737" data-testid="docs-toc-inline-quitting-the-app-and-the-services-737">Quitting the app and the services (#737)</a></li><li class="docs-toc__l2"><a href="#open-points" data-testid="docs-toc-inline-open-points">Open points</a></li><li class="docs-toc__l2"><a href="#repository-states-and-trust" data-testid="docs-toc-inline-repository-states-and-trust">Repository states and trust</a></li></ol></details>
+<div class="docs-body">
+<p><code translate="no">gitoodo</code> is the headless side of Gitoodo: the classifier daemon that polls the forges of the configured
+accounts and a command line that asks it for the queue picture. The app does not need it and
+works unchanged without it.</p>
+<h2 id="commands">Commands<a class="docs-anchor" href="#commands" aria-label="Commands" data-testid="docs-md-anchor-commands">#</a></h2>
+<div class="docs-code"><pre dir="ltr" translate="no" tabindex="0" data-lang="text"><code>gitoodo status [--changed] [--json] [--ack]
+gitoodo service install|uninstall
+gitoodo classifier
+gitoodo next --worker session-1 --host win [--repo owner/repo] [--account id] [--json]
+gitoodo done --worker session-1 --lease &lt;id&gt; [--result &quot;PR ready&quot;] [--json]
+gitoodo usage [--refresh] [--json]</code></pre><button type="button" class="docs-code__copy" data-copy hidden data-testid="docs-md-copy-1">Copy</button></div>
+<ul><li><code translate="no">status</code> prints one line per open issue and pull request of the covered repos, grouped like
+the <code translate="no">lage</code> picture: repo, <code translate="no">issue#N</code> / <code translate="no">pr#N</code>, status labels, age bucket, warnings, title, and a
+summary line at the end. Issues without status labels show <code translate="no">[ohne Einordnung]</code>. An account the
+last poll could not read (server unreachable, token missing) adds <code translate="no">, 1 account not read</code> to the
+summary line, its errors go to stderr with a hint to check address, network and token and run
+<code translate="no">gitoodo doctor</code>, and the command exits 3: an unreachable forge never looks like an empty one.</li><li><code translate="no">--json</code> prints the whole reply (<code translate="no">picture</code>, <code translate="no">changed</code>, <code translate="no">digest</code>, <code translate="no">polled_at</code>, <code translate="no">errors</code>);
+<code translate="no">picture.summary.not_read</code> counts the accounts not read.</li><li><code translate="no">--changed</code> prints nothing (unless <code translate="no">--json</code>) and exits 0 when the waking lines changed since the
+last <code translate="no">--ack</code> or an issue lacks status labels, 1 otherwise. <code translate="no">--ack</code> stores the current state as
+seen. Typical wake check: <code translate="no">gitoodo status --changed &amp;&amp; gitoodo status --ack</code>.</li><li><code translate="no">usage</code> prints the usage of each agent of the dispatcher (5-hour and weekly window, &quot;paused
+until&quot; at the limit); <code translate="no">--refresh</code> first has the dispatcher and every worker machine ask each
+agent again, as &quot;Check limits now&quot; in the app (at most once per 30 seconds, see
+<code translate="no">docs/orchestrator/dispatcher.md</code>, &quot;Usage limits&quot;). <code translate="no">--json</code> prints the providers.</li><li>Exit code 2: the daemon is not reachable. 3: the last poll could not read an account or the
+configuration (<code translate="no">--changed</code> still exits 0 on a change). 64: wrong usage.</li><li><code translate="no">classifier</code> runs the classifier daemon in the foreground; the service runs exactly this.
+<code translate="no">daemon</code> is a deprecated alias that runs the same thing and prints a note.</li></ul>
+<h2 id="classifier-role-and-read-model">Classifier role and read model<a class="docs-anchor" href="#classifier-role-and-read-model" aria-label="Classifier role and read model" data-testid="docs-md-anchor-classifier-role-and-read-model">#</a></h2>
+<p>The classifier (spec section 6) polls every repository in state <code translate="no">observed</code> (read only), <code translate="no">paused</code>
+and <code translate="no">active</code>; repositories in state <code translate="no">off</code> are listed but never read. After each poll it builds a
+read model in memory and serves it to the app and the CLI over the local socket:</p>
+<ul><li>request <code translate="no">{&quot;cmd&quot;:&quot;read_model&quot;}</code>, reply <code translate="no">{&quot;reply&quot;:&quot;read_model&quot;, ...}</code> with <code translate="no">polled_at</code> and per
+repository <code translate="no">account_id</code>, <code translate="no">full_name</code>, <code translate="no">state</code> and the open issues, highest score first. After a
+start the request waits up to two minutes for the first poll; <code translate="no">{&quot;cmd&quot;:&quot;read_model&quot;, &quot;immediate&quot;:true}</code> answers at once instead (<code translate="no">polled_at</code> then is <code translate="no">null</code> and <code translate="no">repos</code> empty). The app
+always asks <code translate="no">immediate</code> and gives up after 15 s as <code translate="no">busy</code>, so a long first poll never keeps its
+views loading (<code translate="no">read_model_now</code>);</li><li>per issue: <code translate="no">number</code>, <code translate="no">title</code>, <code translate="no">html_url</code>, <code translate="no">labels</code>, computed <code translate="no">readiness</code> (<code translate="no">ready</code>, <code translate="no">blocked</code>,
+<code translate="no">needs-clarification</code>, <code translate="no">needs-approval</code>, <code translate="no">needs-human</code>, <code translate="no">in-progress</code>, <code translate="no">in-review</code>, <code translate="no">stalled</code>,
+<code translate="no">held</code>), <code translate="no">dependencies</code> (<code translate="no">owner/repo#n</code>), <code translate="no">cycle</code>, <code translate="no">score</code> and the <code translate="no">lease</code> holder if any;</li><li>readiness uses the dependency graph (open dependencies block, cycles and self-dependencies need
+clarification, unknown dependencies fail closed), the trust decision of section 5.3 and the
+label catalog; the score is the dispatcher order of section 7.1 with the weights of the
+<code translate="no">score</code> section of the orchestration config.</li></ul>
+<p>Request <code translate="no">{&quot;cmd&quot;:&quot;poll&quot;}</code> (reply <code translate="no">{&quot;reply&quot;:&quot;poll_scheduled&quot;}</code>) ends the wait between two polls;
+the app sends it after the user unlocked or granted a keychain token, so an account that waited
+for approval is read again at once. Each poll writes its errors to the activity file right before
+its <code translate="no">poll</code> record; rule notes such as &quot;… more questions pending&quot; go to the record&#39;s <code translate="no">notes</code>, never
+to <code translate="no">labels_set</code>.</p>
+<p>The types and the client (<code translate="no">ping</code>, <code translate="no">read_model</code>, <code translate="no">poll_now</code>, <code translate="no">request_at</code>) live in
+<code translate="no">gitoodo_core::service_rpc</code>.
+The classifier idles at a few MB; an integration test keeps it under 30 MB RSS without accounts.</p>
+<h2 id="queue-writer-and-leases">Queue writer and leases<a class="docs-anchor" href="#queue-writer-and-leases" aria-label="Queue writer and leases" data-testid="docs-md-anchor-queue-writer-and-leases">#</a></h2>
+<p>The daemon is the only Gitoodo process that writes status labels. <code translate="no">next</code>, <code translate="no">done</code> and label
+maintenance share one asynchronous lock, including their fresh forge reads. Run **one writer
+daemon per repository**; a second host must use that daemon, not start another writer for the
+same repository. An OS-held <code translate="no">daemon.lock</code> in the configuration folder prevents simultaneous
+writers for the same configuration, even during startup; the OS releases it after a crash.</p>
+<p>Exactly one classifier runs per configuration (#593, #600):</p>
+<ul><li>While no service is registered, the app starts <code translate="no">gitoodo classifier</code> itself with its process id
+in <code translate="no">GITOODO_PARENT_PID</code>. That classifier (and a dispatcher the app starts) stops within two
+seconds once the app is gone (quit, crash, update), so the app leaves no orphan. On Unix the
+child notices that it was re-parented; on Windows, which re-parents nothing, it holds a handle
+on the app&#39;s process from its start and checks whether that process has ended (#1331).</li><li>Once the classifier service is registered, the app starts only the service, and a classifier
+the app started stops by itself and hands over.</li><li>The service definitions set <code translate="no">GITOODO_SERVICE=1</code>. A classifier service whose lock is still held
+waits for it instead of exiting, so launchd or systemd do not restart it in a loop; it logs
+<code translate="no">took over the classifier lock</code> when it does.</li><li>Windows: the parent watch is Unix-only for now; the app&#39;s exit stops its children there.
+Worker identities live inside the local OS-user trust boundary; the dispatcher
+([<code translate="no">orchestrator/dispatcher.md</code>](orchestrator/dispatcher.md)) is the only component that starts workers.</li></ul>
+<p>Enable repositories explicitly in <code translate="no">&lt;config&gt;/orchestration.json</code> (Gitoodo&#39;s own configuration):</p>
+<div class="docs-code"><pre dir="ltr" translate="no" tabindex="0" data-lang="json"><code>{
+  &quot;repos&quot;: [
+    {
+      &quot;account_id&quot;: &quot;nas&quot;,
+      &quot;full_name&quot;: &quot;owner/repo&quot;,
+      &quot;human&quot;: &quot;maintainer-login&quot;,
+      &quot;releases&quot;: true
+    }
+  ],
+  &quot;lease_seconds&quot;: 14400,
+  &quot;profile&quot;: {
+    &quot;names&quot;: {},
+    &quot;extra_labels&quot;: []
+  }
+}</code></pre><button type="button" class="docs-code__copy" data-copy hidden data-testid="docs-md-copy-2">Copy</button></div>
+<p>Missing configuration keeps the daemon read-only. Invalid configuration blocks mutations.
+Accounts must exist in <code translate="no">settings.json</code>; disabled repositories cannot be assigned. Maintenance
+runs during polling for enabled repositories, including those outside the dashboard view.
+<code translate="no">next --repo</code> selects an enabled, non-disabled repository. The daemon never edits the config; the
+only service that does is the dispatcher, which at its start only tidies former start-mode fields
+and keeps <code translate="no">halted</code> as it was. While <code translate="no">halted</code> is set, <code translate="no">next</code> returns no assignment and the
+maintenance pass writes nothing ([<code translate="no">orchestrator/dispatcher.md</code>](orchestrator/dispatcher.md),
+&quot;Emergency stop&quot;).</p>
+<p><code translate="no">next</code> and <code translate="no">done</code> are the lease commands the dispatcher works the queue with. From the command
+line (<code translate="no">gitoodo next</code>, <code translate="no">gitoodo done</code>) they never compete with it (#953):</p>
+<ul><li>in an automation session (<code translate="no">GITOODO_ISSUE</code> is <code translate="no">automation:&lt;id&gt;</code>) both are refused with the code
+<code translate="no">automation_session</code>: an automation reports, it does not take or finish issues;</li><li>for a repository whose autopilot is on (state <code translate="no">active</code>), <code translate="no">next</code> is refused with the code
+<code translate="no">autopilot_on</code> and names the repositories: the autopilot works that queue. <code translate="no">done</code> from the command
+line does not finish a lease in such a repository either (same code).</li></ul>
+<p>The dispatcher&#39;s own requests are not affected; the command line marks its requests with
+<code translate="no">&quot;cli&quot;: true</code>.</p>
+<p><code translate="no">next</code> returns JSON with an <code translate="no">assignment</code> (or <code translate="no">null</code> when no work is eligible). An assignment
+contains the full issue and its lease: id, worker, host, account, repository, issue number,
+expiry and completion flag. Candidates must be open, carry only <code translate="no">ready</code> (legacy <code translate="no">status:bereit</code>), have no
+<code translate="no">needs-human</code> (the legacy name <code translate="no">an:mensch</code> is not recognised), <code translate="no">stalled</code> or <code translate="no">extern</code>, and either have no host restriction or a
+matching <code translate="no">host:</code> label. For <code translate="no">--host local</code> a <code translate="no">host:</code> label matches this machine&#39;s name
+(<code translate="no">orchestration.json</code> › <code translate="no">local_host.name</code>, default the sanitised short host name), any of its
+<code translate="no">local_host.aliases</code> and <code translate="no">local</code>, without case — the same matcher as the dispatcher
+(<code translate="no">docs/orchestrator/spec.md</code>, 7.1 item 3). Satellites match only their own configured name. A
+<code translate="no">host:</code> value that names no configured machine but a platform (<code translate="no">mac</code>, <code translate="no">win</code>, <code translate="no">ubu</code>, ...; see
+spec 7.1) matches any host running that system. Candidates are taken in the order the app&#39;s
+queue shows (spec 7.1 item 4): the next release and boosted issues first, then by score (priority
+weight, age per hour, manual boost, release bonus, with the repository&#39;s own weights when it has
+them), highest first; ties go to the earlier creation
+time, then the lower issue number, then the configured account/repository order. Priorities are
+<code translate="no">priority:p0</code>..<code translate="no">p3</code> (legacy <code translate="no">prio:1..3</code>); an issue without one counts as <code translate="no">priority:p1</code> when it
+carries a bug label (<code translate="no">bug</code>, <code translate="no">typ:bug</code>, <code translate="no">type:bug</code>, <code translate="no">kind/bug</code>, …, #1635) and as <code translate="no">priority:p2</code>
+otherwise. A priority label always wins over the type.</p>
+<p><strong>Changing the priority in the app.</strong> In a repository the orchestrator works on, every queued
+issue, every open issue of &quot;Issues and pull requests&quot; and an open issue&#39;s detail offer &quot;Raise
+priority&quot; and &quot;Lower priority&quot; (two arrows that show on hover or focus; in the detail always),
+and on a focused row <code translate="no">+</code> and <code translate="no">-</code>. A step swaps the priority label on the forge for the next one
+(the profile&#39;s name, created on the forge when missing; every other priority label goes, legacy
+ones included); an issue without a label starts where the dispatcher puts it (<code translate="no">priority:p2</code>, a
+bug <code translate="no">priority:p1</code>) and moves from there. At
+<code translate="no">priority:p0</code> raising is off and says &quot;Highest priority&quot;, at <code translate="no">priority:p3</code> lowering. The write
+runs in the core (<code translate="no">set_issue_priority</code>, <code translate="no">labels::set_priority</code>) on every forge, reads the issue&#39;s
+labels fresh first and never touches other labels. The queue re-sorts at once with the new score
+(the repository&#39;s own weights) and goes back when the forge refuses, with the reason in a short
+note; afterwards the app asks the classifier to read the repositories again, so the dispatcher
+takes the issue in its new place from its next pick. The release view (#1707) also sets the
+priority of several issues at once: <code translate="no">set_issues_priority</code> takes the step <code translate="no">{&quot;to&quot;: n}</code> per issue,
+which leaves exactly the profile&#39;s label for <code translate="no">priority:p&lt;n&gt;</code> (an issue that already carries only
+that label is left alone), one issue after the other, so a refusal stops none of the others.</p>
+<p>Dependencies are declared by a line of their own, in the body or in a comment a person wrote. The
+line starts (after an optional list bullet <code translate="no">-</code>, <code translate="no">*</code>, <code translate="no">+</code> or <code translate="no">1.</code> and optional bold <code translate="no">**</code>) with one
+of <code translate="no">Depends on</code>, <code translate="no">Blocked by</code>, <code translate="no">Waits for</code>, <code translate="no">Wartet auf</code>, <code translate="no">Abhängig von</code>, <code translate="no">Blockiert bis</code>,
+<code translate="no">Abhängigkeit(en)</code>, <code translate="no">Depende de</code> or <code translate="no">Bloqueado por</code> (any case), an optional colon, and the
+references, separated by commas, spaces, <code translate="no">and</code> or <code translate="no">und</code>:</p>
+<div class="docs-code"><pre dir="ltr" translate="no" tabindex="0" data-lang="text"><code>Wartet auf: #12, owner/other#3
+- **Depends on:** #7 and #8</code></pre><button type="button" class="docs-code__copy" data-copy hidden data-testid="docs-md-copy-3">Copy</button></div>
+<p><code translate="no">#12</code>, <code translate="no">repo#12</code> and <code translate="no">owner/repo#12</code> are supported, including nested GitLab namespaces; the list
+ends at the first word that is no reference. Anything else is no dependency: a mention in the
+middle of a sentence, a closing reference, a status line such as <code translate="no">Worker fertig: PR #1382, wartet auf gate/nas.</code> and every comment Gitoodo wrote itself (its machine marker, see
+[<code translate="no">question-format.md</code>](question-format.md)). A referenced issue or pull request must be verifiably
+closed or merged; an open, missing or inaccessible one blocks assignment. The app&#39;s queue uses the
+same rule and the same lookup, so such an issue shows as blocked there, never as the queue head.
+When the dispatcher passes over a ready issue for open dependencies it logs <code translate="no">dispatch.skip</code>
+(<code translate="no">reason</code> <code translate="no">dependencies_open</code>, <code translate="no">refs</code> the blocking references) once per issue and change, so
+<code translate="no">gitoodo trace owner/repo#n</code> explains the wait.</p>
+<p>Assignment adds <code translate="no">in-progress</code> before removing <code translate="no">ready</code>, adds the forge account&#39;s authenticated
+login to the assignees (people already assigned stay; GitHub adds atomically, Gitea/Forgejo and
+GitLab write the fresh list plus the login), then writes a <code translate="no">gitoodo:lease v1</code> audit comment naming
+the worker and lease. Worker ids identify sessions, not forge logins. A partial or ambiguous
+failure leaves the reservation in place.</p>
+<p>Claims are compare-and-confirm across installs (release-gate review M10): after its lease comment
+the writer reads the comments again. Every active (not completed, not withdrawn, not expired)
+lease comment of Gitoodo&#39;s own logins posted since the issue was read as ready (plus 10 s for
+request latency) belongs to the race; the oldest comment wins. The loser posts the same lease
+again with <code translate="no">&quot;withdrawn&quot;: true</code>, removes only its own login from the assignees (and only when it
+added it and the winner is another login), leaves labels alone and backs off for this round. A
+withdrawn lease never holds an issue. Two installs only see each other&#39;s leases when their logins
+are known writers of the forge host (the same account, or listed orchestrator accounts).</p>
+<p>People see one calm line per lease comment in the forge&#39;s language (&quot;Gitoodo is working on this
+(attempt 2, macbook)&quot;); the lease itself is in the comment&#39;s hidden part. <code translate="no">done</code> edits the run&#39;s
+own lease comment into &quot;finished&quot; with the result folded away instead of adding a second one (a
+forge that cannot edit gets a new comment), so an issue carries one comment per attempt (#1493).</p>
+<p><code translate="no">done</code> verifies the current audit from the authenticated account (the newest lease comment
+whose lease was not withdrawn), changes
+the status to <code translate="no">in-review</code>, removes the worker account&#39;s assignee and records the result. On an
+issue that is already closed (the dispatcher closes it with the merge before it reports the run
+done) it removes <code translate="no">in-progress</code>/<code translate="no">in-review</code> instead of setting <code translate="no">in-review</code> (#848). Repeating an already completed report has no further effects. Leases are reconstructed from
+forge comments after a restart; they do not depend on the volatile SQLite cache.</p>
+<p>Rejected reports return JSON <code translate="no">reply: &quot;rejected&quot;</code> with a stable <code translate="no">code</code> and a human-readable
+<code translate="no">message</code>, exit status 1: <code translate="no">foreign_lease</code>, <code translate="no">expired_lease</code>, <code translate="no">stale_lease</code>, <code translate="no">status_changed</code>,
+<code translate="no">invalid_worker</code>, <code translate="no">configuration_error</code>, <code translate="no">forge_unavailable</code> (server error, rate limit or
+unreachable forge: worth retrying) or <code translate="no">forge_error</code> (any other forge refusal). Expiry is inclusive and never releases
+the issue automatically. Recovery of expired or partially assigned work is done by the
+dispatcher&#39;s sweeper or by an explicit human decision. A timed-out <code translate="no">next</code> may have taken
+effect; inspect the issue/audit before requesting more work.</p>
+<h2 id="label-template-and-hygiene">Label template and hygiene<a class="docs-anchor" href="#label-template-and-hygiene" aria-label="Label template and hygiene" data-testid="docs-md-anchor-label-template-and-hygiene">#</a></h2>
+<p>The default profile embeds the English label catalog (<code translate="no">priority:p0</code>..<code translate="no">p3</code>, <code translate="no">os:*</code>, <code translate="no">host:*</code>, <code translate="no">needs-clarification</code>, <code translate="no">blocked</code>, <code translate="no">ready</code>, <code translate="no">in-progress</code>, <code translate="no">in-review</code>, <code translate="no">stalled</code>, <code translate="no">needs-human</code>, <code translate="no">needs-issue-link</code>, <code translate="no">release:next</code>). Legacy German or older English names (<code translate="no">status:bereit</code>, <code translate="no">prio:1</code>, <code translate="no">an:mensch</code>, <code translate="no">ready-for-human</code>) are no longer recognised (#464, #467); they only feed the activation preview, which renames them on the forge. <code translate="no">profile.names</code> keys are canonical catalog names. <code translate="no">profile.names</code> maps
+canonical names to your own names, for example <code translate="no">{&quot;ready&quot;:&quot;Ready&quot;, &quot;host:win&quot;:&quot;Windows&quot;}</code>.
+All rules use those mappings, including classification, host filtering, status transitions and
+milestone allocation. Extra catalog labels use <code translate="no">name</code>, six-digit hex <code translate="no">color</code>, and <code translate="no">description</code>.
+Names must be unique; descriptions are limited to 100 characters for portability. Config is
+reloaded on every poll and work request. The API contracts follow the
+<a href="https://docs.github.com/en/rest/issues/labels" rel="noopener" data-testid="docs-md-link-1">GitHub label schema</a>,
+<a href="https://docs.gitlab.com/api/labels/" rel="noopener" data-testid="docs-md-link-2">GitLab label ownership/filtering</a>, and
+<a href="https://docs.gitlab.com/api/milestones/" rel="noopener" data-testid="docs-md-link-3">GitLab milestone states</a>.</p>
+<p>Enabling a repository transfers its label catalog to Gitoodo: missing labels are created,
+colors/descriptions corrected. Labels outside the
+catalog are never deleted automatically.
+Stop the former <code translate="no">label-sync</code> job for these repositories so there is only one writer.</p>
+<p>The daemon performs the label and milestone rules of <code translate="no">label-sync</code>:</p>
+<ul><li>No classification labels (<code translate="no">typ:*</code>, <code translate="no">schwere:*</code>, <code translate="no">release:muss</code>/<code translate="no">später</code>, <code translate="no">einordnung:fehlt</code>, <code translate="no">status:neu</code>)
+are set or read any more (#567); existing ones are left alone.</li><li>Keep the most advanced status (review, in progress, blocked, ready; none = waits for the intake). An
+umbrella issue (legacy <code translate="no">prd</code>) carries a status like any issue: <code translate="no">blocked</code> while a child is open. Closed issues lose status and human-question labels.</li><li>Assign pending human questions, detect an answer in the last human-authored comment, set
+no label is set (the last comment is the answer), and release the human assignee. Active worker assignments are preserved.</li><li>Lift blockades when all named dependencies are closed. An unexplained blockade returns to
+ready, or new when classification is missing. <code translate="no">needs-human</code> and <code translate="no">extern</code> remain blocked.</li><li>Allocation goes to one open milestone: with several open, the earliest due date wins, else the
+lowest version in the title (numeric), else the oldest. A tie on due date and version skips the
+allocation with a logged reason; the multiple-milestones finding is reported either way.
+Allocate <code translate="no">release:next</code> items; which other issues join a release (follow-ups of items in a
+release, urgent issues, own rules) is decided by the repository&#39;s assignment rules
+(<code translate="no">docs/orchestrator/release.md</code>, &quot;Assignment rules&quot;). Existing open milestone assignments stay.</li><li>Remove closed milestones from open issues with an audit comment, returning them to backlog.</li><li>With no open milestone, create one release-planning issue; keep the old <code translate="no">label-sync</code> marker
+and honor its 28-day snooze after closing. <code translate="no">releases: false</code> disables this planning rule.</li></ul>
+<p>Only explicitly enabled repositories are maintained. The former Forgejo-admin notification
+cleanup and impersonated unsubscribe operations are not label/milestone rules and are not
+performed; Gitoodo does not need an administrator token.</p>
+<h2 id="shared-configuration">Shared configuration<a class="docs-anchor" href="#shared-configuration" aria-label="Shared configuration" data-testid="docs-md-anchor-shared-configuration">#</a></h2>
+<p>App and CLI use the same folder (<code translate="no">gitoodo_core::paths::config_dir</code>) and the same <code translate="no">settings.json</code>:
+accounts, poll interval, disabled repos and the first &quot;agent dashboard&quot; view (its accounts and
+repos; without one, every repo of every account). The daemon reads the settings again before
+every poll, so changes in the app apply without a restart.
+The poll interval is valid from 30 to 900 seconds; a stored value outside that range (only
+possible by editing <code translate="no">settings.json</code> by hand) is clamped silently to the nearest bound, and the app
+shows the effective value.</p>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col"></th><th scope="col">Config</th><th scope="col">State and socket</th></tr></thead><tbody><tr><td>Linux</td><td><code translate="no">$XDG_CONFIG_HOME/de.gitoodo.app</code></td><td><code translate="no">$XDG_STATE_HOME/de.gitoodo.app</code>, socket <code translate="no">$XDG_RUNTIME_DIR/gitoodo/daemon.sock</code></td></tr><tr><td>macOS</td><td><code translate="no">~/Library/Application Support/de.gitoodo.app</code></td><td><code translate="no">~/Library/Caches/de.gitoodo.app</code>, socket in it</td></tr><tr><td>Windows</td><td><code translate="no">%APPDATA%\de.gitoodo.app</code></td><td><code translate="no">%LOCALAPPDATA%\de.gitoodo.app</code>, pipe <code translate="no">\\.\pipe\gitoodo-&lt;user&gt;</code></td></tr></tbody></table></div>
+<p><code translate="no">GITOODO_CONFIG_DIR</code> and <code translate="no">GITOODO_STATE_DIR</code> override both folders (tests, several setups on one
+machine). A Unix socket path must stay below about 100 bytes.</p>
+<h2 id="tokens">Tokens<a class="docs-anchor" href="#tokens" aria-label="Tokens" data-testid="docs-md-anchor-tokens">#</a></h2>
+<p>Gitoodo writes a token to a file only on a machine without a system keyring (headless Linux), and
+then only as the systemd credential of the services (see &quot;Headless setup&quot; below). The daemon asks
+these sources in order, per account:</p>
+<ol><li>systemd credential <code translate="no">gitoodo-token-&lt;id&gt;</code> in <code translate="no">$CREDENTIALS_DIRECTORY</code> (read-only, set by the
+service manager through <code translate="no">LoadCredential=</code> or <code translate="no">SetCredentialEncrypted=</code>),</li><li>environment variable <code translate="no">GITOODO_TOKEN_&lt;ID&gt;</code> of the service environment (no systemd, or a
+different supervisor),</li><li>the credential file <code translate="no">gitoodo account add</code> kept in <code translate="no">&lt;state&gt;/credentials/gitoodo-token-&lt;id&gt;</code>
+(what the services load; this is how a terminal on the same machine reads it),</li><li>a token kept in memory (set while no system store is usable; lost on restart),</li><li>the system keyring the app uses (macOS Keychain, Windows Credential Manager, Secret Service).</li></ol>
+<p>Names derive from the account id: the credential is <code translate="no">gitoodo-token-</code> plus the id in lower case,
+the variable <code translate="no">GITOODO_TOKEN_</code> plus the id in upper case; every character other than a letter or
+digit becomes <code translate="no">-</code> (credential) or <code translate="no">_</code> (variable). Account <code translate="no">gitea-nas.1</code> reads credential
+<code translate="no">gitoodo-token-gitea-nas-1</code> or variable <code translate="no">GITOODO_TOKEN_GITEA_NAS_1</code>. Surrounding whitespace in the
+value is ignored.</p>
+<p>On Linux the Secret Service is used only when it answers without a dialog: a locked or missing
+keyring (no unlock prompt, 2 s limit, rechecked every minute) is skipped, never blocks startup,
+and tokens set meanwhile stay in memory. macOS and Windows always use their keychain.</p>
+<h3 id="headless-setup-1208">Headless setup (#1208)<a class="docs-anchor" href="#headless-setup-1208" aria-label="Headless setup (#1208)" data-testid="docs-md-anchor-headless-setup-1208">#</a></h3>
+<p>On a server without a desktop the command line sets up everything the app would, without editing
+a file by hand:</p>
+<div class="docs-code"><pre dir="ltr" translate="no" tabindex="0" data-lang="sh"><code>gitoodo account add --forge forgejo --url https://git.example.org --token-stdin &lt; token.txt
+gitoodo account list                    # the new account&#39;s id, e.g. acc-18f…-0
+gitoodo repo list &lt;account&gt;             # every repository with its state
+gitoodo repo activate &lt;account&gt; owner/repo              # preview only: labels, open issues
+gitoodo repo activate &lt;account&gt; owner/repo --backlog new
+gitoodo service install all
+gitoodo doctor</code></pre><button type="button" class="docs-code__copy" data-copy hidden data-testid="docs-md-copy-4">Copy</button></div>
+<p><code translate="no">account add</code> takes the token on stdin only, never as an argument (shell history, process list);
+on a terminal it asks for it with hidden typing. It checks the token with the forge (its login and
+missing scopes, as the app&#39;s wizard) and keeps it:</p>
+<ul><li>in the system keyring when one answers without a dialog (a desktop session),</li><li>otherwise (<code translate="no">--store credential</code>, the default on headless Linux) as a systemd credential: the
+file <code translate="no">&lt;state&gt;/credentials/gitoodo-token-&lt;id&gt;</code> (folder 0700, file 0600, readable only by you) and
+a drop-in per service, <code translate="no">~/.config/systemd/user/gitoodo.service.d/gitoodo-token-&lt;id&gt;.conf</code> and
+the same for <code translate="no">gitoodo-dispatcher.service</code>, with
+<code translate="no">LoadCredential=gitoodo-token-&lt;id&gt;:&lt;that file&gt;</code>. It then reloads systemd and restarts the
+services that run; installing the services later picks the drop-ins up.</li></ul>
+<p><code translate="no">--label</code> names the account (default: the login), <code translate="no">--id</code> chooses its id (letters, digits, <code translate="no">-</code>,
+<code translate="no">_</code>, <code translate="no">.</code>). Commands take an account by id, label or login. <code translate="no">gitoodo account token &lt;account&gt; --token-stdin</code> replaces a token (it must belong to the same login; a credential stays a
+credential), <code translate="no">gitoodo account remove &lt;account&gt;</code> removes the account with its credential, drop-ins
+and keyring entry.</p>
+<p><code translate="no">repo activate</code> without <code translate="no">--backlog</code> writes nothing: it prints the label changes (renamed, created,
+kept) and what each backlog choice does to the open issues, as the app&#39;s preview. With <code translate="no">--backlog ask|ready|new</code> it renames and creates the labels, switches the repository on (<code translate="no">--paused</code>: labels
+and comments, no workers) and asks a running classifier to poll at once. A repository that writes
+already switches between active and paused without a new backlog line; <code translate="no">gitoodo repo pause</code> and
+<code translate="no">gitoodo repo observe</code> switch it back.</p>
+<p>A user unit needs systemd 250 or newer for <code translate="no">LoadCredential=</code>. An encrypted credential
+(<code translate="no">SetCredentialEncrypted=</code>, output of <code translate="no">systemd-creds encrypt</code>) in a drop-in of your own works
+as well. Without systemd, set the variable in the manager&#39;s memory, for example
+<code translate="no">systemctl --user set-environment GITOODO_TOKEN_NAS=…</code>.</p>
+<p><code translate="no">gitoodo doctor</code> prints the active sources, for example
+<code translate="no">secret backend (daemon): systemd credentials; system keyring locked, skipped</code> or
+<code translate="no">memory only (no system store, tokens are lost on restart)</code>. It asks the running daemon, because
+only its service environment holds the credentials directory; without a daemon it reports what the
+calling process sees.</p>
+<p>It then prints one line per account: whether this terminal reads the token without a keychain
+prompt (<code translate="no">readable</code>, <code translate="no">missing</code> or the keychain error). A token only the services read (a systemd
+credential, the service environment the classifier&#39;s last poll read it from) is no warning: the
+line says the services have it. On Linux without a graphical session the lines name the command
+line (<code translate="no">gitoodo account token &lt;id&gt; --token-stdin</code>) instead of the app. A command never shows the prompt, and on
+macOS the app keeps the token in its own keychain item, so a terminal often gets
+<code translate="no">keychain access needs approval</code>. The line then names the ways on: the app&#39;s System check (<code translate="no">/doctor</code>
+in the chat), <code translate="no">gitoodo token-access --account &lt;id&gt; --grant</code> (choose &quot;Always Allow&quot;), or the token in
+the command&#39;s environment as <code translate="no">GITOODO_TOKEN_&lt;ID&gt;</code>, which is read before the keychain and never
+stored. <code translate="no">gitoodo labels migrate</code> answers the same error with the same hint and names its in-app
+equivalent, Settings › Repos › &lt;repo&gt; › Migrate old labels….</p>
+<h2 id="state">State<a class="docs-anchor" href="#state" aria-label="State" data-testid="docs-md-anchor-state">#</a></h2>
+<p>The daemon keeps the last snapshot per repo and the acknowledged digest in
+<code translate="no">&lt;state&gt;/daemon.sqlite</code>. It is not a source of truth: a missing, corrupt or older file is deleted
+and created empty, and the next poll fills it from the forge. Deleting it while the daemon runs is
+noticed at the next poll. Only <code translate="no">--ack</code> is lost then, so the next <code translate="no">--changed</code> reports a change.</p>
+<h2 id="local-access-only">Local access only<a class="docs-anchor" href="#local-access-only" aria-label="Local access only" data-testid="docs-md-anchor-local-access-only">#</a></h2>
+<p>The CLI talks to the daemon over one JSON line each way, never over TCP:</p>
+<ul><li>Unix: socket with mode 0600 in a folder with mode 0700, owned by the user.</li><li>Windows: named pipe with the default security of the creating user, remote clients refused.</li></ul>
+<h2 id="services">Services<a class="docs-anchor" href="#services" aria-label="Services" data-testid="docs-md-anchor-services">#</a></h2>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col"></th><th scope="col">Definition</th><th scope="col">Restart</th><th scope="col">After reboot</th></tr></thead><tbody><tr><td>Linux</td><td><code translate="no">~/.config/systemd/user/gitoodo.service</code></td><td><code translate="no">Restart=always</code></td><td><code translate="no">WantedBy=default.target</code> and lingering (<code translate="no">loginctl enable-linger</code>)</td></tr><tr><td>macOS 13+</td><td>login item of the app: <code translate="no">Gitoodo.app/Contents/Library/LaunchAgents/de.gitoodo.app.daemon.plist</code>, registered with <code translate="no">SMAppService</code></td><td><code translate="no">KeepAlive</code></td><td><code translate="no">RunAtLoad</code> at login</td></tr><tr><td>macOS 11/12, dev</td><td><code translate="no">~/Library/LaunchAgents/de.gitoodo.app.daemon.plist</code></td><td><code translate="no">KeepAlive</code></td><td><code translate="no">RunAtLoad</code> at login</td></tr><tr><td>Windows</td><td>scheduled task <code translate="no">Gitoodo\Daemon</code></td><td><code translate="no">RestartOnFailure</code></td><td>logon trigger</td></tr></tbody></table></div>
+<p>As a login item the service runs the program inside the app bundle (the service helper when the
+build has it); an app update is a service update, and the app restarts the running services on the
+new program at its next start. Login items appear under System Settings › General › Login Items;
+when macOS waits for approval there, the setup and <code translate="no">/doctor</code> open that pane. Elsewhere the service
+starts the binary at the path from which <code translate="no">service install</code> ran (the stable copy, #355); install
+again after moving it. Older plist agents move to login items once at app start
+(<a href="../system-permissions/" data-testid="docs-md-link-4">permissions</a>, &quot;Login items&quot;). The service writes <code translate="no">classifier.jsonl</code> in the log
+folder (<a href="../logging/" data-testid="docs-md-link-5">logging</a>); stderr goes to the journal (<code translate="no">journalctl --user -u gitoodo</code>), on
+macOS to <code translate="no">classifier.stderr.log</code> there. <code translate="no">gitoodo doctor</code> prints how each service is registered.</p>
+<h3 id="quitting-the-app-and-the-services-737">Quitting the app and the services (#737)<a class="docs-anchor" href="#quitting-the-app-and-the-services-737" aria-label="Quitting the app and the services (#737)" data-testid="docs-md-anchor-quitting-the-app-and-the-services-737">#</a></h3>
+<p>&quot;Quit&quot; in the tray or the app menu (Cmd+Q) asks while a service runs or is about to be restarted:
+quit the app and keep the services working, quit everything, or cancel. &quot;Don&#39;t ask again&quot; stores
+the answer as <code translate="no">quit_services</code> (<code translate="no">ask</code>, <code translate="no">keep_running</code>, <code translate="no">stop_all</code>), changeable under Settings ›
+General › When quitting. Signing out or shutting down never asks. The decision and the service
+control live in <code translate="no">crates/core/src/service_control.rs</code>.</p>
+<p>&quot;Stop services too&quot; stops each service for real, so neither the restart rule nor the next sign-in
+brings it back, and checks afterwards that it no longer runs:</p>
+<div class="docs-table" tabindex="0"><table><thead><tr><th scope="col">Platform</th><th scope="col">Stop until the next app start</th><th scope="col">Back at the next app start</th></tr></thead><tbody><tr><td>macOS</td><td><code translate="no">launchctl disable gui/&lt;uid&gt;/&lt;label&gt;</code>, then <code translate="no">bootout</code></td><td><code translate="no">enable</code>, <code translate="no">bootstrap gui/&lt;uid&gt; &lt;plist&gt;</code>, <code translate="no">kickstart</code>; a login item: <code translate="no">enable</code>, <code translate="no">SMAppService.register()</code></td></tr><tr><td>Linux</td><td><code translate="no">systemctl --user disable --now &lt;unit&gt;</code></td><td><code translate="no">systemctl --user enable --now &lt;unit&gt;</code></td></tr><tr><td>Windows</td><td><code translate="no">schtasks /Change /TN &lt;task&gt; /DISABLE</code>, then <code translate="no">/End</code></td><td><code translate="no">/Change … /ENABLE</code>, then <code translate="no">/Run</code></td></tr></tbody></table></div>
+<p>At start the app brings stopped services back in orchestrator mode
+(<code translate="no">service_control::services_wanted</code>) and never stops a running one. Whether the orchestrator
+dispatches is its on/off switch, <code translate="no">paused</code> in the control state (#735): the dispatcher reads it
+before every round, so with the switch off the services keep running, answer the status and
+dispatch and notify nothing. The quit dialog and the status window read that through the one
+run-state rule (<code translate="no">runStateOf</code>), the tray through <code translate="no">human_control::is_paused</code>: &quot;Services running in
+the background&quot; (or &quot;Services running, orchestrator off&quot;) with &quot;Stop services&quot;, and the status
+window lists each service as running, restarting, stopped or off until the next start. Store
+builds have no services and quit without asking.</p>
+<h2 id="open-points">Open points<a class="docs-anchor" href="#open-points" aria-label="Open points" data-testid="docs-md-anchor-open-points">#</a></h2>
+<ul><li>macOS and Windows services are implemented but not yet proven on a device.</li><li>Windows runs a per-user scheduled task, not a service of the service control manager (that
+would run without the user&#39;s keychain); the pipe uses the default DACL, not a dedicated one.</li><li>The sandboxed Mac App Store build keeps its config in the container; a CLI outside it needs
+<code translate="no">GITOODO_CONFIG_DIR</code> pointing there.</li><li>PR labels are not part of the forge&#39;s pull status yet, so PR lines show checks and merge state
+only. The <code translate="no">lage</code> sections on hosts and workers are not part of the picture.</li></ul>
+<h2 id="repository-states-and-trust">Repository states and trust<a class="docs-anchor" href="#repository-states-and-trust" aria-label="Repository states and trust" data-testid="docs-md-anchor-repository-states-and-trust">#</a></h2>
+<p><code translate="no">RepoState</code> per repository: <code translate="no">off</code> (not polled), <code translate="no">observed</code> (read only: no labels, comments or
+other forge writes), <code translate="no">paused</code> (writes, no dispatch) and <code translate="no">active</code> (writes and dispatch). A repo
+listed in <code translate="no">orchestration.json</code> without <code translate="no">state</code> is <code translate="no">active</code> (the behaviour before the field
+existed), an unlisted repo is <code translate="no">observed</code>, and <code translate="no">settings.json</code> <code translate="no">disabled_repos</code> means <code translate="no">off</code>.</p>
+<p><code translate="no">orchestration::trust::decide</code> implements the trust rule (spec 5.3) as a pure function: maintainers
+(admin/maintain/write), the own worker account and <code translate="no">trusted_authors</code> are trusted; a reopen by a trusted actor
+is an approval, a reopen by anyone else asks again; untrusted pull requests never auto-merge.
+The classifier applies it when it computes readiness. <code translate="no">orchestration::activation::activation_preview</code>
+lists which existing labels are mapped, which catalog labels would be created and which stay untouched.
+Nothing is deleted automatically. <code translate="no">label_cleanup</code> lets the user delete leftover labels (no catalog
+entry) from the preview, one or all at once: <code translate="no">access</code> checks the right to manage labels (the role in
+the repo and the token&#39;s missing scopes), <code translate="no">usage</code> counts the issues and pull requests per label
+for the confirmation, and <code translate="no">delete</code> makes one forge call per label after re-reading the repo&#39;s labels,
+refuses catalog names and reports an error per label while the others continue (Forgejo/Gitea,
+GitHub, GitLab).</p>
+</div>
+<div class="docs-meta"><a class="docs-edit" href="https://github.com/silvio-l/gitoodo/edit/main/docs/daemon.md" data-testid="docs-edit">Edit on GitHub</a><span class="docs-meta__version">Docs version: <span dir="ltr">dev</span></span></div>
+</article>
+<nav class="docs-pager" aria-label="Previous / Next" data-testid="docs-pager"><a class="docs-pager__previous" href="../cli/" rel="prev" data-testid="docs-pager-previous"><span class="docs-pager__label">Previous</span><span class="docs-pager__title">Command line reference</span></a><a class="docs-pager__next" href="../phone-access/" rel="next" data-testid="docs-pager-next"><span class="docs-pager__label">Next</span><span class="docs-pager__title">Phone access</span></a></nav>
+</main>
+<aside class="docs-toc" aria-labelledby="docs-toc-title" data-testid="docs-toc"><h2 id="docs-toc-title">On this page</h2><ol><li class="docs-toc__l2"><a href="#commands" data-testid="docs-toc-commands">Commands</a></li><li class="docs-toc__l2"><a href="#classifier-role-and-read-model" data-testid="docs-toc-classifier-role-and-read-model">Classifier role and read model</a></li><li class="docs-toc__l2"><a href="#queue-writer-and-leases" data-testid="docs-toc-queue-writer-and-leases">Queue writer and leases</a></li><li class="docs-toc__l2"><a href="#label-template-and-hygiene" data-testid="docs-toc-label-template-and-hygiene">Label template and hygiene</a></li><li class="docs-toc__l2"><a href="#shared-configuration" data-testid="docs-toc-shared-configuration">Shared configuration</a></li><li class="docs-toc__l2"><a href="#tokens" data-testid="docs-toc-tokens">Tokens</a></li><li class="docs-toc__l3"><a href="#headless-setup-1208" data-testid="docs-toc-headless-setup-1208">Headless setup (#1208)</a></li><li class="docs-toc__l2"><a href="#state" data-testid="docs-toc-state">State</a></li><li class="docs-toc__l2"><a href="#local-access-only" data-testid="docs-toc-local-access-only">Local access only</a></li><li class="docs-toc__l2"><a href="#services" data-testid="docs-toc-services">Services</a></li><li class="docs-toc__l3"><a href="#quitting-the-app-and-the-services-737" data-testid="docs-toc-quitting-the-app-and-the-services-737">Quitting the app and the services (#737)</a></li><li class="docs-toc__l2"><a href="#open-points" data-testid="docs-toc-open-points">Open points</a></li><li class="docs-toc__l2"><a href="#repository-states-and-trust" data-testid="docs-toc-repository-states-and-trust">Repository states and trust</a></li></ol></aside>
+</div>
+<footer class="docs-footer" data-testid="docs-footer"><div class="docs-footer__inner">
+<p class="docs-muted">The developer docs are in English only.</p>
+<ul class="docs-footer__links">
+<li><a href="../../../" data-testid="docs-footer-site">Website</a></li>
+<li><a href="../../../privacy/" data-testid="docs-footer-privacy">Privacy</a></li>
+<li><a href="https://github.com/silvio-l/gitoodo/blob/main/LICENSE" data-testid="docs-footer-license">MIT</a></li>
+</ul>
+</div></footer>
+</body>
+</html>
